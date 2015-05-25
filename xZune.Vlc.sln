@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc", "xZune.Vlc\xZune.Vlc.csproj", "{2914318D-F479-4469-B7D0-C9CDE386ED1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf", "xZune.Vlc.Wpf\xZune.Vlc.Wpf.csproj", "{691823CE-471F-4A08-8A79-9156D9905F5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.WinForm", "xZune.Vlc.WinForm\xZune.Vlc.WinForm.csproj", "{50533E0E-FEFC-456B-A802-F13E2A5A431A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf.Sample", "xZune.Vlc.Wpf.Sample\xZune.Vlc.Wpf.Sample.csproj", "{5E902A4D-5268-4DD4-B24E-0335B4157A3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.WinForm.Sample", "xZune.Vlc.WinForm.Sample\xZune.Vlc.WinForm.Sample.csproj", "{262B5237-C032-4F5D-B62C-F4DDD8348839}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2914318D-F479-4469-B7D0-C9CDE386ED1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2914318D-F479-4469-B7D0-C9CDE386ED1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2914318D-F479-4469-B7D0-C9CDE386ED1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2914318D-F479-4469-B7D0-C9CDE386ED1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691823CE-471F-4A08-8A79-9156D9905F5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691823CE-471F-4A08-8A79-9156D9905F5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691823CE-471F-4A08-8A79-9156D9905F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691823CE-471F-4A08-8A79-9156D9905F5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,505 @@
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+core debug: removing module "directsound"
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+core debug: removing module "directsound"
+core debug: Creating an input for 'http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: using timeshift granularity of 50 MiB, in path 'C:\Users\彼岸\AppData\Local\Temp'
+core debug: `http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' gives access `http' demux `' path `download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: specified demux `any'
+core debug: creating demux: access='http' demux='any' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' file='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for access_demux module matching "http": 12 candidates
+core debug: no access_demux modules matched
+core debug: creating access 'http' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi', path='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for access module matching "http": 21 candidates
+http debug: querying proxy for http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi
+http debug: no proxy
+http debug: http: server='download.blender.org' port=80 file='/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: net: connecting to download.blender.org port 80
+core debug: connection succeeded (socket = 1228)
+http debug: protocol 'HTTP' answer code 206
+http debug: Content-Type: video/x-msvideo
+http debug: stream size=220514438,pos=0,remaining=220514438
+http debug: this frame size=220514438
+http debug: Connection: close
+http debug: Server: lighttpd/1.4.35
+core debug: using access module "http"
+core debug: Using stream method for AStream*
+core debug: starting pre-buffering
+core debug: received first data after 0 ms
+core debug: pre-buffering done 1024 bytes in 0s - 1000000 KiB/s
+core debug: looking for stream_filter module matching "any": 6 candidates
+core debug: no stream_filter modules matched
+core debug: looking for stream_filter module matching "record": 6 candidates
+core debug: using stream_filter module "record"
+core debug: creating demux: access='http' demux='any' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' file='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for demux module matching "avi": 66 candidates
+avi debug: <list 'AVI '>
+avi debug: <list 'hdrl'>
+avi debug: <list 'strl'>
+avi debug: </list 'strl'>
+avi debug: <list 'strl'>
+http debug: trying to seek to 8520
+core debug: net: connecting to download.blender.org port 80
+core debug: connection succeeded (socket = 1992)
+http debug: protocol 'HTTP' answer code 206
+http debug: Content-Type: video/x-msvideo
+http debug: stream size=220514438,pos=8520,remaining=220505918
+http debug: this frame size=220505918
+http debug: Connection: close
+http debug: Server: lighttpd/1.4.35
+avi debug: </list 'strl'>
+avi debug: </list 'hdrl'>
+avi debug: skipping movi chunk
+avi debug: </list 'AVI '>
+avi debug: * LIST-root size:220514438 pos:0
+avi debug:     + RIFF-AVI  size:220514430 pos:0
+avi debug:     |   + LIST-hdrl size:8500 pos:12
+avi debug:     |   |   + avih size:56 pos:24
+avi debug:     |   |   + LIST-strl size:4220 pos:88
+avi debug:     |   |   |   + strh size:56 pos:100
+avi debug:     |   |   |   + strf size:40 pos:164
+avi debug:     |   |   |   + JUNK size:4096 pos:212
+avi debug:     |   |   + LIST-strl size:4196 pos:4316
+avi debug:     |   |   |   + strh size:56 pos:4328
+avi debug:     |   |   |   + strf size:16 pos:4392
+avi debug:     |   |   |   + JUNK size:4096 pos:4416
+avi debug:     |   + LIST-movi size:220047838 pos:8520
+avi debug: AVIH: 2 stream, flags  HAS_INDEX IS_INTERLEAVED 
+avi debug: stream[0] rate:24 scale:1 samplesize:0
+avi debug: stream[0] video(FMP4) 854x480 24bpp 24.000000fps
+core debug: selecting program id=0
+avi debug: stream[1] rate:56000 scale:1 samplesize:1
+avi debug: stream[1] audio(0x2000 - A52 Audio (aka AC3)) 6 channels 48000Hz 16bits
+avi warning: cannot find idx1 chunk, no index defined
+avi debug: selected standard index for stream[0]
+avi debug: selected standard index for stream[1]
+avi error: no key frame set for track 0
+avi debug: stream[0] created 0 index entries
+avi error: no key frame set for track 1
+avi debug: stream[1] created 0 index entries
+avi warning: broken or missing index, 'seek' will be approximative or will exhibit strange behavior
+avi warning: cannot create index (unseekable stream)
+avi warning: cannot find idx1 chunk, no index defined
+avi debug: selected standard index for stream[0]
+avi debug: selected standard index for stream[1]
+avi error: no key frame set for track 0
+avi debug: stream[0] created 0 index entries
+avi error: no key frame set for track 1
+avi debug: stream[1] created 0 index entries
+avi warning: broken or missing index, 'seek' will be approximative or will exhibit strange behavior
+core debug: using demux module "avi"
+core debug: looking for decoder module matching "any": 43 candidates
+avcodec debug: CPU flags: 0x0107d3db
+avcodec debug: trying to use direct rendering
+avcodec debug: allowing 4 thread(s) for decoding
+avcodec debug: avcodec codec (MPEG-4 Video) started
+core debug: using decoder module "avcodec"
+core debug: looking for decoder module matching "any": 43 candidates
+core debug: using decoder module "a52"
+core debug: looking for meta reader module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\彼岸\AppData\Roaming\vlc\lua\meta\reader
+lua debug: Trying Lua scripts in E:\Development\Projects\xZune.Vlc\LibVlc\lua\meta\reader
+core debug: no meta reader modules matched
+core debug: `http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' successfully opened
+core debug: Buffering 0%
+a5a2v debugc: odA/52 channels:e6c samplerate: d4ebcoureg debug: : 8aB000vu abitraite:f4f48000ering
+l a2ble %so
+cftoware decroderceore debug:  creating audio outputo
+u tput fordmat ebugc: 0oBufferre debug:  lookin(igyuv420 pfor ng audio output module matching "any": 56 candidates)
+
+%
+core debug: Buffering 7%
+directsound debug: fcound ore2 debug:  devices
+looking for texcot rendererr emodule matching "any": 2 candidates
+ debug: using audio output module "directsound"
+directsound debug: Opening DirectSound Audio Output
+freetype debug: Using Arial as font from file C:\Windows\Fonts\ariali.ttf
+freetype debug: Using Courier New as mono-font from file C:\Windows\Fonts\courbi.ttf
+directsound debug: Windows speaker config: Stereo and stream has 6 channels, using 2 channels
+core debug: output 'f32l' 48000 Hz Stereo frame=1 samples/8 bytes
+core debug: looking for audio volume module matching "any": 2 candidates
+core debug: using audio volume module "float_mixer"
+core debug: input 'a52 ' 48000 Hz 3F2R/LFE frame=1536 samples/1792 bytes
+core debug: looking for audio filter module matching "scaletempo": 14 candidates
+scaletempo debug: format: 48000 rate, 6 nch, 4 bps, fl32
+scaletempo debug: params: 30 stride, 0.200 overlap, 14 search
+scaletempo debug: 1.000 scale, 1440.000 stride_in, 1440 stride_out, 1152 standing, 288 overlap, 672 search, 2400 queue, fl32 mode
+core debug: using audio filter module "scaletempo"
+core debug: conversion: 'a52 '->'f32l' 48000 Hz->48000 Hz 3F2R/LFE->3F2R/LFE
+core debug: looking for audio converter module matching "any": 12 candidates
+core debug: no audio converter modules matched
+core debug: looking for audio converter module matching "any": 12 candidates
+core debug: using audio converter module "a52tofloat32"
+core debug: conversion pipeline complete
+core debug: conversion: 'f32l'->'f32l' 48000 Hz->48000 Hz 3F2R/LFE->Stereo
+core debug: looking for audio converter module matching "any": 12 candidates
+core debug: using audio converter module "simple_channel_mixer"
+core debug: conversion pipeline complete
+core debug: looking for audio resampler module matching "any": 3 candidates
+core debug: using audio resampler module "samplerate"
+core debug: End of audio preroll
+freetype debug: using fontsize: 2
+core debug: using text renderer module "freetype"
+core debug: looking for video filter2 module matching "any": 58 candidates
+swscale debug: 32x32 (32x32) chroma: YUVA -> 16x16 (16x16) chroma: RGBA with scaling using Bicubic (good quality)
+core debug: using video filter2 module "swscale"
+core debug: looking for video filter2 module matching "any": 58 candidates
+yuvp debug: YUVP to YUVA converter
+core debug: using video filter2 module "yuvp"
+core debug: Deinterlacing available
+core debug: deinterlace 0, mode blend, is_needed 0
+core debug: Opening vout display wrapper
+core debug: looking for vout display module matching "vmem": 11 candidates
+core debug: VoutDisplayEvent 'fullscreen' 0
+core debug: VoutDisplayEvent 'resize' 864x480 window
+core debug: using vout display module "vmem"
+core debug: A filter to adapt decoder to display is needed
+core debug: looking for video filter2 module matching "any": 58 candidates
+swscale debug: 854x480 (864x480) chroma: I420 -> 864x480 (864x480) chroma: RV32 with scaling using Bicubic (good quality)
+core debug: using video filter2 module "swscale"
+core debug: Filter 'Swscale' (0e2bcf04) appended to chain
+core debug: original format sz 864x480, of (0,0), vsz 854x480, 4cc I420, sar 1:1, msk r0x0 g0x0 b0x0
+ccoreo reerror debug: : Failed tro chemaonvgei ngzoo mmodu
+le "freecoret yeperror":
+ Failed to set on top
+core error: Failed to change source AR
+core debug: looking for text renderer module matching "any": 2 candidates
+freetype debug: Using Arial as font from file C:\Windows\Fonts\ariali.ttf
+freetype debug: Using Courier New as mono-font from file C:\Windows\Fonts\courbi.ttf
+freetype debug: using fontsize: 2
+core debug: using text renderer module "freetype"
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+core debug: End of video preroll
+core debug: Received first picture
+core debug: Buffering 10%
+core debug: Buffering 12%
+core debug: Buffering 15%
+core debug: Buffering 17%
+core debug: Buffering 20%
+core debug: Buffering 22%
+core debug: Buffering 25%
+core debug: Buffering 27%
+core debug: Buffering 30%
+core debug: Buffering 32%
+core debug: Buffering 35%
+core debug: Buffering 37%
+core debug: Buffering 40%
+core debug: Buffering 42%
+core debug: Buffering 45%
+core debug: Buffering 47%
+core debug: Buffering 50%
+core debug: Buffering 52%
+core debug: Buffering 55%
+core debug: Buffering 57%
+core debug: Buffering 60%
+core debug: Buffering 62%
+core debug: Buffering 65%
+core debug: Buffering 67%
+core debug: Buffering 70%
+core debug: Buffering 72%
+core debug: Buffering 75%
+core debug: Buffering 77%
+core debug: Buffering 80%
+core debug: Buffering 82%
+core debug: Buffering 85%
+core debug: Buffering 87%
+core debug: Buffering 90%
+core debug: Buffering 92%
+core debug: Buffering 95%
+core debug: Buffering 97%
+core debug: Buffering 100%
+core debug: Stream buffering done (1025 ms in 1646 ms)
+core debug: Decoder wait done in 0 ms
+core warning: playback too late (61875): up-sampling
+core debug: picture might be displayed late (missing 14 ms)
+core debug: resampling stopped (drift: 10458 us)
+﻿-- logger module started --
+core debug: VLC media player - 2.2.1 Terry Pratchett (Weatherwax)
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.1-0-ga425c42
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-debug' 'host_alias=i686-w64-mingw32'
+core debug: using interface module "logger"
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+core debug: removing module "directsound"
+core debug: Creating an input for 'http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: using timeshift granularity of 50 MiB, in path 'C:\Users\彼岸\AppData\Local\Temp'
+core debug: `http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' gives access `http' demux `' path `download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: specified demux `any'
+core debug: creating demux: access='http' demux='any' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' file='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for access_demux module matching "http": 12 candidates
+core debug: no access_demux modules matched
+core debug: creating access 'http' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi', path='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for access module matching "http": 21 candidates
+http debug: querying proxy for http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi
+http debug: no proxy
+http debug: http: server='download.blender.org' port=80 file='/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi'
+core debug: net: connecting to download.blender.org port 80
+core debug: connection succeeded (socket = 2036)
+http debug: protocol 'HTTP' answer code 206
+http debug: Content-Type: video/x-msvideo
+http debug: stream size=220514438,pos=0,remaining=220514438
+http debug: this frame size=220514438
+http debug: Connection: close
+http debug: Server: lighttpd/1.4.35
+core debug: using access module "http"
+core debug: Using stream method for AStream*
+core debug: starting pre-buffering
+core debug: received first data after 0 ms
+core debug: pre-buffering done 1024 bytes in 0s - 1000000 KiB/s
+core debug: looking for stream_filter module matching "any": 6 candidates
+core debug: no stream_filter modules matched
+core debug: looking for stream_filter module matching "record": 6 candidates
+core debug: using stream_filter module "record"
+core debug: creating demux: access='http' demux='any' location='download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' file='\\download.blender.org\peach\bigbuckbunny_movies\big_buck_bunny_480p_surround-fix.avi'
+core debug: looking for demux module matching "avi": 66 candidates
+avi debug: <list 'AVI '>
+avi debug: <list 'hdrl'>
+avi debug: <list 'strl'>
+avi debug: </list 'strl'>
+avi debug: <list 'strl'>
+http debug: trying to seek to 8520
+core debug: net: connecting to download.blender.org port 80
+core debug: connection succeeded (socket = 2036)
+http debug: protocol 'HTTP' answer code 206
+http debug: Content-Type: video/x-msvideo
+http debug: stream size=220514438,pos=8520,remaining=220505918
+http debug: this frame size=220505918
+http debug: Connection: close
+http debug: Server: lighttpd/1.4.35
+avi debug: </list 'strl'>
+avi debug: </list 'hdrl'>
+avi debug: skipping movi chunk
+avi debug: </list 'AVI '>
+avi debug: * LIST-root size:220514438 pos:0
+avi debug:     + RIFF-AVI  size:220514430 pos:0
+avi debug:     |   + LIST-hdrl size:8500 pos:12
+avi debug:     |   |   + avih size:56 pos:24
+avi debug:     |   |   + LIST-strl size:4220 pos:88
+avi debug:     |   |   |   + strh size:56 pos:100
+avi debug:     |   |   |   + strf size:40 pos:164
+avi debug:     |   |   |   + JUNK size:4096 pos:212
+avi debug:     |   |   + LIST-strl size:4196 pos:4316
+avi debug:     |   |   |   + strh size:56 pos:4328
+avi debug:     |   |   |   + strf size:16 pos:4392
+avi debug:     |   |   |   + JUNK size:4096 pos:4416
+avi debug:     |   + LIST-movi size:220047838 pos:8520
+avi debug: AVIH: 2 stream, flags  HAS_INDEX IS_INTERLEAVED 
+avi debug: stream[0] rate:24 scale:1 samplesize:0
+avi debug: stream[0] video(FMP4) 854x480 24bpp 24.000000fps
+core debug: selecting program id=0
+avi debug: stream[1] rate:56000 scale:1 samplesize:1
+avi debug: stream[1] audio(0x2000 - A52 Audio (aka AC3)) 6 channels 48000Hz 16bits
+avi warning: cannot find idx1 chunk, no index defined
+avi debug: selected standard index for stream[0]
+avi debug: selected standard index for stream[1]
+avi error: no key frame set for track 0
+avi debug: stream[0] created 0 index entries
+avi error: no key frame set for track 1
+avi debug: stream[1] created 0 index entries
+avi warning: broken or missing index, 'seek' will be approximative or will exhibit strange behavior
+avi warning: cannot create index (unseekable stream)
+avi warning: cannot find idx1 chunk, no index defined
+avi debug: selected standard index for stream[0]
+avi debug: selected standard index for stream[1]
+avi error: no key frame set for track 0
+avi debug: stream[0] created 0 index entries
+avi error: no key frame set for track 1
+avi debug: stream[1] created 0 index entries
+avi warning: broken or missing index, 'seek' will be approximative or will exhibit strange behavior
+core debug: using demux module "avi"
+core debug: looking for decoder module matching "any": 43 candidates
+avcodec debug: CPU flags: 0x0107d3db
+avcodec debug: trying to use direct rendering
+avcodec debug: allowing 4 thread(s) for decoding
+avcodec debug: avcodec codec (MPEG-4 Video) started
+core debug: using decoder module "avcodec"
+core debug: looking for decoder module matching "any": 43 candidates
+core debug: using decoder module "a52"
+core debug: looking for meta reader module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\彼岸\AppData\Roaming\vlc\lua\meta\reader
+lua debug: Trying Lua scripts in E:\Development\Projects\xZune.Vlc\LibVlc\lua\meta\reader
+core debug: no meta reader modules matched
+core debug: `http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi' successfully opened
+core debug: Buffering 0%
+avcodec debug: aa52vailable  debugsoftware decoder ouc:tore p deA/5bug:u2 t channeBuffering 2%
+ls: 6for smampleracte:aort e0  d4e(bugyuv84020p:) 
+0Buff0e rbitinrate:g 4480005
+%
+core debug: creating audio outpcuotr
+ec debourgeco debug: :looking for text renderer module matching "any": r2 candidates
+e debug:  lBouofkfering 7i%ng for audi
+o output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsoundfreetype" debug: 
+Using Arial as font from file C:\Windows\Fonts\ariali.ttf
+freetype debug: Using Courier New as mdoinroe-cftosnotu nfdr odme bfuigl:e  CO:p\eWniinndgo wDsi\rFeocnttSso\ucnodu rAbuid.itot fO
+utput
+freetype debug: using fontsize: 2
+core debug: using text renderer module "freetype"
+core debug: looking for video filter2 module matching "any": 58 candidates
+swscale debug: 32x32 (32x32) chroma: YUVA -> 16x16 (16x16) chroma: RGBA with scaling using Bicubic (good quality)
+core debug: using video filter2 module "swscale"
+core debug: looking for video filter2 module matching "any": 58 candidates
+directsound debug: Windows speaker config: Stereo and stream has 6 channels, using 2 channels
+yuvp debug: YUVP to YUVA converter
+core debug: using video filter2 module "yuvp"
+core debug: Deinterlacing available
+core debugcore debug: output ':f 32l' deinterlace 480000 Hz , mode blend, is_needed 0S
+tereo frame=1 samples/8 bytes
+core debugcore debug: :O peloning vout display wrapper
+oking for audio volumeco module matching "any": r2e candidates
+ debug: looking for vout display module matching "vmem": 11 candidates
+core debug: using audio volume module "float_mixer"
+core debug: input 'a52 ' 48000 Hz 3F2R/LFE frame=1536 samples/1792 bytes
+core debug: looking for audio filter module matching "scaletempo": 14 candidates
+scaletempo debug: format: 48000 rate, 6 nch, 4 bps, fl32
+scaletempo debug: params: 30 stride, 0.200 overlap, 14 search
+scaletempo debug: 1.000 scale, 1440.000 stride_in, 1440 stride_out, 1152 standing, 288 overlap, 672 search, 2400 queue, fl32 mode
+core debug: using audio filter module "scaletempo"
+core debug: conversion: 'a52 '->'f32l' 48000 Hz->48000 Hz 3F2R/LFE->3F2R/LFE
+core debug: looking for audio converter module matching "any": 12 candidates
+core dcoreebug debug: :n o VoutDisapudiolayEvent 'fullscree nconverter modules matched'
+ 0
+core debugcore : dVoebugutDi: spllayEvent 'resize' 864xo4o80ki ng for waiunddioow 
+converter moducolree ma tdching "eabugny: ":using  v12 candidateso
+ut display module "vmem"
+core debug: A filter to adapt decoder to display is neededc
+ore debug: using acoreu debugd: io converter module "laooking for 52vtideo filter2 module matching "any": o5float32"8
+ candidatescore
+ debug: conversion pipeline complete
+core debug: conversion: 'f32l'->'f32l' 48000 Hz->48000 Hz 3F2R/LFE->Stereo
+core debug: looking for audio converter module matching "any": 12 candidates
+core debug: using audio converter module "simple_channel_mixer"
+core debugswscale: debug : conversion pipeline complete854
+x480 (864x480) chcorer debugo: malooking for : auI420dio ->  resampler864 xm480 (odule ma8tchi64xn480g)  ch"raomnya": : 3R cVa3ndidat2 eswi
+th scaling using Bicubic (good quality)
+core debug: using video filter2 modulcoree " deswbug:scale "us
+ing audio correes ampler moddueblueg ": sampleFirltaetre '"Swscale
+' (0ece4024co)re app dendeebud gt: o chainEnd of audio
+ preroll
+core debug: original format sz 864x480, of (0,0), vsz 854x480, 4cc I420, sar 1:1, msk r0x0 g0x0 b0x0
+corecore error debug: : Failed to change zoomr
+emoving module "freetype"c
+ore error: Failed to set on topcore debug: 
+looking for ctext renderer module matching "any": o2re  errorc: andidates
+Failed to change source AR
+freetype debug: Using Arial as font from file C:\Windows\Fonts\ariali.ttf
+freetype debug: Using Courier New as mono-font from file C:\Windows\Fonts\courbi.ttf
+freetype debug: using fontsize: 2
+core debug: using text renderer module "freetype"
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+core debug: End of video preroll
+core debug: Received first picture
+core debug: Buffering 10%
+core debug: Buffering 12%
+core debug: Buffering 15%
+core debug: Buffering 17%
+core debug: Buffering 20%
+core debug: Buffering 22%
+core debug: Buffering 25%
+core debug: Buffering 27%
+core debug: Buffering 30%
+core debug: Buffering 32%
+core debug: Buffering 35%
+core debug: Buffering 37%
+core debug: Buffering 40%
+core debug: Buffering 42%
+core debug: Buffering 45%
+core debug: Buffering 47%
+core debug: Buffering 50%
+core debug: Buffering 52%
+core debug: Buffering 55%
+core debug: Buffering 57%
+core debug: Buffering 60%
+core debug: Buffering 62%
+core debug: Buffering 65%
+core debug: Buffering 67%
+core debug: Buffering 70%
+core debug: Buffering 72%
+core debug: Buffering 75%
+core debug: Buffering 77%
+core debug: Buffering 80%
+core debug: Buffering 82%
+core debug: Buffering 85%
+core debug: Buffering 87%
+core debug: Buffering 90%
+core debug: Buffering 92%
+core debug: Buffering 95%
+core debug: Buffering 97%
+core debug: Buffering 100%
+core debug: Stream buffering done (1025 ms in 1619 ms)
+core debug: Decoder wait done in 0 ms
+core warning: picture is too late to be displayed (missing 87 ms)
+core warning: picture is too late to be displayed (missing 45 ms)
+core debug: picture might be displayed late (missing 3 ms)
+core debug: picture might be displayed late (missing 12 ms)

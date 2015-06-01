@@ -84,6 +84,11 @@ namespace xZune.Vlc
                 NavigateFunction = new LibVlcFunction<Navigate>(libHandle, libVersion);
                 SetVideoTitleDisplayFunction = new LibVlcFunction<SetVideoTitleDisplay>(libHandle, libVersion);
                 ReleaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>(libHandle, libVersion);
+                ToggleMuteFunction = new LibVlcFunction<ToggleMute>(libHandle, libVersion);
+                GetMuteFunction = new LibVlcFunction<GetMute>(libHandle, libVersion);
+                SetMuteFunction = new LibVlcFunction<SetMute>(libHandle, libVersion);
+                GetVolumeFunction = new LibVlcFunction<GetVolume>(libHandle, libVersion);
+                SetVolumeFunction = new LibVlcFunction<SetVolume>(libHandle, libVersion);
                 IsLibLoaded = true;
             }
         }
@@ -143,6 +148,11 @@ namespace xZune.Vlc
         static LibVlcFunction<Navigate> NavigateFunction;
         static LibVlcFunction<SetVideoTitleDisplay> SetVideoTitleDisplayFunction;
         static LibVlcFunction<ReleaseTrackDescription> ReleaseTrackDescriptionFunction;
+        static LibVlcFunction<ToggleMute> ToggleMuteFunction;
+        static LibVlcFunction<GetMute> GetMuteFunction;
+        static LibVlcFunction<SetMute> SetMuteFunction;
+        static LibVlcFunction<GetVolume> GetVolumeFunction;
+        static LibVlcFunction<SetVolume> SetVolumeFunction;
 
         LibVlcEventCallBack onPlaying;
         LibVlcEventCallBack onPaused;
@@ -655,7 +665,37 @@ namespace xZune.Vlc
             }
         }
 
+        /// <summary>
+        /// 获取或设置一个值,该值表示当前媒体音频的音量
+        /// </summary>
+        public int Volume
+        {
+            get
+            {
+                return GetVolumeFunction.Delegate(InstancePointer);
+            }
 
+            set
+            {
+                SetVolumeFunction.Delegate(InstancePointer, value);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置一个值,该值表示当前媒体是否静音
+        /// </summary>
+        public bool IsMute
+        {
+            get
+            {
+                return GetMuteFunction.Delegate(InstancePointer) == 1;
+            }
+
+            set
+            {
+                SetMuteFunction.Delegate(InstancePointer, value ? 1 : 0);
+            }
+        }
 
         #endregion
 
@@ -783,6 +823,14 @@ namespace xZune.Vlc
         public void SetVideoTitleDisplay(Position pos, uint timeout)
         {
             SetVideoTitleDisplayFunction.Delegate(InstancePointer, pos, timeout);
+        }
+
+        /// <summary>
+        /// 切换静音状态
+        /// </summary>
+        public void ToggleMute()
+        {
+            ToggleMuteFunction.Delegate(InstancePointer);
         }
 
         bool disposed = false;

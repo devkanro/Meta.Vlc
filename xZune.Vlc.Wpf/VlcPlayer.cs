@@ -442,6 +442,46 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public event EventHandler FPSChanged;
         #endregion
+        
+        #region 属性 IsMute
+        public bool IsMute
+        {
+            get
+            {
+                return VlcMediaPlayer.IsMute;
+            }
+            set
+            {
+                if (value != VlcMediaPlayer.IsMute)
+                {
+                    VlcMediaPlayer.IsMute = value;
+                    NotifyPropertyChange();
+                    IsMuteChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+        public event EventHandler IsMuteChanged;
+        #endregion
+
+        #region 属性 Volume
+        public int Volume
+        {
+            get
+            {
+                return VlcMediaPlayer.Volume;
+            }
+            set
+            {
+                if (value != VlcMediaPlayer.Volume)
+                {
+                    VlcMediaPlayer.Volume = value;
+                    NotifyPropertyChange();
+                    VolumeChanged?.Invoke(this, new EventArgs());
+                }
+            }
+        }
+        public event EventHandler VolumeChanged;
+        #endregion
 
         #region 只读属性 IsSeekable
         private void VlcMediaPlayerSeekableChanged(object sender, EventArgs e)
@@ -540,6 +580,11 @@ namespace xZune.Vlc.Wpf
         public void NextFrame()
         {
             VlcMediaPlayer.NextFrame();
+        }
+
+        public void ToggleMute()
+        {
+            VlcMediaPlayer.ToggleMute();
         }
         #endregion
     }

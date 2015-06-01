@@ -37,5 +37,15 @@ namespace xZune.Vlc.Wpf.Sample
                 player.Play();
             }
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            player.ToggleMute();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            player.Volume = int.Parse(volume.Text);
+        }
     }
 }

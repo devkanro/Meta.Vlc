@@ -152,9 +152,7 @@ namespace xZune.Vlc.Wpf
 
         #region 视频呈现
         VideoDisplayContext context;
-
-        bool stopRequest = false;
-
+        
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             return planes = context.MapView;
@@ -548,10 +546,7 @@ namespace xZune.Vlc.Wpf
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            if (VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
-            {
-                await StopAsync();
-            }
+            await Stop();
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
@@ -559,10 +554,7 @@ namespace xZune.Vlc.Wpf
 
         public async void LoadMedia(Uri uri)
         {
-            if (VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
-            {
-                await StopAsync();
-            }
+            await Stop();
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
@@ -595,27 +587,8 @@ namespace xZune.Vlc.Wpf
         {
             VlcMediaPlayer.ToggleMute();
         }
-        
-        public void Stop()
-        {
-            if(VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
-            {
-                VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
-                VlcMediaPlayer.SetVideoFormatCallback(null, null);
 
-                VlcMediaPlayer.Pause();
-
-                System.Threading.Thread.Sleep(100);
-                VlcMediaPlayer.Stop();
-
-                context.Dispose();
-                context = null;
-
-                VideoSource = null;
-            }
-        }
-
-        public async Task StopAsync()
+        public async Task Stop()
         {
 
             if (VlcMediaPlayer.Media != null )

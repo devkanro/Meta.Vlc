@@ -202,7 +202,6 @@ namespace xZune.Vlc
             }
 
             HandleManager.Add(this);
-            SetExitHandlerFunction.Delegate(InstancePointer, eventHandler, IntPtr.Zero);
         }
 
         /// <summary>
@@ -355,19 +354,6 @@ namespace xZune.Vlc
         {
             return VlcMediaPlayer.Create(this);
         }
-
-        private void eventHandler(IntPtr ptr)
-        {
-            if(Exit != null)
-            {
-                Exit(this, new EventArgs());
-            }
-        }
-
-        /// <summary>
-        /// 当该实例退出时调用
-        /// </summary>
-        public event EventHandler Exit;
 
         bool disposed = false;
 

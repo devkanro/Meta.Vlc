@@ -46,7 +46,7 @@ namespace xZune.Vlc.Wpf
 
         public static void ReleaseAll()
         {
-            Vlc.Dispose();
+            Vlc?.Dispose();
         }
     }
 }

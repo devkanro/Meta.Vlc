@@ -23,11 +23,20 @@ namespace xZune.Vlc.Wpf.Sample
         public MainWindow()
         {
             InitializeComponent();
+            this.Closing += MainWindow_Closing;
+        }
+
+        private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            await player.Stop();
+            player.VlcMediaPlayer?.Media?.Dispose();
+            player.VlcMediaPlayer?.Dispose();
+            ApiManager.ReleaseAll();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            await player.StopAsync();
+            await player.Stop();
             player.LoadMedia(@"E:\Video\NFS11-2.mp4");
             player.Play();
 

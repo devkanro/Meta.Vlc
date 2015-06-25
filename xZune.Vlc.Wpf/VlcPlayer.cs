@@ -9,7 +9,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-
+using System.Threading.Tasks;
 using xZune.Vlc;
 using System.Collections.Generic;
 using System.Linq;
@@ -542,26 +542,26 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 方法
-        public void LoadMedia(String path)
+        public async void LoadMedia(String path)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            if (VlcMediaPlayer.Media != null)
+            if (VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
             {
-                VlcMediaPlayer.Stop();
+                await StopAsync();
             }
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
         }
 
-        public void LoadMedia(Uri uri)
+        public async void LoadMedia(Uri uri)
         {
-            if (VlcMediaPlayer.Media != null)
+            if (VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
             {
-                VlcMediaPlayer.Stop();
+                await StopAsync();
             }
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
@@ -595,23 +595,47 @@ namespace xZune.Vlc.Wpf
         {
             VlcMediaPlayer.ToggleMute();
         }
-
+        
         public void Stop()
         {
-            VlcMediaPlayer.Pause();
-
-            System.Threading.Tasks.Task.Run(() =>
+            if(VlcMediaPlayer.Media != null && VlcMediaPlayer.State != Interop.Media.MediaState.Stopped)
             {
-                System.Threading.Thread.Sleep(100);
-                VlcMediaPlayer.Stop();
-                
-                context.Dispose();
-                context = null;
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
-            });
 
-            VideoSource = null;
+                VlcMediaPlayer.Pause();
+
+                System.Threading.Thread.Sleep(100);
+                VlcMediaPlayer.Stop();
+
+                context.Dispose();
+                context = null;
+
+                VideoSource = null;
+            }
+        }
+
+        public async Task StopAsync()
+        {
+
+            if (VlcMediaPlayer.Media != null )
+            {
+                VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+                VlcMediaPlayer.SetVideoFormatCallback(null, null);
+
+                VlcMediaPlayer.Pause();
+
+                await Task.Run(() =>
+                {
+                    System.Threading.Thread.Sleep(50);
+                    VlcMediaPlayer.Stop();
+
+                    context?.Dispose();
+                    context = null;
+                });
+
+                VideoSource = null;
+            }
         }
         #endregion
     }

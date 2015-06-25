@@ -25,24 +25,28 @@ namespace xZune.Vlc.Wpf.Sample
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(player.VlcMediaPlayer.Media == null)
-            {
-                player.LoadMedia(@"E:\Video\NFS11-2.mp4");
-                player.Play();
-            }
-            else
-            {
-                if(player.State == Interop.Media.MediaState.Stopped)
-                {
-                    player.Play();
-                }
-                else
-                {
-                    player.PauseOrResume();
-                }
-            }
+            await player.StopAsync();
+            player.LoadMedia(@"E:\Video\NFS11-2.mp4");
+            player.Play();
+
+            //if(player.VlcMediaPlayer.Media == null)
+            //{
+            //    player.LoadMedia(@"E:\Video\NFS11-2.mp4");
+            //    player.Play();
+            //}
+            //else
+            //{
+            //    if(player.State == Interop.Media.MediaState.Stopped)
+            //    {
+            //        player.Play();
+            //    }
+            //    else
+            //    {
+            //        player.PauseOrResume();
+            //    }
+            //}
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

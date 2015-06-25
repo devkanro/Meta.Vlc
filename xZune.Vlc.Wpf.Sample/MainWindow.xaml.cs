@@ -29,18 +29,25 @@ namespace xZune.Vlc.Wpf.Sample
         {
             if(player.VlcMediaPlayer.Media == null)
             {
-                player.LoadMedia(new Uri("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi"));
+                player.LoadMedia(@"E:\Video\NFS11-2.mp4");
                 player.Play();
             }
             else
             {
-                player.Play();
+                if(player.State == Interop.Media.MediaState.Stopped)
+                {
+                    player.Play();
+                }
+                else
+                {
+                    player.PauseOrResume();
+                }
             }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.ToggleMute();
+            player.Stop();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

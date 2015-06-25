@@ -1,9 +1,0 @@
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\bin\Debug\xZune.Vlc.WinForm.dll
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\bin\Debug\xZune.Vlc.WinForm.pdb
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\bin\Debug\xZune.Vlc.dll
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\bin\Debug\xZune.Vlc.pdb
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\obj\Debug\xZune.Vlc.WinForm.csprojResolveAssemblyReference.cache
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\obj\Debug\xZune.Vlc.WinForm.VlcPlayer.resources
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\obj\Debug\xZune.Vlc.WinForm.csproj.GenerateResource.Cache
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\obj\Debug\xZune.Vlc.WinForm.dll
-E:\Development\Projects\xZune.Vlc\xZune.Vlc.WinForm\obj\Debug\xZune.Vlc.WinForm.pdb

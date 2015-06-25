@@ -36,10 +36,10 @@ namespace xZune.Vlc.Wpf
 
         public VlcPlayer()
         {
-            
+
         }
 
-        static String CombinePath(String path1,String path2)
+        static String CombinePath(String path1, String path2)
         {
             string result = string.Empty;
 
@@ -112,6 +112,7 @@ namespace xZune.Vlc.Wpf
                 formatCallbackHandle = GCHandle.Alloc(formatCallback);
                 cleanupCallbackHandle = GCHandle.Alloc(cleanupCallback);
 
+
                 VlcMediaPlayer.SetVideoDecodeCallback(lockCallback, unlockCallback, displayCallback, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(formatCallback, cleanupCallback);
             }
@@ -156,6 +157,8 @@ namespace xZune.Vlc.Wpf
         #region 视频呈现
         VideoDisplayContext context;
 
+        bool stopRequest = false;
+
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             return planes = context.MapView;
@@ -163,7 +166,7 @@ namespace xZune.Vlc.Wpf
 
         void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
         {
-
+            return;
         }
 
         void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
@@ -193,7 +196,7 @@ namespace xZune.Vlc.Wpf
             return (uint)context.Size;
         }
 
-        private void VideoCleanupCallback(IntPtr opaque)
+        void VideoCleanupCallback(IntPtr opaque)
         {
             context.Dispose();
         }
@@ -442,7 +445,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public event EventHandler FPSChanged;
         #endregion
-        
+
         #region 属性 IsMute
         public bool IsMute
         {
@@ -549,7 +552,10 @@ namespace xZune.Vlc.Wpf
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            VlcMediaPlayer?.Stop();
+            if (VlcMediaPlayer.Media != null)
+            {
+                VlcMediaPlayer.Stop();
+            }
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
@@ -557,9 +563,14 @@ namespace xZune.Vlc.Wpf
 
         public void LoadMedia(Uri uri)
         {
-            VlcMediaPlayer?.Stop();
+            if (VlcMediaPlayer.Media != null)
+            {
+                VlcMediaPlayer.Stop();
+            }
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media.ParseAsync();
+
         }
 
         public void Play()
@@ -585,6 +596,19 @@ namespace xZune.Vlc.Wpf
         public void ToggleMute()
         {
             VlcMediaPlayer.ToggleMute();
+        }
+
+        public void Stop()
+        {
+            VlcMediaPlayer.Pause();
+            context.Dispose();
+            VideoSource = null;
+
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep(100);
+                VlcMediaPlayer.Stop();
+            });
         }
         #endregion
     }

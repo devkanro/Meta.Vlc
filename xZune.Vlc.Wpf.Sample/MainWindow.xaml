@@ -11,7 +11,7 @@
         <wpf:VlcPlayer x:Name="player" LibVlcPath="..\..\..\..\..\LibVlc"/>
         <StackPanel>
             <Button VerticalAlignment="Bottom" Content="Play" BorderThickness="0" Background="#7F8241F5" Click="Button_Click"/>
-            <Button VerticalAlignment="Bottom" Content="Mute" BorderThickness="0" Background="#7F046FAC" Click="Button_Click_1"/>
+            <Button VerticalAlignment="Bottom" Content="Stop" BorderThickness="0" Background="#7F046FAC" Click="Button_Click_1"/>
             <Grid>
                 <TextBox x:Name="volume" Text="100"></TextBox>
                 <Button Content="SetVolume" BorderThickness="0" Background="#7FFF0000" HorizontalAlignment="Right" Click="Button_Click_2"></Button>

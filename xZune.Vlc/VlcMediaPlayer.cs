@@ -206,7 +206,7 @@ namespace xZune.Vlc
             onPaused = OnPaused;
             onOpening = OnOpening;
             onBuffering = OnBuffering;
-            onStoped = OnStoped;
+            onStoped = OnStoped;  //This Event has something wrong.
             onForward = OnForward;
             onBackward = OnBackward;
             onEndReached = OnEndReached;
@@ -226,7 +226,7 @@ namespace xZune.Vlc
             onPausedHandle = GCHandle.Alloc(onPaused);
             onOpeningHandle = GCHandle.Alloc(onOpening);
             onBufferingHandle = GCHandle.Alloc(onBuffering);
-            onStopedHandle = GCHandle.Alloc(onStoped);
+            onStopedHandle = GCHandle.Alloc(onStoped);  //This Event has something wrong.
             onForwardHandle = GCHandle.Alloc(onForward);
             onBackwardHandle = GCHandle.Alloc(onBackward);
             onEndReachedHandle = GCHandle.Alloc(onEndReached);
@@ -246,7 +246,7 @@ namespace xZune.Vlc
             EventManager.Attach(EventTypes.MediaPlayerPaused, onPaused, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerOpening, onOpening, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerBuffering, onBuffering, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerStopped, onStoped, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerStopped, onStoped, IntPtr.Zero);  //This Event has something wrong.
             EventManager.Attach(EventTypes.MediaPlayerForward, onForward, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerBackward, onBackward, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerEndReached, onEndReached, IntPtr.Zero);
@@ -441,11 +441,18 @@ namespace xZune.Vlc
         {
             get
             {
-                return HandleManager.GetVlcObject(GetMediaFunction.Delegate(InstancePointer)) as VlcMedia;
+                return InstancePointer == IntPtr.Zero ? null : HandleManager.GetVlcObject(GetMediaFunction.Delegate(InstancePointer)) as VlcMedia;
             }
             set
             {
-                SetMediaFunction.Delegate(InstancePointer, value.InstancePointer);
+                if(value == null)
+                {
+                    SetMediaFunction.Delegate(InstancePointer, IntPtr.Zero);
+                }
+                else
+                {
+                    SetMediaFunction.Delegate(InstancePointer, value.InstancePointer);
+                }
             }
         }
 

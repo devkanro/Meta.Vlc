@@ -111,10 +111,6 @@ namespace xZune.Vlc.Wpf
                 displayCallbackHandle = GCHandle.Alloc(displayCallback);
                 formatCallbackHandle = GCHandle.Alloc(formatCallback);
                 cleanupCallbackHandle = GCHandle.Alloc(cleanupCallback);
-
-
-                VlcMediaPlayer.SetVideoDecodeCallback(lockCallback, unlockCallback, displayCallback, IntPtr.Zero);
-                VlcMediaPlayer.SetVideoFormatCallback(formatCallback, cleanupCallback);
             }
             base.OnInitialized(e);
         }
@@ -570,11 +566,13 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
-
         }
 
         public void Play()
         {
+            VlcMediaPlayer.SetVideoDecodeCallback(lockCallback, unlockCallback, displayCallback, IntPtr.Zero);
+            VlcMediaPlayer.SetVideoFormatCallback(formatCallback, cleanupCallback);
+
             VlcMediaPlayer.Play();
         }
 
@@ -601,14 +599,19 @@ namespace xZune.Vlc.Wpf
         public void Stop()
         {
             VlcMediaPlayer.Pause();
-            context.Dispose();
-            VideoSource = null;
 
             System.Threading.Tasks.Task.Run(() =>
             {
                 System.Threading.Thread.Sleep(100);
                 VlcMediaPlayer.Stop();
+                
+                context.Dispose();
+                context = null;
+                VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+                VlcMediaPlayer.SetVideoFormatCallback(null, null);
             });
+
+            VideoSource = null;
         }
         #endregion
     }

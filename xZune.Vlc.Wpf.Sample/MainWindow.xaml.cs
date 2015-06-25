@@ -52,7 +52,9 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            player.Volume = int.Parse(volume.Text);
+            player.LoadMedia(new Uri("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi"));
+            player.Play();
+            //player.Volume = int.Parse(volume.Text);
         }
     }
 }

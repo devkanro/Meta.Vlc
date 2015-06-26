@@ -22,15 +22,13 @@ namespace xZune.Vlc.Wpf.Sample
     {
         public MainWindow()
         {
-            InitializeComponent();
             this.Closing += MainWindow_Closing;
+            InitializeComponent();
         }
 
-        private async void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            await player.Stop();
-            player.VlcMediaPlayer?.Media?.Dispose();
-            player.VlcMediaPlayer?.Dispose();
+            player.Dispose();
             ApiManager.ReleaseAll();
         }
 
@@ -60,7 +58,8 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.Stop();
+            player.Dispose();
+            ApiManager.ReleaseAll();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

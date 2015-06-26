@@ -501,8 +501,6 @@ namespace xZune.Vlc
             }
 
             HandleManager.Remove(this);
-            ReleaseMediaFunction.Delegate(InstancePointer);
-            InstancePointer = IntPtr.Zero;
             EventManager.Dispose();
             onMetaChangedHandle.Free();
             onSubItemAddedHandle.Free();
@@ -510,6 +508,8 @@ namespace xZune.Vlc
             onParsedChangedHandle.Free();
             onFreedHandle.Free();
             onStateChangedHandle.Free();
+            ReleaseMediaFunction.Delegate(InstancePointer);
+            InstancePointer = IntPtr.Zero;
 
             disposed = true;
         }

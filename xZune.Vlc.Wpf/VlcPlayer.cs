@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace xZune.Vlc.Wpf
 {
-    public class VlcPlayer : Control, INotifyPropertyChanged
+    public class VlcPlayer : Control, INotifyPropertyChanged, IDisposable
     {
         static VlcPlayer()
         {
@@ -609,6 +609,30 @@ namespace xZune.Vlc.Wpf
 
                 VideoSource = null;
             }
+        }
+
+        bool disposed = false;
+
+        protected async void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            await Stop();
+            VlcMediaPlayer?.Media?.Dispose();
+            VlcMediaPlayer?.Dispose();
+
+            disposed = true;
+        }
+
+        /// <summary>
+        /// 释放 VlcMedia 资源
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
         }
         #endregion
     }

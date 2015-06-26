@@ -848,11 +848,9 @@ namespace xZune.Vlc
             {
                 return;
             }
-
+            
             HandleManager.Remove(this);
-            ReleaseMediaPlayerFunction.Delegate(InstancePointer);
-            InstancePointer = IntPtr.Zero;
-            EventManager.Dispose();
+            //EventManager.Dispose();
             onPlayingHandle.Free();
             onPausedHandle.Free();
             onOpeningHandle.Free();
@@ -872,6 +870,8 @@ namespace xZune.Vlc
             onVideoOutChangedHandle.Free();
             onLengthChangedHandle.Free();
             onEncounteredErrorHandle.Free();
+            ReleaseMediaPlayerFunction.Delegate(InstancePointer);
+            InstancePointer = IntPtr.Zero;
 
             disposed = true;
         }

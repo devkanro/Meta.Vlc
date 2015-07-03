@@ -346,8 +346,7 @@ namespace xZune.Vlc.Wpf
         {
             (sender as VlcPlayer).OnTimeChanged(e);
         }
-
-
+        
 
         public Stretch Stretch
         {
@@ -355,10 +354,9 @@ namespace xZune.Vlc.Wpf
             set { SetValue(StretchProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Stretch.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(VlcPlayer), new PropertyMetadata(Stretch.Uniform));
-
+        
         
         public StretchDirection StretchDirection
         {
@@ -366,12 +364,10 @@ namespace xZune.Vlc.Wpf
             set { SetValue(StretchDirectionProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for StretchDirection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StretchDirectionProperty =
             DependencyProperty.Register("StretchDirection", typeof(StretchDirection), typeof(VlcPlayer), new PropertyMetadata(StretchDirection.Both));
 
-
-
+        
         /// <summary>
         /// 引发 <see cref="VlcPlayer.TimeChanged"/> 事件
         /// </summary>

@@ -32,41 +32,20 @@ namespace xZune.Vlc.Wpf.Sample
             ApiManager.ReleaseAll();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            await player.Stop();
-            player.LoadMedia(@"E:\Video\NFS11-2.mp4");
+            player.LoadMedia(@"D:\Drivers\Touchpad\11.4.31.1\X64\EdgeSwipe_4F_Left_Win8.avi");
             player.Play();
-
-            //if(player.VlcMediaPlayer.Media == null)
-            //{
-            //    player.LoadMedia(@"E:\Video\NFS11-2.mp4");
-            //    player.Play();
-            //}
-            //else
-            //{
-            //    if(player.State == Interop.Media.MediaState.Stopped)
-            //    {
-            //        player.Play();
-            //    }
-            //    else
-            //    {
-            //        player.PauseOrResume();
-            //    }
-            //}
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.Dispose();
-            ApiManager.ReleaseAll();
+            await player.Stop();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            player.LoadMedia(new Uri("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi"));
-            player.Play();
-            //player.Volume = int.Parse(volume.Text);
+            player.Volume = int.Parse(volume.Text);
         }
     }
 }

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <wpf:VlcPlayer x:Name="player" LibVlcPath="..\..\..\..\..\LibVlc"/>
+        <wpf:VlcPlayer x:Name="player" Stretch="Fill" LibVlcPath="..\..\..\..\..\LibVlc"/>
         <StackPanel>
             <Button VerticalAlignment="Bottom" Content="Play" BorderThickness="0" Background="#7F8241F5" Click="Button_Click"/>
             <Button VerticalAlignment="Bottom" Content="Stop" BorderThickness="0" Background="#7F046FAC" Click="Button_Click_1"/>

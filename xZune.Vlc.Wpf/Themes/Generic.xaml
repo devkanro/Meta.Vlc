@@ -7,7 +7,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VlcPlayer}">
                     <Grid>
-                        <Image Source="{TemplateBinding VideoSource}"></Image>
+                        <Image Source="{TemplateBinding VideoSource}" Stretch="{TemplateBinding Stretch}" StretchDirection="{TemplateBinding StretchDirection}"></Image>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

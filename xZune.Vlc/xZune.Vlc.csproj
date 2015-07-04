@@ -46,6 +46,7 @@
     <Compile Include="Interop\LibVlc.Media.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.Audio.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.cs" />
+    <Compile Include="Interop\LibVlc.MediaPlayer.Video.cs" />
     <Compile Include="Interop\LibVlc.Time.cs" />
     <Compile Include="Interop\LibVlc.VLM.cs" />
     <Compile Include="Interop\LibVlcFunction.cs" />

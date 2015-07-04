@@ -57,24 +57,25 @@ namespace xZune.Vlc
                 {
                     LibVersion = new Version(match.Groups[0].Value);
                 }
-                NewInstanceFunction = new LibVlcFunction<NewInstance>(LibHandle, LibVersion);
-                ReleaseInstanceFunction = new LibVlcFunction<ReleaseInstance>(LibHandle, LibVersion);
-                RetainInstanceFunction = new LibVlcFunction<RetainInstance>(LibHandle, LibVersion);
-                AddInterfaceFunction = new LibVlcFunction<AddInterface>(LibHandle, LibVersion);
-                SetExitHandlerFunction = new LibVlcFunction<SetExitHandler>(LibHandle, LibVersion);
-                WaitFunction = new LibVlcFunction<Wait>(LibHandle, LibVersion);
-                SetUserAgentFunction = new LibVlcFunction<SetUserAgent>(LibHandle, LibVersion);
-                SetAppIdFunction = new LibVlcFunction<SetAppId>(LibHandle, LibVersion);
-                GetCompilerFunction = new LibVlcFunction<GetCompiler>(LibHandle, LibVersion);
-                GetChangesetFunction = new LibVlcFunction<GetChangeset>(LibHandle, LibVersion);
-                FreeFunction = new LibVlcFunction<Free>(LibHandle, LibVersion);
-                ReleaseLibVlcModuleDescriptionFunction = new LibVlcFunction<ReleaseLibVlcModuleDescription>(LibHandle, LibVersion);
-                GetAudioFilterListFunction = new LibVlcFunction<GetAudioFilterList>(LibHandle, LibVersion);
-                GetVideoFilterListFunction = new LibVlcFunction<GetVideoFilterList>(LibHandle, LibVersion);
-                VlcError.LoadLibVlc(LibHandle, LibVersion);
-                VlcEventManager.LoadLibVlc(LibHandle, LibVersion);
-                VlcMedia.LoadLibVlc(LibHandle, LibVersion);
-                VlcMediaPlayer.LoadLibVlc(LibHandle, LibVersion);
+                var devString = versionString.Split(' ', '-')[1];
+                NewInstanceFunction = new LibVlcFunction<NewInstance>(LibHandle, LibVersion, devString);
+                ReleaseInstanceFunction = new LibVlcFunction<ReleaseInstance>(LibHandle, LibVersion, devString);
+                RetainInstanceFunction = new LibVlcFunction<RetainInstance>(LibHandle, LibVersion, devString);
+                AddInterfaceFunction = new LibVlcFunction<AddInterface>(LibHandle, LibVersion, devString);
+                SetExitHandlerFunction = new LibVlcFunction<SetExitHandler>(LibHandle, LibVersion, devString);
+                WaitFunction = new LibVlcFunction<Wait>(LibHandle, LibVersion, devString);
+                SetUserAgentFunction = new LibVlcFunction<SetUserAgent>(LibHandle, LibVersion, devString);
+                SetAppIdFunction = new LibVlcFunction<SetAppId>(LibHandle, LibVersion, devString);
+                GetCompilerFunction = new LibVlcFunction<GetCompiler>(LibHandle, LibVersion, devString);
+                GetChangesetFunction = new LibVlcFunction<GetChangeset>(LibHandle, LibVersion, devString);
+                FreeFunction = new LibVlcFunction<Free>(LibHandle, LibVersion, devString);
+                ReleaseLibVlcModuleDescriptionFunction = new LibVlcFunction<ReleaseLibVlcModuleDescription>(LibHandle, LibVersion, devString);
+                GetAudioFilterListFunction = new LibVlcFunction<GetAudioFilterList>(LibHandle, LibVersion, devString);
+                GetVideoFilterListFunction = new LibVlcFunction<GetVideoFilterList>(LibHandle, LibVersion, devString);
+                VlcError.LoadLibVlc(LibHandle, LibVersion, devString);
+                VlcEventManager.LoadLibVlc(LibHandle, LibVersion, devString);
+                VlcMedia.LoadLibVlc(LibHandle, LibVersion, devString);
+                VlcMediaPlayer.LoadLibVlc(LibHandle, LibVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -103,6 +104,8 @@ namespace xZune.Vlc
         public static String LibDirectory { get; set; }
 
         public static Version LibVersion { get; set; }
+
+        public static String LibDev { get; set; }
         #endregion
 
         #region LibVlcFunctions

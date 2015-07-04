@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using xZune.Vlc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 
 namespace xZune.Vlc.Wpf
 {
@@ -563,7 +564,8 @@ namespace xZune.Vlc.Wpf
         #region 方法
         public async void LoadMedia(String path)
         {
-            if (!File.Exists(path))
+            
+            if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
@@ -571,6 +573,22 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
+        }
+
+        bool IsRootPath(string path)
+        {
+            path = path.Replace('\\', '/');
+            if(path[path.Length - 1] != '/')
+            {
+                path += '/';
+            }
+            int index;
+            if((index = path.IndexOf(":/")) != -1 && index + 2 == path.Length)
+            {
+                return true;
+            }
+            return false;
+
         }
 
         public async void LoadMedia(Uri uri)
@@ -629,6 +647,732 @@ namespace xZune.Vlc.Wpf
                 });
 
                 VideoSource = null;
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            bool test = VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
+        }
+
+        int GetVideoPositionX(double x)
+        {
+            int px = 0;
+            double scale, scaleX, scaleY;
+            switch (this.Stretch)
+            {
+                case Stretch.None:
+                    switch (this.HorizontalContentAlignment)
+                    {
+                        case HorizontalAlignment.Left:
+                            px = (int)x;
+                            break;
+                        case HorizontalAlignment.Center:
+                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                            break;
+                        case HorizontalAlignment.Right:
+                            px = (int)(x - (this.ActualWidth - context.Width));
+                            break;
+                        case HorizontalAlignment.Stretch:
+                            if(this.ActualWidth > context.Width)
+                            {
+                                px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                            }
+                            else
+                            {
+                                px = (int)x;
+                            }
+                            break;
+                    }
+                    break;
+                case Stretch.Fill:
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (this.ActualWidth > context.Width)
+                            {
+                                px = (int)(x / this.ActualWidth * context.Width);
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if(this.ActualWidth < context.Width)
+                            {
+                                px = (int)(x / this.ActualWidth * context.Width);
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            px = (int)(x / this.ActualWidth * context.Width);
+                            break;
+                    }
+                    break;
+                case Stretch.Uniform:
+                    scaleX = this.ActualWidth / context.Width;
+                    scaleY = this.ActualHeight / context.Height;
+                    scale = Math.Min(scaleX, scaleY);
+
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (scale > 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int)(x / scale);
+                                }
+                                else
+                                {
+                                    switch (this.HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int)(x / scale);
+                                            break;
+                                        case HorizontalAlignment.Center:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Right:
+                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)x;
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        if (this.ActualWidth > context.Width)
+                                        {
+                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        }
+                                        else
+                                        {
+                                            px = (int)x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if(scale < 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int)(x / scale);
+                                }
+                                else
+                                {
+                                    switch (this.HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int)(x / scale);
+                                            break;
+                                        case HorizontalAlignment.Center:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Right:
+                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)x;
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        if (this.ActualWidth > context.Width)
+                                        {
+                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        }
+                                        else
+                                        {
+                                            px = (int)x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            if (scaleX == scale)
+                            {
+                                px = (int)(x / scale);
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)(x / scale);
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case Stretch.UniformToFill:
+                    scaleX = this.ActualWidth / context.Width;
+                    scaleY = this.ActualHeight / context.Height;
+                    scale = Math.Max(scaleX, scaleY);
+
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (scale > 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int)(x / scale);
+                                }
+                                else
+                                {
+                                    switch (this.HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int)(x / scale);
+                                            break;
+                                        case HorizontalAlignment.Center:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Right:
+                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int)(x / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)x;
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        if (this.ActualWidth > context.Width)
+                                        {
+                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        }
+                                        else
+                                        {
+                                            px = (int)x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if(scale < 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int)(x / scale);
+                                }
+                                else
+                                {
+                                    switch (this.HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int)(x / scale);
+                                            break;
+                                        case HorizontalAlignment.Center:
+                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Right:
+                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            break;
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int)(x / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)x;
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        if (this.ActualWidth > context.Width)
+                                        {
+                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        }
+                                        else
+                                        {
+                                            px = (int)x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            if (scaleX == scale)
+                            {
+                                px = (int)(x / scale);
+                            }
+                            else
+                            {
+                                switch (this.HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int)(x / scale);
+                                        break;
+                                    case HorizontalAlignment.Center:
+                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                        break;
+                                    case HorizontalAlignment.Stretch:
+                                        px = (int)(x / scale);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+            }
+            return px;
+        }
+
+        int GetVideoPositionY(double y)
+        {
+            int py = 0;
+            double scale, scaleX, scaleY;
+            switch (this.Stretch)
+            {
+                case Stretch.None:
+                    switch (this.VerticalContentAlignment)
+                    {
+                        case VerticalAlignment.Top:
+                            py = (int)y;
+                            break;
+                        case VerticalAlignment.Center:
+                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                            break;
+                        case VerticalAlignment.Bottom:
+                            py = (int)(y - (this.ActualHeight - context.Height));
+                            break;
+                        case VerticalAlignment.Stretch:
+                            if (this.ActualHeight > context.Height)
+                            {
+                                py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                            }
+                            else
+                            {
+                                py = (int)y;
+                            }
+                            break;
+                    }
+                    break;
+                case Stretch.Fill:
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (this.ActualHeight > context.Height)
+                            {
+                                py = (int)(y / this.ActualHeight * context.Height);
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if (this.ActualHeight < context.Height)
+                            {
+                                py = (int)(y / this.ActualHeight * context.Height);
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            py = (int)(y / this.ActualHeight * context.Height);
+                            break;
+                    }
+                    break;
+                case Stretch.Uniform:
+                    scaleX = this.ActualWidth / context.Width;
+                    scaleY = this.ActualHeight / context.Height;
+                    scale = Math.Min(scaleX, scaleY);
+
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (scale > 1)
+                            {
+                                if (scaleY == scale)
+                                {
+                                    py = (int)(y / scale);
+                                }
+                                else
+                                {
+                                    switch (this.VerticalContentAlignment)
+                                    {
+                                        case VerticalAlignment.Top:
+                                            py = (int)(y / scale);
+                                            break;
+                                        case VerticalAlignment.Center:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        case VerticalAlignment.Bottom:
+                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            break;
+                                        case VerticalAlignment.Stretch:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)y;
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        if (this.ActualHeight > context.Height)
+                                        {
+                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        }
+                                        else
+                                        {
+                                            py = (int)y;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if (scale < 1)
+                            {
+                                if (scaleY == scale)
+                                {
+                                    py = (int)(y / scale);
+                                }
+                                else
+                                {
+                                    switch (this.VerticalContentAlignment)
+                                    {
+                                        case VerticalAlignment.Top:
+                                            py = (int)(y / scale);
+                                            break;
+                                        case VerticalAlignment.Center:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        case VerticalAlignment.Bottom:
+                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            break;
+                                        case VerticalAlignment.Stretch:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)y;
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        if (this.ActualHeight > context.Height)
+                                        {
+                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        }
+                                        else
+                                        {
+                                            py = (int)y;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            if (scaleY == scale)
+                            {
+                                py = (int)(y / scale);
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)(y / scale);
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+                case Stretch.UniformToFill:
+                    scaleX = this.ActualWidth / context.Width;
+                    scaleY = this.ActualHeight / context.Height;
+                    scale = Math.Max(scaleX, scaleY);
+
+                    switch (this.StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (scale > 1)
+                            {
+                                if (scaleY == scale)
+                                {
+                                    py = (int)(y / scale);
+                                }
+                                else
+                                {
+                                    switch (this.VerticalContentAlignment)
+                                    {
+                                        case VerticalAlignment.Top:
+                                            py = (int)(y / scale);
+                                            break;
+                                        case VerticalAlignment.Center:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        case VerticalAlignment.Bottom:
+                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            break;
+                                        case VerticalAlignment.Stretch:
+                                            py = (int)(y / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)y;
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        if (this.ActualHeight > context.Height)
+                                        {
+                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        }
+                                        else
+                                        {
+                                            py = (int)y;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.DownOnly:
+                            if (scale < 1)
+                            {
+                                if (scaleY == scale)
+                                {
+                                    py = (int)(y / scale);
+                                }
+                                else
+                                {
+                                    switch (this.VerticalContentAlignment)
+                                    {
+                                        case VerticalAlignment.Top:
+                                            py = (int)(y / scale);
+                                            break;
+                                        case VerticalAlignment.Center:
+                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            break;
+                                        case VerticalAlignment.Bottom:
+                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            break;
+                                        case VerticalAlignment.Stretch:
+                                            py = (int)(y / scale);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)y;
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        if (this.ActualHeight > context.Height)
+                                        {
+                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        }
+                                        else
+                                        {
+                                            py = (int)y;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                        case StretchDirection.Both:
+                            if (scaleY == scale)
+                            {
+                                py = (int)(y / scale);
+                            }
+                            else
+                            {
+                                switch (this.VerticalContentAlignment)
+                                {
+                                    case VerticalAlignment.Top:
+                                        py = (int)(y / scale);
+                                        break;
+                                    case VerticalAlignment.Center:
+                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        break;
+                                    case VerticalAlignment.Bottom:
+                                        py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                        break;
+                                    case VerticalAlignment.Stretch:
+                                        py = (int)(y / scale);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+            }
+            return py;
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+            switch (e.ChangedButton)
+            {
+                case MouseButton.Left:
+                    VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Left);
+                    break;
+                case MouseButton.Right:
+                    VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Right);
+                    break;
+                case MouseButton.Middle:
+                case MouseButton.XButton1:
+                case MouseButton.XButton2:
+                default:
+                    VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Other);
+                    break;
+            }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            switch (e.ChangedButton)
+            {
+                case MouseButton.Left:
+                    VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Left);
+                    break;
+                case MouseButton.Right:
+                    VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Right);
+                    break;
+                case MouseButton.Middle:
+                case MouseButton.XButton1:
+                case MouseButton.XButton2:
+                default:
+                    VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Other);
+                    break;
             }
         }
 

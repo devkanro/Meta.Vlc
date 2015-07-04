@@ -34,61 +34,65 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
-        public static void LoadLibVlc(IntPtr libHandle, Version libVersion)
+        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
             if (!IsLibLoaded)
             {
-                CreateMediaPlayerFunction = new LibVlcFunction<CreateMediaPlayer>(libHandle, libVersion);
-                CreateMediaPlayerFromMediaFunction = new LibVlcFunction<CreateMediaPlayerFromMedia>(libHandle, libVersion);
-                ReleaseMediaPlayerFunction = new LibVlcFunction<ReleaseMediaPlayer>(libHandle, libVersion);
-                RetainMediaPlayerFunction = new LibVlcFunction<RetainMediaPlayer>(libHandle, libVersion);
-                SetMediaFunction = new LibVlcFunction<SetMedia>(libHandle, libVersion);
-                GetMediaFunction = new LibVlcFunction<GetMedia>(libHandle, libVersion);
-                GetEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion);
-                IsPlayingFunction = new LibVlcFunction<IsPlaying>(libHandle, libVersion);
-                PlayFunction = new LibVlcFunction<Play>(libHandle, libVersion);
-                SetPauseFunction = new LibVlcFunction<SetPause>(libHandle, libVersion);
-                SetPositionFunction = new LibVlcFunction<SetPosition>(libHandle, libVersion);
-                StopFunction = new LibVlcFunction<Stop>(libHandle, libVersion);
-                SetVideoCallbackFunction = new LibVlcFunction<SetVideoCallback>(libHandle, libVersion);
-                SetVideoFormatFunction = new LibVlcFunction<SetVideoFormat>(libHandle, libVersion);
-                SetVideoFormatCallbackFunction = new LibVlcFunction<SetVideoFormatCallback>(libHandle, libVersion);
-                SetHwndFunction = new LibVlcFunction<SetHwnd>(libHandle, libVersion);
-                GetHwndFunction = new LibVlcFunction<GetHwnd>(libHandle, libVersion);
-                SetAudioCallbackFunction = new LibVlcFunction<SetAudioCallback>(libHandle, libVersion);
-                SetAudioFormatFunction = new LibVlcFunction<SetAudioFormat>(libHandle, libVersion);
-                SetAudioFormatCallbackFunction = new LibVlcFunction<SetAudioFormatCallback>(libHandle, libVersion);
-                SetAudioVolumeCallbackFunction = new LibVlcFunction<SetAudioVolumeCallback>(libHandle, libVersion);
-                GetLengthFunction = new LibVlcFunction<GetLength>(libHandle, libVersion);
-                GetTimeFunction = new LibVlcFunction<GetTime>(libHandle, libVersion);
-                SetTimeFunction = new LibVlcFunction<SetTime>(libHandle, libVersion);
-                GetPositionFunction = new LibVlcFunction<GetPosition>(libHandle, libVersion);
-                SetChapterFunction = new LibVlcFunction<SetChapter>(libHandle, libVersion);
-                GetChapterFunction = new LibVlcFunction<GetChapter>(libHandle, libVersion);
-                GetChapterCountFunction = new LibVlcFunction<GetChapterCount>(libHandle, libVersion);
-                CanPlayFunction = new LibVlcFunction<CanPlay>(libHandle, libVersion);
-                GetTitleChapterCountFunction = new LibVlcFunction<GetTitleChapterCount>(libHandle, libVersion);
-                SetTitleFunction = new LibVlcFunction<SetTitle>(libHandle, libVersion);
-                GetTitleFunction = new LibVlcFunction<GetTitle>(libHandle, libVersion);
-                GetTitleCountFunction = new LibVlcFunction<GetTitleCount>(libHandle, libVersion);
-                PreviousChapterFunction = new LibVlcFunction<PreviousChapter>(libHandle, libVersion);
-                NextChapterFunction = new LibVlcFunction<NextChapter>(libHandle, libVersion);
-                GetRateFunction = new LibVlcFunction<GetRate>(libHandle, libVersion);
-                SetRateFunction = new LibVlcFunction<SetRate>(libHandle, libVersion);
-                GetStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion);
-                GetFPSFunction = new LibVlcFunction<GetFPS>(libHandle, libVersion);
-                HasVoutFunction = new LibVlcFunction<HasVout>(libHandle, libVersion);
-                IsSeekableFunction = new LibVlcFunction<IsSeekable>(libHandle, libVersion);
-                CanPauseFunction = new LibVlcFunction<CanPause>(libHandle, libVersion);
-                NextFrameFunction = new LibVlcFunction<NextFrame>(libHandle, libVersion);
-                NavigateFunction = new LibVlcFunction<Navigate>(libHandle, libVersion);
-                SetVideoTitleDisplayFunction = new LibVlcFunction<SetVideoTitleDisplay>(libHandle, libVersion);
-                ReleaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>(libHandle, libVersion);
-                ToggleMuteFunction = new LibVlcFunction<ToggleMute>(libHandle, libVersion);
-                GetMuteFunction = new LibVlcFunction<GetMute>(libHandle, libVersion);
-                SetMuteFunction = new LibVlcFunction<SetMute>(libHandle, libVersion);
-                GetVolumeFunction = new LibVlcFunction<GetVolume>(libHandle, libVersion);
-                SetVolumeFunction = new LibVlcFunction<SetVolume>(libHandle, libVersion);
+                CreateMediaPlayerFunction = new LibVlcFunction<CreateMediaPlayer>(libHandle, libVersion, devString);
+                CreateMediaPlayerFromMediaFunction = new LibVlcFunction<CreateMediaPlayerFromMedia>(libHandle, libVersion, devString);
+                ReleaseMediaPlayerFunction = new LibVlcFunction<ReleaseMediaPlayer>(libHandle, libVersion, devString);
+                RetainMediaPlayerFunction = new LibVlcFunction<RetainMediaPlayer>(libHandle, libVersion, devString);
+                SetMediaFunction = new LibVlcFunction<SetMedia>(libHandle, libVersion, devString);
+                GetMediaFunction = new LibVlcFunction<GetMedia>(libHandle, libVersion, devString);
+                GetEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion, devString);
+                IsPlayingFunction = new LibVlcFunction<IsPlaying>(libHandle, libVersion, devString);
+                PlayFunction = new LibVlcFunction<Play>(libHandle, libVersion, devString);
+                SetPauseFunction = new LibVlcFunction<SetPause>(libHandle, libVersion, devString);
+                SetPositionFunction = new LibVlcFunction<SetPosition>(libHandle, libVersion, devString);
+                StopFunction = new LibVlcFunction<Stop>(libHandle, libVersion, devString);
+                SetVideoCallbackFunction = new LibVlcFunction<SetVideoCallback>(libHandle, libVersion, devString);
+                SetVideoFormatFunction = new LibVlcFunction<SetVideoFormat>(libHandle, libVersion, devString);
+                SetVideoFormatCallbackFunction = new LibVlcFunction<SetVideoFormatCallback>(libHandle, libVersion, devString);
+                SetHwndFunction = new LibVlcFunction<SetHwnd>(libHandle, libVersion, devString);
+                GetHwndFunction = new LibVlcFunction<GetHwnd>(libHandle, libVersion, devString);
+                SetAudioCallbackFunction = new LibVlcFunction<SetAudioCallback>(libHandle, libVersion, devString);
+                SetAudioFormatFunction = new LibVlcFunction<SetAudioFormat>(libHandle, libVersion, devString);
+                SetAudioFormatCallbackFunction = new LibVlcFunction<SetAudioFormatCallback>(libHandle, libVersion, devString);
+                SetAudioVolumeCallbackFunction = new LibVlcFunction<SetAudioVolumeCallback>(libHandle, libVersion, devString);
+                GetLengthFunction = new LibVlcFunction<GetLength>(libHandle, libVersion, devString);
+                GetTimeFunction = new LibVlcFunction<GetTime>(libHandle, libVersion, devString);
+                SetTimeFunction = new LibVlcFunction<SetTime>(libHandle, libVersion, devString);
+                GetPositionFunction = new LibVlcFunction<GetPosition>(libHandle, libVersion, devString);
+                SetChapterFunction = new LibVlcFunction<SetChapter>(libHandle, libVersion, devString);
+                GetChapterFunction = new LibVlcFunction<GetChapter>(libHandle, libVersion, devString);
+                GetChapterCountFunction = new LibVlcFunction<GetChapterCount>(libHandle, libVersion, devString);
+                CanPlayFunction = new LibVlcFunction<CanPlay>(libHandle, libVersion, devString);
+                GetTitleChapterCountFunction = new LibVlcFunction<GetTitleChapterCount>(libHandle, libVersion, devString);
+                SetTitleFunction = new LibVlcFunction<SetTitle>(libHandle, libVersion, devString);
+                GetTitleFunction = new LibVlcFunction<GetTitle>(libHandle, libVersion, devString);
+                GetTitleCountFunction = new LibVlcFunction<GetTitleCount>(libHandle, libVersion, devString);
+                PreviousChapterFunction = new LibVlcFunction<PreviousChapter>(libHandle, libVersion, devString);
+                NextChapterFunction = new LibVlcFunction<NextChapter>(libHandle, libVersion, devString);
+                GetRateFunction = new LibVlcFunction<GetRate>(libHandle, libVersion, devString);
+                SetRateFunction = new LibVlcFunction<SetRate>(libHandle, libVersion, devString);
+                GetStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion, devString);
+                GetFPSFunction = new LibVlcFunction<GetFPS>(libHandle, libVersion, devString);
+                HasVoutFunction = new LibVlcFunction<HasVout>(libHandle, libVersion, devString);
+                IsSeekableFunction = new LibVlcFunction<IsSeekable>(libHandle, libVersion, devString);
+                CanPauseFunction = new LibVlcFunction<CanPause>(libHandle, libVersion, devString);
+                NextFrameFunction = new LibVlcFunction<NextFrame>(libHandle, libVersion, devString);
+                NavigateFunction = new LibVlcFunction<Navigate>(libHandle, libVersion, devString);
+                SetVideoTitleDisplayFunction = new LibVlcFunction<SetVideoTitleDisplay>(libHandle, libVersion, devString);
+                ReleaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>(libHandle, libVersion, devString);
+                ToggleMuteFunction = new LibVlcFunction<ToggleMute>(libHandle, libVersion, devString);
+                GetMuteFunction = new LibVlcFunction<GetMute>(libHandle, libVersion, devString);
+                SetMuteFunction = new LibVlcFunction<SetMute>(libHandle, libVersion, devString);
+                GetVolumeFunction = new LibVlcFunction<GetVolume>(libHandle, libVersion, devString);
+                SetVolumeFunction = new LibVlcFunction<SetVolume>(libHandle, libVersion, devString);
+                GetCursorFunction = new LibVlcFunction<GetCursor>(libHandle, libVersion, devString);
+                SetCursorFunction = new LibVlcFunction<SetCursor>(libHandle, libVersion, devString);
+                SetMouseDownFunction = new LibVlcFunction<SetMouseDown>(libHandle, libVersion, devString);
+                SetMouseUpFunction = new LibVlcFunction<SetMouseUp>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -153,6 +157,10 @@ namespace xZune.Vlc
         static LibVlcFunction<SetMute> SetMuteFunction;
         static LibVlcFunction<GetVolume> GetVolumeFunction;
         static LibVlcFunction<SetVolume> SetVolumeFunction;
+        static LibVlcFunction<GetCursor> GetCursorFunction;
+        static LibVlcFunction<SetCursor> SetCursorFunction;
+        static LibVlcFunction<SetMouseDown> SetMouseDownFunction;
+        static LibVlcFunction<SetMouseUp> SetMouseUpFunction;
 
         LibVlcEventCallBack onPlaying;
         LibVlcEventCallBack onPaused;
@@ -838,6 +846,21 @@ namespace xZune.Vlc
         public void ToggleMute()
         {
             ToggleMuteFunction.Delegate(InstancePointer);
+        }
+        
+        public bool SetMouseCursor(uint num, int x,int y)
+        {
+            return SetCursorFunction.Delegate(InstancePointer, num, x, y) == 0;
+        }
+
+        public bool SetMouseDown(uint num, MouseButton button)
+        {
+            return SetMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
+        }
+
+        public bool SetMouseUp(uint num, MouseButton button)
+        {
+            return SetMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
         }
 
         bool disposed = false;

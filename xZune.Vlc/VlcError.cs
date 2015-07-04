@@ -16,12 +16,12 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
-        public static void LoadLibVlc(IntPtr libHandle, Version libVersion)
+        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
             if (!IsLibLoaded)
             {
-                ErrorMessageFunction = new LibVlcFunction<ErrorMessage>(libHandle, libVersion);
-                CleanErrorFunction = new LibVlcFunction<CleanError>(libHandle, libVersion);
+                ErrorMessageFunction = new LibVlcFunction<ErrorMessage>(libHandle, libVersion, devString);
+                CleanErrorFunction = new LibVlcFunction<CleanError>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }

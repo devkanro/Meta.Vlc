@@ -14,7 +14,7 @@ namespace xZune.Vlc.Interop
         /// 使用提供的 LibVlc 库句柄初始化一个 LibVlcFunction,不指定库版本
         /// </summary>
         /// <param name="libHandle">提供的 LibVlc 库句柄</param>
-        public LibVlcFunction(IntPtr libHandle) : this(libHandle, null)
+        public LibVlcFunction(IntPtr libHandle) : this(libHandle, null, null)
         {
 
         }
@@ -24,7 +24,7 @@ namespace xZune.Vlc.Interop
         /// </summary>
         /// <param name="libHandle">提供的 LibVlc 库句柄</param>
         /// <param name="libVersion">库版本</param>
-        public LibVlcFunction(IntPtr libHandle,Version libVersion)
+        public LibVlcFunction(IntPtr libHandle,Version libVersion,String Dev)
         {
             IsEnable = false;
             object[] attrs = typeof(T).GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
@@ -45,7 +45,7 @@ namespace xZune.Vlc.Interop
             }
 
             FunctionName = functionInfo.FunctionName;
-            if(libVersion == null || ((functionInfo.MinVersion == null || functionInfo.MinVersion <= libVersion) && (functionInfo.MaxVersion == null || functionInfo.MaxVersion >= libVersion)))
+            if((libVersion == null || ((functionInfo.MinVersion == null || functionInfo.MinVersion <= libVersion) && (functionInfo.MaxVersion == null || functionInfo.MaxVersion >= libVersion))) && (functionInfo.Dev == null || functionInfo.Dev == Dev))
             {
                 IsEnable = true;
 

@@ -34,7 +34,7 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            player.LoadMedia(@"D:\Drivers\Touchpad\11.4.31.1\X64\EdgeSwipe_4F_Left_Win8.avi");
+            player.LoadMedia(@"F:\");
             player.Play();
         }
 

@@ -22,38 +22,38 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
-        public static void LoadLibVlc(IntPtr libHandle,Version libVersion)
+        public static void LoadLibVlc(IntPtr libHandle,Version libVersion, String devString)
         {
             if(!IsLibLoaded)
             {
-                AddOptionFunction = new LibVlcFunction<MediaAddOption>(libHandle, libVersion);
-                AddOptionFlagFunction = new LibVlcFunction<MediaAddOptionFlag>(libHandle, libVersion);
-                DuplicateFunction = new LibVlcFunction<MediaDuplicate>(libHandle, libVersion);
-                GetEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion);
-                GetCodecDescriptionFunction = new LibVlcFunction<GetCodecDescription>(libHandle, libVersion);
-                GetDurationFunction = new LibVlcFunction<GetDuration>(libHandle, libVersion);
-                GetMetaFunction = new LibVlcFunction<GetMeta>(libHandle, libVersion);
-                GetMrlFunction = new LibVlcFunction<GetMrl>(libHandle, libVersion);
-                GetStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion);
-                GetStatsFunction = new LibVlcFunction<GetStats>(libHandle, libVersion);
-                GetTracksInfoFunction = new LibVlcFunction<GetTracksInfo>(libHandle, libVersion);
-                GetUserDataFunction = new LibVlcFunction<GetUserData>(libHandle, libVersion);
-                IsParsedFunction = new LibVlcFunction<IsParsed>(libHandle, libVersion);
-                CreateMediaAsNewNodeFunction = new LibVlcFunction<CreateMediaAsNewNode>(libHandle, libVersion);
-                CreateMediaFormFileDescriptorFunction = new LibVlcFunction<CreateMediaFormFileDescriptor>(libHandle, libVersion);
-                CreateMediaFormLocationFunction = new LibVlcFunction<CreateMediaFormLocation>(libHandle, libVersion);
-                CreateMediaFormPathFunction = new LibVlcFunction<CreateMediaFormPath>(libHandle, libVersion);
-                ParseMediaFunction = new LibVlcFunction<ParseMedia>(libHandle, libVersion);
-                ParseMediaAsyncFunction = new LibVlcFunction<ParseMediaAsync>(libHandle, libVersion);
-                ParseMediaWithOptionAsyncFunction = new LibVlcFunction<ParseMediaWithOptionAsync>(libHandle, libVersion);
-                ReleaseMediaFunction = new LibVlcFunction<ReleaseMedia>(libHandle, libVersion);
-                RetainMediaFunction = new LibVlcFunction<RetainMedia>(libHandle, libVersion);
-                SaveMetaFunction = new LibVlcFunction<SaveMeta>(libHandle, libVersion);
-                SetMetaFunction = new LibVlcFunction<SetMeta>(libHandle, libVersion);
-                SetUserDataFunction = new LibVlcFunction<SetUserData>(libHandle, libVersion);
-                GetSubitemsFunction = new LibVlcFunction<GetSubitems>(libHandle, libVersion);
-                GetTracksFunction = new LibVlcFunction<GetTracks>(libHandle, libVersion);
-                ReleaseTracksFunction = new LibVlcFunction<ReleaseTracks>(libHandle, libVersion);
+                AddOptionFunction = new LibVlcFunction<MediaAddOption>(libHandle, libVersion, devString);
+                AddOptionFlagFunction = new LibVlcFunction<MediaAddOptionFlag>(libHandle, libVersion, devString);
+                DuplicateFunction = new LibVlcFunction<MediaDuplicate>(libHandle, libVersion, devString);
+                GetEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion, devString);
+                GetCodecDescriptionFunction = new LibVlcFunction<GetCodecDescription>(libHandle, libVersion, devString);
+                GetDurationFunction = new LibVlcFunction<GetDuration>(libHandle, libVersion, devString);
+                GetMetaFunction = new LibVlcFunction<GetMeta>(libHandle, libVersion, devString);
+                GetMrlFunction = new LibVlcFunction<GetMrl>(libHandle, libVersion, devString);
+                GetStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion, devString);
+                GetStatsFunction = new LibVlcFunction<GetStats>(libHandle, libVersion, devString);
+                GetTracksInfoFunction = new LibVlcFunction<GetTracksInfo>(libHandle, libVersion, devString);
+                GetUserDataFunction = new LibVlcFunction<GetUserData>(libHandle, libVersion, devString);
+                IsParsedFunction = new LibVlcFunction<IsParsed>(libHandle, libVersion, devString);
+                CreateMediaAsNewNodeFunction = new LibVlcFunction<CreateMediaAsNewNode>(libHandle, libVersion, devString);
+                CreateMediaFormFileDescriptorFunction = new LibVlcFunction<CreateMediaFormFileDescriptor>(libHandle, libVersion, devString);
+                CreateMediaFormLocationFunction = new LibVlcFunction<CreateMediaFormLocation>(libHandle, libVersion, devString);
+                CreateMediaFormPathFunction = new LibVlcFunction<CreateMediaFormPath>(libHandle, libVersion, devString);
+                ParseMediaFunction = new LibVlcFunction<ParseMedia>(libHandle, libVersion, devString);
+                ParseMediaAsyncFunction = new LibVlcFunction<ParseMediaAsync>(libHandle, libVersion, devString);
+                ParseMediaWithOptionAsyncFunction = new LibVlcFunction<ParseMediaWithOptionAsync>(libHandle, libVersion, devString);
+                ReleaseMediaFunction = new LibVlcFunction<ReleaseMedia>(libHandle, libVersion, devString);
+                RetainMediaFunction = new LibVlcFunction<RetainMedia>(libHandle, libVersion, devString);
+                SaveMetaFunction = new LibVlcFunction<SaveMeta>(libHandle, libVersion, devString);
+                SetMetaFunction = new LibVlcFunction<SetMeta>(libHandle, libVersion, devString);
+                SetUserDataFunction = new LibVlcFunction<SetUserData>(libHandle, libVersion, devString);
+                GetSubitemsFunction = new LibVlcFunction<GetSubitems>(libHandle, libVersion, devString);
+                GetTracksFunction = new LibVlcFunction<GetTracks>(libHandle, libVersion, devString);
+                ReleaseTracksFunction = new LibVlcFunction<ReleaseTracks>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }

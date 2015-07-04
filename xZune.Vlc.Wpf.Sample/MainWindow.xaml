@@ -6,9 +6,9 @@
         xmlns:wpf="clr-namespace:xZune.Vlc.Wpf;assembly=xZune.Vlc.Wpf"
         xmlns:local="clr-namespace:xZune.Vlc.Wpf.Sample"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="480" Width="720">
     <Grid>
-        <wpf:VlcPlayer x:Name="player" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Stretch="UniformToFill" LibVlcPath="..\..\..\..\..\LibVlc"/>
+        <wpf:VlcPlayer x:Name="player" Stretch="UniformToFill"  HorizontalContentAlignment="Stretch" LibVlcPath="..\..\..\..\..\LibVlc"/>
         <StackPanel>
             <Button VerticalAlignment="Bottom" Content="Play" BorderThickness="0" Background="#7F8241F5" Click="Button_Click"/>
             <Button VerticalAlignment="Bottom" Content="Stop" BorderThickness="0" Background="#7F046FAC" Click="Button_Click_1"/>

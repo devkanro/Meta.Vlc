@@ -21,13 +21,13 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
-        public static void LoadLibVlc(IntPtr libHandle, Version libVersion)
+        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
             if(!IsLibLoaded)
             {
-                EventAttachFunction = new LibVlcFunction<EventAttach>(libHandle, libVersion);
-                EventDetachFunction = new LibVlcFunction<EventDetach>(libHandle, libVersion);
-                GetTypeNameFunction = new LibVlcFunction<GetTypeName>(libHandle, libVersion);
+                EventAttachFunction = new LibVlcFunction<EventAttach>(libHandle, libVersion, devString);
+                EventDetachFunction = new LibVlcFunction<EventDetach>(libHandle, libVersion, devString);
+                GetTypeNameFunction = new LibVlcFunction<GetTypeName>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }

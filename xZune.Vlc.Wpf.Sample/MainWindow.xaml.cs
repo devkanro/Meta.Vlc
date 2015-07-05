@@ -40,13 +40,15 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            player.PauseOrResume();
+            player.Navigate(Interop.MediaPlayer.NavigateMode.Down);
+            //player.PauseOrResume();
             //await player.Stop();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            player.TakeSnapshot(@"C:\Users\HIGAN\Desktop\", SnapshotFormat.PNG, 0);
+            player.Navigate(Interop.MediaPlayer.NavigateMode.Activate);
+            //player.TakeSnapshot(@"C:\Users\HIGAN\Desktop\", SnapshotFormat.PNG, 0);
             //player.Rate = float.Parse(volume.Text);
         }
     }

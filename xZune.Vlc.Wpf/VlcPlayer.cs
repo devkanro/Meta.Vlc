@@ -727,6 +727,11 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.ToggleMute();
         }
 
+        public void Navigate(Interop.MediaPlayer.NavigateMode mode)
+        {
+            VlcMediaPlayer.Navigate(mode);
+        }
+
         public async Task Stop()
         {
 

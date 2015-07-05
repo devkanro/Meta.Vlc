@@ -925,6 +925,11 @@ namespace xZune.Vlc
             ReleaseTrackDescriptionFunction.Delegate(trackDescription.Pointer);
         }
 
+        public void Navigate(NavigateMode mode)
+        {
+            NavigateFunction.Delegate(InstancePointer, mode);
+        }
+
         bool disposed = false;
 
         protected void Dispose(bool disposing)

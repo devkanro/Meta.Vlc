@@ -624,7 +624,8 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="navigate"></param>
     [LibVlcFunction("libvlc_media_player_navigate","2.2.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void Navigate(IntPtr mediaPlayer, uint navigate);
+    public delegate void Navigate(IntPtr mediaPlayer, NavigateMode navigate);
+
 
     /// <summary>
     /// 设置播放器播放视频时显示视频标题

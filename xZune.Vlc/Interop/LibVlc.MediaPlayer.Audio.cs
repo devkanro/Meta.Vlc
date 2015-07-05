@@ -51,4 +51,33 @@ namespace xZune.Vlc.Interop.MediaPlayer
     [LibVlcFunction("libvlc_audio_set_volume")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void SetVolume(IntPtr mediaPlayer, int volume);
+
+    /// <summary>
+    /// 获取音频输出通道
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_get_channel")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate AudioOutputChannel GetOutputChannel(IntPtr mediaPlayer);
+
+    /// <summary>
+    /// 设置音频输出通道
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <param name="channel"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_set_channel")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int SetOutputChannel(IntPtr mediaPlayer, AudioOutputChannel channel);
+
+    public enum AudioOutputChannel
+    {
+        Error = -1,
+        Stereo = 1,
+        RStereo,
+        Left,
+        Right,
+        Dolbys
+    }
 }

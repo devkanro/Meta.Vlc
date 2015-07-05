@@ -93,6 +93,8 @@ namespace xZune.Vlc
                 SetCursorFunction = new LibVlcFunction<SetCursor>(libHandle, libVersion, devString);
                 SetMouseDownFunction = new LibVlcFunction<SetMouseDown>(libHandle, libVersion, devString);
                 SetMouseUpFunction = new LibVlcFunction<SetMouseUp>(libHandle, libVersion, devString);
+                GetOutputChannelFunction = new LibVlcFunction<GetOutputChannel>(libHandle, libVersion, devString);
+                SetOutputChannelFunction = new LibVlcFunction<SetOutputChannel>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -161,6 +163,8 @@ namespace xZune.Vlc
         static LibVlcFunction<SetCursor> SetCursorFunction;
         static LibVlcFunction<SetMouseDown> SetMouseDownFunction;
         static LibVlcFunction<SetMouseUp> SetMouseUpFunction;
+        static LibVlcFunction<GetOutputChannel> GetOutputChannelFunction;
+        static LibVlcFunction<SetOutputChannel> SetOutputChannelFunction;
 
         LibVlcEventCallBack onPlaying;
         LibVlcEventCallBack onPaused;
@@ -709,6 +713,22 @@ namespace xZune.Vlc
             set
             {
                 SetMuteFunction.Delegate(InstancePointer, value ? 1 : 0);
+            }
+        }
+
+        /// <summary>
+        /// 获取或设置一个值，该值表示音频输出通道
+        /// </summary>
+        public AudioOutputChannel AudioOutputChannel
+        {
+            get
+            {
+                return GetOutputChannelFunction.Delegate(InstancePointer);
+            }
+
+            set
+            {
+                SetOutputChannelFunction.Delegate(InstancePointer, value);
             }
         }
 

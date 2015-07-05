@@ -150,8 +150,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public event EventHandler LibVlcPathChanged;
         #endregion
-
-
+        
         #region 视频呈现
         VideoDisplayContext context;
         
@@ -540,6 +539,21 @@ namespace xZune.Vlc.Wpf
             }
         }
         public event EventHandler VolumeChanged;
+        #endregion
+
+        #region 属性 AudioOutputChannel
+        public Interop.MediaPlayer.AudioOutputChannel AudioOutputChannel
+        {
+            get
+            {
+                return VlcMediaPlayer.AudioOutputChannel;
+            }
+
+            set
+            {
+                VlcMediaPlayer.AudioOutputChannel = value;
+            }
+        }
         #endregion
 
         #region 只读属性 IsSeekable

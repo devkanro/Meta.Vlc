@@ -590,6 +590,20 @@ namespace xZune.Vlc.Wpf
         }
         #endregion
 
+        #region 属性 Rate
+        public float Rate
+        {
+            get
+            {
+                return VlcMediaPlayer.Rate;
+            }
+            set
+            {
+                VlcMediaPlayer.Rate = value;
+            }
+        }
+        #endregion
+
         #region 只读属性 IsSeekable
         private void VlcMediaPlayerSeekableChanged(object sender, EventArgs e)
         {

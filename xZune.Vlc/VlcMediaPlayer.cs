@@ -769,8 +769,6 @@ namespace xZune.Vlc
             }
         }
 
-
-
         #endregion
 
         #region 方法

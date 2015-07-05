@@ -38,14 +38,16 @@ namespace xZune.Vlc.Wpf.Sample
             player.Play();
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            await player.Stop();
+            player.PauseOrResume();
+            //await player.Stop();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            player.Volume = int.Parse(volume.Text);
+            player.TakeSnapshot(@"C:\Users\HIGAN\Desktop\", SnapshotFormat.PNG, 0);
+            //player.Volume = int.Parse(volume.Text);
         }
     }
 }

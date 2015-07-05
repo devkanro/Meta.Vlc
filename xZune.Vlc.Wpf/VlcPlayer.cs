@@ -14,6 +14,7 @@ using xZune.Vlc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace xZune.Vlc.Wpf
 {
@@ -164,13 +165,52 @@ namespace xZune.Vlc.Wpf
             return;
         }
 
-        void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
+        async void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
             if (isRunFPS)
             {
                 fpsCount++;
             }
             context.Display();
+            if(snapshotContext != null)
+            {
+                snapshotContext.GetName(this);
+                await this.Dispatcher.InvokeAsync(() =>
+                {
+                    switch (snapshotContext.Format)
+                    {
+                        case SnapshotFormat.BMP:
+                            BmpBitmapEncoder bmpE = new BmpBitmapEncoder();
+                            bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
+                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.bmp"))
+                            {
+                                bmpE.Save(stream);
+                            }
+                            break;
+                        case SnapshotFormat.JPG:
+                            JpegBitmapEncoder jpgE = new JpegBitmapEncoder();
+                            jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
+                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.jpg"))
+                            {
+                                jpgE.QualityLevel = snapshotContext.Quality;
+                                jpgE.Save(stream);
+                            }
+                            break;
+                        case SnapshotFormat.PNG:
+                            PngBitmapEncoder pngE = new PngBitmapEncoder();
+                            pngE.Frames.Add(BitmapFrame.Create(VideoSource));
+                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.png"))
+                            {
+                                pngE.Save(stream);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                //System.Windows.Media.Imaging.WriteableBitmap bm = new System.Windows.Media.Imaging.WriteableBitmap(VideoSource);
+                snapshotContext = null;
+            }
         }
 
         uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
@@ -562,20 +602,19 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 方法
-        public async void LoadMedia(String path)
+        public void LoadMedia(String path)
         {
             
             if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            await Stop();
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
         }
 
-        bool IsRootPath(string path)
+        internal static bool IsRootPath(string path)
         {
             path = path.Replace('\\', '/');
             if(path[path.Length - 1] != '/')
@@ -591,9 +630,8 @@ namespace xZune.Vlc.Wpf
 
         }
 
-        public async void LoadMedia(Uri uri)
+        public void LoadMedia(Uri uri)
         {
-            await Stop();
             VlcMediaPlayer.Media?.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
@@ -647,6 +685,26 @@ namespace xZune.Vlc.Wpf
                 });
 
                 VideoSource = null;
+            }
+        }
+
+        SnapshotContext snapshotContext;
+
+        public void TakeSnapshot(String path, SnapshotFormat format, int quality)
+        {
+            switch (VlcMediaPlayer.State)
+            {
+                case Interop.Media.MediaState.NothingSpecial:
+                case Interop.Media.MediaState.Opening:
+                case Interop.Media.MediaState.Buffering:
+                case Interop.Media.MediaState.Stopped:
+                case Interop.Media.MediaState.Ended:
+                case Interop.Media.MediaState.Error:
+                    break;
+                case Interop.Media.MediaState.Playing:
+                case Interop.Media.MediaState.Paused:
+                    snapshotContext = new SnapshotContext(path, format, quality);
+                    break;
             }
         }
 
@@ -1446,10 +1504,7 @@ namespace xZune.Vlc.Wpf
         {
             Application.Current?.Dispatcher.Invoke(() =>
             {
-                if (Image != null)
-                {
-                    Image.Invalidate();
-                }
+                Image?.Invalidate();
             });
         }
 
@@ -1474,6 +1529,62 @@ namespace xZune.Vlc.Wpf
         public void Dispose()
         {
             Dispose(true);
+        }
+    }
+
+    public enum SnapshotFormat
+    {
+        BMP,
+        JPG,
+        PNG
+    }
+
+    public class SnapshotContext
+    {
+        public SnapshotContext(String path, SnapshotFormat format,int quality)
+        {
+            Path = path.Replace('/', '\\');
+            if(Path[Path.Length - 1] == '\\')
+            {
+                Path = Path.Substring(0, Path.Length - 1);
+            }
+            Format = format;
+            Quality = quality;
+        }
+
+        static int count = 0;
+        public String Path { get; private set; }
+        public String Name { get; private set; }
+        public SnapshotFormat Format { get; private set; }
+        public int Quality { get; private set; }
+
+        public String GetName (VlcPlayer player)
+        {
+            player.Dispatcher.Invoke(() =>
+            {
+                Name = $"{GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", ""))}-{(int)(player.Time.TotalMilliseconds)}-{count++}";
+            });
+            return Name;
+        }
+
+        internal static String GetMediaName(String path)
+        {
+            if(VlcPlayer.IsRootPath(path))
+            {
+                path = path.Replace('/', '\\').ToUpper();
+                foreach (var item in DriveInfo.GetDrives())
+                {
+                    if(item.Name.ToUpper() == path)
+                    {
+                        return item.VolumeLabel;
+                    }
+                }
+            }
+            else
+            {
+                return System.IO.Path.GetFileNameWithoutExtension(path);
+            }
+            return "Unkown";
         }
     }
 }

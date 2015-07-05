@@ -184,7 +184,6 @@ namespace xZune.Vlc
                 "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
             })
         {
-
         }
 
         /// <summary>

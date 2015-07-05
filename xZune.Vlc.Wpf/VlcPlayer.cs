@@ -556,6 +556,40 @@ namespace xZune.Vlc.Wpf
         }
         #endregion
 
+        #region 属性 AudioTrackCount
+        public int AudioTrackCount
+        {
+            get
+            {
+                return VlcMediaPlayer.AudioTrackCount;
+            }
+        }
+        #endregion
+
+        #region 属性 AudioTrack
+        public int AudioTrack
+        {
+            get
+            {
+                return VlcMediaPlayer.AudioTrack;
+            }
+            set
+            {
+                VlcMediaPlayer.AudioTrack = value;
+            }
+        }
+        #endregion
+
+        #region 属性 AudioTrackDescription
+        public TrackDescription AudioTrackDescription
+        {
+            get
+            {
+                return VlcMediaPlayer.AudioTrackDescription;
+            }
+        }
+        #endregion
+
         #region 只读属性 IsSeekable
         private void VlcMediaPlayerSeekableChanged(object sender, EventArgs e)
         {

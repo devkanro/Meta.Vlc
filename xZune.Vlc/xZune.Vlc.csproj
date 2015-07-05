@@ -54,6 +54,7 @@
     <Compile Include="IVlcObject.cs" />
     <Compile Include="ModuleDescription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackDescription.cs" />
     <Compile Include="Vlc.cs" />
     <Compile Include="VlcError.cs" />
     <Compile Include="VlcEventManager.cs" />

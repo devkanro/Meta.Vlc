@@ -95,6 +95,10 @@ namespace xZune.Vlc
                 SetMouseUpFunction = new LibVlcFunction<SetMouseUp>(libHandle, libVersion, devString);
                 GetOutputChannelFunction = new LibVlcFunction<GetOutputChannel>(libHandle, libVersion, devString);
                 SetOutputChannelFunction = new LibVlcFunction<SetOutputChannel>(libHandle, libVersion, devString);
+                GetAudioTrackFunction = new LibVlcFunction<GetAudioTrack>(libHandle, libVersion, devString);
+                SetAudioTrackFunction = new LibVlcFunction<SetAudioTrack>(libHandle, libVersion, devString);
+                GetAudioTrackCountFunction = new LibVlcFunction<GetAudioTrackCount>(libHandle, libVersion, devString);
+                GetAudioTrackDescriptionFunction = new LibVlcFunction<GetAudioTrackDescription>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -165,6 +169,11 @@ namespace xZune.Vlc
         static LibVlcFunction<SetMouseUp> SetMouseUpFunction;
         static LibVlcFunction<GetOutputChannel> GetOutputChannelFunction;
         static LibVlcFunction<SetOutputChannel> SetOutputChannelFunction;
+        static LibVlcFunction<GetAudioTrack> GetAudioTrackFunction;
+        static LibVlcFunction<SetAudioTrack> SetAudioTrackFunction;
+        static LibVlcFunction<GetAudioTrackCount> GetAudioTrackCountFunction;
+        static LibVlcFunction<GetAudioTrackDescription> GetAudioTrackDescriptionFunction;
+
 
         LibVlcEventCallBack onPlaying;
         LibVlcEventCallBack onPaused;
@@ -732,6 +741,36 @@ namespace xZune.Vlc
             }
         }
 
+        public int AudioTrackCount
+        {
+            get
+            {
+                return GetAudioTrackCountFunction.Delegate(InstancePointer);
+            }
+        }
+
+        public int AudioTrack
+        {
+            get
+            {
+                return GetAudioTrackFunction.Delegate(InstancePointer);
+            }
+            set
+            {
+                SetAudioTrackFunction.Delegate(InstancePointer, value);
+            }
+        }
+
+        public TrackDescription AudioTrackDescription
+        {
+            get
+            {
+                return new TrackDescription(GetAudioTrackDescriptionFunction.Delegate(InstancePointer));
+            }
+        }
+
+
+
         #endregion
 
         #region 方法
@@ -881,6 +920,11 @@ namespace xZune.Vlc
         public bool SetMouseUp(uint num, MouseButton button)
         {
             return SetMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
+        }
+
+        public static void ReleaseTrackDescription(TrackDescription trackDescription)
+        {
+            ReleaseTrackDescriptionFunction.Delegate(trackDescription.Pointer);
         }
 
         bool disposed = false;

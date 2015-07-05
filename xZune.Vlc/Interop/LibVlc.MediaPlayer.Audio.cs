@@ -71,6 +71,43 @@ namespace xZune.Vlc.Interop.MediaPlayer
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetOutputChannel(IntPtr mediaPlayer, AudioOutputChannel channel);
 
+    /// <summary>
+    /// 获取音频轨道数
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_get_track_count")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int GetAudioTrackCount(IntPtr mediaPlayer);
+
+    /// <summary>
+    /// 获取当前音轨
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_get_track")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int GetAudioTrack(IntPtr mediaPlayer);
+
+    /// <summary>
+    /// 设置当前音轨
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <param name="track"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_set_track")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int SetAudioTrack(IntPtr mediaPlayer, int track);
+
+    /// <summary>
+    /// 获取音轨描述
+    /// </summary>
+    /// <param name="mediaPlayer"></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_audio_get_track_description")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate IntPtr GetAudioTrackDescription(IntPtr mediaPlayer);
+
     public enum AudioOutputChannel
     {
         Error = -1,

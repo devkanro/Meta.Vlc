@@ -72,6 +72,32 @@ namespace xZune.Vlc.Wpf
             {
                 if (!ApiManager.IsInited)
                 {
+
+                    VlcSettingsAttribute vlcSettings = System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(typeof(VlcSettingsAttribute),false).First((a) => a is VlcSettingsAttribute) as VlcSettingsAttribute;
+                    if(vlcSettings != null)
+                    {
+                        if(vlcSettings.LibVlcPath != null)
+                        {
+                            if (Path.IsPathRooted(vlcSettings.LibVlcPath))
+                            {
+                                ApiManager.LibVlcPath = vlcSettings.LibVlcPath;
+                            }
+                            else
+                            {
+                                ApiManager.LibVlcPath = CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), vlcSettings.LibVlcPath);
+                            }
+                            if (ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '\\' && ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '/')
+                            {
+                                ApiManager.LibVlcPath += "\\";
+                            }
+                        }
+
+                        if(vlcSettings.VlcOption != null)
+                        {
+                            ApiManager.VlcOption = vlcSettings.VlcOption;
+                        }
+                    }
+
                     if (LibVlcPath != null)
                     {
                         if (Path.IsPathRooted(LibVlcPath))
@@ -80,12 +106,16 @@ namespace xZune.Vlc.Wpf
                         }
                         else
                         {
-                            ApiManager.LibVlcPath = CombinePath(ApiManager.LibVlcPath, LibVlcPath);
+                            ApiManager.LibVlcPath = CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
                         }
                         if (ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '\\' && ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '/')
                         {
                             ApiManager.LibVlcPath += "\\";
                         }
+                    }
+                    if(VlcOption != null)
+                    {
+                        ApiManager.VlcOption = VlcOption;
                     }
                     ApiManager.Init();
                 }
@@ -150,7 +180,40 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public event EventHandler LibVlcPathChanged;
         #endregion
-        
+
+        #region 依赖属性 VlcOption
+
+        public String[] VlcOption
+        {
+            get { return (String[])GetValue(VlcOptionProperty); }
+            set { SetValue(VlcOptionProperty, value); }
+        }
+
+        public static readonly DependencyProperty VlcOptionProperty =
+            DependencyProperty.Register(nameof(VlcOption), typeof(String[]), typeof(VlcPlayer), new PropertyMetadata(null, OnVlcOptionChangedStatic));
+
+        private static void OnVlcOptionChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            (sender as VlcPlayer).OnVlcOptionChanged(new EventArgs());
+        }
+
+        /// <summary>
+        /// 引发 <see cref="VlcPlayer.VlcOptionChanged"/> 事件
+        /// </summary>
+        protected void OnVlcOptionChanged(EventArgs e)
+        {
+            if (VlcOptionChanged != null)
+            {
+                VlcOptionChanged(this, e);
+            }
+        }
+
+        /// <summary>
+        /// 在 VlcPlayer 的 <see cref="VlcPlayer.VlcOption"/> 属性改变时调用
+        /// </summary>
+        public event EventHandler VlcOptionChanged;
+        #endregion
+
         #region 视频呈现
         VideoDisplayContext context;
         

@@ -60,6 +60,7 @@
     <Compile Include="VlcEventManager.cs" />
     <Compile Include="VlcMedia.cs" />
     <Compile Include="VlcMediaPlayer.cs" />
+    <Compile Include="VlcSettingsAttribute.cs" />
     <Compile Include="Win32API.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

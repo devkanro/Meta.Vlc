@@ -15,10 +15,18 @@ namespace xZune.Vlc.Wpf
         {
             IsInited = false;
             LibVlcPath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\LibVlc\";
+            VlcOption = new String[]
+            {
+                "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
+            };
         }
 
         #region 静态属性 LibVlcPath
         public static String LibVlcPath { get; set; }
+        #endregion
+
+        #region 静态属性 VlcOption
+        public static String[] VlcOption { get; set; }
         #endregion
 
         #region 只读静态属性 Vlc
@@ -34,13 +42,20 @@ namespace xZune.Vlc.Wpf
             if(!IsInited)
             {
                 xZune.Vlc.Vlc.LoadLibVlc(LibVlcPath);
-                Vlc = new xZune.Vlc.Vlc();
+                Vlc = new xZune.Vlc.Vlc(VlcOption);
             }
         }
 
         public static void Init(String libVlcPath)
         {
             LibVlcPath = libVlcPath;
+            Init();
+        }
+
+        public static void Init(String libVlcPath, String[] vlcOption)
+        {
+            LibVlcPath = libVlcPath;
+            VlcOption = vlcOption;
             Init();
         }
 

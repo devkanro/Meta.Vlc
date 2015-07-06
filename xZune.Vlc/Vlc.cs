@@ -196,7 +196,14 @@ namespace xZune.Vlc
             {
                 LoadLibVlc();
             }
-            InstancePointer = NewInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
+            if(argv == null)
+            {
+                InstancePointer = NewInstanceFunction.Delegate(0, IntPtr.Zero);
+            }
+            else
+            {
+                InstancePointer = NewInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
+            }
             if (InstancePointer == IntPtr.Zero)
             {
                 String ex = VlcError.GetErrorMessage();

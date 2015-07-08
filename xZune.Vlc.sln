@@ -7,11 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc", "xZune.Vlc\xZun
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf", "xZune.Vlc.Wpf\xZune.Vlc.Wpf.csproj", "{691823CE-471F-4A08-8A79-9156D9905F5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.WinForm", "xZune.Vlc.WinForm\xZune.Vlc.WinForm.csproj", "{50533E0E-FEFC-456B-A802-F13E2A5A431A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf.Sample", "xZune.Vlc.Wpf.Sample\xZune.Vlc.Wpf.Sample.csproj", "{5E902A4D-5268-4DD4-B24E-0335B4157A3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.WinForm.Sample", "xZune.Vlc.WinForm.Sample\xZune.Vlc.WinForm.Sample.csproj", "{262B5237-C032-4F5D-B62C-F4DDD8348839}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +23,10 @@ Global
 		{691823CE-471F-4A08-8A79-9156D9905F5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{691823CE-471F-4A08-8A79-9156D9905F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{691823CE-471F-4A08-8A79-9156D9905F5D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50533E0E-FEFC-456B-A802-F13E2A5A431A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E902A4D-5268-4DD4-B24E-0335B4157A3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{262B5237-C032-4F5D-B62C-F4DDD8348839}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

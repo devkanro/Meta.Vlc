@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using System.Windows;
 
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
@@ -21,84 +16,85 @@ namespace xZune.Vlc
 
         public static VlcMediaPlayer Create(Vlc vlc)
         {
-            return new VlcMediaPlayer(CreateMediaPlayerFunction.Delegate(vlc.InstancePointer));
+            return new VlcMediaPlayer(_createMediaPlayerFunction.Delegate(vlc.InstancePointer));
         }
 
         public static VlcMediaPlayer CreatFormMedia(VlcMedia media)
         {
-            return new VlcMediaPlayer(CreateMediaPlayerFromMediaFunction.Delegate(media.InstancePointer));
+            return new VlcMediaPlayer(_createMediaPlayerFromMediaFunction.Delegate(media.InstancePointer));
         }
 
         /// <summary>
-        /// 载入 LibVlc 的 MediaPlayer 模块,该方法会在 <see cref="Vlc.LoadLibVlc"/> 中自动被调用
+        /// 载入 LibVlc 的 MediaPlayer 模块,该方法会在 <see cref="Vlc.LoadLibVlc()"/> 中自动被调用
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
+        /// <param name="devString"></param>
         public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
             if (!IsLibLoaded)
             {
-                CreateMediaPlayerFunction = new LibVlcFunction<CreateMediaPlayer>(libHandle, libVersion, devString);
-                CreateMediaPlayerFromMediaFunction = new LibVlcFunction<CreateMediaPlayerFromMedia>(libHandle, libVersion, devString);
-                ReleaseMediaPlayerFunction = new LibVlcFunction<ReleaseMediaPlayer>(libHandle, libVersion, devString);
-                RetainMediaPlayerFunction = new LibVlcFunction<RetainMediaPlayer>(libHandle, libVersion, devString);
-                SetMediaFunction = new LibVlcFunction<SetMedia>(libHandle, libVersion, devString);
-                GetMediaFunction = new LibVlcFunction<GetMedia>(libHandle, libVersion, devString);
-                GetEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion, devString);
-                IsPlayingFunction = new LibVlcFunction<IsPlaying>(libHandle, libVersion, devString);
-                PlayFunction = new LibVlcFunction<Play>(libHandle, libVersion, devString);
-                SetPauseFunction = new LibVlcFunction<SetPause>(libHandle, libVersion, devString);
-                SetPositionFunction = new LibVlcFunction<SetPosition>(libHandle, libVersion, devString);
-                StopFunction = new LibVlcFunction<Stop>(libHandle, libVersion, devString);
-                SetVideoCallbackFunction = new LibVlcFunction<SetVideoCallback>(libHandle, libVersion, devString);
-                SetVideoFormatFunction = new LibVlcFunction<SetVideoFormat>(libHandle, libVersion, devString);
-                SetVideoFormatCallbackFunction = new LibVlcFunction<SetVideoFormatCallback>(libHandle, libVersion, devString);
-                SetHwndFunction = new LibVlcFunction<SetHwnd>(libHandle, libVersion, devString);
-                GetHwndFunction = new LibVlcFunction<GetHwnd>(libHandle, libVersion, devString);
-                SetAudioCallbackFunction = new LibVlcFunction<SetAudioCallback>(libHandle, libVersion, devString);
-                SetAudioFormatFunction = new LibVlcFunction<SetAudioFormat>(libHandle, libVersion, devString);
-                SetAudioFormatCallbackFunction = new LibVlcFunction<SetAudioFormatCallback>(libHandle, libVersion, devString);
-                SetAudioVolumeCallbackFunction = new LibVlcFunction<SetAudioVolumeCallback>(libHandle, libVersion, devString);
-                GetLengthFunction = new LibVlcFunction<GetLength>(libHandle, libVersion, devString);
-                GetTimeFunction = new LibVlcFunction<GetTime>(libHandle, libVersion, devString);
-                SetTimeFunction = new LibVlcFunction<SetTime>(libHandle, libVersion, devString);
-                GetPositionFunction = new LibVlcFunction<GetPosition>(libHandle, libVersion, devString);
-                SetChapterFunction = new LibVlcFunction<SetChapter>(libHandle, libVersion, devString);
-                GetChapterFunction = new LibVlcFunction<GetChapter>(libHandle, libVersion, devString);
-                GetChapterCountFunction = new LibVlcFunction<GetChapterCount>(libHandle, libVersion, devString);
-                CanPlayFunction = new LibVlcFunction<CanPlay>(libHandle, libVersion, devString);
-                GetTitleChapterCountFunction = new LibVlcFunction<GetTitleChapterCount>(libHandle, libVersion, devString);
-                SetTitleFunction = new LibVlcFunction<SetTitle>(libHandle, libVersion, devString);
-                GetTitleFunction = new LibVlcFunction<GetTitle>(libHandle, libVersion, devString);
-                GetTitleCountFunction = new LibVlcFunction<GetTitleCount>(libHandle, libVersion, devString);
-                PreviousChapterFunction = new LibVlcFunction<PreviousChapter>(libHandle, libVersion, devString);
-                NextChapterFunction = new LibVlcFunction<NextChapter>(libHandle, libVersion, devString);
-                GetRateFunction = new LibVlcFunction<GetRate>(libHandle, libVersion, devString);
-                SetRateFunction = new LibVlcFunction<SetRate>(libHandle, libVersion, devString);
-                GetStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion, devString);
-                GetFPSFunction = new LibVlcFunction<GetFPS>(libHandle, libVersion, devString);
-                HasVoutFunction = new LibVlcFunction<HasVout>(libHandle, libVersion, devString);
-                IsSeekableFunction = new LibVlcFunction<IsSeekable>(libHandle, libVersion, devString);
-                CanPauseFunction = new LibVlcFunction<CanPause>(libHandle, libVersion, devString);
-                NextFrameFunction = new LibVlcFunction<NextFrame>(libHandle, libVersion, devString);
-                NavigateFunction = new LibVlcFunction<Navigate>(libHandle, libVersion, devString);
-                SetVideoTitleDisplayFunction = new LibVlcFunction<SetVideoTitleDisplay>(libHandle, libVersion, devString);
-                ReleaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>(libHandle, libVersion, devString);
-                ToggleMuteFunction = new LibVlcFunction<ToggleMute>(libHandle, libVersion, devString);
-                GetMuteFunction = new LibVlcFunction<GetMute>(libHandle, libVersion, devString);
-                SetMuteFunction = new LibVlcFunction<SetMute>(libHandle, libVersion, devString);
-                GetVolumeFunction = new LibVlcFunction<GetVolume>(libHandle, libVersion, devString);
-                SetVolumeFunction = new LibVlcFunction<SetVolume>(libHandle, libVersion, devString);
-                GetCursorFunction = new LibVlcFunction<GetCursor>(libHandle, libVersion, devString);
-                SetCursorFunction = new LibVlcFunction<SetCursor>(libHandle, libVersion, devString);
-                SetMouseDownFunction = new LibVlcFunction<SetMouseDown>(libHandle, libVersion, devString);
-                SetMouseUpFunction = new LibVlcFunction<SetMouseUp>(libHandle, libVersion, devString);
-                GetOutputChannelFunction = new LibVlcFunction<GetOutputChannel>(libHandle, libVersion, devString);
-                SetOutputChannelFunction = new LibVlcFunction<SetOutputChannel>(libHandle, libVersion, devString);
-                GetAudioTrackFunction = new LibVlcFunction<GetAudioTrack>(libHandle, libVersion, devString);
-                SetAudioTrackFunction = new LibVlcFunction<SetAudioTrack>(libHandle, libVersion, devString);
-                GetAudioTrackCountFunction = new LibVlcFunction<GetAudioTrackCount>(libHandle, libVersion, devString);
-                GetAudioTrackDescriptionFunction = new LibVlcFunction<GetAudioTrackDescription>(libHandle, libVersion, devString);
+                _createMediaPlayerFunction = new LibVlcFunction<CreateMediaPlayer>(libHandle, libVersion, devString);
+                _createMediaPlayerFromMediaFunction = new LibVlcFunction<CreateMediaPlayerFromMedia>(libHandle, libVersion, devString);
+                _releaseMediaPlayerFunction = new LibVlcFunction<ReleaseMediaPlayer>(libHandle, libVersion, devString);
+                _retainMediaPlayerFunction = new LibVlcFunction<RetainMediaPlayer>(libHandle, libVersion, devString);
+                _setMediaFunction = new LibVlcFunction<SetMedia>(libHandle, libVersion, devString);
+                _getMediaFunction = new LibVlcFunction<GetMedia>(libHandle, libVersion, devString);
+                _getEventManagerFunction = new LibVlcFunction<GetEventManager>(libHandle, libVersion, devString);
+                _isPlayingFunction = new LibVlcFunction<IsPlaying>(libHandle, libVersion, devString);
+                _playFunction = new LibVlcFunction<Play>(libHandle, libVersion, devString);
+                _setPauseFunction = new LibVlcFunction<SetPause>(libHandle, libVersion, devString);
+                _setPositionFunction = new LibVlcFunction<SetPosition>(libHandle, libVersion, devString);
+                _stopFunction = new LibVlcFunction<Stop>(libHandle, libVersion, devString);
+                _setVideoCallbackFunction = new LibVlcFunction<SetVideoCallback>(libHandle, libVersion, devString);
+                _setVideoFormatFunction = new LibVlcFunction<SetVideoFormat>(libHandle, libVersion, devString);
+                _setVideoFormatCallbackFunction = new LibVlcFunction<SetVideoFormatCallback>(libHandle, libVersion, devString);
+                _setHwndFunction = new LibVlcFunction<SetHwnd>(libHandle, libVersion, devString);
+                _getHwndFunction = new LibVlcFunction<GetHwnd>(libHandle, libVersion, devString);
+                _setAudioCallbackFunction = new LibVlcFunction<SetAudioCallback>(libHandle, libVersion, devString);
+                _setAudioFormatFunction = new LibVlcFunction<SetAudioFormat>(libHandle, libVersion, devString);
+                _setAudioFormatCallbackFunction = new LibVlcFunction<SetAudioFormatCallback>(libHandle, libVersion, devString);
+                _setAudioVolumeCallbackFunction = new LibVlcFunction<SetAudioVolumeCallback>(libHandle, libVersion, devString);
+                _getLengthFunction = new LibVlcFunction<GetLength>(libHandle, libVersion, devString);
+                _getTimeFunction = new LibVlcFunction<GetTime>(libHandle, libVersion, devString);
+                _setTimeFunction = new LibVlcFunction<SetTime>(libHandle, libVersion, devString);
+                _getPositionFunction = new LibVlcFunction<GetPosition>(libHandle, libVersion, devString);
+                _setChapterFunction = new LibVlcFunction<SetChapter>(libHandle, libVersion, devString);
+                _getChapterFunction = new LibVlcFunction<GetChapter>(libHandle, libVersion, devString);
+                _getChapterCountFunction = new LibVlcFunction<GetChapterCount>(libHandle, libVersion, devString);
+                _canPlayFunction = new LibVlcFunction<CanPlay>(libHandle, libVersion, devString);
+                _getTitleChapterCountFunction = new LibVlcFunction<GetTitleChapterCount>(libHandle, libVersion, devString);
+                _setTitleFunction = new LibVlcFunction<SetTitle>(libHandle, libVersion, devString);
+                _getTitleFunction = new LibVlcFunction<GetTitle>(libHandle, libVersion, devString);
+                _getTitleCountFunction = new LibVlcFunction<GetTitleCount>(libHandle, libVersion, devString);
+                _previousChapterFunction = new LibVlcFunction<PreviousChapter>(libHandle, libVersion, devString);
+                _nextChapterFunction = new LibVlcFunction<NextChapter>(libHandle, libVersion, devString);
+                _getRateFunction = new LibVlcFunction<GetRate>(libHandle, libVersion, devString);
+                _setRateFunction = new LibVlcFunction<SetRate>(libHandle, libVersion, devString);
+                _getStateFunction = new LibVlcFunction<GetState>(libHandle, libVersion, devString);
+                _getFpsFunction = new LibVlcFunction<GetFps>(libHandle, libVersion, devString);
+                _hasVoutFunction = new LibVlcFunction<HasVout>(libHandle, libVersion, devString);
+                _isSeekableFunction = new LibVlcFunction<IsSeekable>(libHandle, libVersion, devString);
+                _canPauseFunction = new LibVlcFunction<CanPause>(libHandle, libVersion, devString);
+                _nextFrameFunction = new LibVlcFunction<NextFrame>(libHandle, libVersion, devString);
+                _navigateFunction = new LibVlcFunction<Navigate>(libHandle, libVersion, devString);
+                _setVideoTitleDisplayFunction = new LibVlcFunction<SetVideoTitleDisplay>(libHandle, libVersion, devString);
+                _releaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>(libHandle, libVersion, devString);
+                _toggleMuteFunction = new LibVlcFunction<ToggleMute>(libHandle, libVersion, devString);
+                _getMuteFunction = new LibVlcFunction<GetMute>(libHandle, libVersion, devString);
+                _setMuteFunction = new LibVlcFunction<SetMute>(libHandle, libVersion, devString);
+                _getVolumeFunction = new LibVlcFunction<GetVolume>(libHandle, libVersion, devString);
+                _setVolumeFunction = new LibVlcFunction<SetVolume>(libHandle, libVersion, devString);
+                _getCursorFunction = new LibVlcFunction<GetCursor>(libHandle, libVersion, devString);
+                _setCursorFunction = new LibVlcFunction<SetCursor>(libHandle, libVersion, devString);
+                _setMouseDownFunction = new LibVlcFunction<SetMouseDown>(libHandle, libVersion, devString);
+                _setMouseUpFunction = new LibVlcFunction<SetMouseUp>(libHandle, libVersion, devString);
+                _getOutputChannelFunction = new LibVlcFunction<GetOutputChannel>(libHandle, libVersion, devString);
+                _setOutputChannelFunction = new LibVlcFunction<SetOutputChannel>(libHandle, libVersion, devString);
+                _getAudioTrackFunction = new LibVlcFunction<GetAudioTrack>(libHandle, libVersion, devString);
+                _setAudioTrackFunction = new LibVlcFunction<SetAudioTrack>(libHandle, libVersion, devString);
+                _getAudioTrackCountFunction = new LibVlcFunction<GetAudioTrackCount>(libHandle, libVersion, devString);
+                _getAudioTrackDescriptionFunction = new LibVlcFunction<GetAudioTrackDescription>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -112,182 +108,185 @@ namespace xZune.Vlc
             private set;
         }
 
-        static LibVlcFunction<CreateMediaPlayer> CreateMediaPlayerFunction;
-        static LibVlcFunction<CreateMediaPlayerFromMedia> CreateMediaPlayerFromMediaFunction;
-        static LibVlcFunction<ReleaseMediaPlayer> ReleaseMediaPlayerFunction;
-        static LibVlcFunction<RetainMediaPlayer> RetainMediaPlayerFunction;
-        static LibVlcFunction<SetMedia> SetMediaFunction;
-        static LibVlcFunction<GetMedia> GetMediaFunction;
-        static LibVlcFunction<GetEventManager> GetEventManagerFunction;
-        static LibVlcFunction<IsPlaying> IsPlayingFunction;
-        static LibVlcFunction<Play> PlayFunction;
-        static LibVlcFunction<SetPause> SetPauseFunction;
-        static LibVlcFunction<SetPosition> SetPositionFunction;
-        static LibVlcFunction<Stop> StopFunction;
-        static LibVlcFunction<SetVideoCallback> SetVideoCallbackFunction;
-        static LibVlcFunction<SetVideoFormat> SetVideoFormatFunction;
-        static LibVlcFunction<SetVideoFormatCallback> SetVideoFormatCallbackFunction;
-        static LibVlcFunction<SetHwnd> SetHwndFunction;
-        static LibVlcFunction<GetHwnd> GetHwndFunction;
-        static LibVlcFunction<SetAudioCallback> SetAudioCallbackFunction;
-        static LibVlcFunction<SetAudioFormat> SetAudioFormatFunction;
-        static LibVlcFunction<SetAudioFormatCallback> SetAudioFormatCallbackFunction;
-        static LibVlcFunction<SetAudioVolumeCallback> SetAudioVolumeCallbackFunction;
-        static LibVlcFunction<GetLength> GetLengthFunction;
-        static LibVlcFunction<GetTime> GetTimeFunction;
-        static LibVlcFunction<SetTime> SetTimeFunction;
-        static LibVlcFunction<GetPosition> GetPositionFunction;
-        static LibVlcFunction<SetChapter> SetChapterFunction;
-        static LibVlcFunction<GetChapter> GetChapterFunction;
-        static LibVlcFunction<GetChapterCount> GetChapterCountFunction;
-        static LibVlcFunction<CanPlay> CanPlayFunction;
-        static LibVlcFunction<GetTitleChapterCount> GetTitleChapterCountFunction;
-        static LibVlcFunction<SetTitle> SetTitleFunction;
-        static LibVlcFunction<GetTitle> GetTitleFunction;
-        static LibVlcFunction<GetTitleCount> GetTitleCountFunction;
-        static LibVlcFunction<PreviousChapter> PreviousChapterFunction;
-        static LibVlcFunction<NextChapter> NextChapterFunction;
-        static LibVlcFunction<GetRate> GetRateFunction;
-        static LibVlcFunction<SetRate> SetRateFunction;
-        static LibVlcFunction<GetState> GetStateFunction;
-        static LibVlcFunction<GetFPS> GetFPSFunction;
-        static LibVlcFunction<HasVout> HasVoutFunction;
-        static LibVlcFunction<IsSeekable> IsSeekableFunction;
-        static LibVlcFunction<CanPause> CanPauseFunction;
-        static LibVlcFunction<NextFrame> NextFrameFunction;
-        static LibVlcFunction<Navigate> NavigateFunction;
-        static LibVlcFunction<SetVideoTitleDisplay> SetVideoTitleDisplayFunction;
-        static LibVlcFunction<ReleaseTrackDescription> ReleaseTrackDescriptionFunction;
-        static LibVlcFunction<ToggleMute> ToggleMuteFunction;
-        static LibVlcFunction<GetMute> GetMuteFunction;
-        static LibVlcFunction<SetMute> SetMuteFunction;
-        static LibVlcFunction<GetVolume> GetVolumeFunction;
-        static LibVlcFunction<SetVolume> SetVolumeFunction;
-        static LibVlcFunction<GetCursor> GetCursorFunction;
-        static LibVlcFunction<SetCursor> SetCursorFunction;
-        static LibVlcFunction<SetMouseDown> SetMouseDownFunction;
-        static LibVlcFunction<SetMouseUp> SetMouseUpFunction;
-        static LibVlcFunction<GetOutputChannel> GetOutputChannelFunction;
-        static LibVlcFunction<SetOutputChannel> SetOutputChannelFunction;
-        static LibVlcFunction<GetAudioTrack> GetAudioTrackFunction;
-        static LibVlcFunction<SetAudioTrack> SetAudioTrackFunction;
-        static LibVlcFunction<GetAudioTrackCount> GetAudioTrackCountFunction;
-        static LibVlcFunction<GetAudioTrackDescription> GetAudioTrackDescriptionFunction;
+        static LibVlcFunction<CreateMediaPlayer> _createMediaPlayerFunction;
+        static LibVlcFunction<CreateMediaPlayerFromMedia> _createMediaPlayerFromMediaFunction;
+        static LibVlcFunction<ReleaseMediaPlayer> _releaseMediaPlayerFunction;
+        static LibVlcFunction<RetainMediaPlayer> _retainMediaPlayerFunction;
+        static LibVlcFunction<SetMedia> _setMediaFunction;
+        static LibVlcFunction<GetMedia> _getMediaFunction;
+        static LibVlcFunction<GetEventManager> _getEventManagerFunction;
+        static LibVlcFunction<IsPlaying> _isPlayingFunction;
+        static LibVlcFunction<Play> _playFunction;
+        static LibVlcFunction<SetPause> _setPauseFunction;
+        static LibVlcFunction<SetPosition> _setPositionFunction;
+        static LibVlcFunction<Stop> _stopFunction;
+        static LibVlcFunction<SetVideoCallback> _setVideoCallbackFunction;
+        static LibVlcFunction<SetVideoFormat> _setVideoFormatFunction;
+        static LibVlcFunction<SetVideoFormatCallback> _setVideoFormatCallbackFunction;
+        static LibVlcFunction<SetHwnd> _setHwndFunction;
+        static LibVlcFunction<GetHwnd> _getHwndFunction;
+        static LibVlcFunction<SetAudioCallback> _setAudioCallbackFunction;
+        static LibVlcFunction<SetAudioFormat> _setAudioFormatFunction;
+        static LibVlcFunction<SetAudioFormatCallback> _setAudioFormatCallbackFunction;
+        static LibVlcFunction<SetAudioVolumeCallback> _setAudioVolumeCallbackFunction;
+        static LibVlcFunction<GetLength> _getLengthFunction;
+        static LibVlcFunction<GetTime> _getTimeFunction;
+        static LibVlcFunction<SetTime> _setTimeFunction;
+        static LibVlcFunction<GetPosition> _getPositionFunction;
+        static LibVlcFunction<SetChapter> _setChapterFunction;
+        static LibVlcFunction<GetChapter> _getChapterFunction;
+        static LibVlcFunction<GetChapterCount> _getChapterCountFunction;
+        static LibVlcFunction<CanPlay> _canPlayFunction;
+        static LibVlcFunction<GetTitleChapterCount> _getTitleChapterCountFunction;
+        static LibVlcFunction<SetTitle> _setTitleFunction;
+        static LibVlcFunction<GetTitle> _getTitleFunction;
+        static LibVlcFunction<GetTitleCount> _getTitleCountFunction;
+        static LibVlcFunction<PreviousChapter> _previousChapterFunction;
+        static LibVlcFunction<NextChapter> _nextChapterFunction;
+        static LibVlcFunction<GetRate> _getRateFunction;
+        static LibVlcFunction<SetRate> _setRateFunction;
+        static LibVlcFunction<GetState> _getStateFunction;
+        static LibVlcFunction<GetFps> _getFpsFunction;
+        static LibVlcFunction<HasVout> _hasVoutFunction;
+        static LibVlcFunction<IsSeekable> _isSeekableFunction;
+        static LibVlcFunction<CanPause> _canPauseFunction;
+        static LibVlcFunction<NextFrame> _nextFrameFunction;
+        static LibVlcFunction<Navigate> _navigateFunction;
+        static LibVlcFunction<SetVideoTitleDisplay> _setVideoTitleDisplayFunction;
+        static LibVlcFunction<ReleaseTrackDescription> _releaseTrackDescriptionFunction;
+        static LibVlcFunction<ToggleMute> _toggleMuteFunction;
+        static LibVlcFunction<GetMute> _getMuteFunction;
+        static LibVlcFunction<SetMute> _setMuteFunction;
+        static LibVlcFunction<GetVolume> _getVolumeFunction;
+        static LibVlcFunction<SetVolume> _setVolumeFunction;
+        static LibVlcFunction<GetCursor> _getCursorFunction;
+        static LibVlcFunction<SetCursor> _setCursorFunction;
+        static LibVlcFunction<SetMouseDown> _setMouseDownFunction;
+        static LibVlcFunction<SetMouseUp> _setMouseUpFunction;
+        static LibVlcFunction<GetOutputChannel> _getOutputChannelFunction;
+        static LibVlcFunction<SetOutputChannel> _setOutputChannelFunction;
+        static LibVlcFunction<GetAudioTrack> _getAudioTrackFunction;
+        static LibVlcFunction<SetAudioTrack> _setAudioTrackFunction;
+        static LibVlcFunction<GetAudioTrackCount> _getAudioTrackCountFunction;
+        static LibVlcFunction<GetAudioTrackDescription> _getAudioTrackDescriptionFunction;
 
 
-        LibVlcEventCallBack onPlaying;
-        LibVlcEventCallBack onPaused;
-        LibVlcEventCallBack onOpening;
-        LibVlcEventCallBack onBuffering;
-        LibVlcEventCallBack onStoped;
-        LibVlcEventCallBack onForward;
-        LibVlcEventCallBack onBackward;
-        LibVlcEventCallBack onEndReached;
-        LibVlcEventCallBack onMediaChanged;
-        LibVlcEventCallBack onNothingSpecial;
-        LibVlcEventCallBack onPausableChanged;
-        LibVlcEventCallBack onPositionChanged;
-        LibVlcEventCallBack onSeekableChanged;
-        LibVlcEventCallBack onSnapshotTaken;
-        LibVlcEventCallBack onTimeChanged;
-        LibVlcEventCallBack onTitleChanged;
-        LibVlcEventCallBack onVideoOutChanged;
-        LibVlcEventCallBack onLengthChanged;
-        LibVlcEventCallBack onEncounteredError;
+        readonly LibVlcEventCallBack _onPlaying;
+        readonly LibVlcEventCallBack _onPaused;
+        readonly LibVlcEventCallBack _onOpening;
+        readonly LibVlcEventCallBack _onBuffering;
+        readonly LibVlcEventCallBack _onStoped;
+        readonly LibVlcEventCallBack _onForward;
+        readonly LibVlcEventCallBack _onBackward;
+        readonly LibVlcEventCallBack _onEndReached;
+        readonly LibVlcEventCallBack _onMediaChanged;
+        readonly LibVlcEventCallBack _onNothingSpecial;
+        readonly LibVlcEventCallBack _onPausableChanged;
+        readonly LibVlcEventCallBack _onPositionChanged;
+        readonly LibVlcEventCallBack _onSeekableChanged;
+        readonly LibVlcEventCallBack _onSnapshotTaken;
+        readonly LibVlcEventCallBack _onTimeChanged;
+        readonly LibVlcEventCallBack _onTitleChanged;
+        readonly LibVlcEventCallBack _onVideoOutChanged;
+        readonly LibVlcEventCallBack _onLengthChanged;
+        readonly LibVlcEventCallBack _onEncounteredError;
 
-        GCHandle onPlayingHandle;
-        GCHandle onPausedHandle;
-        GCHandle onOpeningHandle;
-        GCHandle onBufferingHandle;
-        GCHandle onStopedHandle;
-        GCHandle onForwardHandle;
-        GCHandle onBackwardHandle;
-        GCHandle onEndReachedHandle;
-        GCHandle onMediaChangedHandle;
-        GCHandle onNothingSpecialHandle;
-        GCHandle onPausableChangedHandle;
-        GCHandle onPositionChangedHandle;
-        GCHandle onSeekableChangedHandle;
-        GCHandle onSnapshotTakenHandle;
-        GCHandle onTimeChangedHandle;
-        GCHandle onTitleChangedHandle;
-        GCHandle onVideoOutChangedHandle;
-        GCHandle onLengthChangedHandle;
-        GCHandle onEncounteredErrorHandle;
+        GCHandle _onPlayingHandle;
+        GCHandle _onPausedHandle;
+        GCHandle _onOpeningHandle;
+        GCHandle _onBufferingHandle;
+        GCHandle _onStopedHandle;
+        GCHandle _onForwardHandle;
+        GCHandle _onBackwardHandle;
+        GCHandle _onEndReachedHandle;
+        GCHandle _onMediaChangedHandle;
+        GCHandle _onNothingSpecialHandle;
+        GCHandle _onPausableChangedHandle;
+        GCHandle _onPositionChangedHandle;
+        GCHandle _onSeekableChangedHandle;
+        GCHandle _onSnapshotTakenHandle;
+        GCHandle _onTimeChangedHandle;
+        GCHandle _onTitleChangedHandle;
+        GCHandle _onVideoOutChangedHandle;
+        GCHandle _onLengthChangedHandle;
+        GCHandle _onEncounteredErrorHandle;
 
 
         private VlcMediaPlayer(IntPtr pointer)
         {
             InstancePointer = pointer;
-            EventManager = new VlcEventManager(GetEventManagerFunction.Delegate(InstancePointer));
+            EventManager = new VlcEventManager(_getEventManagerFunction.Delegate(InstancePointer));
 
             HandleManager.Add(this);
 
-            onPlaying = OnPlaying;
-            onPaused = OnPaused;
-            onOpening = OnOpening;
-            onBuffering = OnBuffering;
-            onStoped = OnStoped;  //This Event has something wrong.
-            onForward = OnForward;
-            onBackward = OnBackward;
-            onEndReached = OnEndReached;
-            onMediaChanged = OnMediaChanged;
-            onNothingSpecial = OnNothingSpecial;
-            onPausableChanged = OnPausableChanged;
-            onPositionChanged = OnPositionChanged;
-            onSeekableChanged = OnSeekableChanged;
-            onSnapshotTaken = OnSnapshotTaken;
-            onTimeChanged = OnTimeChanged;
-            onTitleChanged = OnTitleChanged;
-            onVideoOutChanged = OnVideoOutChanged;
-            onLengthChanged = OnLengthChanged;
-            onEncounteredError = OnEncounteredError;
+            _onPlaying = OnPlaying;
+            _onPaused = OnPaused;
+            _onOpening = OnOpening;
+            _onBuffering = OnBuffering;
+            _onStoped = OnStoped;  //This Event has something wrong.
+            _onForward = OnForward;
+            _onBackward = OnBackward;
+            _onEndReached = OnEndReached;
+            _onMediaChanged = OnMediaChanged;
+            _onNothingSpecial = OnNothingSpecial;
+            _onPausableChanged = OnPausableChanged;
+            _onPositionChanged = OnPositionChanged;
+            _onSeekableChanged = OnSeekableChanged;
+            _onSnapshotTaken = OnSnapshotTaken;
+            _onTimeChanged = OnTimeChanged;
+            _onTitleChanged = OnTitleChanged;
+            _onVideoOutChanged = OnVideoOutChanged;
+            _onLengthChanged = OnLengthChanged;
+            _onEncounteredError = OnEncounteredError;
 
-            onPlayingHandle = GCHandle.Alloc(onPlaying);
-            onPausedHandle = GCHandle.Alloc(onPaused);
-            onOpeningHandle = GCHandle.Alloc(onOpening);
-            onBufferingHandle = GCHandle.Alloc(onBuffering);
-            onStopedHandle = GCHandle.Alloc(onStoped);  //This Event has something wrong.
-            onForwardHandle = GCHandle.Alloc(onForward);
-            onBackwardHandle = GCHandle.Alloc(onBackward);
-            onEndReachedHandle = GCHandle.Alloc(onEndReached);
-            onMediaChangedHandle = GCHandle.Alloc(onMediaChanged);
-            onNothingSpecialHandle = GCHandle.Alloc(onNothingSpecial);
-            onPausableChangedHandle = GCHandle.Alloc(onPausableChanged);
-            onPositionChangedHandle = GCHandle.Alloc(onPositionChanged);
-            onSeekableChangedHandle = GCHandle.Alloc(onSeekableChanged);
-            onSnapshotTakenHandle = GCHandle.Alloc(onSnapshotTaken);
-            onTimeChangedHandle = GCHandle.Alloc(onTimeChanged);
-            onTitleChangedHandle = GCHandle.Alloc(onTitleChanged);
-            onVideoOutChangedHandle = GCHandle.Alloc(onVideoOutChanged);
-            onLengthChangedHandle = GCHandle.Alloc(onLengthChanged);
-            onEncounteredErrorHandle = GCHandle.Alloc(onEncounteredError);
+            _onPlayingHandle = GCHandle.Alloc(_onPlaying);
+            _onPausedHandle = GCHandle.Alloc(_onPaused);
+            _onOpeningHandle = GCHandle.Alloc(_onOpening);
+            _onBufferingHandle = GCHandle.Alloc(_onBuffering);
+            _onStopedHandle = GCHandle.Alloc(_onStoped);  //This Event has something wrong.
+            _onForwardHandle = GCHandle.Alloc(_onForward);
+            _onBackwardHandle = GCHandle.Alloc(_onBackward);
+            _onEndReachedHandle = GCHandle.Alloc(_onEndReached);
+            _onMediaChangedHandle = GCHandle.Alloc(_onMediaChanged);
+            _onNothingSpecialHandle = GCHandle.Alloc(_onNothingSpecial);
+            _onPausableChangedHandle = GCHandle.Alloc(_onPausableChanged);
+            _onPositionChangedHandle = GCHandle.Alloc(_onPositionChanged);
+            _onSeekableChangedHandle = GCHandle.Alloc(_onSeekableChanged);
+            _onSnapshotTakenHandle = GCHandle.Alloc(_onSnapshotTaken);
+            _onTimeChangedHandle = GCHandle.Alloc(_onTimeChanged);
+            _onTitleChangedHandle = GCHandle.Alloc(_onTitleChanged);
+            _onVideoOutChangedHandle = GCHandle.Alloc(_onVideoOutChanged);
+            _onLengthChangedHandle = GCHandle.Alloc(_onLengthChanged);
+            _onEncounteredErrorHandle = GCHandle.Alloc(_onEncounteredError);
 
-            EventManager.Attach(EventTypes.MediaPlayerPlaying, onPlaying, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerPaused, onPaused, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerOpening, onOpening, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerBuffering, onBuffering, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerStopped, onStoped, IntPtr.Zero);  //This Event has something wrong.
-            EventManager.Attach(EventTypes.MediaPlayerForward, onForward, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerBackward, onBackward, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerEndReached, onEndReached, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerMediaChanged, onMediaChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerNothingSpecial, onNothingSpecial, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerPausableChanged, onPausableChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerPositionChanged, onPositionChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerSeekableChanged, onSeekableChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerSnapshotTaken, onSnapshotTaken, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerTimeChanged, onTimeChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerTitleChanged, onTitleChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerVideoOutChanged, onVideoOutChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerLengthChanged, onLengthChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerEncounteredError, onEncounteredError, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerPlaying, _onPlaying, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerPaused, _onPaused, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerOpening, _onOpening, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerBuffering, _onBuffering, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerStopped, _onStoped, IntPtr.Zero);  //This Event has something wrong.
+            EventManager.Attach(EventTypes.MediaPlayerForward, _onForward, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerBackward, _onBackward, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerEndReached, _onEndReached, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerMediaChanged, _onMediaChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerNothingSpecial, _onNothingSpecial, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerPausableChanged, _onPausableChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerPositionChanged, _onPositionChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerSeekableChanged, _onSeekableChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerSnapshotTaken, _onSnapshotTaken, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerTimeChanged, _onTimeChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerTitleChanged, _onTitleChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerVideoOutChanged, _onVideoOutChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerLengthChanged, _onLengthChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.MediaPlayerEncounteredError, _onEncounteredError, IntPtr.Zero);
         }
 
         #region 一般事件
         void OnPlaying(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
-            Playing?.Invoke(this, new EventArgs());
+            if (Playing != null)
+            {
+                Playing(this, new EventArgs());
+            }
         }
 
         public event EventHandler Playing;
@@ -462,18 +461,11 @@ namespace xZune.Vlc
         {
             get
             {
-                return InstancePointer == IntPtr.Zero ? null : HandleManager.GetVlcObject(GetMediaFunction.Delegate(InstancePointer)) as VlcMedia;
+                return InstancePointer == IntPtr.Zero ? null : HandleManager.GetVlcObject(_getMediaFunction.Delegate(InstancePointer)) as VlcMedia;
             }
             set
             {
-                if(value == null)
-                {
-                    SetMediaFunction.Delegate(InstancePointer, IntPtr.Zero);
-                }
-                else
-                {
-                    SetMediaFunction.Delegate(InstancePointer, value.InstancePointer);
-                }
+                _setMediaFunction.Delegate(InstancePointer, value == null ? IntPtr.Zero : value.InstancePointer);
             }
         }
 
@@ -484,7 +476,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return IsPlayingFunction.Delegate(InstancePointer);
+                return _isPlayingFunction.Delegate(InstancePointer);
             }
         }
 
@@ -495,12 +487,12 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetPositionFunction.Delegate(InstancePointer);
+                return _getPositionFunction.Delegate(InstancePointer);
             }
 
             set
             {
-                SetPositionFunction.Delegate(InstancePointer, value);
+                _setPositionFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -511,11 +503,11 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetHwndFunction.Delegate(InstancePointer);
+                return _getHwndFunction.Delegate(InstancePointer);
             }
             set
             {
-                SetHwndFunction.Delegate(InstancePointer, value);
+                _setHwndFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -526,15 +518,8 @@ namespace xZune.Vlc
         {
             get
             {
-                Int64 ms = GetLengthFunction.Delegate(InstancePointer);
-                if(ms != -1)
-                {
-                    return new TimeSpan(ms * 10000);
-                }
-                else
-                {
-                    return TimeSpan.Zero;
-                }
+                var ms = _getLengthFunction.Delegate(InstancePointer);
+                return ms != -1 ? new TimeSpan(ms * 10000) : TimeSpan.Zero;
             }
         }
 
@@ -545,19 +530,12 @@ namespace xZune.Vlc
         {
             get
             {
-                Int64 ms = GetTimeFunction.Delegate(InstancePointer);
-                if (ms != -1)
-                {
-                    return new TimeSpan(ms * 10000);
-                }
-                else
-                {
-                    return TimeSpan.Zero;
-                }
+                var ms = _getTimeFunction.Delegate(InstancePointer);
+                return ms != -1 ? new TimeSpan(ms * 10000) : TimeSpan.Zero;
             }
             set
             {
-                SetTimeFunction.Delegate(InstancePointer, (Int64)value.TotalMilliseconds);
+                _setTimeFunction.Delegate(InstancePointer, (Int64)value.TotalMilliseconds);
             }
         }
 
@@ -568,11 +546,11 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetChapterFunction.Delegate(InstancePointer);
+                return _getChapterFunction.Delegate(InstancePointer);
             }
             set
             {
-                SetChapterFunction.Delegate(InstancePointer, value);
+                _setChapterFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -583,7 +561,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetChapterCountFunction.Delegate(InstancePointer);
+                return _getChapterCountFunction.Delegate(InstancePointer);
             }
         }
 
@@ -595,7 +573,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return CanPlayFunction.Delegate(InstancePointer);
+                return _canPlayFunction.Delegate(InstancePointer);
             }
         }
 
@@ -606,12 +584,12 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetTitleFunction.Delegate(InstancePointer);
+                return _getTitleFunction.Delegate(InstancePointer);
             }
 
             set
             {
-                SetTitleFunction.Delegate(InstancePointer, value);
+                _setTitleFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -619,7 +597,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetTitleCountFunction.Delegate(InstancePointer);
+                return _getTitleCountFunction.Delegate(InstancePointer);
             }
         }
 
@@ -630,11 +608,11 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetRateFunction.Delegate(InstancePointer);
+                return _getRateFunction.Delegate(InstancePointer);
             }
             set
             {
-                SetRateFunction.Delegate(InstancePointer, value);
+                _setRateFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -645,18 +623,18 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetStateFunction.Delegate(InstancePointer);
+                return _getStateFunction.Delegate(InstancePointer);
             }
         }
 
         /// <summary>
         /// 获取一个值,该值表示当前媒体的FPS
         /// </summary>
-        public float FPS
+        public float Fps
         {
             get
             {
-                return GetFPSFunction.Delegate(InstancePointer);
+                return _getFpsFunction.Delegate(InstancePointer);
             }
         }
 
@@ -667,7 +645,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return HasVoutFunction.Delegate(InstancePointer);
+                return _hasVoutFunction.Delegate(InstancePointer);
             }
         }
 
@@ -678,7 +656,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return IsSeekableFunction.Delegate(InstancePointer);
+                return _isSeekableFunction.Delegate(InstancePointer);
             }
         }
 
@@ -689,7 +667,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return CanPauseFunction.Delegate(InstancePointer);
+                return _canPauseFunction.Delegate(InstancePointer);
             }
         }
 
@@ -700,12 +678,12 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetVolumeFunction.Delegate(InstancePointer);
+                return _getVolumeFunction.Delegate(InstancePointer);
             }
 
             set
             {
-                SetVolumeFunction.Delegate(InstancePointer, value);
+                _setVolumeFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -716,12 +694,12 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetMuteFunction.Delegate(InstancePointer) == 1;
+                return _getMuteFunction.Delegate(InstancePointer) == 1;
             }
 
             set
             {
-                SetMuteFunction.Delegate(InstancePointer, value ? 1 : 0);
+                _setMuteFunction.Delegate(InstancePointer, value ? 1 : 0);
             }
         }
 
@@ -732,12 +710,12 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetOutputChannelFunction.Delegate(InstancePointer);
+                return _getOutputChannelFunction.Delegate(InstancePointer);
             }
 
             set
             {
-                SetOutputChannelFunction.Delegate(InstancePointer, value);
+                _setOutputChannelFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -745,7 +723,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetAudioTrackCountFunction.Delegate(InstancePointer);
+                return _getAudioTrackCountFunction.Delegate(InstancePointer);
             }
         }
 
@@ -753,11 +731,11 @@ namespace xZune.Vlc
         {
             get
             {
-                return GetAudioTrackFunction.Delegate(InstancePointer);
+                return _getAudioTrackFunction.Delegate(InstancePointer);
             }
             set
             {
-                SetAudioTrackFunction.Delegate(InstancePointer, value);
+                _setAudioTrackFunction.Delegate(InstancePointer, value);
             }
         }
 
@@ -765,7 +743,7 @@ namespace xZune.Vlc
         {
             get
             {
-                return new TrackDescription(GetAudioTrackDescriptionFunction.Delegate(InstancePointer));
+                return new TrackDescription(_getAudioTrackDescriptionFunction.Delegate(InstancePointer));
             }
         }
 
@@ -777,32 +755,32 @@ namespace xZune.Vlc
         /// </summary>
         public void Play()
         {
-            PlayFunction.Delegate(InstancePointer);
+            _playFunction.Delegate(InstancePointer);
         }
 
         public void SetVideoDecodeCallback(VideoLockCallback lockCallback, VideoUnlockCallback unlockCallback, VideoDisplayCallback displayCallback, IntPtr userData)
         {
-            SetVideoCallbackFunction.Delegate(InstancePointer, lockCallback, unlockCallback, displayCallback, userData);
+            _setVideoCallbackFunction.Delegate(InstancePointer, lockCallback, unlockCallback, displayCallback, userData);
         }
 
         public void SetVideoFormatCallback(VideoFormatCallback formatCallback, VideoCleanupCallback cleanupCallback)
         {
-            SetVideoFormatCallbackFunction.Delegate(InstancePointer, formatCallback, cleanupCallback);
+            _setVideoFormatCallbackFunction.Delegate(InstancePointer, formatCallback, cleanupCallback);
         }
 
         public void SetAudioCallback(AudioPlayCallback playCallback, AudioPauseCallback pauseCallback, AudioResumeCallback resumeCallback, AudioFlushCallback flushCallback, AudioDrainCallback drainCallback)
         {
-            SetAudioCallbackFunction.Delegate(InstancePointer, playCallback, pauseCallback, resumeCallback, flushCallback, drainCallback);
+            _setAudioCallbackFunction.Delegate(InstancePointer, playCallback, pauseCallback, resumeCallback, flushCallback, drainCallback);
         }
 
         public void SetAudioFormatCallback(AudioSetupCallback setupCallback, AudioCheanupCallback cheanupCallback)
         {
-            SetAudioFormatCallbackFunction.Delegate(InstancePointer, setupCallback, cheanupCallback);
+            _setAudioFormatCallbackFunction.Delegate(InstancePointer, setupCallback, cheanupCallback);
         }
 
         public void SetAudioVolumeCallback(AudioSetVolumeCallback volumeCallback)
         {
-            SetAudioVolumeCallbackFunction.Delegate(InstancePointer, volumeCallback);
+            _setAudioVolumeCallbackFunction.Delegate(InstancePointer, volumeCallback);
         }
 
         /// <summary>
@@ -811,7 +789,7 @@ namespace xZune.Vlc
         /// <param name="pause">true 代表暂停,false 代表播放或继续</param>
         public void SetPause(bool pause)
         {
-            SetPauseFunction.Delegate(InstancePointer, pause);
+            _setPauseFunction.Delegate(InstancePointer, pause);
         }
 
         /// <summary>
@@ -819,7 +797,7 @@ namespace xZune.Vlc
         /// </summary>
         public void Pause()
         {
-            SetPauseFunction.Delegate(InstancePointer, true);
+            _setPauseFunction.Delegate(InstancePointer, true);
         }
 
         /// <summary>
@@ -827,7 +805,7 @@ namespace xZune.Vlc
         /// </summary>
         public void Resume()
         {
-            SetPauseFunction.Delegate(InstancePointer, false);
+            _setPauseFunction.Delegate(InstancePointer, false);
         }
 
         /// <summary>
@@ -835,7 +813,7 @@ namespace xZune.Vlc
         /// </summary>
         public void PauseOrResume()
         {
-            SetPauseFunction.Delegate(InstancePointer, IsPlaying);
+            _setPauseFunction.Delegate(InstancePointer, IsPlaying);
         }
 
         /// <summary>
@@ -843,7 +821,7 @@ namespace xZune.Vlc
         /// </summary>
         public void Stop()
         {
-            StopFunction.Delegate(InstancePointer);
+            _stopFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -854,13 +832,13 @@ namespace xZune.Vlc
         /// <param name="channels">通道数</param>
         public void SetAudioFormat(String format,uint rate,uint channels)
         {
-            uint fmt = BitConverter.ToUInt32(new byte[] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
-            SetAudioFormatFunction.Delegate(InstancePointer, fmt, rate, channels);
+            var fmt = BitConverter.ToUInt32(new [] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
+            _setAudioFormatFunction.Delegate(InstancePointer, fmt, rate, channels);
         }
 
         public int GetTitleChapterCount(int title)
         {
-            return GetTitleChapterCountFunction.Delegate(InstancePointer, title);
+            return _getTitleChapterCountFunction.Delegate(InstancePointer, title);
         }
 
         /// <summary>
@@ -868,7 +846,7 @@ namespace xZune.Vlc
         /// </summary>
         public void PreviousChapter()
         {
-            PreviousChapterFunction.Delegate(InstancePointer);
+            _previousChapterFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -876,7 +854,7 @@ namespace xZune.Vlc
         /// </summary>
         public void NextChapter()
         {
-            NextChapterFunction.Delegate(InstancePointer);
+            _nextChapterFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -884,7 +862,7 @@ namespace xZune.Vlc
         /// </summary>
         public void NextFrame()
         {
-            NextFrameFunction.Delegate(InstancePointer);
+            _nextFrameFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -894,7 +872,7 @@ namespace xZune.Vlc
         /// <param name="timeout">显示时间</param>
         public void SetVideoTitleDisplay(Position pos, uint timeout)
         {
-            SetVideoTitleDisplayFunction.Delegate(InstancePointer, pos, timeout);
+            _setVideoTitleDisplayFunction.Delegate(InstancePointer, pos, timeout);
         }
 
         /// <summary>
@@ -902,68 +880,84 @@ namespace xZune.Vlc
         /// </summary>
         public void ToggleMute()
         {
-            ToggleMuteFunction.Delegate(InstancePointer);
+            _toggleMuteFunction.Delegate(InstancePointer);
+        }
+
+        public void SetVideoFormat(String chroma, uint width, uint height, uint pitch)
+        {
+            _setVideoFormatFunction.Delegate(InstancePointer, chroma, width, height, pitch);
+        }
+
+        /// <summary>
+        /// 获取鼠标坐标
+        /// </summary>
+        /// <param name="num">视频输出号</param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void GetMouseCursor(uint num, ref int x,ref int y)
+        {
+            _getCursorFunction.Delegate(InstancePointer, num, ref x, ref y);
         }
         
         public bool SetMouseCursor(uint num, int x,int y)
         {
-            return SetCursorFunction.Delegate(InstancePointer, num, x, y) == 0;
+            return _setCursorFunction.Delegate(InstancePointer, num, x, y) == 0;
         }
 
         public bool SetMouseDown(uint num, MouseButton button)
         {
-            return SetMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
+            return _setMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
         }
 
         public bool SetMouseUp(uint num, MouseButton button)
         {
-            return SetMouseDownFunction.Delegate(InstancePointer, num, button) == 0;
+            return _setMouseUpFunction.Delegate(InstancePointer, num, button) == 0;
         }
 
         public static void ReleaseTrackDescription(TrackDescription trackDescription)
         {
-            ReleaseTrackDescriptionFunction.Delegate(trackDescription.Pointer);
+            _releaseTrackDescriptionFunction.Delegate(trackDescription.Pointer);
         }
 
         public void Navigate(NavigateMode mode)
         {
-            NavigateFunction.Delegate(InstancePointer, mode);
+            _navigateFunction.Delegate(InstancePointer, mode);
         }
 
-        bool disposed = false;
+        bool _disposed;
 
         protected void Dispose(bool disposing)
         {
-            if (disposed)
+            if (_disposed)
             {
                 return;
             }
             
             HandleManager.Remove(this);
             //EventManager.Dispose();
-            onPlayingHandle.Free();
-            onPausedHandle.Free();
-            onOpeningHandle.Free();
-            onBufferingHandle.Free();
-            onStopedHandle.Free();
-            onForwardHandle.Free();
-            onBackwardHandle.Free();
-            onEndReachedHandle.Free();
-            onMediaChangedHandle.Free();
-            onNothingSpecialHandle.Free();
-            onPausableChangedHandle.Free();
-            onPositionChangedHandle.Free();
-            onSeekableChangedHandle.Free();
-            onSnapshotTakenHandle.Free();
-            onTimeChangedHandle.Free();
-            onTitleChangedHandle.Free();
-            onVideoOutChangedHandle.Free();
-            onLengthChangedHandle.Free();
-            onEncounteredErrorHandle.Free();
-            ReleaseMediaPlayerFunction.Delegate(InstancePointer);
+            _onPlayingHandle.Free();
+            _onPausedHandle.Free();
+            _onOpeningHandle.Free();
+            _onBufferingHandle.Free();
+            _onStopedHandle.Free();
+            _onForwardHandle.Free();
+            _onBackwardHandle.Free();
+            _onEndReachedHandle.Free();
+            _onMediaChangedHandle.Free();
+            _onNothingSpecialHandle.Free();
+            _onPausableChangedHandle.Free();
+            _onPositionChangedHandle.Free();
+            _onSeekableChangedHandle.Free();
+            _onSnapshotTakenHandle.Free();
+            _onTimeChangedHandle.Free();
+            _onTitleChangedHandle.Free();
+            _onVideoOutChangedHandle.Free();
+            _onLengthChangedHandle.Free();
+            _onEncounteredErrorHandle.Free();
+            _releaseMediaPlayerFunction.Delegate(InstancePointer);
             InstancePointer = IntPtr.Zero;
 
-            disposed = true;
+            _disposed = true;
         }
 
         /// <summary>

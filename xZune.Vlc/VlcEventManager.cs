@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
@@ -17,17 +13,18 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 载入 LibVlc 的 Event 模块,该方法会在 <see cref="Vlc.LoadLibVlc"/> 中自动被调用
+        /// 载入 LibVlc 的 Event 模块,该方法会在 <see cref="Vlc.LoadLibVlc()"/> 中自动被调用
         /// </summary>
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
+        /// <param name="devString"></param>
         public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
             if(!IsLibLoaded)
             {
-                EventAttachFunction = new LibVlcFunction<EventAttach>(libHandle, libVersion, devString);
-                EventDetachFunction = new LibVlcFunction<EventDetach>(libHandle, libVersion, devString);
-                GetTypeNameFunction = new LibVlcFunction<GetTypeName>(libHandle, libVersion, devString);
+                _eventAttachFunction = new LibVlcFunction<EventAttach>(libHandle, libVersion, devString);
+                _eventDetachFunction = new LibVlcFunction<EventDetach>(libHandle, libVersion, devString);
+                _getTypeNameFunction = new LibVlcFunction<GetTypeName>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -41,9 +38,9 @@ namespace xZune.Vlc
             private set;
         }
 
-        private static LibVlcFunction<EventAttach> EventAttachFunction;
-        private static LibVlcFunction<EventDetach> EventDetachFunction;
-        private static LibVlcFunction<GetTypeName> GetTypeNameFunction;
+        private static LibVlcFunction<EventAttach> _eventAttachFunction;
+        private static LibVlcFunction<EventDetach> _eventDetachFunction;
+        private static LibVlcFunction<GetTypeName> _getTypeNameFunction;
 
         public VlcEventManager(IntPtr pointer)
         {
@@ -55,17 +52,17 @@ namespace xZune.Vlc
 
         public void Attach(EventTypes type, LibVlcEventCallBack callback , IntPtr userData)
         {
-            EventAttachFunction.Delegate(InstancePointer, type, callback, userData);
+            _eventAttachFunction.Delegate(InstancePointer, type, callback, userData);
         }
 
         public void Detach(EventTypes type, LibVlcEventCallBack callback, IntPtr userData)
         {
-            EventDetachFunction.Delegate(InstancePointer, type, callback, userData);
+            _eventDetachFunction.Delegate(InstancePointer, type, callback, userData);
         }
 
         public static String GetEventTypeName(EventTypes type)
         {
-            return InteropHelper.PtrToString(GetTypeNameFunction.Delegate(type));
+            return InteropHelper.PtrToString(_getTypeNameFunction.Delegate(type));
         }
 
         public void Dispose()

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -8,62 +7,49 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Runtime.InteropServices;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using xZune.Vlc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
+using xZune.Vlc.Interop.MediaPlayer;
+using MouseButton = System.Windows.Input.MouseButton;
+
 namespace xZune.Vlc.Wpf
 {
-    public class VlcPlayer : Control, INotifyPropertyChanged, IDisposable
+    public class VlcPlayer : Control, IDisposable
     {
         static VlcPlayer()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(VlcPlayer), new FrameworkPropertyMetadata(typeof(VlcPlayer)));
         }
 
-        xZune.Vlc.Interop.MediaPlayer.VideoLockCallback lockCallback;
-        xZune.Vlc.Interop.MediaPlayer.VideoUnlockCallback unlockCallback;
-        xZune.Vlc.Interop.MediaPlayer.VideoDisplayCallback displayCallback;
-        xZune.Vlc.Interop.MediaPlayer.VideoFormatCallback formatCallback;
-        xZune.Vlc.Interop.MediaPlayer.VideoCleanupCallback cleanupCallback;
-        GCHandle lockCallbackHandle;
-        GCHandle unlockCallbackHandle;
-        GCHandle displayCallbackHandle;
-        GCHandle formatCallbackHandle;
-        GCHandle cleanupCallbackHandle;
+        VideoLockCallback _lockCallback;
+        VideoUnlockCallback _unlockCallback;
+        VideoDisplayCallback _displayCallback;
+        VideoFormatCallback _formatCallback;
+        VideoCleanupCallback _cleanupCallback;
 
-        public VlcPlayer()
-        {
-
-        }
+        GCHandle _lockCallbackHandle;
+        GCHandle _unlockCallbackHandle;
+        GCHandle _displayCallbackHandle;
+        GCHandle _formatCallbackHandle;
+        GCHandle _cleanupCallbackHandle;
 
         static String CombinePath(String path1, String path2)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
-            if (!Path.IsPathRooted(path2))
-            {
-                Regex regex = new Regex(@"^\\|([..]+)");
-                int backUp = regex.Matches(path2).Count;
-                List<string> pathes = path1.Split('\\').ToList();
-                pathes.RemoveRange(pathes.Count - backUp, backUp);
-                regex = new Regex(@"^\\|([a-zA-Z0-9]+)");
-                MatchCollection matches = regex.Matches(path2);
-                foreach (Match match in matches)
-                {
-                    pathes.Add(match.Value);
-                }
-                pathes[0] = Path.GetPathRoot(path1);
-                foreach (string p in pathes)
-                {
-                    result = Path.Combine(result, p);
-                }
-            }
-            return result;
+            if (Path.IsPathRooted(path2)) return result;
+
+            var regex = new Regex(@"^\\|([..]+)");
+            var backUp = regex.Matches(path2).Count;
+            var pathes = path1.Split('\\').ToList();
+            pathes.RemoveRange(pathes.Count - backUp, backUp);
+            regex = new Regex(@"^\\|([a-zA-Z0-9]+)");
+            var matches = regex.Matches(path2);
+            pathes.AddRange(from Match match in matches select match.Value);
+            pathes[0] = Path.GetPathRoot(path1);
+            return pathes.Aggregate(result, Path.Combine);
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -73,19 +59,12 @@ namespace xZune.Vlc.Wpf
                 if (!ApiManager.IsInited)
                 {
 
-                    VlcSettingsAttribute vlcSettings = System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(typeof(VlcSettingsAttribute),false).First((a) => a is VlcSettingsAttribute) as VlcSettingsAttribute;
+                    var vlcSettings = System.Reflection.Assembly.GetEntryAssembly().GetCustomAttributes(typeof(VlcSettingsAttribute),false).First(a => a is VlcSettingsAttribute) as VlcSettingsAttribute;
                     if(vlcSettings != null)
                     {
                         if(vlcSettings.LibVlcPath != null)
                         {
-                            if (Path.IsPathRooted(vlcSettings.LibVlcPath))
-                            {
-                                ApiManager.LibVlcPath = vlcSettings.LibVlcPath;
-                            }
-                            else
-                            {
-                                ApiManager.LibVlcPath = CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), vlcSettings.LibVlcPath);
-                            }
+                            ApiManager.LibVlcPath = Path.IsPathRooted(vlcSettings.LibVlcPath) ? vlcSettings.LibVlcPath : CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), vlcSettings.LibVlcPath);
                             if (ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '\\' && ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '/')
                             {
                                 ApiManager.LibVlcPath += "\\";
@@ -100,14 +79,8 @@ namespace xZune.Vlc.Wpf
 
                     if (LibVlcPath != null)
                     {
-                        if (Path.IsPathRooted(LibVlcPath))
-                        {
-                            ApiManager.LibVlcPath = LibVlcPath;
-                        }
-                        else
-                        {
-                            ApiManager.LibVlcPath = CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
-                        }
+                        ApiManager.LibVlcPath = Path.IsPathRooted(LibVlcPath) ? LibVlcPath : CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
+                        
                         if (ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '\\' && ApiManager.LibVlcPath[ApiManager.LibVlcPath.Length - 1] != '/')
                         {
                             ApiManager.LibVlcPath += "\\";
@@ -132,17 +105,17 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
                 VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
 
-                lockCallback = VideoLockCallback;
-                unlockCallback = VideoUnlockCallback;
-                displayCallback = VideoDisplayCallback;
-                formatCallback = VideoFormatCallback;
-                cleanupCallback = VideoCleanupCallback;
+                _lockCallback = VideoLockCallback;
+                _unlockCallback = VideoUnlockCallback;
+                _displayCallback = VideoDisplayCallback;
+                _formatCallback = VideoFormatCallback;
+                _cleanupCallback = VideoCleanupCallback;
 
-                lockCallbackHandle = GCHandle.Alloc(lockCallback);
-                unlockCallbackHandle = GCHandle.Alloc(unlockCallback);
-                displayCallbackHandle = GCHandle.Alloc(displayCallback);
-                formatCallbackHandle = GCHandle.Alloc(formatCallback);
-                cleanupCallbackHandle = GCHandle.Alloc(cleanupCallback);
+                _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
+                _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
+                _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
+                _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
+                _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
             }
             base.OnInitialized(e);
         }
@@ -157,11 +130,12 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty LibVlcPathProperty =
-            DependencyProperty.Register(nameof(LibVlcPath), typeof(String), typeof(VlcPlayer), new PropertyMetadata(null, OnLibVlcPathChangedStatic));
+            DependencyProperty.Register("LibVlcPath", typeof(String), typeof(VlcPlayer), new PropertyMetadata(null, OnLibVlcPathChangedStatic));
 
         private static void OnLibVlcPathChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnLibVlcPathChanged(new EventArgs());
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnLibVlcPathChanged(new EventArgs());
         }
 
         /// <summary>
@@ -190,11 +164,12 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty VlcOptionProperty =
-            DependencyProperty.Register(nameof(VlcOption), typeof(String[]), typeof(VlcPlayer), new PropertyMetadata(null, OnVlcOptionChangedStatic));
+            DependencyProperty.Register("VlcOption", typeof(String[]), typeof(VlcPlayer), new PropertyMetadata(null, OnVlcOptionChangedStatic));
 
         private static void OnVlcOptionChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnVlcOptionChanged(new EventArgs());
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnVlcOptionChanged(new EventArgs());
         }
 
         /// <summary>
@@ -215,11 +190,17 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 视频呈现
-        VideoDisplayContext context;
-        
+        VideoDisplayContext _context;
+
+        private IntPtr VideoLockCallback(IntPtr opaque)
+        {
+            IntPtr planes = new IntPtr();
+            return VideoLockCallback(opaque, ref planes);
+        }
+
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
-            return planes = context.MapView;
+            return planes = _context.MapView;
         }
 
         void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
@@ -227,107 +208,105 @@ namespace xZune.Vlc.Wpf
             return;
         }
 
-        async void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
+        void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
-            if (isRunFPS)
+            if (_isRunFps)
             {
-                fpsCount++;
+                _fpsCount++;
             }
-            context.Display();
-            if(snapshotContext != null)
+            _context.Display();
+
+            if (_snapshotContext == null) return;
+
+            _snapshotContext.GetName(this);
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                snapshotContext.GetName(this);
-                await this.Dispatcher.InvokeAsync(() =>
+                switch (_snapshotContext.Format)
                 {
-                    switch (snapshotContext.Format)
-                    {
-                        case SnapshotFormat.BMP:
-                            BmpBitmapEncoder bmpE = new BmpBitmapEncoder();
-                            bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.bmp"))
-                            {
-                                bmpE.Save(stream);
-                            }
-                            break;
-                        case SnapshotFormat.JPG:
-                            JpegBitmapEncoder jpgE = new JpegBitmapEncoder();
-                            jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.jpg"))
-                            {
-                                jpgE.QualityLevel = snapshotContext.Quality;
-                                jpgE.Save(stream);
-                            }
-                            break;
-                        case SnapshotFormat.PNG:
-                            PngBitmapEncoder pngE = new PngBitmapEncoder();
-                            pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                            using (Stream stream = File.Create($"{snapshotContext.Path}\\{snapshotContext.Name}.png"))
-                            {
-                                pngE.Save(stream);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                });
-                //System.Windows.Media.Imaging.WriteableBitmap bm = new System.Windows.Media.Imaging.WriteableBitmap(VideoSource);
-                snapshotContext = null;
-            }
+                    case SnapshotFormat.BMP:
+                        var bmpE = new BmpBitmapEncoder();
+                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.bmp",_snapshotContext.Path,_snapshotContext.Name)))
+                        {
+                            bmpE.Save(stream);
+                        }
+                        break;
+                    case SnapshotFormat.JPG:
+                        var jpgE = new JpegBitmapEncoder();
+                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.jpg",_snapshotContext.Path,_snapshotContext.Name)))
+                        {
+                            jpgE.QualityLevel = _snapshotContext.Quality;
+                            jpgE.Save(stream);
+                        }
+                        break;
+                    case SnapshotFormat.PNG:
+                        var pngE = new PngBitmapEncoder();
+                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.png",_snapshotContext.Path,_snapshotContext.Name)))
+                        {
+                            pngE.Save(stream);
+                        }
+                        break;
+                }
+            }));
+
+            _snapshotContext = null;
         }
 
         uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
         {
-            context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
+            _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
 
             chroma = BitConverter.ToUInt32(new[] { (byte)'R', (byte)'V', (byte)'3', (byte)'2' }, 0);
-            width = (uint)context.Width;
-            height = (uint)context.Height;
-            pitches = (uint)context.Stride;
-            lines = (uint)context.Height;
+            width = (uint)_context.Width;
+            height = (uint)_context.Height;
+            pitches = (uint)_context.Stride;
+            lines = (uint)_context.Height;
 
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(new Action(() =>
             {
-                VideoSource = context.Image;
-            });
+                VideoSource = _context.Image;
+            }));
 
-            return (uint)context.Size;
+            return (uint)_context.Size;
         }
 
         void VideoCleanupCallback(IntPtr opaque)
         {
-            context.Dispose();
+            _context.Dispose();
         }
         #endregion
 
-        #region 属性变更通知
-        public event PropertyChangedEventHandler PropertyChanged;
+        //#region 属性变更通知
+        //public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChange([CallerMemberName]string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        //private void NotifyPropertyChange([CallerMemberName]string propertyName = "")
+        //{
+        //    if (PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
-        protected void SetProperty(ref object field, object newValue, [CallerMemberName]string propertyName = "")
-        {
-            if (field != newValue)
-            {
-                field = newValue;
-                NotifyPropertyChange(propertyName);
-            }
-        }
+        //protected void SetProperty(ref object field, object newValue, [CallerMemberName]string propertyName = "")
+        //{
+        //    if (field != newValue)
+        //    {
+        //        field = newValue;
+        //        NotifyPropertyChange(propertyName);
+        //    }
+        //}
 
-        protected void SetProperty<T>(ref T field, T newValue, [CallerMemberName]string propertyName = "")
-        {
-            if (!object.Equals(field, newValue))
-            {
-                field = newValue;
-                NotifyPropertyChange(propertyName);
-            }
-        }
-        #endregion
+        //protected void SetProperty<T>(ref T field, T newValue, [CallerMemberName]string propertyName = "")
+        //{
+        //    if (!object.Equals(field, newValue))
+        //    {
+        //        field = newValue;
+        //        NotifyPropertyChange(propertyName);
+        //    }
+        //}
+        //#endregion
 
         #region 依赖属性 VideoSource
         /// <summary>
@@ -340,11 +319,12 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty VideoSourceProperty =
-            DependencyProperty.Register(nameof(VideoSource), typeof(InteropBitmap), typeof(VlcPlayer), new PropertyMetadata(null, OnVideoSourceChangedStatic));
+            DependencyProperty.Register("VideoSource", typeof(InteropBitmap), typeof(VlcPlayer), new PropertyMetadata(null, OnVideoSourceChangedStatic));
 
         private static void OnVideoSourceChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnVideoSourceChanged(new EventArgs());
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnVideoSourceChanged(new EventArgs());
         }
 
         /// <summary>
@@ -366,7 +346,7 @@ namespace xZune.Vlc.Wpf
 
         #region 依赖属性 Position
 
-        bool setVlcPosition = true;
+        bool _setVlcPosition = true;
 
         private void VlcMediaPlayerPositionChanged(object sender, EventArgs e)
         {
@@ -375,8 +355,8 @@ namespace xZune.Vlc.Wpf
 
         private void SetPosition(float pos, bool setVlcPosition)
         {
-            this.setVlcPosition = setVlcPosition;
-            Dispatcher.Invoke(() => SetValue(PositionProperty, pos));
+            _setVlcPosition = setVlcPosition;
+            Dispatcher.Invoke(new Action(() => SetValue(PositionProperty, pos)));
         }
 
         /// <summary>
@@ -389,11 +369,12 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register(nameof(Position), typeof(float), typeof(VlcPlayer), new PropertyMetadata(0.0f, OnPositionChangedStatic));
+            DependencyProperty.Register("Position", typeof(float), typeof(VlcPlayer), new PropertyMetadata(0.0f, OnPositionChangedStatic));
 
         private static void OnPositionChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnPositionChanged(e);
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnPositionChanged(e);
         }
 
         /// <summary>
@@ -401,11 +382,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         protected void OnPositionChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (setVlcPosition)
+            if (_setVlcPosition)
             {
                 VlcMediaPlayer.Position = (float)e.NewValue;
             }
-            setVlcPosition = true;
+            _setVlcPosition = true;
             if (PositionChanged != null)
             {
                 PositionChanged(this, e);
@@ -415,12 +396,12 @@ namespace xZune.Vlc.Wpf
         /// <summary>
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.Position"/> 属性改变时调用
         /// </summary>
-        public event EventHandler<DependencyPropertyChangedEventArgs> PositionChanged;
+        public event DependencyPropertyChangedEventHandler PositionChanged;
         #endregion
 
         #region 依赖属性 Time
 
-        bool setVlcTime = true;
+        bool _setVlcTime = true;
 
         private void VlcMediaPlayerTimeChanged(object sender, EventArgs e)
         {
@@ -429,8 +410,8 @@ namespace xZune.Vlc.Wpf
 
         private void SetTime(TimeSpan time, bool setVlcTime)
         {
-            this.setVlcTime = setVlcTime;
-            Dispatcher.Invoke(() => SetValue(TimeProperty, time));
+            _setVlcTime = setVlcTime;
+            Dispatcher.Invoke(new Action(() => SetValue(TimeProperty, time)));
         }
 
         /// <summary>
@@ -443,13 +424,14 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty TimeProperty =
-            DependencyProperty.Register(nameof(Time), typeof(TimeSpan), typeof(VlcPlayer), new PropertyMetadata(TimeSpan.Zero, OnTimeChangedStatic));
+            DependencyProperty.Register("Time", typeof(TimeSpan), typeof(VlcPlayer), new PropertyMetadata(TimeSpan.Zero, OnTimeChangedStatic));
 
         private static void OnTimeChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnTimeChanged(e);
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnTimeChanged(e);
         }
-        
+
 
         public Stretch Stretch
         {
@@ -476,11 +458,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         protected void OnTimeChanged(DependencyPropertyChangedEventArgs e)
         {
-            if (setVlcTime)
+            if (_setVlcTime)
             {
                 VlcMediaPlayer.Time = (TimeSpan)e.NewValue;
             }
-            setVlcTime = true;
+            _setVlcTime = true;
             if (TimeChanged != null)
             {
                 TimeChanged(this, e);
@@ -490,28 +472,25 @@ namespace xZune.Vlc.Wpf
         /// <summary>
         /// 在 MediaPlayer 的 <see cref="MediaPlayer.Time"/> 属性改变时调用
         /// </summary>
-        public event EventHandler<DependencyPropertyChangedEventArgs> TimeChanged;
+        public event DependencyPropertyChangedEventHandler TimeChanged;
         #endregion
 
         #region 依赖属性 FPS
-        private System.Windows.Threading.DispatcherTimer timer;
-        private int fpsCount = 0;
-        private bool isRunFPS = false;
+        private System.Windows.Threading.DispatcherTimer _timer;
+        private int _fpsCount;
+        private bool _isRunFps;
 
         /// <summary>
         /// 开始FPS计数
         /// </summary>
         public void StartFPS()
         {
-            if (!isRunFPS)
-            {
-                timer = new System.Windows.Threading.DispatcherTimer();
-                timer.Interval = new TimeSpan(0, 0, 1);
-                timer.Tick += FPSTick;
-                isRunFPS = true;
-                fpsCount = 0;
-                timer.Start();
-            }
+            if (_isRunFps) return;
+            _timer = new System.Windows.Threading.DispatcherTimer {Interval = new TimeSpan(0, 0, 1)};
+            _timer.Tick += FPSTick;
+            _isRunFps = true;
+            _fpsCount = 0;
+            _timer.Start();
         }
 
         /// <summary>
@@ -519,15 +498,16 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void StopFPS()
         {
-            timer?.Stop();
-            timer = null;
-            isRunFPS = false;
+            if (_timer == null) return;
+            _timer.Stop();
+            _timer = null;
+            _isRunFps = false;
         }
 
         private void FPSTick(object sender, EventArgs e)
         {
-            FPS = fpsCount;
-            fpsCount = 0;
+            FPS = _fpsCount;
+            _fpsCount = 0;
         }
 
         /// <summary>
@@ -540,11 +520,12 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty FPSProperty =
-            DependencyProperty.Register(nameof(FPS), typeof(int), typeof(VlcPlayer), new PropertyMetadata(0, OnFPSChangedStatic));
+            DependencyProperty.Register("FPS", typeof(int), typeof(VlcPlayer), new PropertyMetadata(0, OnFPSChangedStatic));
 
         private static void OnFPSChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as VlcPlayer).OnFPSChanged(new EventArgs());
+            var vlcPlayer = sender as VlcPlayer;
+            if (vlcPlayer != null) vlcPlayer.OnFPSChanged(new EventArgs());
         }
 
         /// <summary>
@@ -573,12 +554,9 @@ namespace xZune.Vlc.Wpf
             }
             set
             {
-                if (value != VlcMediaPlayer.IsMute)
-                {
-                    VlcMediaPlayer.IsMute = value;
-                    NotifyPropertyChange();
-                    IsMuteChanged?.Invoke(this, new EventArgs());
-                }
+                if (value == VlcMediaPlayer.IsMute) return;
+                VlcMediaPlayer.IsMute = value;
+                if (IsMuteChanged != null) IsMuteChanged.Invoke(this, new EventArgs());
             }
         }
         public event EventHandler IsMuteChanged;
@@ -593,19 +571,16 @@ namespace xZune.Vlc.Wpf
             }
             set
             {
-                if (value != VlcMediaPlayer.Volume)
-                {
-                    VlcMediaPlayer.Volume = value;
-                    NotifyPropertyChange();
-                    VolumeChanged?.Invoke(this, new EventArgs());
-                }
+                if (value == VlcMediaPlayer.Volume) return;
+                VlcMediaPlayer.Volume = value;;
+                if (VolumeChanged != null) VolumeChanged.Invoke(this, new EventArgs());
             }
         }
         public event EventHandler VolumeChanged;
         #endregion
 
         #region 属性 AudioOutputChannel
-        public Interop.MediaPlayer.AudioOutputChannel AudioOutputChannel
+        public AudioOutputChannel AudioOutputChannel
         {
             get
             {
@@ -673,16 +648,11 @@ namespace xZune.Vlc.Wpf
             IsSeekable = VlcMediaPlayer.IsSeekable;
         }
 
-        private bool isSeekable;
-
         /// <summary>
         /// 获取一个值,该值表示是否允许调整进度条
         /// </summary>
-        public bool IsSeekable
-        {
-            get { return isSeekable; }
-            private set { SetProperty<bool>(ref isSeekable, value); }
-        }
+        public bool IsSeekable { get; private set; }
+
         #endregion
 
         #region 只读属性 State
@@ -691,16 +661,11 @@ namespace xZune.Vlc.Wpf
             State = VlcMediaPlayer.State;
         }
 
-        private xZune.Vlc.Interop.Media.MediaState state;
-
         /// <summary>
         /// 获取一个值,该值表示当前的媒体状态
         /// </summary>
-        public xZune.Vlc.Interop.Media.MediaState State
-        {
-            get { return state; }
-            private set { SetProperty<xZune.Vlc.Interop.Media.MediaState>(ref state, value); }
-        }
+        public Interop.Media.MediaState State { get; private set; }
+
         #endregion
 
         #region 只读属性 Length
@@ -710,16 +675,10 @@ namespace xZune.Vlc.Wpf
             Length = VlcMediaPlayer.Length;
         }
 
-        private TimeSpan length;
-
         /// <summary>
         /// 获取一个值,该值表示当前的媒体的长度
         /// </summary>
-        public TimeSpan Length
-        {
-            get { return length; }
-            set { SetProperty<TimeSpan>(ref length, value); }
-        }
+        public TimeSpan Length { get; private set; }
         #endregion
 
         #region 只读属性 VlcMediaPlayer
@@ -734,7 +693,7 @@ namespace xZune.Vlc.Wpf
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            VlcMediaPlayer.Media?.Dispose();
+            if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -747,25 +706,20 @@ namespace xZune.Vlc.Wpf
                 path += '/';
             }
             int index;
-            if((index = path.IndexOf(":/")) != -1 && index + 2 == path.Length)
-            {
-                return true;
-            }
-            return false;
-
+            return (index = path.IndexOf(":/", StringComparison.Ordinal)) != -1 && index + 2 == path.Length;
         }
 
         public void LoadMedia(Uri uri)
         {
-            VlcMediaPlayer.Media?.Dispose();
+             if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
         }
 
         public void Play()
         {
-            VlcMediaPlayer.SetVideoDecodeCallback(lockCallback, unlockCallback, displayCallback, IntPtr.Zero);
-            VlcMediaPlayer.SetVideoFormatCallback(formatCallback, cleanupCallback);
+            VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
+            VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);
 
             VlcMediaPlayer.Play();
         }
@@ -777,7 +731,7 @@ namespace xZune.Vlc.Wpf
 
         public void AddOption(String option)
         {
-            VlcMediaPlayer.Media?.AddOption(option);
+            if(VlcMediaPlayer.Media != null)  VlcMediaPlayer.Media.AddOption(option);
         }
 
         public void NextFrame()
@@ -790,35 +744,31 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.ToggleMute();
         }
 
-        public void Navigate(Interop.MediaPlayer.NavigateMode mode)
+        public void Navigate(NavigateMode mode)
         {
             VlcMediaPlayer.Navigate(mode);
         }
 
-        public async Task Stop()
+        public void Stop()
         {
-
-            if (VlcMediaPlayer.Media != null )
+            if (VlcMediaPlayer.Media != null)
             {
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
 
                 VlcMediaPlayer.Pause();
 
-                await Task.Run(() =>
-                {
-                    System.Threading.Thread.Sleep(50);
-                    VlcMediaPlayer.Stop();
+                System.Threading.Thread.Sleep(50);
+                VlcMediaPlayer.Stop();
 
-                    context?.Dispose();
-                    context = null;
-                });
+                if (_context != null) _context.Dispose();
+                _context = null;
 
                 VideoSource = null;
             }
         }
 
-        SnapshotContext snapshotContext;
+        SnapshotContext _snapshotContext;
 
         public void TakeSnapshot(String path, SnapshotFormat format, int quality)
         {
@@ -833,7 +783,7 @@ namespace xZune.Vlc.Wpf
                     break;
                 case Interop.Media.MediaState.Playing:
                 case Interop.Media.MediaState.Paused:
-                    snapshotContext = new SnapshotContext(path, format, quality);
+                    _snapshotContext = new SnapshotContext(path, format, quality);
                     break;
             }
         }
@@ -841,7 +791,7 @@ namespace xZune.Vlc.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            bool test = VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
+            VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
         }
 
         int GetVideoPositionX(double x)
@@ -857,15 +807,15 @@ namespace xZune.Vlc.Wpf
                             px = (int)x;
                             break;
                         case HorizontalAlignment.Center:
-                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                            px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                             break;
                         case HorizontalAlignment.Right:
-                            px = (int)(x - (this.ActualWidth - context.Width));
+                            px = (int)(x - (this.ActualWidth - _context.Width));
                             break;
                         case HorizontalAlignment.Stretch:
-                            if(this.ActualWidth > context.Width)
+                            if(this.ActualWidth > _context.Width)
                             {
-                                px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                             }
                             else
                             {
@@ -878,25 +828,25 @@ namespace xZune.Vlc.Wpf
                     switch (this.StretchDirection)
                     {
                         case StretchDirection.UpOnly:
-                            if (this.ActualWidth > context.Width)
+                            if (this.ActualWidth > _context.Width)
                             {
-                                px = (int)(x / this.ActualWidth * context.Width);
+                                px = (int)(x / this.ActualWidth * _context.Width);
                             }
                             break;
                         case StretchDirection.DownOnly:
-                            if(this.ActualWidth < context.Width)
+                            if(this.ActualWidth < _context.Width)
                             {
-                                px = (int)(x / this.ActualWidth * context.Width);
+                                px = (int)(x / this.ActualWidth * _context.Width);
                             }
                             break;
                         case StretchDirection.Both:
-                            px = (int)(x / this.ActualWidth * context.Width);
+                            px = (int)(x / this.ActualWidth * _context.Width);
                             break;
                     }
                     break;
                 case Stretch.Uniform:
-                    scaleX = this.ActualWidth / context.Width;
-                    scaleY = this.ActualHeight / context.Height;
+                    scaleX = this.ActualWidth / _context.Width;
+                    scaleY = this.ActualHeight / _context.Height;
                     scale = Math.Min(scaleX, scaleY);
 
                     switch (this.StretchDirection)
@@ -916,13 +866,13 @@ namespace xZune.Vlc.Wpf
                                             px = (int)(x / scale);
                                             break;
                                         case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            px = (int)((x - (this.ActualWidth - _context.Width * scale)) / scale);
                                             break;
                                         case HorizontalAlignment.Stretch:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         default:
                                             break;
@@ -937,15 +887,15 @@ namespace xZune.Vlc.Wpf
                                         px = (int)x;
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        px = (int)(x - (this.ActualWidth - _context.Width));
                                         break;
                                     case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > context.Width)
+                                        if (this.ActualWidth > _context.Width)
                                         {
-                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                            px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         }
                                         else
                                         {
@@ -970,13 +920,13 @@ namespace xZune.Vlc.Wpf
                                             px = (int)(x / scale);
                                             break;
                                         case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            px = (int)((x - (this.ActualWidth - _context.Width * scale)) / scale);
                                             break;
                                         case HorizontalAlignment.Stretch:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         default:
                                             break;
@@ -991,15 +941,15 @@ namespace xZune.Vlc.Wpf
                                         px = (int)x;
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        px = (int)(x - (this.ActualWidth - _context.Width));
                                         break;
                                     case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > context.Width)
+                                        if (this.ActualWidth > _context.Width)
                                         {
-                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                            px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         }
                                         else
                                         {
@@ -1022,15 +972,13 @@ namespace xZune.Vlc.Wpf
                                         px = (int)(x / scale);
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                        px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                        px = (int)((x - (this.ActualWidth - _context.Width * scale)) / scale);
                                         break;
                                     case HorizontalAlignment.Stretch:
-                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
-                                        break;
-                                    default:
+                                        px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                         break;
                                 }
                             }
@@ -1038,11 +986,11 @@ namespace xZune.Vlc.Wpf
                     }
                     break;
                 case Stretch.UniformToFill:
-                    scaleX = this.ActualWidth / context.Width;
-                    scaleY = this.ActualHeight / context.Height;
+                    scaleX = ActualWidth / _context.Width;
+                    scaleY = ActualHeight / _context.Height;
                     scale = Math.Max(scaleX, scaleY);
 
-                    switch (this.StretchDirection)
+                    switch (StretchDirection)
                     {
                         case StretchDirection.UpOnly:
                             if (scale > 1)
@@ -1059,10 +1007,10 @@ namespace xZune.Vlc.Wpf
                                             px = (int)(x / scale);
                                             break;
                                         case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            px = (int)((x - (this.ActualWidth - _context.Width * scale)) / scale);
                                             break;
                                         case HorizontalAlignment.Stretch:
                                             px = (int)(x / scale);
@@ -1080,15 +1028,15 @@ namespace xZune.Vlc.Wpf
                                         px = (int)x;
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        px = (int)(x - (this.ActualWidth - _context.Width));
                                         break;
                                     case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > context.Width)
+                                        if (this.ActualWidth > _context.Width)
                                         {
-                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                            px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                                         }
                                         else
                                         {
@@ -1107,42 +1055,40 @@ namespace xZune.Vlc.Wpf
                                 }
                                 else
                                 {
-                                    switch (this.HorizontalContentAlignment)
+                                    switch (HorizontalContentAlignment)
                                     {
                                         case HorizontalAlignment.Left:
                                             px = (int)(x / scale);
                                             break;
                                         case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                            px = (int)((x - ((ActualWidth - _context.Width * scale) / 2)) / scale);
                                             break;
                                         case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                            px = (int)((x - (ActualWidth - _context.Width * scale)) / scale);
                                             break;
                                         case HorizontalAlignment.Stretch:
                                             px = (int)(x / scale);
-                                            break;
-                                        default:
                                             break;
                                     }
                                 }
                             }
                             else
                             {
-                                switch (this.HorizontalContentAlignment)
+                                switch (HorizontalContentAlignment)
                                 {
                                     case HorizontalAlignment.Left:
                                         px = (int)x;
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                        px = (int)(x - ((ActualWidth - _context.Width) / 2));
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - context.Width));
+                                        px = (int)(x - (ActualWidth - _context.Width));
                                         break;
                                     case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > context.Width)
+                                        if (ActualWidth > _context.Width)
                                         {
-                                            px = (int)(x - ((this.ActualWidth - context.Width) / 2));
+                                            px = (int)(x - ((ActualWidth - _context.Width) / 2));
                                         }
                                         else
                                         {
@@ -1165,10 +1111,10 @@ namespace xZune.Vlc.Wpf
                                         px = (int)(x / scale);
                                         break;
                                     case HorizontalAlignment.Center:
-                                        px = (int)((x - ((this.ActualWidth - context.Width * scale) / 2)) / scale);
+                                        px = (int)((x - ((this.ActualWidth - _context.Width * scale) / 2)) / scale);
                                         break;
                                     case HorizontalAlignment.Right:
-                                        px = (int)((x - (this.ActualWidth - context.Width * scale)) / scale);
+                                        px = (int)((x - (this.ActualWidth - _context.Width * scale)) / scale);
                                         break;
                                     case HorizontalAlignment.Stretch:
                                         px = (int)(x / scale);
@@ -1197,15 +1143,15 @@ namespace xZune.Vlc.Wpf
                             py = (int)y;
                             break;
                         case VerticalAlignment.Center:
-                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                            py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                             break;
                         case VerticalAlignment.Bottom:
-                            py = (int)(y - (this.ActualHeight - context.Height));
+                            py = (int)(y - (this.ActualHeight - _context.Height));
                             break;
                         case VerticalAlignment.Stretch:
-                            if (this.ActualHeight > context.Height)
+                            if (this.ActualHeight > _context.Height)
                             {
-                                py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                             }
                             else
                             {
@@ -1218,25 +1164,25 @@ namespace xZune.Vlc.Wpf
                     switch (this.StretchDirection)
                     {
                         case StretchDirection.UpOnly:
-                            if (this.ActualHeight > context.Height)
+                            if (this.ActualHeight > _context.Height)
                             {
-                                py = (int)(y / this.ActualHeight * context.Height);
+                                py = (int)(y / this.ActualHeight * _context.Height);
                             }
                             break;
                         case StretchDirection.DownOnly:
-                            if (this.ActualHeight < context.Height)
+                            if (this.ActualHeight < _context.Height)
                             {
-                                py = (int)(y / this.ActualHeight * context.Height);
+                                py = (int)(y / this.ActualHeight * _context.Height);
                             }
                             break;
                         case StretchDirection.Both:
-                            py = (int)(y / this.ActualHeight * context.Height);
+                            py = (int)(y / this.ActualHeight * _context.Height);
                             break;
                     }
                     break;
                 case Stretch.Uniform:
-                    scaleX = this.ActualWidth / context.Width;
-                    scaleY = this.ActualHeight / context.Height;
+                    scaleX = this.ActualWidth / _context.Width;
+                    scaleY = this.ActualHeight / _context.Height;
                     scale = Math.Min(scaleX, scaleY);
 
                     switch (this.StretchDirection)
@@ -1256,13 +1202,13 @@ namespace xZune.Vlc.Wpf
                                             py = (int)(y / scale);
                                             break;
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                             break;
                                         case VerticalAlignment.Stretch:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         default:
                                             break;
@@ -1277,15 +1223,15 @@ namespace xZune.Vlc.Wpf
                                         py = (int)y;
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        py = (int)(y - (this.ActualHeight - _context.Height));
                                         break;
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > context.Height)
+                                        if (this.ActualHeight > _context.Height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                            py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         }
                                         else
                                         {
@@ -1310,13 +1256,13 @@ namespace xZune.Vlc.Wpf
                                             py = (int)(y / scale);
                                             break;
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                             break;
                                         case VerticalAlignment.Stretch:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         default:
                                             break;
@@ -1331,15 +1277,15 @@ namespace xZune.Vlc.Wpf
                                         py = (int)y;
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        py = (int)(y - (this.ActualHeight - _context.Height));
                                         break;
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > context.Height)
+                                        if (this.ActualHeight > _context.Height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                            py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         }
                                         else
                                         {
@@ -1362,13 +1308,13 @@ namespace xZune.Vlc.Wpf
                                         py = (int)(y / scale);
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                        py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                         break;
                                     case VerticalAlignment.Stretch:
-                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                         break;
                                     default:
                                         break;
@@ -1378,8 +1324,8 @@ namespace xZune.Vlc.Wpf
                     }
                     break;
                 case Stretch.UniformToFill:
-                    scaleX = this.ActualWidth / context.Width;
-                    scaleY = this.ActualHeight / context.Height;
+                    scaleX = this.ActualWidth / _context.Width;
+                    scaleY = this.ActualHeight / _context.Height;
                     scale = Math.Max(scaleX, scaleY);
 
                     switch (this.StretchDirection)
@@ -1399,10 +1345,10 @@ namespace xZune.Vlc.Wpf
                                             py = (int)(y / scale);
                                             break;
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                             break;
                                         case VerticalAlignment.Stretch:
                                             py = (int)(y / scale);
@@ -1420,15 +1366,15 @@ namespace xZune.Vlc.Wpf
                                         py = (int)y;
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        py = (int)(y - (this.ActualHeight - _context.Height));
                                         break;
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > context.Height)
+                                        if (this.ActualHeight > _context.Height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                            py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         }
                                         else
                                         {
@@ -1453,10 +1399,10 @@ namespace xZune.Vlc.Wpf
                                             py = (int)(y / scale);
                                             break;
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                            py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                             break;
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                            py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                             break;
                                         case VerticalAlignment.Stretch:
                                             py = (int)(y / scale);
@@ -1474,15 +1420,15 @@ namespace xZune.Vlc.Wpf
                                         py = (int)y;
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                        py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - context.Height));
+                                        py = (int)(y - (this.ActualHeight - _context.Height));
                                         break;
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > context.Height)
+                                        if (this.ActualHeight > _context.Height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - context.Height) / 2));
+                                            py = (int)(y - ((this.ActualHeight - _context.Height) / 2));
                                         }
                                         else
                                         {
@@ -1505,10 +1451,10 @@ namespace xZune.Vlc.Wpf
                                         py = (int)(y / scale);
                                         break;
                                     case VerticalAlignment.Center:
-                                        py = (int)((y - ((this.ActualHeight - context.Height * scale) / 2)) / scale);
+                                        py = (int)((y - ((this.ActualHeight - _context.Height * scale) / 2)) / scale);
                                         break;
                                     case VerticalAlignment.Bottom:
-                                        py = (int)((y - (this.ActualHeight - context.Height * scale)) / scale);
+                                        py = (int)((y - (this.ActualHeight - _context.Height * scale)) / scale);
                                         break;
                                     case VerticalAlignment.Stretch:
                                         py = (int)(y / scale);
@@ -1564,20 +1510,33 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        bool disposed = false;
+        bool _disposed = false;
 
-        protected async void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
-            if (disposed)
+            if (_disposed)
             {
                 return;
             }
 
-            await Stop();
-            VlcMediaPlayer?.Media?.Dispose();
-            VlcMediaPlayer?.Dispose();
+            Stop();
 
-            disposed = true;
+            if (VlcMediaPlayer != null)
+            {
+                if (VlcMediaPlayer.Media != null)
+                {
+                    VlcMediaPlayer.Media.Dispose();
+                }
+                VlcMediaPlayer.Dispose();
+            }
+
+            _lockCallbackHandle.Free();
+            _unlockCallbackHandle.Free();
+            _displayCallbackHandle.Free();
+            _formatCallbackHandle.Free();
+            _cleanupCallbackHandle.Free();
+
+            _disposed = true;
         }
 
         /// <summary>
@@ -1622,38 +1581,37 @@ namespace xZune.Vlc.Wpf
             Height = height;
             PixelFormat = format;
             Stride = width * format.BitsPerPixel / 8;
-            FileMapping = Win32API.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
-            MapView = Win32API.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint)Size);
-            Application.Current.Dispatcher.Invoke(() =>
+            FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
+            MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint)Size);
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
                 Image = (InteropBitmap)Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
-            });
+            }));
         }
 
         public void Display()
         {
-            Application.Current?.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                Image?.Invalidate();
-            });
+                Image.Invalidate();
+            }));
         }
 
-        bool disposed = false;
+        bool _disposed = false;
 
         public void Dispose(bool disposing)
         {
-            if (!disposed)
-            {
-                Size = 0;
-                Width = 0;
-                Height = 0;
-                PixelFormat = PixelFormats.Default;
-                Stride = 0;
-                Image = null;
-                Win32API.UnmapViewOfFile(MapView);
-                Win32API.CloseHandle(FileMapping);
-                FileMapping = MapView = IntPtr.Zero;
-            }
+            if (_disposed) return;
+            Size = 0;
+            Width = 0;
+            Height = 0;
+            PixelFormat = PixelFormats.Default;
+            Stride = 0;
+            Image = null;
+            Win32Api.UnmapViewOfFile(MapView);
+            Win32Api.CloseHandle(FileMapping);
+            FileMapping = MapView = IntPtr.Zero;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -1671,6 +1629,7 @@ namespace xZune.Vlc.Wpf
 
     public class SnapshotContext
     {
+        private static int _count;
         public SnapshotContext(String path, SnapshotFormat format,int quality)
         {
             Path = path.Replace('/', '\\');
@@ -1682,7 +1641,6 @@ namespace xZune.Vlc.Wpf
             Quality = quality;
         }
 
-        static int count = 0;
         public String Path { get; private set; }
         public String Name { get; private set; }
         public SnapshotFormat Format { get; private set; }
@@ -1690,10 +1648,12 @@ namespace xZune.Vlc.Wpf
 
         public String GetName (VlcPlayer player)
         {
-            player.Dispatcher.Invoke(() =>
+            player.Dispatcher.Invoke(new Action(() =>
             {
-                Name = $"{GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", ""))}-{(int)(player.Time.TotalMilliseconds)}-{count++}";
-            });
+                Name = String.Format("{0}-{1}-{2}",
+                    GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
+                    (int) (player.Time.TotalMilliseconds), _count++);
+            }));
             return Name;
         }
 

@@ -6,7 +6,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:VlcPlayer}">
-                    <Image HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Source="{TemplateBinding VideoSource}" Stretch="{TemplateBinding Stretch}" StretchDirection="{TemplateBinding StretchDirection}"></Image>
+                    <Border Background="{TemplateBinding Background}">
+                        <Image HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Source="{TemplateBinding VideoSource}" Stretch="{TemplateBinding Stretch}" StretchDirection="{TemplateBinding StretchDirection}"></Image>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

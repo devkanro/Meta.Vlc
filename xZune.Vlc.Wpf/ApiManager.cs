@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
-using xZune.Vlc;
 
 namespace xZune.Vlc.Wpf
 {
@@ -15,7 +8,7 @@ namespace xZune.Vlc.Wpf
         {
             IsInited = false;
             LibVlcPath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\LibVlc\";
-            VlcOption = new String[]
+            VlcOption = new []
             {
                 "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
             };
@@ -30,7 +23,7 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 只读静态属性 Vlc
-        public static xZune.Vlc.Vlc Vlc { get; private set; }
+        public static Vlc Vlc { get; private set; }
         #endregion
 
         #region 只读静态属性 IsInited
@@ -39,11 +32,9 @@ namespace xZune.Vlc.Wpf
 
         public static void Init()
         {
-            if(!IsInited)
-            {
-                xZune.Vlc.Vlc.LoadLibVlc(LibVlcPath);
-                Vlc = new xZune.Vlc.Vlc(VlcOption);
-            }
+            if (IsInited) return;
+            Vlc.LoadLibVlc(LibVlcPath);
+            Vlc = new Vlc(VlcOption);
         }
 
         public static void Init(String libVlcPath)
@@ -61,7 +52,8 @@ namespace xZune.Vlc.Wpf
 
         public static void ReleaseAll()
         {
-            Vlc?.Dispose();
+            if(Vlc != null)
+            Vlc.Dispose();
         }
     }
 }

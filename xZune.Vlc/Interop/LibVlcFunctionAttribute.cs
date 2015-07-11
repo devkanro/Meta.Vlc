@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace xZune.Vlc.Interop
 {
-
-    using VlcHandle = System.IntPtr;
-
     /// <summary>
     /// 为 LibVlc 函数委托初始化提供必要的信息
     /// </summary>

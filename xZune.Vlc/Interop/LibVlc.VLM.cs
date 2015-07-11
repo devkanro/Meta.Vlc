@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using xZune.Vlc.Interop;
 
 namespace xZune.Vlc.Interop.VLM
 {

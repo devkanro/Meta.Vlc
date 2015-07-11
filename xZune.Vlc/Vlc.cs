@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core;
@@ -25,8 +20,7 @@ namespace xZune.Vlc
         /// <summary>
         /// 提供指定的路径,载入 LibVlc
         /// </summary>
-        /// <param name="libPath">LibVlc 库路径</param>
-        /// <param name="pluginPath">LibVlc 插件路径</param>
+        /// <param name="libDirectory">LibVlc 库路径</param>
         public static void LoadLibVlc(String libDirectory)
         {
             LibDirectory = libDirectory;
@@ -42,36 +36,36 @@ namespace xZune.Vlc
             {
                 try
                 {
-                    LibCoreHandle = Win32API.LoadLibrary(String.Concat(LibDirectory, "libvlccore.dll"));
-                    LibHandle = Win32API.LoadLibrary(Path.Combine(LibDirectory, "libvlc.dll"));
+                    LibCoreHandle = Win32Api.LoadLibrary(String.Concat(LibDirectory, "libvlccore.dll"));
+                    LibHandle = Win32Api.LoadLibrary(Path.Combine(LibDirectory, "libvlc.dll"));
                 }
                 catch (Win32Exception e)
                 {
                     throw new Exception("无法载入 LibVlc 库", e);
                 }
 
-                GetVersionFunction = new LibVlcFunction<GetVersion>(LibHandle);
-                var versionString = InteropHelper.PtrToString(GetVersionFunction.Delegate());
+                _getVersionFunction = new LibVlcFunction<GetVersion>(LibHandle);
+                var versionString = InteropHelper.PtrToString(_getVersionFunction.Delegate());
                 var match = Regex.Match(versionString, "^[0-9.]*");
                 if (match.Success)
                 {
                     LibVersion = new Version(match.Groups[0].Value);
                 }
                 var devString = versionString.Split(' ', '-')[1];
-                NewInstanceFunction = new LibVlcFunction<NewInstance>(LibHandle, LibVersion, devString);
-                ReleaseInstanceFunction = new LibVlcFunction<ReleaseInstance>(LibHandle, LibVersion, devString);
-                RetainInstanceFunction = new LibVlcFunction<RetainInstance>(LibHandle, LibVersion, devString);
-                AddInterfaceFunction = new LibVlcFunction<AddInterface>(LibHandle, LibVersion, devString);
-                SetExitHandlerFunction = new LibVlcFunction<SetExitHandler>(LibHandle, LibVersion, devString);
-                WaitFunction = new LibVlcFunction<Wait>(LibHandle, LibVersion, devString);
-                SetUserAgentFunction = new LibVlcFunction<SetUserAgent>(LibHandle, LibVersion, devString);
-                SetAppIdFunction = new LibVlcFunction<SetAppId>(LibHandle, LibVersion, devString);
-                GetCompilerFunction = new LibVlcFunction<GetCompiler>(LibHandle, LibVersion, devString);
-                GetChangesetFunction = new LibVlcFunction<GetChangeset>(LibHandle, LibVersion, devString);
-                FreeFunction = new LibVlcFunction<Free>(LibHandle, LibVersion, devString);
-                ReleaseLibVlcModuleDescriptionFunction = new LibVlcFunction<ReleaseLibVlcModuleDescription>(LibHandle, LibVersion, devString);
-                GetAudioFilterListFunction = new LibVlcFunction<GetAudioFilterList>(LibHandle, LibVersion, devString);
-                GetVideoFilterListFunction = new LibVlcFunction<GetVideoFilterList>(LibHandle, LibVersion, devString);
+                _newInstanceFunction = new LibVlcFunction<NewInstance>(LibHandle, LibVersion, devString);
+                _releaseInstanceFunction = new LibVlcFunction<ReleaseInstance>(LibHandle, LibVersion, devString);
+                _retainInstanceFunction = new LibVlcFunction<RetainInstance>(LibHandle, LibVersion, devString);
+                _addInterfaceFunction = new LibVlcFunction<AddInterface>(LibHandle, LibVersion, devString);
+                _setExitHandlerFunction = new LibVlcFunction<SetExitHandler>(LibHandle, LibVersion, devString);
+                _waitFunction = new LibVlcFunction<Wait>(LibHandle, LibVersion, devString);
+                _setUserAgentFunction = new LibVlcFunction<SetUserAgent>(LibHandle, LibVersion, devString);
+                _setAppIdFunction = new LibVlcFunction<SetAppId>(LibHandle, LibVersion, devString);
+                _getCompilerFunction = new LibVlcFunction<GetCompiler>(LibHandle, LibVersion, devString);
+                _getChangesetFunction = new LibVlcFunction<GetChangeset>(LibHandle, LibVersion, devString);
+                _freeFunction = new LibVlcFunction<Free>(LibHandle, LibVersion, devString);
+                _releaseLibVlcModuleDescriptionFunction = new LibVlcFunction<ReleaseLibVlcModuleDescription>(LibHandle, LibVersion, devString);
+                _getAudioFilterListFunction = new LibVlcFunction<GetAudioFilterList>(LibHandle, LibVersion, devString);
+                _getVideoFilterListFunction = new LibVlcFunction<GetVideoFilterList>(LibHandle, LibVersion, devString);
                 VlcError.LoadLibVlc(LibHandle, LibVersion, devString);
                 VlcEventManager.LoadLibVlc(LibHandle, LibVersion, devString);
                 VlcMedia.LoadLibVlc(LibHandle, LibVersion, devString);
@@ -113,65 +107,65 @@ namespace xZune.Vlc
         /// 创建并初始化一个 LibVlc 实例,并提供相应的参数,这些参数和命令行提供的参数类似,会影响到 LibVlc 实例的默认配置.
         /// 有效参数的列表取决于 LibVlc 版本,操作系统,可用 LibVlc 插件和平台.无效或不支持的参数会导致实例创建失败
         /// </summary>
-        private static LibVlcFunction<NewInstance> NewInstanceFunction;
+        private static LibVlcFunction<NewInstance> _newInstanceFunction;
         /// <summary>
         /// 递减 LibVlc 实例的引用计数,如果它达到零,将会释放这个实例
         /// </summary>
-        private static LibVlcFunction<ReleaseInstance> ReleaseInstanceFunction;
+        private static LibVlcFunction<ReleaseInstance> _releaseInstanceFunction;
         /// <summary>
         /// 递增 LibVlc 实例的引用计数,当调用 NewInstance 初始化成功时,引用计数将初始化为1
         /// </summary>
-        private static LibVlcFunction<RetainInstance> RetainInstanceFunction;
+        private static LibVlcFunction<RetainInstance> _retainInstanceFunction;
         /// <summary>
         /// 尝试启动一个用户接口,用于 LibVlc 实例
         /// </summary>
-        private static LibVlcFunction<AddInterface> AddInterfaceFunction;
+        private static LibVlcFunction<AddInterface> _addInterfaceFunction;
         /// <summary>
         /// 为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait"/> 一起使用.
         /// 而且,这个函数应该在播放一个列表或者开始一个用户接口前被调用,否则可能导致 LibVlc 在注册该回调前退出
         /// </summary>
-        private static LibVlcFunction<SetExitHandler> SetExitHandlerFunction;
+        private static LibVlcFunction<SetExitHandler> _setExitHandlerFunction;
         /// <summary>
         /// 等待,直到一个接口导致 LibVlc 实例退出为止,在使用之前,应该使用 <see cref="AddInterface"/> 添加至少一个用户接口.
         /// 实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="SetExitHandler"/>
         /// </summary>
-        private static LibVlcFunction<Wait> WaitFunction;
+        private static LibVlcFunction<Wait> _waitFunction;
         /// <summary>
         /// 设置一个用户代理字符串,当一个协议需要它的时候,LibVlc 将会提供该字符串
         /// </summary>
-        private static LibVlcFunction<SetUserAgent> SetUserAgentFunction;
+        private static LibVlcFunction<SetUserAgent> _setUserAgentFunction;
         /// <summary>
         /// 设置一些元信息关于该应用程序
         /// </summary>
-        private static LibVlcFunction<SetAppId> SetAppIdFunction;
+        private static LibVlcFunction<SetAppId> _setAppIdFunction;
         /// <summary>
         /// 获取 LibVlc 的版本信息
         /// </summary>
-        private static LibVlcFunction<GetVersion> GetVersionFunction;
+        private static LibVlcFunction<GetVersion> _getVersionFunction;
         /// <summary>
         /// 获取 LibVlc 的编译器信息
         /// </summary>
-        private static LibVlcFunction<GetCompiler> GetCompilerFunction;
+        private static LibVlcFunction<GetCompiler> _getCompilerFunction;
         /// <summary>
         /// 获取 LibVlc 的变更集(?)
         /// </summary>
-        private static LibVlcFunction<GetChangeset> GetChangesetFunction;
+        private static LibVlcFunction<GetChangeset> _getChangesetFunction;
         /// <summary>
         /// 释放由 LibVlc 函数返回的指针资源,其作用类似于 C语言 中的 free() 函数
         /// </summary>
-        private static LibVlcFunction<Free> FreeFunction;
+        private static LibVlcFunction<Free> _freeFunction;
         /// <summary>
         /// 释放 <see cref="ModuleDescription"/> 的资源
         /// </summary>
-        private static LibVlcFunction<ReleaseLibVlcModuleDescription> ReleaseLibVlcModuleDescriptionFunction;
+        private static LibVlcFunction<ReleaseLibVlcModuleDescription> _releaseLibVlcModuleDescriptionFunction;
         /// <summary>
         /// 获取可用的音频过滤器
         /// </summary>
-        private static LibVlcFunction<GetAudioFilterList> GetAudioFilterListFunction;
+        private static LibVlcFunction<GetAudioFilterList> _getAudioFilterListFunction;
         /// <summary>
         /// 获取可用的视频过滤器
         /// </summary>
-        private static LibVlcFunction<GetVideoFilterList> GetVideoFilterListFunction;
+        private static LibVlcFunction<GetVideoFilterList> _getVideoFilterListFunction;
         #endregion
 
 
@@ -179,7 +173,7 @@ namespace xZune.Vlc
         /// 使用默认的参数初始化一个 Vlc 实例
         /// </summary>
         public Vlc() :
-            this(new String[]
+            this(new[]
             {
                 "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
             })
@@ -196,17 +190,12 @@ namespace xZune.Vlc
             {
                 LoadLibVlc();
             }
-            if(argv == null)
-            {
-                InstancePointer = NewInstanceFunction.Delegate(0, IntPtr.Zero);
-            }
-            else
-            {
-                InstancePointer = NewInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
-            }
+
+            InstancePointer = argv == null ? _newInstanceFunction.Delegate(0, IntPtr.Zero) : _newInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
+
             if (InstancePointer == IntPtr.Zero)
             {
-                String ex = VlcError.GetErrorMessage();
+                var ex = VlcError.GetErrorMessage();
                 throw new Exception(ex);
             }
 
@@ -223,7 +212,7 @@ namespace xZune.Vlc
         /// </summary>
         public void Retain()
         {
-            RetainInstanceFunction.Delegate(InstancePointer);
+            _retainInstanceFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -233,16 +222,16 @@ namespace xZune.Vlc
         /// <returns>是否成功添加接口</returns>
         public bool AddInterface(String name)
         {
-            return AddInterfaceFunction.Delegate(InstancePointer, name) == 0;
+            return _addInterfaceFunction.Delegate(InstancePointer, name) == 0;
         }
 
         /// <summary>
         /// 等待,直到一个接口导致实例退出为止,在使用之前,应该使用 <see cref="AddInterface"/> 添加至少一个用户接口.
-        /// 实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="Exit"/> 事件
+        /// 实际上这个方法只会导致线程阻塞
         /// </summary>
         public void Wait()
         {
-            WaitFunction.Delegate(InstancePointer);
+            _waitFunction.Delegate(InstancePointer);
         }
 
         /// <summary>
@@ -252,7 +241,7 @@ namespace xZune.Vlc
         /// <param name="http">HTTP 用户代理,类似于 "FooBar/1.2.3 Python/2.6.0"</param>
         public void SetUserAgent(String name,String http)
         {
-            SetUserAgentFunction.Delegate(InstancePointer, name, http);
+            _setUserAgentFunction.Delegate(InstancePointer, name, http);
         }
 
         /// <summary>
@@ -263,7 +252,7 @@ namespace xZune.Vlc
         /// <param name="icon">应用程序图标,类似于 "foobar"</param>
         public void SetAppId(String id, String version, String icon)
         {
-            SetAppIdFunction.Delegate(InstancePointer, id, version, icon);
+            _setAppIdFunction.Delegate(InstancePointer, id, version, icon);
         }
 
         /// <summary>
@@ -272,7 +261,7 @@ namespace xZune.Vlc
         /// <returns></returns>
         public static String GetVersion()
         {
-            return InteropHelper.PtrToString(GetVersionFunction.Delegate());
+            return InteropHelper.PtrToString(_getVersionFunction.Delegate());
         }
 
         /// <summary>
@@ -280,7 +269,7 @@ namespace xZune.Vlc
         /// </summary>
         public static String GetCompiler()
         {
-            return InteropHelper.PtrToString(GetCompilerFunction.Delegate());
+            return InteropHelper.PtrToString(_getCompilerFunction.Delegate());
         }
 
         /// <summary>
@@ -288,7 +277,7 @@ namespace xZune.Vlc
         /// </summary>
         public static String GetChangeset()
         {
-            return InteropHelper.PtrToString(GetChangesetFunction.Delegate());
+            return InteropHelper.PtrToString(_getChangesetFunction.Delegate());
         }
 
         /// <summary>
@@ -296,7 +285,7 @@ namespace xZune.Vlc
         /// </summary>
         public static void Free(IntPtr pointer)
         {
-            FreeFunction.Delegate(pointer);
+            _freeFunction.Delegate(pointer);
         }
 
         /// <summary>
@@ -304,7 +293,7 @@ namespace xZune.Vlc
         /// </summary>
         public static void ReleaseModuleDescription(ModuleDescription moduleDescription)
         {
-            ReleaseLibVlcModuleDescriptionFunction.Delegate(moduleDescription.Pointer);
+            _releaseLibVlcModuleDescriptionFunction.Delegate(moduleDescription.Pointer);
         }
 
         /// <summary>
@@ -312,7 +301,7 @@ namespace xZune.Vlc
         /// </summary>
         public ModuleDescription GetAudioFilterList()
         {
-            return new ModuleDescription(GetAudioFilterListFunction.Delegate(InstancePointer));
+            return new ModuleDescription(_getAudioFilterListFunction.Delegate(InstancePointer));
         }
 
         /// <summary>
@@ -320,7 +309,7 @@ namespace xZune.Vlc
         /// </summary>
         public ModuleDescription GetVideoFilterList()
         {
-            return new ModuleDescription(GetVideoFilterListFunction.Delegate(InstancePointer));
+            return new ModuleDescription(_getVideoFilterListFunction.Delegate(InstancePointer));
         }
 
         /// <summary>
@@ -364,20 +353,25 @@ namespace xZune.Vlc
             return VlcMediaPlayer.Create(this);
         }
 
-        bool disposed = false;
+        public void SetExitHandler(ExitHandler handler,IntPtr args)
+        {
+            _setExitHandlerFunction.Delegate(InstancePointer, handler, args);
+        }
+
+        bool _disposed;
 
         protected void Dispose(bool disposing)
         {
-            if(disposed)
+            if(_disposed)
             {
                 return;
             }
 
             HandleManager.Remove(this);
-            ReleaseInstanceFunction.Delegate(InstancePointer);
+            _releaseInstanceFunction.Delegate(InstancePointer);
             InstancePointer = IntPtr.Zero;
 
-            disposed = true;
+            _disposed = true;
         }
 
         /// <summary>

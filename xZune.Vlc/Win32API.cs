@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc
 {
-    public static class Win32API
+    public static class Win32Api
     {
 
         [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi ,EntryPoint = "LoadLibrary")]

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 using xZune.Vlc.Interop.MediaPlayer;
+using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;
 
 namespace xZune.Vlc.Wpf
@@ -191,13 +192,7 @@ namespace xZune.Vlc.Wpf
 
         #region 视频呈现
         VideoDisplayContext _context;
-
-        private IntPtr VideoLockCallback(IntPtr opaque)
-        {
-            IntPtr planes = new IntPtr();
-            return VideoLockCallback(opaque, ref planes);
-        }
-
+        
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             return planes = _context.MapView;
@@ -659,13 +654,29 @@ namespace xZune.Vlc.Wpf
         private void VlcMediaPlayerStateChanged(object sender, EventArgs e)
         {
             State = VlcMediaPlayer.State;
+            if (State == MediaState.Paused && _stopping)
+            {
+                _stopping = false;
+
+                if (!_stopEvent) return;
+
+                VlcMediaPlayer.Stop();
+                if (_context != null) _context.Dispose();
+                _context = null;
+                Dispatcher.Invoke(new Action(() => VideoSource = null));
+                _stopEvent = false;
+                if (StopCompleted != null) StopCompleted(this,new EventArgs());
+                return;
+            }
+            if (StateChanged != null) StateChanged(this,new ObjectEventArgs<MediaState>(State));
         }
 
         /// <summary>
         /// 获取一个值,该值表示当前的媒体状态
         /// </summary>
-        public Interop.Media.MediaState State { get; private set; }
+        public MediaState State { get; private set; }
 
+        public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
         #endregion
 
         #region 只读属性 Length
@@ -686,9 +697,9 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 方法
+
         public void LoadMedia(String path)
         {
-            
             if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
@@ -711,7 +722,7 @@ namespace xZune.Vlc.Wpf
 
         public void LoadMedia(Uri uri)
         {
-             if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -749,24 +760,70 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.Navigate(mode);
         }
 
+        private bool _stopping;
+        private bool _stopEvent;
+
         public void Stop()
         {
-            if (VlcMediaPlayer.Media != null)
+            if (VlcMediaPlayer.Media == null) return;
+
+            VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+            VlcMediaPlayer.SetVideoFormatCallback(null, null);
+
+            _stopping = true;
+            VlcMediaPlayer.Pause();
+
+            while (_stopping)
             {
-                VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
-                VlcMediaPlayer.SetVideoFormatCallback(null, null);
-
-                VlcMediaPlayer.Pause();
-
-                System.Threading.Thread.Sleep(50);
-                VlcMediaPlayer.Stop();
-
-                if (_context != null) _context.Dispose();
-                _context = null;
-
-                VideoSource = null;
+                
             }
+
+            VlcMediaPlayer.Stop();
+            if (_context != null) _context.Dispose();
+            _context = null;
+
+            VideoSource = null;
         }
+
+        public void BeginStop()
+        {
+            if (VlcMediaPlayer.Media == null) return;
+
+            VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+            VlcMediaPlayer.SetVideoFormatCallback(null, null);
+
+            _stopEvent = true;
+            _stopping = true;
+            VlcMediaPlayer.Pause();
+        }
+
+#if DotNet45
+        public async System.Threading.Tasks.Task StopAsync()
+        {
+            if (VlcMediaPlayer.Media == null) return;
+
+            VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+            VlcMediaPlayer.SetVideoFormatCallback(null, null);
+
+            _stopping = true;
+            VlcMediaPlayer.Pause();
+
+            await System.Threading.Tasks.Task.Run(() =>
+            {
+                while (_stopping)
+                {
+
+                }
+            });
+
+            VlcMediaPlayer.Stop();
+            if (_context != null) _context.Dispose();
+            _context = null;
+
+            await Dispatcher.InvokeAsync(() => VideoSource = null);
+        }
+#endif
+        public event EventHandler StopCompleted;
 
         SnapshotContext _snapshotContext;
 
@@ -796,7 +853,7 @@ namespace xZune.Vlc.Wpf
 
         int GetVideoPositionX(double x)
         {
-            int px = 0;
+            var px = 0;
             double scale, scaleX, scaleY;
             switch (this.Stretch)
             {

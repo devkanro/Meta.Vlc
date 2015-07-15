@@ -263,7 +263,7 @@ namespace xZune.Vlc
             EventManager.Attach(EventTypes.MediaPlayerPaused, _onPaused, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerOpening, _onOpening, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerBuffering, _onBuffering, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaPlayerStopped, _onStoped, IntPtr.Zero);  //This Event has something wrong.
+            EventManager.Attach(EventTypes.MediaPlayerStopped, _onStoped, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerForward, _onForward, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerBackward, _onBackward, IntPtr.Zero);
             EventManager.Attach(EventTypes.MediaPlayerEndReached, _onEndReached, IntPtr.Zero);
@@ -932,9 +932,30 @@ namespace xZune.Vlc
             {
                 return;
             }
-            
-            HandleManager.Remove(this);
+
             //EventManager.Dispose();
+            HandleManager.Remove(this);
+
+            EventManager.Detach(EventTypes.MediaPlayerPlaying, _onPlaying, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerPaused, _onPaused, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerOpening, _onOpening, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerBuffering, _onBuffering, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerStopped, _onStoped, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerForward, _onForward, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerBackward, _onBackward, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerEndReached, _onEndReached, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerMediaChanged, _onMediaChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerNothingSpecial, _onNothingSpecial, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerPausableChanged, _onPausableChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerPositionChanged, _onPositionChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerSeekableChanged, _onSeekableChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerSnapshotTaken, _onSnapshotTaken, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerTimeChanged, _onTimeChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerTitleChanged, _onTitleChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerVideoOutChanged, _onVideoOutChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerLengthChanged, _onLengthChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaPlayerEncounteredError, _onEncounteredError, IntPtr.Zero);
+
             _onPlayingHandle.Free();
             _onPausedHandle.Free();
             _onOpeningHandle.Free();

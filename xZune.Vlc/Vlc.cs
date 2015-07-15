@@ -23,7 +23,9 @@ namespace xZune.Vlc
         /// <param name="libDirectory">LibVlc 库路径</param>
         public static void LoadLibVlc(String libDirectory)
         {
-            LibDirectory = libDirectory;
+            DirectoryInfo dir = new DirectoryInfo(libDirectory);
+
+            LibDirectory = dir.FullName;
             LoadLibVlc();
         }
 
@@ -36,8 +38,10 @@ namespace xZune.Vlc
             {
                 try
                 {
-                    LibCoreHandle = Win32Api.LoadLibrary(String.Concat(LibDirectory, "libvlccore.dll"));
-                    LibHandle = Win32Api.LoadLibrary(Path.Combine(LibDirectory, "libvlc.dll"));
+                    FileInfo libcore = new FileInfo(Path.Combine(LibDirectory, @"libvlccore.dll"));
+                    FileInfo libvlc = new FileInfo(Path.Combine(LibDirectory, @"libvlc.dll"));
+                    LibCoreHandle = Win32Api.LoadLibrary(libcore.FullName);
+                    LibHandle = Win32Api.LoadLibrary(libvlc.FullName);
                 }
                 catch (Win32Exception e)
                 {
@@ -368,7 +372,9 @@ namespace xZune.Vlc
             }
 
             HandleManager.Remove(this);
+
             _releaseInstanceFunction.Delegate(InstancePointer);
+
             InstancePointer = IntPtr.Zero;
 
             _disposed = true;

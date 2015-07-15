@@ -22,20 +22,17 @@ namespace xZune.Vlc
             {
                 throw new Exception(String.Format("模块文件不存在:{0}", lpFileName));
             }
-            IntPtr result = LoadLibraryStatic(lpFileName);
-            if(result == IntPtr.Zero)
+            var result = LoadLibraryStatic(lpFileName);
+            if (result != IntPtr.Zero) return result;
+            var error = GetLastError();
+            if (error == 0)
             {
-                int error = GetLastError();
-                if (error == 0)
-                {
-                    throw new Win32Exception("无法载入指定的模块,未知错误.");
-                }
-                else
-                {
-                    throw new Win32Exception(error, "无法载入指定的模块.");
-                }
+                throw new Win32Exception("无法载入指定的模块,未知错误.");
             }
-            return result;
+            else
+            {
+                throw new Win32Exception(error, "无法载入指定的模块.");
+            }
         }
 
         [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true, EntryPoint = "GetProcAddress")]

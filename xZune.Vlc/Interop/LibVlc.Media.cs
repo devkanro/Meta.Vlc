@@ -1,11 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Runtime.InteropServices;
-using xZune.Vlc.Interop;
 
 namespace xZune.Vlc.Interop.Media
 {
@@ -128,7 +122,7 @@ namespace xZune.Vlc.Interop.Media
     /// <summary>
     /// 获取一个值表示该媒体是否已经解析
     /// </summary>
-    /// <param name="instance">LibVlc 实例指针</param>
+    /// <param name="media">LibVlc 实例指针</param>
     /// <returns>True 表示已经解析,False 表示尚未被解析</returns>
     [LibVlcFunction("libvlc_media_is_parsed")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -420,12 +414,12 @@ namespace xZune.Vlc.Interop.Media
         Rating,
         Date,
         Setting,
-        URL,
+        Url,
         Language,
         NowPlaying,
         Publisher,
         EncodedBy,
-        ArtworkURL,
+        ArtworkUrl,
         TrackID,
         TrackTotal,
         Director,

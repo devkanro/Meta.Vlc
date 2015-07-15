@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace xZune.Vlc
 {
     static class HandleManager
     {
-        static Dictionary<IntPtr, IVlcObject> handleDic = new Dictionary<IntPtr, IVlcObject>();
+        readonly static Dictionary<IntPtr, IVlcObject> HandleDic = new Dictionary<IntPtr, IVlcObject>();
 
         public static IVlcObject GetVlcObject(IntPtr pointer)
         {
-            if(handleDic.ContainsKey(pointer))
+            if(HandleDic.ContainsKey(pointer))
             {
-                return handleDic[pointer];
+                return HandleDic[pointer];
             }
             else
             {
@@ -24,17 +21,17 @@ namespace xZune.Vlc
 
         public static void Add(IVlcObject vlcObject)
         {
-            if (!handleDic.ContainsKey(vlcObject.InstancePointer))
+            if (!HandleDic.ContainsKey(vlcObject.InstancePointer))
             {
-                handleDic.Add(vlcObject.InstancePointer, vlcObject);
+                HandleDic.Add(vlcObject.InstancePointer, vlcObject);
             }
         }
 
         public static void Remove(IVlcObject vlcObject)
         {
-            if (handleDic.ContainsKey(vlcObject.InstancePointer))
+            if (HandleDic.ContainsKey(vlcObject.InstancePointer))
             {
-                handleDic.Remove(vlcObject.InstancePointer);
+                HandleDic.Remove(vlcObject.InstancePointer);
             }
         }
     }

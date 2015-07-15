@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
-using xZune.Vlc.Interop;
 
 namespace xZune.Vlc.Interop.MediaPlayer
 {
@@ -516,7 +511,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取媒体播放器的标题
     /// </summary>
-    /// <param name="mediaPlaye"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_get_title")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -525,7 +520,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取媒体播放器的标题数
     /// </summary>
-    /// <param name="mediaPlaye"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_get_title_count")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -534,7 +529,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 上一个章节
     /// </summary>
-    /// <param name="mediaPlaye"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     [LibVlcFunction("libvlc_media_player_previous_chapter")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void PreviousChapter(IntPtr mediaPlayer);
@@ -542,7 +537,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 下一个章节
     /// </summary>
-    /// <param name="mediaPlaye"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     [LibVlcFunction("libvlc_media_player_next_chapter")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void NextChapter(IntPtr mediaPlayer);
@@ -550,7 +545,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取媒体速率
     /// </summary>
-    /// <param name="mediaPlaye"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     [LibVlcFunction("libvlc_media_player_get_rate")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate float GetRate(IntPtr mediaPlayer);
@@ -558,7 +553,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 设置媒体是速率
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <param name="rate"></param>
     [LibVlcFunction("libvlc_media_player_set_rate")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -567,7 +562,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取媒体的状态
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_get_state")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -576,16 +571,16 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取媒体的FPS
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_get_fps")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate float GetFPS(IntPtr mediaPlayer);
+    public delegate float GetFps(IntPtr mediaPlayer);
 
     /// <summary>
     /// 获取该媒体播放器视频输出的个数
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_has_vout")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -594,7 +589,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取该媒体是否能够跳进度
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_is_seekable")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -603,7 +598,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 获取该媒体是否能够暂停
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_media_player_can_pause")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -612,7 +607,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 播放下一帧
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     [LibVlcFunction("libvlc_media_player_next_frame")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void NextFrame(IntPtr mediaPlayer);
@@ -620,7 +615,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 导航DVD菜单
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <param name="navigate"></param>
     [LibVlcFunction("libvlc_media_player_navigate","2.2.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -630,7 +625,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <summary>
     /// 设置播放器播放视频时显示视频标题
     /// </summary>
-    /// <param name="mediaPlayer"></param>
+    /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <param name="pos"></param>
     /// <param name="timeout"></param>
     [LibVlcFunction("libvlc_media_player_navigate", "2.1.0")]

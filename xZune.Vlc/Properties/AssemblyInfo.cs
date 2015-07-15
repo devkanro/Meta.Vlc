@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("xZune.Vlc")]
+[assembly: AssemblyTitle("xZune.VLC")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("xZune.Vlc")]
+[assembly: AssemblyProduct("xZune.VLC")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("2914318d-f479-4469-b7d0-c9cde386ed1b")]
+[assembly: Guid("9e15e780-13a2-4e4f-84c0-6e73a86a7e3b")]
 
 // 程序集的版本信息由下面四个值组成: 
 //

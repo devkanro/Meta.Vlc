@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
-using xZune.Vlc;
 
 namespace xZune.Vlc.Wpf
 {
@@ -13,12 +6,8 @@ namespace xZune.Vlc.Wpf
     {
         static ApiManager()
         {
-            IsInited = false;
+            IsInitialized = false;
             LibVlcPath = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + @"\LibVlc\";
-            VlcOption = new String[]
-            {
-                "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
-            };
         }
 
         #region 静态属性 LibVlcPath
@@ -30,38 +19,37 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 只读静态属性 Vlc
-        public static xZune.Vlc.Vlc Vlc { get; private set; }
+        public static Vlc Vlc { get; private set; }
         #endregion
 
         #region 只读静态属性 IsInited
-        public static bool IsInited { get; private set; }
+        public static bool IsInitialized { get; private set; }
         #endregion
 
-        public static void Init()
+        public static void Initialize()
         {
-            if(!IsInited)
-            {
-                xZune.Vlc.Vlc.LoadLibVlc(LibVlcPath);
-                Vlc = new xZune.Vlc.Vlc(VlcOption);
-            }
+            if (IsInitialized) return;
+            Vlc.LoadLibVlc(LibVlcPath);
+            Vlc = new Vlc(VlcOption);
         }
 
-        public static void Init(String libVlcPath)
+        public static void Initialize(String libVlcPath)
         {
             LibVlcPath = libVlcPath;
-            Init();
+            Initialize();
         }
 
-        public static void Init(String libVlcPath, String[] vlcOption)
+        public static void Initialize(String libVlcPath, String[] vlcOption)
         {
             LibVlcPath = libVlcPath;
             VlcOption = vlcOption;
-            Init();
+            Initialize();
         }
 
         public static void ReleaseAll()
         {
-            Vlc?.Dispose();
+            if(Vlc != null)
+            Vlc.Dispose();
         }
     }
 }

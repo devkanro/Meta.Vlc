@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc.Interop
@@ -52,7 +48,7 @@ namespace xZune.Vlc.Interop
                 IntPtr procAddress;
                 try
                 {
-                    procAddress = Win32API.GetProcAddress(libHandle, FunctionName);
+                    procAddress = Win32Api.GetProcAddress(libHandle, FunctionName);
                 }
                 catch (Win32Exception e)
                 {

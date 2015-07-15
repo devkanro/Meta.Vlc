@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -9,15 +8,16 @@ using xZune.Vlc;
 // 有关程序集的常规信息通过以下
 // 特性集控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("xZune.Vlc.Wpf.Sample")]
+[assembly: AssemblyTitle("xZune.VLC.WPF.Sample")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("xZune.Vlc.Wpf.Sample")]
+[assembly: AssemblyProduct("xZune.VLC.WPF.Sample")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: VlcSettings(@"..\..\..\LibVlc")]
+
+[assembly: VlcSettings(@"..\..\libvlc")]
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
 // 对 COM 组件不可见。  如果需要从 COM 访问此程序集中的类型，
@@ -36,11 +36,11 @@ using xZune.Vlc;
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //主题特定资源词典所处位置
-                                     //(在页面或应用程序资源词典中 
-                                     // 未找到某个资源的情况下使用)
+    //(在页面或应用程序资源词典中 
+    // 未找到某个资源的情况下使用)
     ResourceDictionaryLocation.SourceAssembly //常规资源词典所处位置
-                                              //(在页面、应用程序或任何主题特定资源词典中
-                                              // 未找到某个资源的情况下使用)
+    //(在页面、应用程序或任何主题特定资源词典中
+    // 未找到某个资源的情况下使用)
 )]
 
 

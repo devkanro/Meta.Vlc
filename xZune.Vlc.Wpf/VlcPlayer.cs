@@ -104,7 +104,7 @@ namespace xZune.Vlc.Wpf
 #else
             Initialize(libVlcPath, new[]
             {
-                "-I", "dummy", "--ignore-config", "--no-video-title","--no-sub-autodetect-file"
+                "-I", "dummy", "--dummy-quiet", "--ignore-config", "--no-video-title", "--no-sub-autodetect-file"
             });
 #endif
         }

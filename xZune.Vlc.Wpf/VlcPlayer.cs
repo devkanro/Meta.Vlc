@@ -262,9 +262,8 @@ namespace xZune.Vlc.Wpf
                         }
                         break;
                 }
+                _snapshotContext = null;
             }));
-
-            _snapshotContext = null;
         }
 
         uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)

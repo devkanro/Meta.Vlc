@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace xZune.Vlc
 {
@@ -7,7 +9,29 @@ namespace xZune.Vlc
     {
         public static String PtrToString(IntPtr ptr)
         {
-            return ptr == IntPtr.Zero ? null : Marshal.PtrToStringAnsi(ptr);
+            if(ptr == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            int offset = 0;
+            byte tmp = Marshal.ReadByte(ptr, offset);
+            List<byte> buffer = new List<byte>(1024);
+
+            while (tmp != 0)
+            {
+                buffer.Add(tmp);
+                offset++;
+                tmp = Marshal.ReadByte(ptr, offset);
+            }
+
+            return Encoding.UTF8.GetString(buffer.ToArray());
+        }
+
+        public static GCHandle StringToPtr(String str)
+        {
+            var handle = GCHandle.Alloc(Encoding.UTF8.GetByteCount(str), GCHandleType.Pinned);
+            return handle;
         }
 
         public static String[] PtrsToStringArray(IntPtr[] ptrs, int length)

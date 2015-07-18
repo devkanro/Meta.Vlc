@@ -10,7 +10,7 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="options"></param>
     [LibVlcFunction("libvlc_media_add_option")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl,CharSet = CharSet.Ansi)]
-    public delegate void MediaAddOption(IntPtr media,String options);
+    public delegate void MediaAddOption(IntPtr media,IntPtr options);
 
     /// <summary>
     /// 向一个媒体通过可配置的标志添加一个选项,这个选项将会确定媒体播放器将如何读取介质,
@@ -20,7 +20,7 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="flags"></param>
     [LibVlcFunction("libvlc_media_add_option_flag")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate void MediaAddOptionFlag(IntPtr media, String options, MediaOption flags);
+    public delegate void MediaAddOptionFlag(IntPtr media, IntPtr options, MediaOption flags);
 
     /// <summary>
     /// 复制一个媒体对象
@@ -136,7 +136,7 @@ namespace xZune.Vlc.Interop.Media
     /// <returns>创建的媒体对象指针</returns>
     [LibVlcFunction("libvlc_media_new_as_node")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate IntPtr CreateMediaAsNewNode(IntPtr instance, String name);
+    public delegate IntPtr CreateMediaAsNewNode(IntPtr instance, IntPtr name);
 
     /// <summary>
     /// 通过给定的文件描述符创建一个媒体,该文件描述符必须具有 Read 访问权限.
@@ -158,7 +158,7 @@ namespace xZune.Vlc.Interop.Media
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
     [LibVlcFunction("libvlc_media_new_location")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate IntPtr CreateMediaFormLocation(IntPtr instance, String url);
+    public delegate IntPtr CreateMediaFormLocation(IntPtr instance, IntPtr url);
 
     /// <summary>
     /// 通过给定的文件路径创建一个媒体
@@ -167,8 +167,8 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="path">媒体文件路径</param>
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
     [LibVlcFunction("libvlc_media_new_path")]
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate IntPtr CreateMediaFormPath(IntPtr instance, String path);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Auto)]
+    public delegate IntPtr CreateMediaFormPath(IntPtr instance, IntPtr path);
 
     /// <summary>
     /// 解析一个媒体,获取媒体的元数据和轨道信息
@@ -231,7 +231,7 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="data">元数据值</param>
     [LibVlcFunction("libvlc_media_set_meta")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate void SetMeta(IntPtr media, MetaDataType type, String data);
+    public delegate void SetMeta(IntPtr media, MetaDataType type, IntPtr data);
 
     /// <summary>
     /// 设置媒体的由用户定义的数据

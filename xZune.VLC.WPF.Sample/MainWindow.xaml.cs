@@ -38,10 +38,11 @@ namespace xZune.VLC.WPF.Sample
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             Uri uri = new Uri(path.Text);
+            //String pathString = path.Text;
 
             VlcPlayer.BeginStop((ar) =>
             {
-                VlcPlayer.LoadMedia(uri);
+                VlcPlayer.LoadMedia(uri.ToString());
                 VlcPlayer.Play();
             });
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
+using System.Text;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
 using xZune.Vlc.Interop.Media;
@@ -209,7 +209,10 @@ namespace xZune.Vlc
         /// <param name="name">媒体名称</param>
         public static VlcMedia CreateAsNewNode(Vlc vlc,String name)
         {
-            return new VlcMedia(_createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, name));
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
+            var madia = new VlcMedia(_createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            handle.Free();
+            return madia;
         }
 
         /// <summary>
@@ -229,7 +232,10 @@ namespace xZune.Vlc
         /// <param name="url">文件 Url</param>
         public static VlcMedia CreateFormLocation(Vlc vlc,String url)
         {
-            return new VlcMedia(_createMediaFormLocationFunction.Delegate(vlc.InstancePointer, url));
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(url), GCHandleType.Pinned);
+            var media = new VlcMedia(_createMediaFormLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            handle.Free();
+            return media;
         }
 
         /// <summary>
@@ -239,7 +245,10 @@ namespace xZune.Vlc
         /// <param name="path">文件路径</param>
         public static VlcMedia CreateFormPath(Vlc vlc,String path)
         {
-            return new VlcMedia(_createMediaFormPathFunction.Delegate(vlc.InstancePointer, path));
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(path), GCHandleType.Pinned);
+            var media = new VlcMedia(_createMediaFormPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            handle.Free();
+            return media;
         }
 
         /// <summary>
@@ -248,7 +257,9 @@ namespace xZune.Vlc
         /// <param name="options"></param>
         public void AddOption(String options)
         {
-            _addOptionFunction.Delegate(InstancePointer, options);
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
+            _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
+            handle.Free();
         }
 
         /// <summary>
@@ -258,7 +269,8 @@ namespace xZune.Vlc
         /// <param name="flag"></param>
         public void AddOptionFlag(String options,MediaOption flag)
         {
-            _addOptionFlagFunction.Delegate(InstancePointer, options, flag);
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
+            _addOptionFlagFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject(), flag);
         }
 
         /// <summary>
@@ -450,7 +462,9 @@ namespace xZune.Vlc
         /// <param name="data">元数据值</param>
         public void SetMeta(MetaDataType type,String data)
         {
-            _setMetaFunction.Delegate(InstancePointer, type, data);
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(data), GCHandleType.Pinned);
+            _setMetaFunction.Delegate(InstancePointer, type, handle.AddrOfPinnedObject());
+            handle.Free();
         }
 
         /*

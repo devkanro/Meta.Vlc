@@ -11,7 +11,7 @@ namespace xZune.Vlc.Interop.Core
     /// <returns>如果成功会返回 0 ,否则会返回 -1</returns>
     [LibVlcFunction("libvlc_new")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate int AddInterface(IntPtr instance, String name);
+    public delegate int AddInterface(IntPtr instance, IntPtr name);
 
     /// <summary>
     /// 获取可用的音频过滤器
@@ -98,7 +98,7 @@ namespace xZune.Vlc.Interop.Core
     /// <param name="icon">应用程序图标,类似于 "foobar"</param>
     [LibVlcFunction("libvlc_set_app_id","2.1.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate void SetAppId(IntPtr instance, String id, String version, String icon);
+    public delegate void SetAppId(IntPtr instance, IntPtr id, IntPtr version, IntPtr icon);
 
     /// <summary>
     /// 为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait"/> 一起使用.
@@ -121,7 +121,7 @@ namespace xZune.Vlc.Interop.Core
     /// <param name="http">HTTP 用户代理,类似于 "FooBar/1.2.3 Python/2.6.0"</param>
     [LibVlcFunction("libvlc_set_user_agent","2.1.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate void SetUserAgent(IntPtr instance, String name, String http);
+    public delegate void SetUserAgent(IntPtr instance, IntPtr name, IntPtr http);
 
     /// <summary>
     /// 获取可用的视频过滤器

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using xZune.Vlc.Interop;
@@ -55,7 +57,7 @@ namespace xZune.Vlc
                 {
                     LibVersion = new Version(match.Groups[0].Value);
                 }
-                var devString = versionString.Split(' ', '-')[1];
+                var devString = LibDev = versionString.Split(' ', '-')[1];
                 _newInstanceFunction = new LibVlcFunction<NewInstance>(LibHandle, LibVersion, devString);
                 _releaseInstanceFunction = new LibVlcFunction<ReleaseInstance>(LibHandle, LibVersion, devString);
                 _retainInstanceFunction = new LibVlcFunction<RetainInstance>(LibHandle, LibVersion, devString);
@@ -226,7 +228,10 @@ namespace xZune.Vlc
         /// <returns>是否成功添加接口</returns>
         public bool AddInterface(String name)
         {
-            return _addInterfaceFunction.Delegate(InstancePointer, name) == 0;
+            var handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
+            var result = _addInterfaceFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject()) == 0;
+            handle.Free();
+            return result;
         }
 
         /// <summary>
@@ -245,7 +250,11 @@ namespace xZune.Vlc
         /// <param name="http">HTTP 用户代理,类似于 "FooBar/1.2.3 Python/2.6.0"</param>
         public void SetUserAgent(String name,String http)
         {
-            _setUserAgentFunction.Delegate(InstancePointer, name, http);
+            var nameHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
+            var httpHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(http), GCHandleType.Pinned);
+            _setUserAgentFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), httpHandle.AddrOfPinnedObject());
+            nameHandle.Free();
+            httpHandle.Free();
         }
 
         /// <summary>
@@ -256,7 +265,13 @@ namespace xZune.Vlc
         /// <param name="icon">应用程序图标,类似于 "foobar"</param>
         public void SetAppId(String id, String version, String icon)
         {
-            _setAppIdFunction.Delegate(InstancePointer, id, version, icon);
+            var idHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(id), GCHandleType.Pinned);
+            var versionHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(version), GCHandleType.Pinned);
+            var iconHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(icon), GCHandleType.Pinned);
+            _setAppIdFunction.Delegate(InstancePointer, idHandle.AddrOfPinnedObject(), versionHandle.AddrOfPinnedObject(), iconHandle.AddrOfPinnedObject());
+            idHandle.Free();
+            versionHandle.Free();
+            iconHandle.Free();
         }
 
         /// <summary>

@@ -54,9 +54,9 @@ namespace xZune.Vlc.Wpf
 
                     var vlcSettings =
                         System.Reflection.Assembly.GetEntryAssembly()
-                            .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
+                            .GetCustomAttributes(typeof(VlcSettingsAttribute), false);
 
-                    if(vlcSettings.Length > 0)
+                    if (vlcSettings.Length > 0)
                     {
                         var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
 
@@ -80,12 +80,12 @@ namespace xZune.Vlc.Wpf
                     {
                         libVlcPath = Path.IsPathRooted(LibVlcPath) ? LibVlcPath : CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
                     }
-                    if(VlcOption != null)
+                    if (VlcOption != null)
                     {
                         libVlcOption = VlcOption;
                     }
 
-                    if(libVlcPath != null)
+                    if (libVlcPath != null)
                     {
                         Initialize(libVlcPath, libVlcOption);
                     }
@@ -140,7 +140,7 @@ namespace xZune.Vlc.Wpf
             _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
         }
 
-#region 依赖属性 LibVlcPath
+        #region 依赖属性 LibVlcPath
 
         public String LibVlcPath
         {
@@ -172,9 +172,9 @@ namespace xZune.Vlc.Wpf
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.LibVlcPath"/> 属性改变时调用
         /// </summary>
         public event EventHandler LibVlcPathChanged;
-#endregion
+        #endregion
 
-#region 依赖属性 VlcOption
+        #region 依赖属性 VlcOption
 
         public String[] VlcOption
         {
@@ -206,11 +206,11 @@ namespace xZune.Vlc.Wpf
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.VlcOption"/> 属性改变时调用
         /// </summary>
         public event EventHandler VlcOptionChanged;
-#endregion
+        #endregion
 
-#region 视频呈现
+        #region 视频呈现
         VideoDisplayContext _context;
-        
+
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             return planes = _context.MapView;
@@ -239,7 +239,7 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.BMP:
                         var bmpE = new BmpBitmapEncoder();
                         bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.bmp",_snapshotContext.Path,_snapshotContext.Name)))
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name)))
                         {
                             bmpE.Save(stream);
                         }
@@ -247,7 +247,7 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.JPG:
                         var jpgE = new JpegBitmapEncoder();
                         jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.jpg",_snapshotContext.Path,_snapshotContext.Name)))
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name)))
                         {
                             jpgE.QualityLevel = _snapshotContext.Quality;
                             jpgE.Save(stream);
@@ -256,7 +256,7 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.PNG:
                         var pngE = new PngBitmapEncoder();
                         pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.png",_snapshotContext.Path,_snapshotContext.Name)))
+                        using (Stream stream = File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name)))
                         {
                             pngE.Save(stream);
                         }
@@ -288,7 +288,7 @@ namespace xZune.Vlc.Wpf
         {
             _context.Dispose();
         }
-#endregion
+        #endregion
 
         //#region 属性变更通知
         //public event PropertyChangedEventHandler PropertyChanged;
@@ -320,7 +320,7 @@ namespace xZune.Vlc.Wpf
         //}
         //#endregion
 
-#region 依赖属性 VideoSource
+        #region 依赖属性 VideoSource
         /// <summary>
         /// 获取 VlcPlayer 的视频源
         /// </summary>
@@ -354,9 +354,9 @@ namespace xZune.Vlc.Wpf
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.VideoSource"/> 属性改变时调用
         /// </summary>
         public event EventHandler VideoSourceChanged;
-#endregion
+        #endregion
 
-#region 依赖属性 Position
+        #region 依赖属性 Position
 
         bool _setVlcPosition = true;
 
@@ -409,9 +409,9 @@ namespace xZune.Vlc.Wpf
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.Position"/> 属性改变时调用
         /// </summary>
         public event DependencyPropertyChangedEventHandler PositionChanged;
-#endregion
+        #endregion
 
-#region 依赖属性 Time
+        #region 依赖属性 Time
 
         bool _setVlcTime = true;
 
@@ -453,8 +453,8 @@ namespace xZune.Vlc.Wpf
 
         public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(VlcPlayer), new PropertyMetadata(Stretch.Uniform));
-        
-        
+
+
         public StretchDirection StretchDirection
         {
             get { return (StretchDirection)GetValue(StretchDirectionProperty); }
@@ -464,7 +464,7 @@ namespace xZune.Vlc.Wpf
         public static readonly DependencyProperty StretchDirectionProperty =
             DependencyProperty.Register("StretchDirection", typeof(StretchDirection), typeof(VlcPlayer), new PropertyMetadata(StretchDirection.Both));
 
-        
+
         /// <summary>
         /// 引发 <see cref="VlcPlayer.TimeChanged"/> 事件
         /// </summary>
@@ -485,9 +485,9 @@ namespace xZune.Vlc.Wpf
         /// 在 MediaPlayer 的 <see cref="MediaPlayer.Time"/> 属性改变时调用
         /// </summary>
         public event DependencyPropertyChangedEventHandler TimeChanged;
-#endregion
+        #endregion
 
-#region 依赖属性 FPS
+        #region 依赖属性 FPS
         private System.Windows.Threading.DispatcherTimer _timer;
         private int _fpsCount;
         private bool _isRunFps;
@@ -498,7 +498,7 @@ namespace xZune.Vlc.Wpf
         public void StartFPS()
         {
             if (_isRunFps) return;
-            _timer = new System.Windows.Threading.DispatcherTimer {Interval = new TimeSpan(0, 0, 1)};
+            _timer = new System.Windows.Threading.DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
             _timer.Tick += FPSTick;
             _isRunFps = true;
             _fpsCount = 0;
@@ -555,9 +555,9 @@ namespace xZune.Vlc.Wpf
         /// 在 VlcPlayer 的 <see cref="VlcPlayer.FPS"/> 属性改变时调用
         /// </summary>
         public event EventHandler FPSChanged;
-#endregion
+        #endregion
 
-#region 属性 IsMute
+        #region 属性 IsMute
         public bool IsMute
         {
             get
@@ -572,9 +572,9 @@ namespace xZune.Vlc.Wpf
             }
         }
         public event EventHandler IsMuteChanged;
-#endregion
+        #endregion
 
-#region 属性 Volume
+        #region 属性 Volume
         public int Volume
         {
             get
@@ -584,14 +584,14 @@ namespace xZune.Vlc.Wpf
             set
             {
                 if (value == VlcMediaPlayer.Volume) return;
-                VlcMediaPlayer.Volume = value;;
+                VlcMediaPlayer.Volume = value; ;
                 if (VolumeChanged != null) VolumeChanged.Invoke(this, new EventArgs());
             }
         }
         public event EventHandler VolumeChanged;
-#endregion
+        #endregion
 
-#region 属性 AudioOutputChannel
+        #region 属性 AudioOutputChannel
         public AudioOutputChannel AudioOutputChannel
         {
             get
@@ -604,9 +604,9 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.AudioOutputChannel = value;
             }
         }
-#endregion
+        #endregion
 
-#region 属性 AudioTrackCount
+        #region 属性 AudioTrackCount
         public int AudioTrackCount
         {
             get
@@ -614,9 +614,9 @@ namespace xZune.Vlc.Wpf
                 return VlcMediaPlayer.AudioTrackCount;
             }
         }
-#endregion
+        #endregion
 
-#region 属性 AudioTrack
+        #region 属性 AudioTrack
         public int AudioTrack
         {
             get
@@ -628,9 +628,9 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.AudioTrack = value;
             }
         }
-#endregion
+        #endregion
 
-#region 属性 AudioTrackDescription
+        #region 属性 AudioTrackDescription
         public TrackDescription AudioTrackDescription
         {
             get
@@ -638,9 +638,9 @@ namespace xZune.Vlc.Wpf
                 return VlcMediaPlayer.AudioTrackDescription;
             }
         }
-#endregion
+        #endregion
 
-#region 属性 Rate
+        #region 属性 Rate
         public float Rate
         {
             get
@@ -652,9 +652,57 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.Rate = value;
             }
         }
-#endregion
+        #endregion
 
-#region 只读属性 IsSeekable
+        #region 属性 Title
+        public int Title
+        {
+            get
+            {
+                return VlcMediaPlayer.Title;
+            }
+            set
+            {
+                VlcMediaPlayer.Title = value;
+            }
+        }
+        #endregion
+
+        #region 属性 TitleCount
+        public int TitleCount
+        {
+            get
+            {
+                return VlcMediaPlayer.TitleCount;
+            }
+        }
+        #endregion
+        
+        #region 属性 Chapter
+        public int Chapter
+        {
+            get
+            {
+                return VlcMediaPlayer.Chapter;
+            }
+            set
+            {
+                VlcMediaPlayer.Chapter = value;
+            }
+        }
+        #endregion
+
+        #region 属性 ChapterCount
+        public int ChapterCount
+        {
+            get
+            {
+                return VlcMediaPlayer.ChapterCount;
+            }
+        }
+        #endregion
+
+        #region 只读属性 IsSeekable
         private void VlcMediaPlayerSeekableChanged(object sender, EventArgs e)
         {
             IsSeekable = VlcMediaPlayer.IsSeekable;
@@ -665,22 +713,22 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public bool IsSeekable { get; private set; }
 
-#endregion
+        #endregion
 
-#region 只读属性 State
+        #region 只读属性 State
         private void VlcMediaPlayerStateChanged(object sender, EventArgs e)
         {
             var oldState = State;
             State = VlcMediaPlayer.State;
 
             Debug.WriteLine(String.Format("StateChanged : {0} to {1}", oldState, State));
-            
+
             if (State == MediaState.Paused && _stopping)
             {
                 _stopping = false;
                 return;
             }
-            if (StateChanged != null && oldState != State) StateChanged(this,new ObjectEventArgs<MediaState>(State));
+            if (StateChanged != null && oldState != State) StateChanged(this, new ObjectEventArgs<MediaState>(State));
         }
 
         /// <summary>
@@ -689,9 +737,9 @@ namespace xZune.Vlc.Wpf
         public MediaState State { get; private set; }
 
         public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
-#endregion
+        #endregion
 
-#region 只读属性 Length
+        #region 只读属性 Length
 
         private void VlcMediaPlayerLengthChanged(object sender, EventArgs e)
         {
@@ -702,13 +750,13 @@ namespace xZune.Vlc.Wpf
         /// 获取一个值,该值表示当前的媒体的长度
         /// </summary>
         public TimeSpan Length { get; private set; }
-#endregion
+        #endregion
 
-#region 只读属性 VlcMediaPlayer
+        #region 只读属性 VlcMediaPlayer
         public VlcMediaPlayer VlcMediaPlayer { get; private set; }
-#endregion
+        #endregion
 
-#region 方法
+        #region 方法
 
         public void LoadMedia(String path)
         {
@@ -716,7 +764,7 @@ namespace xZune.Vlc.Wpf
             {
                 throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
             }
-            if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -724,7 +772,7 @@ namespace xZune.Vlc.Wpf
         internal static bool IsRootPath(string path)
         {
             path = path.Replace('\\', '/');
-            if(path[path.Length - 1] != '/')
+            if (path[path.Length - 1] != '/')
             {
                 path += '/';
             }
@@ -734,7 +782,7 @@ namespace xZune.Vlc.Wpf
 
         public void LoadMedia(Uri uri)
         {
-            if(VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -754,7 +802,7 @@ namespace xZune.Vlc.Wpf
 
         public void AddOption(String option)
         {
-            if(VlcMediaPlayer.Media != null)  VlcMediaPlayer.Media.AddOption(option);
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.AddOption(option);
         }
 
         public void NextFrame()
@@ -783,7 +831,7 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
 
-                if(VlcMediaPlayer.State == MediaState.Playing)
+                if (VlcMediaPlayer.State == MediaState.Playing)
                 {
                     _stopping = true;
                     VlcMediaPlayer.Pause();
@@ -918,7 +966,7 @@ namespace xZune.Vlc.Wpf
                             px = (int)(x - (this.ActualWidth - _context.Width));
                             break;
                         case HorizontalAlignment.Stretch:
-                            if(this.ActualWidth > _context.Width)
+                            if (this.ActualWidth > _context.Width)
                             {
                                 px = (int)(x - ((this.ActualWidth - _context.Width) / 2));
                             }
@@ -939,7 +987,7 @@ namespace xZune.Vlc.Wpf
                             }
                             break;
                         case StretchDirection.DownOnly:
-                            if(this.ActualWidth < _context.Width)
+                            if (this.ActualWidth < _context.Width)
                             {
                                 px = (int)(x / this.ActualWidth * _context.Width);
                             }
@@ -1011,7 +1059,7 @@ namespace xZune.Vlc.Wpf
                             }
                             break;
                         case StretchDirection.DownOnly:
-                            if(scale < 1)
+                            if (scale < 1)
                             {
                                 if (scaleX == scale)
                                 {
@@ -1152,7 +1200,7 @@ namespace xZune.Vlc.Wpf
                             }
                             break;
                         case StretchDirection.DownOnly:
-                            if(scale < 1)
+                            if (scale < 1)
                             {
                                 if (scaleX == scale)
                                 {
@@ -1658,7 +1706,7 @@ namespace xZune.Vlc.Wpf
         {
             Dispose(true);
         }
-#endregion
+        #endregion
     }
 
     /// <summary>
@@ -1744,10 +1792,10 @@ namespace xZune.Vlc.Wpf
     public class SnapshotContext
     {
         private static int _count;
-        public SnapshotContext(String path, SnapshotFormat format,int quality)
+        public SnapshotContext(String path, SnapshotFormat format, int quality)
         {
             Path = path.Replace('/', '\\');
-            if(Path[Path.Length - 1] == '\\')
+            if (Path[Path.Length - 1] == '\\')
             {
                 Path = Path.Substring(0, Path.Length - 1);
             }
@@ -1760,25 +1808,25 @@ namespace xZune.Vlc.Wpf
         public SnapshotFormat Format { get; private set; }
         public int Quality { get; private set; }
 
-        public String GetName (VlcPlayer player)
+        public String GetName(VlcPlayer player)
         {
             player.Dispatcher.Invoke(new Action(() =>
             {
                 Name = String.Format("{0}-{1}-{2}",
                     GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
-                    (int) (player.Time.TotalMilliseconds), _count++);
+                    (int)(player.Time.TotalMilliseconds), _count++);
             }));
             return Name;
         }
 
         internal static String GetMediaName(String path)
         {
-            if(VlcPlayer.IsRootPath(path))
+            if (VlcPlayer.IsRootPath(path))
             {
                 path = path.Replace('/', '\\').ToUpper();
                 foreach (var item in DriveInfo.GetDrives())
                 {
-                    if(item.Name.ToUpper() == path)
+                    if (item.Name.ToUpper() == path)
                     {
                         return item.VolumeLabel;
                     }

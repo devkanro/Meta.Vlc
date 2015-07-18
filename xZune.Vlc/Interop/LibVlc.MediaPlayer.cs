@@ -200,7 +200,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="channels">通道数</param>
     /// <returns>0代表成功</returns>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int AudioSetupCallback(ref IntPtr opaque, String format, ref uint rate, ref uint channels);
+    public delegate int AudioSetupCallback(ref IntPtr opaque, IntPtr format, ref uint rate, ref uint channels);
 
     /// <summary>
     /// 

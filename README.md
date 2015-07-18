@@ -23,7 +23,7 @@ We change the Character set to UTF-8,to fix some problem in chinese system.
 Now you can use `VlcPlayer.Title`and`VlcPlayer.Chapter`to control the media which has multiple chapters.  
  
 ###07.15
-SHA: 3fe6a38934f5418e77dd4c180579d471ec697dd5
+SHA: 3fe6a38934f5418e77dd4c180579d471ec697dd5  
 如果你仍然在使用旧版本的 xZune.Vlc,这里列举了一些新版本的 xZune.Vlc 所拥有新的特性.  
   
 01.更多的 .NET 版本支持.  

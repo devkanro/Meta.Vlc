@@ -906,13 +906,15 @@ namespace xZune.Vlc.Wpf
                 {
 
                 }
+            }).ContinueWith((a) =>
+            {
+                VlcMediaPlayer.Stop();
+
+                if (_context != null) _context.Dispose();
+                _context = null;
+
             });
-
-            VlcMediaPlayer.Stop();
-            if (_context != null) _context.Dispose();
-            _context = null;
-
-            await Dispatcher.InvokeAsync(() => VideoSource = null);
+            VideoSource = null;
         }
 #endif
 

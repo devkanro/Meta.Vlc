@@ -13,6 +13,8 @@ using xZune.Vlc.Interop.MediaPlayer;
 using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;
 using System.Diagnostics;
+using System.Threading;
+using xZune.Vlc.Interop.Media;
 
 namespace xZune.Vlc.Wpf
 {
@@ -43,6 +45,7 @@ namespace xZune.Vlc.Wpf
 
         protected override void OnInitialized(EventArgs e)
         {
+            _stopWaitHandle = new AutoResetEvent(false);
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 if (!ApiManager.IsInitialized)
@@ -276,6 +279,8 @@ namespace xZune.Vlc.Wpf
 
             Dispatcher.Invoke(new Action(() =>
             {
+                var AspectRatio = VlcMediaPlayer.AspectRatio;
+
                 VideoSource = _context.Image;
             }));
 
@@ -718,15 +723,22 @@ namespace xZune.Vlc.Wpf
         {
             var oldState = State;
             State = VlcMediaPlayer.State;
-
-            Debug.WriteLine(String.Format("StateChanged : {0} to {1}", oldState, State));
-
-            if (State == MediaState.Paused && _stopping)
+            
+            if (State == MediaState.Paused)
             {
-                _stopping = false;
+                _stopWaitHandle.Set();
                 return;
             }
-            if (StateChanged != null && oldState != State) StateChanged(this, new ObjectEventArgs<MediaState>(State));
+
+            if (oldState != State)
+            {
+                Debug.WriteLine(String.Format("StateChanged : {0} to {1}", oldState, State));
+
+                if (StateChanged != null)
+                {
+                    StateChanged(this, new ObjectEventArgs<MediaState>(State));
+                }
+            }
         }
 
         /// <summary>
@@ -767,6 +779,33 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.Media.ParseAsync();
         }
 
+        public void LoadMedia(Uri uri)
+        {
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media.ParseAsync();
+        }
+
+        public void LoadMediaWithOptions(String path, String options)
+        {
+            if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
+            {
+                throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
+            }
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
+            VlcMediaPlayer.Media.AddOption(options);
+            VlcMediaPlayer.Media.ParseAsync();
+        }
+
+        public void LoadMediaWithOptions(Uri uri, String options)
+        {
+            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media.AddOption(options);
+            VlcMediaPlayer.Media.ParseAsync();
+        }
+
         internal static bool IsRootPath(string path)
         {
             path = path.Replace('\\', '/');
@@ -778,11 +817,9 @@ namespace xZune.Vlc.Wpf
             return (index = path.IndexOf(":/", StringComparison.Ordinal)) != -1 && index + 2 == path.Length;
         }
 
-        public void LoadMedia(Uri uri)
+        internal static bool IsNetwork(Uri uri)
         {
-            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
-            VlcMediaPlayer.Media.ParseAsync();
+            return uri.Scheme.ToLower() != "file";
         }
 
         public void Play()
@@ -817,8 +854,8 @@ namespace xZune.Vlc.Wpf
         {
             VlcMediaPlayer.Navigate(mode);
         }
-
-        private bool _stopping;
+        
+        private EventWaitHandle _stopWaitHandle;
 
         public void BeginStop(AsyncCallback callback)
         {
@@ -831,14 +868,11 @@ namespace xZune.Vlc.Wpf
 
                 if (VlcMediaPlayer.State == MediaState.Playing)
                 {
-                    _stopping = true;
+                    _stopWaitHandle.Reset();
                     VlcMediaPlayer.Pause();
                 }
 
-                while (_stopping)
-                {
-
-                }
+                _stopWaitHandle.WaitOne();
             });
 
             var asyncResult = action.BeginInvoke((aresult) =>
@@ -865,14 +899,11 @@ namespace xZune.Vlc.Wpf
 
                 if (VlcMediaPlayer.State == MediaState.Playing)
                 {
-                    _stopping = true;
+                    _stopWaitHandle.Reset();
                     VlcMediaPlayer.Pause();
                 }
 
-                while (_stopping)
-                {
-
-                }
+                _stopWaitHandle.WaitOne();
             });
 
             return action.BeginInvoke((aresult) =>
@@ -896,16 +927,13 @@ namespace xZune.Vlc.Wpf
 
             if (VlcMediaPlayer.State == MediaState.Playing)
             {
-                _stopping = true;
+                _stopWaitHandle.Reset();
                 VlcMediaPlayer.Pause();
             }
 
             await System.Threading.Tasks.Task.Run(() =>
             {
-                while (_stopping)
-                {
-
-                }
+                _stopWaitHandle.WaitOne();
             }).ContinueWith((a) =>
             {
                 VlcMediaPlayer.Stop();

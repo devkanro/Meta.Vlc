@@ -7,7 +7,7 @@ namespace xZune.Vlc
 {
     public static class InteropHelper
     {
-        public static String PtrToString(IntPtr ptr)
+        public static String PtrToString(IntPtr ptr, bool toBeFree = false)
         {
             if(ptr == IntPtr.Zero)
             {
@@ -23,6 +23,11 @@ namespace xZune.Vlc
                 buffer.Add(tmp);
                 offset++;
                 tmp = Marshal.ReadByte(ptr, offset);
+            }
+
+            if (toBeFree)
+            {
+                Vlc.Free(ptr);
             }
 
             return Encoding.UTF8.GetString(buffer.ToArray());

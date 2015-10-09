@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-
+using System.Windows;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
 using xZune.Vlc.Interop.MediaPlayer;
@@ -95,6 +95,11 @@ namespace xZune.Vlc
                 _setAudioTrackFunction = new LibVlcFunction<SetAudioTrack>(libHandle, libVersion, devString);
                 _getAudioTrackCountFunction = new LibVlcFunction<GetAudioTrackCount>(libHandle, libVersion, devString);
                 _getAudioTrackDescriptionFunction = new LibVlcFunction<GetAudioTrackDescription>(libHandle, libVersion, devString);
+                _getSizeFunction = new LibVlcFunction<GetSize>(libHandle, libVersion, devString);
+                _setScaleFunction = new LibVlcFunction<SetScale>(libHandle, libVersion, devString);
+                _getScaleFunction = new LibVlcFunction<GetScale>(libHandle, libVersion, devString);
+                _setAspectRatioFunction = new LibVlcFunction<SetAspectRatio>(libHandle, libVersion, devString);
+                _getAspectRatioFunction = new LibVlcFunction<GetAspectRatio>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -169,6 +174,11 @@ namespace xZune.Vlc
         static LibVlcFunction<SetAudioTrack> _setAudioTrackFunction;
         static LibVlcFunction<GetAudioTrackCount> _getAudioTrackCountFunction;
         static LibVlcFunction<GetAudioTrackDescription> _getAudioTrackDescriptionFunction;
+        static LibVlcFunction<GetSize> _getSizeFunction;
+        static LibVlcFunction<GetScale> _getScaleFunction;
+        static LibVlcFunction<SetScale> _setScaleFunction;
+        static LibVlcFunction<GetAspectRatio> _getAspectRatioFunction;
+        static LibVlcFunction<SetAspectRatio> _setAspectRatioFunction;
 
 
         readonly LibVlcEventCallBack _onPlaying;
@@ -747,6 +757,53 @@ namespace xZune.Vlc
             }
         }
 
+        public Size VideoSize
+        {
+            get
+            {
+                uint x = 0, y = 0;
+                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                return new Size(x, y);
+            }
+        }
+
+        public Double PixelHeight
+        {
+            get
+            {
+                uint x = 0, y = 0;
+                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                return y;
+            }
+        }
+
+        public Double PixelWidth
+        {
+            get
+            {
+                uint x = 0, y = 0;
+                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                return x;
+            }
+        }
+
+        public float Scale
+        {
+            get { return _getScaleFunction.Delegate.Invoke(InstancePointer); }
+            set { _setScaleFunction.Delegate.Invoke(InstancePointer, value); }
+        }
+
+        public String AspectRatio
+        {
+            get { return InteropHelper.PtrToString(_getAspectRatioFunction.Delegate.Invoke(InstancePointer), true); }
+            set
+            {
+                var handle = InteropHelper.StringToPtr(value);
+                _setAspectRatioFunction.Delegate.Invoke(InstancePointer, handle.AddrOfPinnedObject());
+                handle.Free();
+            }
+        }
+
         #endregion
 
         #region 方法
@@ -830,9 +887,9 @@ namespace xZune.Vlc
         /// <param name="format">格式字符串,一个四字符的字符串</param>
         /// <param name="rate">采样率</param>
         /// <param name="channels">通道数</param>
-        public void SetAudioFormat(String format,uint rate,uint channels)
+        public void SetAudioFormat(String format, uint rate, uint channels)
         {
-            var fmt = BitConverter.ToUInt32(new [] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
+            var fmt = BitConverter.ToUInt32(new[] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
             _setAudioFormatFunction.Delegate(InstancePointer, fmt, rate, channels);
         }
 
@@ -894,12 +951,12 @@ namespace xZune.Vlc
         /// <param name="num">视频输出号</param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void GetMouseCursor(uint num, ref int x,ref int y)
+        public void GetMouseCursor(uint num, ref int x, ref int y)
         {
             _getCursorFunction.Delegate(InstancePointer, num, ref x, ref y);
         }
-        
-        public bool SetMouseCursor(uint num, int x,int y)
+
+        public bool SetMouseCursor(uint num, int x, int y)
         {
             return _setCursorFunction.Delegate(InstancePointer, num, x, y) == 0;
         }

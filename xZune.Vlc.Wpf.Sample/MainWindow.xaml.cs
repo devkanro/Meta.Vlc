@@ -42,7 +42,7 @@ namespace xZune.Vlc.Wpf.Sample
 
             VlcPlayer.BeginStop((ar) =>
             {
-                VlcPlayer.LoadMedia(uri.ToString());
+                VlcPlayer.LoadMedia(uri);
                 VlcPlayer.Play();
             });
         }

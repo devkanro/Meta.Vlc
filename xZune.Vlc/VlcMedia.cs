@@ -492,7 +492,7 @@ namespace xZune.Vlc
             for (var i = 0; i < count; i++)
             {
                 var p = Marshal.ReadIntPtr(temp);
-                result[i] = (MediaTrack)Marshal.PtrToStructure(p, typeof(MediaTrack));
+                result[i] = new MediaTrack(p);
                 temp = (IntPtr)((int)temp + Marshal.SizeOf(typeof(IntPtr)));
             }
 

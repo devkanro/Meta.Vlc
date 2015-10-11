@@ -223,26 +223,28 @@ namespace xZune.Vlc.Wpf
                 var tracks = VlcMediaPlayer.Media.GetTracks();
                 MediaTrack videoMediaTrack = tracks.FirstOrDefault(t => t.Type == TrackType.Video);
 
-                if (videoMediaTrack.Type == TrackType.Video)
+                if (videoMediaTrack != null && videoMediaTrack.Type == TrackType.Video)
                 {
-                    var video = (VideoTrack)Marshal.PtrToStructure(videoMediaTrack.Track, typeof(VideoTrack));
-                    var newSize = _context.CheckAspectRatio(video);
-                    if (newSize != new Size(1, 1))
+                    if (videoMediaTrack.VideoTrack != null)
                     {
-                        _context.IsAspectRatioChecked = true;
-                        Debug.WriteLine("Scale:{0}x{1}", newSize.Width, newSize.Height);
-                        Debug.WriteLine("Resize Image to {0}x{1}", _context.Width * newSize.Width, _context.Height * newSize.Height);
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            ScaleTransform = new ScaleTransform(newSize.Width, newSize.Height);
-                        }));
-                    }
-                    else
-                    {
-                        _checkCount++;
-                        if (_checkCount > 5)
+                        var newSize = _context.CheckAspectRatio(videoMediaTrack.VideoTrack.Value);
+                        if (newSize != new Size(1, 1))
                         {
                             _context.IsAspectRatioChecked = true;
+                            Debug.WriteLine("Scale:{0}x{1}", newSize.Width, newSize.Height);
+                            Debug.WriteLine("Resize Image to {0}x{1}", _context.Width * newSize.Width, _context.Height * newSize.Height);
+                            Dispatcher.Invoke(new Action(() =>
+                            {
+                                ScaleTransform = new ScaleTransform(newSize.Width, newSize.Height);
+                            }));
+                        }
+                        else
+                        {
+                            _checkCount++;
+                            if (_checkCount > 5)
+                            {
+                                _context.IsAspectRatioChecked = true;
+                            }
                         }
                     }
                 }

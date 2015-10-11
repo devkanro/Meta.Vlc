@@ -13,6 +13,7 @@ using xZune.Vlc.Interop.MediaPlayer;
 using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using xZune.Vlc.Interop.Media;
 
@@ -211,9 +212,37 @@ namespace xZune.Vlc.Wpf
 
         #region 视频呈现
         VideoDisplayContext _context;
+        VideoDisplayContext _replayContext;
+
 
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
+            if (!_context.IsAspectRatioChecked)
+            {
+                var tracks = VlcMediaPlayer.Media.GetTracks();
+                MediaTrack videoMediaTrack = tracks.FirstOrDefault(t => t.Type == TrackType.Video);
+
+                if (videoMediaTrack.Type == TrackType.Video)
+                {
+                    var video = (VideoTrack)Marshal.PtrToStructure(videoMediaTrack.Track, typeof(VideoTrack));
+
+                    if (_context.CheckAspectRatio(video))
+                    {
+                        _replayContext = _context;
+                        BeginStop(a =>
+                        {
+                            Play();
+                        });
+                    }
+                    else
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            VideoSource = _context.Image;
+                        }));
+                    }
+                }
+            }
             return planes = _context.MapView;
         }
 
@@ -269,20 +298,20 @@ namespace xZune.Vlc.Wpf
 
         uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
         {
-            _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
-
+            if (_replayContext != null && _replayContext.IsReplayRequest)
+            {
+                _context = new VideoDisplayContext(_replayContext.Width, _replayContext.Height, PixelFormats.Bgr32);
+            }
+            else
+            {
+                _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
+            }
+            _replayContext = null;
             chroma = BitConverter.ToUInt32(new[] { (byte)'R', (byte)'V', (byte)'3', (byte)'2' }, 0);
             width = (uint)_context.Width;
             height = (uint)_context.Height;
             pitches = (uint)_context.Stride;
             lines = (uint)_context.Height;
-
-            Dispatcher.Invoke(new Action(() =>
-            {
-                var AspectRatio = VlcMediaPlayer.AspectRatio;
-
-                VideoSource = _context.Image;
-            }));
 
             return (uint)_context.Size;
         }
@@ -290,6 +319,7 @@ namespace xZune.Vlc.Wpf
         void VideoCleanupCallback(IntPtr opaque)
         {
             _context.Dispose();
+            _context = null;
         }
         #endregion
 
@@ -1750,6 +1780,8 @@ namespace xZune.Vlc.Wpf
         public IntPtr FileMapping { get; private set; }
         public IntPtr MapView { get; private set; }
         public InteropBitmap Image { get; private set; }
+        public bool IsAspectRatioChecked { get; private set; }
+        public bool IsReplayRequest { get; private set; }
 
         public VideoDisplayContext(uint width, uint height, PixelFormat format)
             : this((int)width, (int)height, format)
@@ -1763,6 +1795,8 @@ namespace xZune.Vlc.Wpf
 
         public VideoDisplayContext(int width, int height, PixelFormat format)
         {
+            IsReplayRequest = false;
+            IsAspectRatioChecked = false;
             Size = width * height * format.BitsPerPixel / 8;
             Width = width;
             Height = height;
@@ -1787,14 +1821,48 @@ namespace xZune.Vlc.Wpf
             }
         }
 
+        public bool CheckAspectRatio(VideoTrack track)
+        {
+            if (!IsAspectRatioChecked)
+            {
+                IsAspectRatioChecked = true;
+
+                uint width = track.Width, height = track.Height;
+                var sar = 1.0 * track.SarNum / track.SarDen;
+
+                if (sar > 1)
+                {
+                    width = (uint)Math.Floor(width * sar);
+                }
+                else
+                {
+                    height = (uint)Math.Floor(height / sar);
+                }
+
+                if (width != Width || height != Height)
+                {
+                    Width = (int)width;
+                    Height = (int)height;
+                    IsReplayRequest = true;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         bool _disposed = false;
 
         public void Dispose(bool disposing)
         {
             if (_disposed) return;
             Size = 0;
-            Width = 0;
-            Height = 0;
             PixelFormat = PixelFormats.Default;
             Stride = 0;
             Image = null;

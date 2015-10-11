@@ -100,6 +100,11 @@ namespace xZune.Vlc
                 _getScaleFunction = new LibVlcFunction<GetScale>(libHandle, libVersion, devString);
                 _setAspectRatioFunction = new LibVlcFunction<SetAspectRatio>(libHandle, libVersion, devString);
                 _getAspectRatioFunction = new LibVlcFunction<GetAspectRatio>(libHandle, libVersion, devString);
+                _getVideoWidthFunction = new LibVlcFunction<GetVideoWidth>(libHandle, libVersion, devString);
+                _getVideoTrackFunction = new LibVlcFunction<GetVideoTrack>(libHandle, libVersion, devString);
+                _setVideoTrackFunction = new LibVlcFunction<SetVideoTrack>(libHandle, libVersion, devString);
+                _getVideoTrackCountFunction = new LibVlcFunction<GetVideoTrackCount>(libHandle, libVersion, devString);
+                _getVideoTrackDescriptionFunction = new LibVlcFunction<GetVideoTrackDescription>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -179,6 +184,11 @@ namespace xZune.Vlc
         static LibVlcFunction<SetScale> _setScaleFunction;
         static LibVlcFunction<GetAspectRatio> _getAspectRatioFunction;
         static LibVlcFunction<SetAspectRatio> _setAspectRatioFunction;
+        static LibVlcFunction<GetVideoWidth> _getVideoWidthFunction;
+        static LibVlcFunction<GetVideoTrack> _getVideoTrackFunction;
+        static LibVlcFunction<SetVideoTrack> _setVideoTrackFunction;
+        static LibVlcFunction<GetVideoTrackCount> _getVideoTrackCountFunction;
+        static LibVlcFunction<GetVideoTrackDescription> _getVideoTrackDescriptionFunction;
 
 
         readonly LibVlcEventCallBack _onPlaying;
@@ -757,12 +767,40 @@ namespace xZune.Vlc
             }
         }
 
+        public int VideoTrackCount
+        {
+            get
+            {
+                return _getVideoTrackCountFunction.Delegate(InstancePointer);
+            }
+        }
+
+        public int VideoTrack
+        {
+            get
+            {
+                return _getVideoTrackFunction.Delegate(InstancePointer);
+            }
+            set
+            {
+                _setVideoTrackFunction.Delegate(InstancePointer, value);
+            }
+        }
+
+        public TrackDescription VideoTrackDescription
+        {
+            get
+            {
+                return new TrackDescription(_getVideoTrackDescriptionFunction.Delegate(InstancePointer));
+            }
+        }
+
         public Size VideoSize
         {
             get
             {
                 uint x = 0, y = 0;
-                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                var result = _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
                 return new Size(x, y);
             }
         }
@@ -772,7 +810,7 @@ namespace xZune.Vlc
             get
             {
                 uint x = 0, y = 0;
-                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                var result = _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
                 return y;
             }
         }
@@ -782,7 +820,7 @@ namespace xZune.Vlc
             get
             {
                 uint x = 0, y = 0;
-                _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
+                var result = _getSizeFunction.Delegate.Invoke(InstancePointer, 0, ref x, ref y);
                 return x;
             }
         }
@@ -942,7 +980,9 @@ namespace xZune.Vlc
 
         public void SetVideoFormat(String chroma, uint width, uint height, uint pitch)
         {
-            _setVideoFormatFunction.Delegate(InstancePointer, chroma, width, height, pitch);
+            var handle = InteropHelper.StringToPtr(chroma);
+            _setVideoFormatFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject(), width, height, pitch);
+            handle.Free();
         }
 
         /// <summary>

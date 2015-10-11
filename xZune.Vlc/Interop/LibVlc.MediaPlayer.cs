@@ -345,7 +345,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="pitch">扫描线</param>
     [LibVlcFunction("libvlc_video_set_format", "1.1.1")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl,CharSet = CharSet.Ansi)]
-    public delegate void SetVideoFormat(IntPtr mediaPlayer, String chroma, uint width, uint height, uint pitch);
+    public delegate void SetVideoFormat(IntPtr mediaPlayer, IntPtr chroma, uint width, uint height, uint pitch);
 
     /// <summary>
     /// 设置 Video 解码格式回调

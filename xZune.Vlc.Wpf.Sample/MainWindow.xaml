@@ -14,7 +14,8 @@
                 <TextBox x:Name="path"/>
                 <Button Grid.Column="1" Content="Load" Click="Button_Click_3"/>
             </Grid>
-            <Button Content="Play" Click="Button_Click_2"></Button>
+            <Button Content="Play" Click="Button_Click_2">
+            </Button>
             <Button Content="Pause" Click="Button_Click_1"></Button>
             <Button Content="Stop" Click="Button_Click"></Button>
         </StackPanel>

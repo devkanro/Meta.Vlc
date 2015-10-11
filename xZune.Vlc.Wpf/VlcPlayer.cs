@@ -230,6 +230,7 @@ namespace xZune.Vlc.Wpf
                     if (newSize != new Size(1, 1))
                     {
                         _context.IsAspectRatioChecked = true;
+                        Debug.WriteLine("Scale:{0}x{1}", newSize.Width, newSize.Height);
                         Debug.WriteLine("Resize Image to {0}x{1}", _context.Width * newSize.Width, _context.Height * newSize.Height);
                         Dispatcher.Invoke(new Action(() =>
                         {
@@ -1843,7 +1844,7 @@ namespace xZune.Vlc.Wpf
                     return new Size(1, 1);
                 }
 
-                Debug.WriteLine("Aspect Ratio : {0}x{1}\r\nSAR:{2}/{3}", Width, Height, track.SarNum, track.SarDen);
+                Debug.WriteLine("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen);
 
                 if (sar > 1)
                 {

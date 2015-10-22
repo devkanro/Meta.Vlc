@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace xZune.Vlc.Wpf.Sample
 {
@@ -45,6 +46,22 @@ namespace xZune.Vlc.Wpf.Sample
                 VlcPlayer.LoadMedia(uri);
                 VlcPlayer.Play();
             });
+        }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            switch ((sender as ComboBox).SelectedIndex)
+            {
+                case 0:
+                    VlcPlayer.AspectRatio = AspectRatio.Default;
+                    break;
+                case 1:
+                    VlcPlayer.AspectRatio = AspectRatio._16_9;
+                    break;
+                case 2:
+                    VlcPlayer.AspectRatio  = AspectRatio._4_3;
+                    break;
+            }
         }
     }
 }

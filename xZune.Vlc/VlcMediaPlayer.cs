@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
 using xZune.Vlc.Interop.MediaPlayer;

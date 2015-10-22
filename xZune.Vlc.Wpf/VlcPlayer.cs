@@ -15,7 +15,6 @@ using MouseButton = System.Windows.Input.MouseButton;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Windows.Threading;
 using xZune.Vlc.Interop.Media;
 
 namespace xZune.Vlc.Wpf
@@ -215,6 +214,7 @@ namespace xZune.Vlc.Wpf
         #region 视频呈现
         VideoDisplayContext _context;
         int _checkCount = 0;
+        Size _sar = new Size(1, 1);
 
         IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
@@ -227,16 +227,14 @@ namespace xZune.Vlc.Wpf
                 {
                     if (videoMediaTrack.VideoTrack != null)
                     {
-                        var newSize = _context.CheckAspectRatio(videoMediaTrack.VideoTrack.Value);
-                        if (newSize != new Size(1, 1))
+                        _context.CheckDisplaySize(videoMediaTrack.VideoTrack.Value);
+                        var scale = GetScaleTransform();
+
+                        if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
                         {
                             _context.IsAspectRatioChecked = true;
-                            Debug.WriteLine("Scale:{0}x{1}", newSize.Width, newSize.Height);
-                            Debug.WriteLine("Resize Image to {0}x{1}", _context.Width * newSize.Width, _context.Height * newSize.Height);
-                            Dispatcher.Invoke(new Action(() =>
-                            {
-                                ScaleTransform = new ScaleTransform(newSize.Width, newSize.Height);
-                            }));
+                            Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
+                            Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth, _context.DisplayHeight));
                         }
                         else
                         {
@@ -246,6 +244,11 @@ namespace xZune.Vlc.Wpf
                                 _context.IsAspectRatioChecked = true;
                             }
                         }
+
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
+                        }));
                     }
                 }
             }
@@ -304,7 +307,7 @@ namespace xZune.Vlc.Wpf
 
         uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
         {
-            Debug.WriteLine("Initialize Video Content : {0}x{1}", width, height);
+            Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
             _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
             chroma = BitConverter.ToUInt32(new[] { (byte)'R', (byte)'V', (byte)'3', (byte)'2' }, 0);
             width = (uint)_context.Width;
@@ -324,45 +327,75 @@ namespace xZune.Vlc.Wpf
             _context = null;
         }
         #endregion
-
-        //#region 属性变更通知
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //private void NotifyPropertyChange([CallerMemberName]string propertyName = "")
-        //{
-        //    if (PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        //    }
-        //}
-
-        //protected void SetProperty(ref object field, object newValue, [CallerMemberName]string propertyName = "")
-        //{
-        //    if (field != newValue)
-        //    {
-        //        field = newValue;
-        //        NotifyPropertyChange(propertyName);
-        //    }
-        //}
-
-        //protected void SetProperty<T>(ref T field, T newValue, [CallerMemberName]string propertyName = "")
-        //{
-        //    if (!object.Equals(field, newValue))
-        //    {
-        //        field = newValue;
-        //        NotifyPropertyChange(propertyName);
-        //    }
-        //}
-        //#endregion
-
-        public static readonly DependencyProperty ScaleTransformProperty = DependencyProperty.Register(
+        
+        internal static readonly DependencyProperty ScaleTransformProperty = DependencyProperty.Register(
             "ScaleTransform", typeof(ScaleTransform), typeof(VlcPlayer), new PropertyMetadata(default(ScaleTransform)));
 
-        public ScaleTransform ScaleTransform
+        internal ScaleTransform ScaleTransform
         {
             get { return (ScaleTransform)GetValue(ScaleTransformProperty); }
             set { SetValue(ScaleTransformProperty, value); }
         }
+
+        private Size GetScaleTransform()
+        {
+            if (_context == null) return new Size(1.0,1.0);
+
+            AspectRatio aspectRatio = AspectRatio.Default;
+
+            Dispatcher.Invoke(new Action(() =>
+            {
+                aspectRatio = AspectRatio;
+            }));
+
+            Size scale = new Size(_context.DisplayWidth / _context.Width, _context.DisplayHeight / _context.Height);
+
+            switch (aspectRatio)
+            {
+                case AspectRatio.Default:
+                    return scale;
+                case AspectRatio._16_9:
+                    return new Size(1.0 * _context.DisplayHeight / 9 * 16 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
+                case AspectRatio._4_3:
+                    return new Size(1.0 * _context.DisplayHeight / 3 * 4 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
+            }
+            return new Size(1.0, 1.0);
+        }
+
+        public static readonly DependencyProperty PropertyTypeProperty = DependencyProperty.Register(
+            "PropertyType", typeof (AspectRatio), typeof (VlcPlayer), new PropertyMetadata(AspectRatio.Default, OnAspectRatioChangedStatic));
+
+        public AspectRatio AspectRatio
+        {
+            get { return (AspectRatio) GetValue(PropertyTypeProperty); }
+            set { SetValue(PropertyTypeProperty, value); }
+        }
+
+        private static void OnAspectRatioChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var vlcPlayer = sender as VlcPlayer;
+
+            var scale = vlcPlayer.GetScaleTransform();
+            vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
+
+            if (vlcPlayer != null) vlcPlayer.OnAspectRatioChanged(new EventArgs());
+        }
+
+        /// <summary>
+        /// 引发 <see cref="VlcPlayer.AspectRatioChanged"/> 事件
+        /// </summary>
+        protected void OnAspectRatioChanged(EventArgs e)
+        {
+            if (AspectRatioChanged != null)
+            {
+                AspectRatioChanged(this, e);
+            }
+        }
+
+        /// <summary>
+        /// 在 VlcPlayer 的 <see cref="VlcPlayer.AspectRatio"/> 属性改变时调用
+        /// </summary>
+        public event EventHandler AspectRatioChanged;
 
         #region 依赖属性 VideoSource
         /// <summary>
@@ -487,7 +520,6 @@ namespace xZune.Vlc.Wpf
             var vlcPlayer = sender as VlcPlayer;
             if (vlcPlayer != null) vlcPlayer.OnTimeChanged(e);
         }
-
 
         public Stretch Stretch
         {
@@ -900,10 +932,14 @@ namespace xZune.Vlc.Wpf
 
         public void BeginStop(AsyncCallback callback)
         {
+            if (VlcMediaPlayer.Media == null)
+            {
+                callback(null);
+                return;
+            }
+
             Action action = new Action(() =>
             {
-                if (VlcMediaPlayer.Media == null) return;
-
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
 
@@ -911,9 +947,8 @@ namespace xZune.Vlc.Wpf
                 {
                     _stopWaitHandle.Reset();
                     VlcMediaPlayer.Pause();
+                    _stopWaitHandle.WaitOne();
                 }
-
-                _stopWaitHandle.WaitOne();
             });
 
             var asyncResult = action.BeginInvoke((aresult) =>
@@ -931,10 +966,10 @@ namespace xZune.Vlc.Wpf
 
         public IAsyncResult Stop()
         {
+            if (VlcMediaPlayer.Media == null) return null;
+
             Action action = new Action(() =>
             {
-                if (VlcMediaPlayer.Media == null) return;
-
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
 
@@ -942,9 +977,8 @@ namespace xZune.Vlc.Wpf
                 {
                     _stopWaitHandle.Reset();
                     VlcMediaPlayer.Pause();
+                    _stopWaitHandle.WaitOne();
                 }
-
-                _stopWaitHandle.WaitOne();
             });
 
             return action.BeginInvoke((aresult) =>
@@ -970,19 +1004,17 @@ namespace xZune.Vlc.Wpf
             {
                 _stopWaitHandle.Reset();
                 VlcMediaPlayer.Pause();
+                await System.Threading.Tasks.Task.Run(() =>
+                {
+                    _stopWaitHandle.WaitOne();
+                });
             }
 
-            await System.Threading.Tasks.Task.Run(() =>
-            {
-                _stopWaitHandle.WaitOne();
-            }).ContinueWith((a) =>
-            {
-                VlcMediaPlayer.Stop();
+            VlcMediaPlayer.Stop();
 
-                if (_context != null) _context.Dispose();
-                _context = null;
+            if (_context != null) _context.Dispose();
+            _context = null;
 
-            });
             VideoSource = null;
         }
 #endif
@@ -1790,6 +1822,8 @@ namespace xZune.Vlc.Wpf
         public int Size { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public double DisplayWidth { get; private set; }
+        public double DisplayHeight { get; private set; }
         public int Stride { get; private set; }
         public PixelFormat PixelFormat { get; private set; }
         public IntPtr FileMapping { get; private set; }
@@ -1811,8 +1845,8 @@ namespace xZune.Vlc.Wpf
         {
             IsAspectRatioChecked = false;
             Size = width * height * format.BitsPerPixel / 8;
-            Width = width;
-            Height = height;
+            DisplayWidth = Width = width;
+            DisplayHeight = Height = height;
             PixelFormat = format;
             Stride = width * format.BitsPerPixel / 8;
             FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
@@ -1834,32 +1868,29 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        public Size CheckAspectRatio(VideoTrack track)
+        public void CheckDisplaySize(VideoTrack track)
         {
             if (!IsAspectRatioChecked)
             {
-                uint width = track.Width, height = track.Height;
                 var sar = 1.0 * track.SarNum / track.SarDen;
 
                 if (track.SarNum == 0 || track.SarDen == 0)
                 {
-                    return new Size(1, 1);
+                    return;
                 }
 
-                Debug.WriteLine("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen);
+                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen));
 
                 if (sar > 1)
                 {
-                    return new Size(1.0 * sar * width / Width, 1.0 * height / Height);
+                    DisplayWidth = sar * track.Width;
+                    DisplayHeight = track.Height;
                 }
                 else
                 {
-                    return new Size(1.0 * width / Width, 1.0 * height / Height / sar);
+                    DisplayWidth = track.Width;
+                    DisplayHeight = track.Height / sar;
                 }
-            }
-            else
-            {
-                return new Size(1, 1);
             }
         }
 

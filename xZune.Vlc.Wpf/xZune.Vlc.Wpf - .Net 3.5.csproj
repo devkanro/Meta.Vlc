@@ -31,6 +31,7 @@
     <DefineConstants>TRACE;DotNet35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Release\.NET 3.5\xZune.Vlc.Wpf.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

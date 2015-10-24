@@ -33,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\Release\.NET 4.5\xZune.Vlc.Wpf.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

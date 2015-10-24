@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>xZune.Vlc</id>
+        <version>15.10.25</version>
+        <title>xZune.Vlc</title>
+        <authors>higan</authors>
+        <owners>higan</owners>
+        <licenseUrl>https://github.com/higankanshi/xZune.Vlc/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/higankanshi/xZune.Vlc</projectUrl>
+        <iconUrl>http://images1.videolan.org/images/largeVLC.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <developmentDependency>true</developmentDependency>
+        <description>xZune.Vlc is core component of xZune.Vlc.Wpf.</description>
+        <releaseNotes />
+        <copyright>Copyright 2015</copyright>
+        <tags>vlc libvlc xZune media video</tags>
+    </metadata>
+    <files>
+        <file src="..\Release\.NET 2.0\xZune.Vlc.dll" target="lib\net20\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 3.0\xZune.Vlc.dll" target="lib\net30\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 3.5\xZune.Vlc.dll" target="lib\net35\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 4.0\xZune.Vlc.dll" target="lib\net40\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 4.5\xZune.Vlc.dll" target="lib\net45\xZune.Vlc.dll" />
+    </files>
+</package>

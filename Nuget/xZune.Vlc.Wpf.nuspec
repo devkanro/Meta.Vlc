@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>xZune.Vlc.Wpf</id>
+        <version>15.10.25</version>
+        <title>xZune.Vlc.Wpf</title>
+        <authors>higan</authors>
+        <owners>higan</owners>
+        <licenseUrl>https://github.com/higankanshi/xZune.Vlc/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/higankanshi/xZune.Vlc</projectUrl>
+        <iconUrl>http://images1.videolan.org/images/largeVLC.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <developmentDependency>true</developmentDependency>
+        <description>xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.</description>
+        <releaseNotes />
+        <copyright>Copyright 2015</copyright>
+        <tags>vlc libvlc xZune media video</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework3.5">
+                <dependency id="xZune.Vlc" version="15.10.25" />
+            </group>
+            <group targetFramework=".NETFramework4.0">
+                <dependency id="xZune.Vlc" version="15.10.25" />
+            </group>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="xZune.Vlc" version="15.10.25" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Release\.NET 3.5\xZune.Vlc.Wpf.dll" target="lib\net35\xZune.Vlc.Wpf.dll" />
+        <file src="..\Release\.NET 4.0\xZune.Vlc.Wpf.dll" target="lib\net40\xZune.Vlc.Wpf.dll" />
+        <file src="..\Release\.NET 4.5\xZune.Vlc.Wpf.dll" target="lib\net45\xZune.Vlc.Wpf.dll" />
+    </files>
+</package>

@@ -6,6 +6,18 @@ xZune.Vlc 是一个 LibVlc 封装库的 .NET 实现,封装了大部分的 LibVlc
 
 xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.  
 
+## NuGet Packages
+
+Install [xZune.Vlc](https://www.nuget.org/packages/xZune.Vlc/)
+```Powershell
+PM> Install-Package xZune.Vlc 
+```
+
+Install [xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)
+```Powershell
+PM> Install-Package xZune.Vlc.Wpf 
+```
+
 ## Change Log  
 
 ###07.18  

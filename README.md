@@ -31,8 +31,8 @@ SHA: fba747bd44e190a79c3456bd97bad2396fd84122
 01.Auto correct DAR  
 Now we can auto correct DAR and video display size by load SAR. It used for fix sometimes video size is wrong.
 
-02.Add AspectRatio property
-Now we can change the aspect ratio of video by this property.  
+02.Add AspectRatio property  
+Now we can change the aspect ratio of video by `VlcPlayer.AspectRatio` property.  
 
 ###07.18  
 SHA: 5d4144ba64d568b36cd789e482e9ed1281525c25  

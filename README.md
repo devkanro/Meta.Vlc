@@ -20,6 +20,20 @@ PM> Install-Package xZune.Vlc.Wpf
 
 ## Change Log  
 
+###10.23
+SHA: fba747bd44e190a79c3456bd97bad2396fd84122  
+01.自动修复 DAR  
+现在可以通过读取 SAR 来获取正确的 DAR 与显示分辨率,用于解决指定 SAR 下显示比例异常。
+
+02.添加 AspectRatio 属性   
+现在可以使用`VlcPlayer.AspectRatio`属性来将视频调整至指定的横宽比。
+
+01.Auto correct DAR  
+Now we can auto correct DAR and video display size by load SAR. It used for fix sometimes video size is wrong.
+
+02.Add AspectRatio property
+Now we can change the aspect ratio of video by this property.  
+
 ###07.18  
 SHA: 5d4144ba64d568b36cd789e482e9ed1281525c25  
 01.更改字符集至 UTF-8  

@@ -18,22 +18,22 @@ namespace xZune.Vlc.Wpf.Sample
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            VlcPlayer.Dispose();
+            Player.Dispose();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            VlcPlayer.Stop();
+            Player.Stop();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            VlcPlayer.PauseOrResume();
+            Player.PauseOrResume();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            VlcPlayer.Play();
+            Player.Play();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -41,10 +41,10 @@ namespace xZune.Vlc.Wpf.Sample
             Uri uri = new Uri(path.Text);
             //String pathString = path.Text;
 
-            VlcPlayer.BeginStop((ar) =>
+            Player.BeginStop((ar) =>
             {
-                VlcPlayer.LoadMedia(uri);
-                VlcPlayer.Play();
+                Player.LoadMedia(uri);
+                Player.Play();
             });
         }
 
@@ -53,13 +53,13 @@ namespace xZune.Vlc.Wpf.Sample
             switch ((sender as ComboBox).SelectedIndex)
             {
                 case 0:
-                    VlcPlayer.AspectRatio = AspectRatio.Default;
+                    Player.AspectRatio = AspectRatio.Default;
                     break;
                 case 1:
-                    VlcPlayer.AspectRatio = AspectRatio._16_9;
+                    Player.AspectRatio = AspectRatio._16_9;
                     break;
                 case 2:
-                    VlcPlayer.AspectRatio  = AspectRatio._4_3;
+                    Player.AspectRatio  = AspectRatio._4_3;
                     break;
             }
         }

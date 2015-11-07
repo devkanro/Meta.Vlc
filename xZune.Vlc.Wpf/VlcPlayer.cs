@@ -174,9 +174,9 @@ namespace xZune.Vlc.Wpf
 
     public static readonly DependencyProperty LibVlcPathProperty =
       DependencyProperty.Register("LibVlcPath", typeof(String), typeof(VlcPlayer),
-        new PropertyMetadata(OnLibVlcPathChangedStatic));
+        new PropertyMetadata(OnLibVlcPathChanged));
 
-    private static void OnLibVlcPathChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    private static void OnLibVlcPathChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
       var vlcPlayer = sender as VlcPlayer;
       if (vlcPlayer != null) vlcPlayer.OnLibVlcPathChanged(new EventArgs());
@@ -203,9 +203,9 @@ namespace xZune.Vlc.Wpf
 
     public static readonly DependencyProperty VlcOptionProperty =
       DependencyProperty.Register("VlcOption", typeof(String[]), typeof(VlcPlayer),
-        new PropertyMetadata(OnVlcOptionChangedStatic));
+        new PropertyMetadata(OnVlcOptionChanged));
 
-    private static void OnVlcOptionChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    private static void OnVlcOptionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
       var vlcPlayer = sender as VlcPlayer;
       if (vlcPlayer != null) vlcPlayer.OnVlcOptionChanged(new EventArgs());
@@ -278,12 +278,14 @@ namespace xZune.Vlc.Wpf
     }
 
     public static readonly DependencyProperty VideoSourceProperty =
-        DependencyProperty.Register("VideoSource", typeof(InteropBitmap), typeof(VlcPlayer), new PropertyMetadata(null, OnVideoSourceChangedStatic));
+        DependencyProperty.Register("VideoSource", typeof(InteropBitmap), typeof(VlcPlayer),
+          new PropertyMetadata(OnVideoSourceChanged));
 
-    private static void OnVideoSourceChangedStatic(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+    private static void OnVideoSourceChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
     {
       var vlcPlayer = sender as VlcPlayer;
-      if (vlcPlayer != null) vlcPlayer.OnVideoSourceChanged(new EventArgs());
+      if (vlcPlayer != null)
+        vlcPlayer.OnVideoSourceChanged(new EventArgs());
     }
 
     /// <summary>

@@ -19,7 +19,7 @@ namespace xZune.Vlc.Wpf
         #endregion
 
         #region 只读静态属性 Vlc
-        public static Vlc Vlc { get; private set; }
+        public static xZune.Vlc.Vlc Vlc { get; private set; }
         #endregion
 
         #region 只读静态属性 IsInited
@@ -29,8 +29,8 @@ namespace xZune.Vlc.Wpf
         public static void Initialize()
         {
             if (IsInitialized) return;
-            Vlc.LoadLibVlc(LibVlcPath);
-            Vlc = new Vlc(VlcOption);
+            xZune.Vlc.Vlc.LoadLibVlc(LibVlcPath);
+            Vlc = new xZune.Vlc.Vlc(VlcOption);
         }
 
         public static void Initialize(String libVlcPath)

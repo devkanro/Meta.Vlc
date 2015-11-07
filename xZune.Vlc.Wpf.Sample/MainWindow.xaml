@@ -4,7 +4,7 @@
         xmlns:wpf="clr-namespace:xZune.Vlc.Wpf;assembly=xZune.Vlc.Wpf"
         Title="xZune.Vlc.Wpf.Sample" Height="350" Width="525" WindowState="Maximized" WindowStyle="None">
     <Grid>
-        <wpf:VlcPlayer x:Name="VlcPlayer"/>
+        <wpf:VlcPlayer x:Name="Player"/>
         <StackPanel Opacity="0.8">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -24,6 +24,6 @@
                 <ComboBoxItem Content="4:3"/>
             </ComboBox>
         </StackPanel>
-        <ProgressBar Opacity="0.8" Value="{Binding Position, ElementName=VlcPlayer}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001"/>
+        <ProgressBar Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001"/>
     </Grid>
 </Window>

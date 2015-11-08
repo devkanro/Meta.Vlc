@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: MainWindow.xaml.cs
-//Version: 20151107
+//Version: 20151108
 
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
 
@@ -60,6 +60,11 @@ namespace xZune.Vlc.Wpf.Sample
     private void Stop_Click(object sender, RoutedEventArgs e)
     {
       Player.Stop();
+    }
+
+    private void Exit_Click(object sender, RoutedEventArgs e)
+    {
+      Close(); //closing the main window will also terminate the application
     }
 
     private void AspectRatio_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

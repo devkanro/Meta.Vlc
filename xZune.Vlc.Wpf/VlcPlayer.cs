@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
+using xZune.Vlc;
 using xZune.Vlc.Interop.MediaPlayer;
 using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;

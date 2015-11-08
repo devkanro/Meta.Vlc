@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.cs
-//Version: 20151107
+//Version: 20151108
 
 using System;
 using System.ComponentModel;
@@ -60,7 +60,11 @@ namespace xZune.Vlc.Wpf
     int _checkCount = 0;
     Size _sar = new Size(1, 1);
 
+    //Stop//
     private EventWaitHandle _stopWaitHandle;
+
+    //Dispose//
+    bool _disposed = false;
 
     #endregion
 
@@ -131,33 +135,76 @@ namespace xZune.Vlc.Wpf
 
     public void Initialize(String libVlcPath, String[] libVlcOption)
     {
-      if (ApiManager.IsInitialized)
-        return;
+      if (ApiManager.IsInitialized) return;
 
       ApiManager.Initialize(libVlcPath, libVlcOption);
+
       VlcMediaPlayer = ApiManager.Vlc.CreateMediaPlayer();
-      VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
-      VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
-      VlcMediaPlayer.Playing += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.Paused += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.Stoped += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.Opening += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.Buffering += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.EndReached += VlcMediaPlayerStateChanged;
-      VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
-      VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
+      if (VlcMediaPlayer != null)
+      {
+        VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
+        VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
+        VlcMediaPlayer.Playing += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.Paused += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.Stoped += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.Opening += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.Buffering += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.EndReached += VlcMediaPlayerStateChanged;
+        VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
+        VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
 
-      _lockCallback = VideoLockCallback;
-      _unlockCallback = VideoUnlockCallback;
-      _displayCallback = VideoDisplayCallback;
-      _formatCallback = VideoFormatCallback;
-      _cleanupCallback = VideoCleanupCallback;
+        _lockCallback = VideoLockCallback;
+        _unlockCallback = VideoUnlockCallback;
+        _displayCallback = VideoDisplayCallback;
+        _formatCallback = VideoFormatCallback;
+        _cleanupCallback = VideoCleanupCallback;
 
-      _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
-      _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
-      _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
-      _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
-      _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
+        _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
+        _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
+        _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
+        _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
+        _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
+      }
+    }
+
+    #endregion
+
+    #region --- Cleanup ---
+
+    protected void Dispose(bool disposing)
+    {
+      if (_disposed)
+      {
+        return;
+      }
+
+      BeginStop(ar =>
+      {
+        if (VlcMediaPlayer != null)
+        {
+          if (VlcMediaPlayer.Media != null)
+          {
+            VlcMediaPlayer.Media.Dispose();
+          }
+          VlcMediaPlayer.Dispose();
+        }
+
+        _lockCallbackHandle.Free();
+        _unlockCallbackHandle.Free();
+        _displayCallbackHandle.Free();
+        _formatCallbackHandle.Free();
+        _cleanupCallbackHandle.Free();
+
+        _disposed = true;
+      });
+    }
+
+    /// <summary>
+    /// 释放 VlcMedia 资源
+    /// </summary>
+    public void Dispose()
+    {
+      Dispose(true);
     }
 
     #endregion
@@ -322,7 +369,7 @@ namespace xZune.Vlc.Wpf
     /// </summary>
     protected void OnPositionChanged(DependencyPropertyChangedEventArgs e)
     {
-      if (_setVlcPosition)
+      if (_setVlcPosition && (VlcMediaPlayer != null))
         VlcMediaPlayer.Position = (float)e.NewValue;
 
       _setVlcPosition = true;
@@ -356,7 +403,7 @@ namespace xZune.Vlc.Wpf
     /// </summary>
     protected void OnTimeChanged(DependencyPropertyChangedEventArgs e)
     {
-      if (_setVlcTime)
+      if (_setVlcTime && (VlcMediaPlayer != null))
         VlcMediaPlayer.Time = (TimeSpan)e.NewValue;
 
       _setVlcTime = true;
@@ -426,10 +473,10 @@ namespace xZune.Vlc.Wpf
 
     public bool IsMute
     {
-      get { return VlcMediaPlayer.IsMute; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.IsMute : false; }
       set
       {
-        if (value == VlcMediaPlayer.IsMute) return;
+        if ((VlcMediaPlayer == null) || (value == VlcMediaPlayer.IsMute)) return;
         VlcMediaPlayer.IsMute = value;
         if (IsMuteChanged != null) IsMuteChanged.Invoke(this, new EventArgs());
       }
@@ -441,11 +488,11 @@ namespace xZune.Vlc.Wpf
 
     public int Volume
     {
-      get { return VlcMediaPlayer.Volume; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.Volume : 0; }
       set
       {
-        if (value == VlcMediaPlayer.Volume) return;
-        VlcMediaPlayer.Volume = value; ;
+        if ((VlcMediaPlayer == null) || (value == VlcMediaPlayer.Volume)) return;
+        VlcMediaPlayer.Volume = value;
         if (VolumeChanged != null) VolumeChanged.Invoke(this, new EventArgs());
       }
     }
@@ -456,8 +503,8 @@ namespace xZune.Vlc.Wpf
 
     public AudioOutputChannel AudioOutputChannel
     {
-      get { return VlcMediaPlayer.AudioOutputChannel; }
-      set { VlcMediaPlayer.AudioOutputChannel = value; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioOutputChannel : AudioOutputChannel.Error; }
+      set { if (VlcMediaPlayer != null) VlcMediaPlayer.AudioOutputChannel = value; }
     }
 
     #endregion
@@ -466,7 +513,7 @@ namespace xZune.Vlc.Wpf
 
     public int AudioTrackCount
     {
-      get { return VlcMediaPlayer.AudioTrackCount; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrackCount : 0; }
     }
 
     #endregion
@@ -475,8 +522,8 @@ namespace xZune.Vlc.Wpf
 
     public int AudioTrack
     {
-      get { return VlcMediaPlayer.AudioTrack; }
-      set { VlcMediaPlayer.AudioTrack = value; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrack : -1; } //note: assuming a 0-based index
+      set { if (VlcMediaPlayer != null) VlcMediaPlayer.AudioTrack = value; }
     }
 
     #endregion
@@ -485,7 +532,7 @@ namespace xZune.Vlc.Wpf
 
     public TrackDescription AudioTrackDescription
     {
-      get { return VlcMediaPlayer.AudioTrackDescription; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrackDescription : null; }
     }
 
     #endregion
@@ -494,8 +541,8 @@ namespace xZune.Vlc.Wpf
 
     public float Rate
     {
-      get { return VlcMediaPlayer.Rate; }
-      set { VlcMediaPlayer.Rate = value; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.Rate : 0; }
+      set { if (VlcMediaPlayer != null) VlcMediaPlayer.Rate = value; }
     }
 
     #endregion
@@ -504,8 +551,8 @@ namespace xZune.Vlc.Wpf
 
     public int Title
     {
-      get { return VlcMediaPlayer.Title; }
-      set { VlcMediaPlayer.Title = value; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.Title : -1; } //note: assuming a 0-based index
+      set { if (VlcMediaPlayer != null) VlcMediaPlayer.Title = value; }
     }
 
     #endregion
@@ -514,7 +561,7 @@ namespace xZune.Vlc.Wpf
 
     public int TitleCount
     {
-      get { return VlcMediaPlayer.TitleCount; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.TitleCount : 0; }
     }
 
     #endregion
@@ -523,8 +570,8 @@ namespace xZune.Vlc.Wpf
 
     public int Chapter
     {
-      get { return VlcMediaPlayer.Chapter; }
-      set { VlcMediaPlayer.Chapter = value; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.Chapter : -1; } //note: assuming a 0-based index
+      set { if (VlcMediaPlayer != null) VlcMediaPlayer.Chapter = value; }
     }
 
     #endregion
@@ -533,7 +580,7 @@ namespace xZune.Vlc.Wpf
 
     public int ChapterCount
     {
-      get { return VlcMediaPlayer.ChapterCount; }
+      get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.ChapterCount : 0; }
     }
 
     #endregion
@@ -541,7 +588,7 @@ namespace xZune.Vlc.Wpf
     #region IsSeekable
 
     /// <summary>
-    /// 获取一个值,该值表示是否允许调整进度条
+    /// Checks if media is seekable
     /// </summary>
     public bool IsSeekable { get; private set; }
 
@@ -550,7 +597,7 @@ namespace xZune.Vlc.Wpf
     #region State
 
     /// <summary>
-    /// 获取一个值,该值表示当前的媒体状态
+    /// Current media state
     /// </summary>
     public MediaState State { get; private set; }
 
@@ -559,7 +606,7 @@ namespace xZune.Vlc.Wpf
     #region Length
 
     /// <summary>
-    /// 获取一个值,该值表示当前的媒体的长度
+    /// Length of current media
     /// </summary>
     public TimeSpan Length { get; private set; }
 
@@ -1368,6 +1415,8 @@ namespace xZune.Vlc.Wpf
       if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
         throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
 
+      if (VlcMediaPlayer == null) return;
+
       if (VlcMediaPlayer.Media != null)
         VlcMediaPlayer.Media.Dispose();
 
@@ -1377,6 +1426,8 @@ namespace xZune.Vlc.Wpf
 
     public void LoadMedia(Uri uri)
     {
+      if (VlcMediaPlayer == null) return;
+
       if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
       VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
       VlcMediaPlayer.Media.ParseAsync();
@@ -1386,6 +1437,8 @@ namespace xZune.Vlc.Wpf
     {
       if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
         throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
+
+      if (VlcMediaPlayer == null) return;
 
       if (VlcMediaPlayer.Media != null)
         VlcMediaPlayer.Media.Dispose();
@@ -1397,6 +1450,8 @@ namespace xZune.Vlc.Wpf
 
     public void LoadMediaWithOptions(Uri uri, String options)
     {
+      if (VlcMediaPlayer == null) return;
+
       if (VlcMediaPlayer.Media != null)
         VlcMediaPlayer.Media.Dispose();
 
@@ -1411,6 +1466,8 @@ namespace xZune.Vlc.Wpf
 
     public void Play()
     {
+      if (VlcMediaPlayer == null) return;
+
       VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
       VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);
 
@@ -1419,7 +1476,8 @@ namespace xZune.Vlc.Wpf
 
     public void PauseOrResume()
     {
-      VlcMediaPlayer.PauseOrResume();
+      if (VlcMediaPlayer != null)
+        VlcMediaPlayer.PauseOrResume();
     }
 
     #endregion
@@ -1428,6 +1486,8 @@ namespace xZune.Vlc.Wpf
 
     public void BeginStop(AsyncCallback callback)
     {
+      if (VlcMediaPlayer == null) return;
+
       if (VlcMediaPlayer.Media == null)
       {
         callback(null);
@@ -1462,7 +1522,7 @@ namespace xZune.Vlc.Wpf
 
     public IAsyncResult Stop()
     {
-      if (VlcMediaPlayer.Media == null) return null;
+      if ((VlcMediaPlayer == null) || (VlcMediaPlayer.Media == null)) return null;
 
       Action action = new Action(() =>
       {
@@ -1491,6 +1551,8 @@ namespace xZune.Vlc.Wpf
 #if DotNet45
     public async System.Threading.Tasks.Task StopAsync()
     {
+      if (VlcMediaPlayer == null) return;
+
       if (VlcMediaPlayer.Media == null) return;
 
       VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
@@ -1519,41 +1581,45 @@ namespace xZune.Vlc.Wpf
 
     public void AddOption(String option)
     {
-      if (VlcMediaPlayer.Media != null)
+      if ((VlcMediaPlayer != null) && VlcMediaPlayer.Media != null)
         VlcMediaPlayer.Media.AddOption(option);
     }
 
     public void NextFrame()
     {
-      VlcMediaPlayer.NextFrame();
+      if (VlcMediaPlayer != null)
+        VlcMediaPlayer.NextFrame();
     }
 
     public void Navigate(NavigateMode mode)
     {
-      VlcMediaPlayer.Navigate(mode);
+      if (VlcMediaPlayer != null)
+        VlcMediaPlayer.Navigate(mode);
     }
 
     public void ToggleMute()
     {
-      VlcMediaPlayer.ToggleMute();
+      if (VlcMediaPlayer != null)
+        VlcMediaPlayer.ToggleMute();
     }
 
     public void TakeSnapshot(String path, SnapshotFormat format, int quality)
     {
-      switch (VlcMediaPlayer.State)
-      {
-        case MediaState.NothingSpecial:
-        case MediaState.Opening:
-        case MediaState.Buffering:
-        case MediaState.Stopped:
-        case MediaState.Ended:
-        case MediaState.Error:
-          break;
-        case MediaState.Playing:
-        case MediaState.Paused:
-          _snapshotContext = new SnapshotContext(path, format, quality);
-          break;
-      }
+      if (VlcMediaPlayer != null)
+        switch (VlcMediaPlayer.State)
+        {
+          case MediaState.NothingSpecial:
+          case MediaState.Opening:
+          case MediaState.Buffering:
+          case MediaState.Stopped:
+          case MediaState.Ended:
+          case MediaState.Error:
+            break;
+          case MediaState.Playing:
+          case MediaState.Paused:
+            _snapshotContext = new SnapshotContext(path, format, quality);
+            break;
+        }
     }
 
     #endregion
@@ -1771,17 +1837,16 @@ namespace xZune.Vlc.Wpf
     protected override void OnMouseMove(MouseEventArgs e)
     {
       base.OnMouseMove(e);
-      if (Vlc.LibDev == "xZune")
-      {
+
+      if ((VlcMediaPlayer != null) && (Vlc.LibDev == "xZune"))
         VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
-      }
     }
 
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
       base.OnMouseUp(e);
-      if (Vlc.LibDev == "xZune")
-      {
+
+      if ((VlcMediaPlayer != null) && (Vlc.LibDev == "xZune"))
         switch (e.ChangedButton)
         {
           case MouseButton.Left:
@@ -1797,14 +1862,13 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Other);
             break;
         }
-      }
     }
 
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
       base.OnMouseDown(e);
-      if (Vlc.LibDev == "xZune")
-      {
+
+      if ((VlcMediaPlayer != null) && (Vlc.LibDev == "xZune"))
         switch (e.ChangedButton)
         {
           case MouseButton.Left:
@@ -1820,46 +1884,8 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Other);
             break;
         }
-      }
     }
 
-    bool _disposed = false;
-
-    protected void Dispose(bool disposing)
-    {
-      if (_disposed)
-      {
-        return;
-      }
-
-      BeginStop(ar =>
-      {
-        if (VlcMediaPlayer != null)
-        {
-          if (VlcMediaPlayer.Media != null)
-          {
-            VlcMediaPlayer.Media.Dispose();
-          }
-          VlcMediaPlayer.Dispose();
-        }
-
-        _lockCallbackHandle.Free();
-        _unlockCallbackHandle.Free();
-        _displayCallbackHandle.Free();
-        _formatCallbackHandle.Free();
-        _cleanupCallbackHandle.Free();
-
-        _disposed = true;
-      });
-    }
-
-    /// <summary>
-    /// 释放 VlcMedia 资源
-    /// </summary>
-    public void Dispose()
-    {
-      Dispose(true);
-    }
     #endregion
 
   }

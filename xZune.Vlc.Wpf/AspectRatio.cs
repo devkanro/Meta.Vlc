@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: AspectRatio.cs
+//Version: 20151108
 
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// 表示视频的横宽比
+    /// Aspect ratio enumeration
     /// </summary>
     public enum AspectRatio
     {
         /// <summary>
-        /// 默认的横宽比
+        /// Default aspect ratio
         /// </summary>
         Default,
         /// <summary>

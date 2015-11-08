@@ -60,6 +60,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SnapshotContext.cs" />
+    <Compile Include="SnapshotFormat.cs" />
+    <Compile Include="VideoDisplayContext.cs" />
     <Compile Include="VlcPlayer.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

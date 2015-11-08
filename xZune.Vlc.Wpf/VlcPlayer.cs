@@ -199,9 +199,6 @@ namespace xZune.Vlc.Wpf
       });
     }
 
-    /// <summary>
-    /// 释放 VlcMedia 资源
-    /// </summary>
     public void Dispose()
     {
       Dispose(true);
@@ -399,7 +396,7 @@ namespace xZune.Vlc.Wpf
     }
 
     /// <summary>
-    /// 引发 <see cref="VlcPlayer.TimeChanged"/> 事件
+    /// <see cref="VlcPlayer.TimeChanged"/>
     /// </summary>
     protected void OnTimeChanged(DependencyPropertyChangedEventArgs e)
     {
@@ -441,7 +438,8 @@ namespace xZune.Vlc.Wpf
     #region FPS
 
     /// <summary>
-    /// 获取一个整数,该值表示一秒内呈现的图片数量,此属性反映了当前的视频刷新率,更新间隔为1秒,要想开始FPS计数,请使用 <see cref="VlcPlayer.StartFPS"/> 方法
+    /// 获取一个整数,该值表示一秒内呈现的图片数量,此属性反映了当前的视频刷新率,更新间隔为1秒,要想开始FPS计数,请使用
+    /// <see cref="VlcPlayer.StartFPS"/> 方法
     /// </summary>
     public int FPS
     {
@@ -1413,7 +1411,7 @@ namespace xZune.Vlc.Wpf
     public void LoadMedia(String path)
     {
       if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
-        throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
+        throw new FileNotFoundException(String.Format("Not found: {0}", path), path);
 
       if (VlcMediaPlayer == null) return;
 
@@ -1436,7 +1434,7 @@ namespace xZune.Vlc.Wpf
     public void LoadMediaWithOptions(String path, String options)
     {
       if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
-        throw new FileNotFoundException(String.Format("找不到媒体文件:{0}", path), path);
+        throw new FileNotFoundException(String.Format("Not found: {0}", path), path);
 
       if (VlcMediaPlayer == null) return;
 
@@ -1889,168 +1887,5 @@ namespace xZune.Vlc.Wpf
     #endregion
 
   }
-
-  #region Helper Types
-
-  /// <summary>
-  /// 用于呈现视频的上下文数据
-  /// </summary>
-  public class VideoDisplayContext : IDisposable
-  {
-    public int Size { get; private set; }
-    public int Width { get; private set; }
-    public int Height { get; private set; }
-    public double DisplayWidth { get; private set; }
-    public double DisplayHeight { get; private set; }
-    public int Stride { get; private set; }
-    public PixelFormat PixelFormat { get; private set; }
-    public IntPtr FileMapping { get; private set; }
-    public IntPtr MapView { get; private set; }
-    public InteropBitmap Image { get; private set; }
-    public bool IsAspectRatioChecked { get; set; }
-
-    public VideoDisplayContext(uint width, uint height, PixelFormat format)
-        : this((int)width, (int)height, format)
-    {
-    }
-
-    public VideoDisplayContext(double width, double height, PixelFormat format)
-        : this((int)width, (int)height, format)
-    {
-    }
-
-    public VideoDisplayContext(int width, int height, PixelFormat format)
-    {
-      IsAspectRatioChecked = false;
-      Size = width * height * format.BitsPerPixel / 8;
-      DisplayWidth = Width = width;
-      DisplayHeight = Height = height;
-      PixelFormat = format;
-      Stride = width * format.BitsPerPixel / 8;
-      FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
-      MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint)Size);
-      Application.Current.Dispatcher.Invoke(new Action(() =>
-      {
-        Image = (InteropBitmap)Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
-      }));
-    }
-
-    public void Display()
-    {
-      if (Application.Current != null)
-      {
-        Application.Current.Dispatcher.Invoke(new Action(() =>
-        {
-          Image.Invalidate();
-        }));
-      }
-    }
-
-    public void CheckDisplaySize(VideoTrack track)
-    {
-      if (!IsAspectRatioChecked)
-      {
-        var sar = 1.0 * track.SarNum / track.SarDen;
-
-        if (track.SarNum == 0 || track.SarDen == 0)
-        {
-          return;
-        }
-
-        Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen));
-
-        if (sar > 1)
-        {
-          DisplayWidth = sar * track.Width;
-          DisplayHeight = track.Height;
-        }
-        else
-        {
-          DisplayWidth = track.Width;
-          DisplayHeight = track.Height / sar;
-        }
-      }
-    }
-
-    bool _disposed = false;
-
-    public void Dispose(bool disposing)
-    {
-      if (_disposed) return;
-      Size = 0;
-      PixelFormat = PixelFormats.Default;
-      Stride = 0;
-      Image = null;
-      Win32Api.UnmapViewOfFile(MapView);
-      Win32Api.CloseHandle(FileMapping);
-      FileMapping = MapView = IntPtr.Zero;
-      _disposed = true;
-    }
-
-    public void Dispose()
-    {
-      Dispose(true);
-    }
-  }
-
-  public enum SnapshotFormat
-  {
-    BMP,
-    JPG,
-    PNG
-  }
-
-  public class SnapshotContext
-  {
-    private static int _count;
-    public SnapshotContext(String path, SnapshotFormat format, int quality)
-    {
-      Path = path.Replace('/', '\\');
-      if (Path[Path.Length - 1] == '\\')
-      {
-        Path = Path.Substring(0, Path.Length - 1);
-      }
-      Format = format;
-      Quality = quality;
-    }
-
-    public String Path { get; private set; }
-    public String Name { get; private set; }
-    public SnapshotFormat Format { get; private set; }
-    public int Quality { get; private set; }
-
-    public String GetName(VlcPlayer player)
-    {
-      player.Dispatcher.Invoke(new Action(() =>
-      {
-        Name = String.Format("{0}-{1}-{2}",
-                  GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
-                  (int)(player.Time.TotalMilliseconds), _count++);
-      }));
-      return Name;
-    }
-
-    internal static String GetMediaName(String path)
-    {
-      if (VlcPlayer.IsRootPath(path))
-      {
-        path = path.Replace('/', '\\').ToUpper();
-        foreach (var item in DriveInfo.GetDrives())
-        {
-          if (item.Name.ToUpper() == path)
-          {
-            return item.VolumeLabel;
-          }
-        }
-      }
-      else
-      {
-        return System.IO.Path.GetFileNameWithoutExtension(path);
-      }
-      return "Unkown";
-    }
-  }
-
-  #endregion
 
 }

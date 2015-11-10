@@ -693,6 +693,10 @@ namespace xZune.Vlc.Wpf
 
     int GetVideoPositionX(double x)
     {
+      if (_context == null)
+      {
+        return (int)x;
+      }
       double width = _context.Width * ScaleTransform.ScaleX,
           height = _context.Height * ScaleTransform.ScaleY;
       var px = 0;

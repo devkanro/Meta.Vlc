@@ -21,7 +21,7 @@ using xZune.Vlc;
 
 [assembly: VlcSettings(@"..\..\libvlc", new[]
             {
-                "--intf dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file",
+                "-I dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file",
                 //"--rtsp-tcp"
             })] //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
 

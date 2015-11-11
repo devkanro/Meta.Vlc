@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: MainWindow.xaml.cs
-//Version: 20151108
+//Version: 20151111
 
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
 
@@ -15,11 +15,19 @@ namespace xZune.Vlc.Wpf.Sample
   public partial class MainWindow : Window
   {
 
+    //VlcPlayer Player = new VlcPlayer(); //uncomment if adding the player dynamically
+
     #region --- Initialization ---
 
     public MainWindow()
     {
       InitializeComponent();
+
+      //uncomment if adding the player dynamically
+      /*
+      Player.SetValue(Canvas.ZIndexProperty, -1);
+      LayoutParent.Children.Add(Player);
+      */
     }
 
     #endregion
@@ -38,12 +46,15 @@ namespace xZune.Vlc.Wpf.Sample
 
     private void Load_Click(object sender, RoutedEventArgs e)
     {
-      Uri uri = new Uri(path.Text);
-      //String pathString = path.Text;
+      String pathString = path.Text;
+      /*
+      Uri uri;
+      if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
+      */
 
       Player.BeginStop((ar) =>
       {
-        Player.LoadMedia(uri);
+        Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
         Player.Play();
       });
     }

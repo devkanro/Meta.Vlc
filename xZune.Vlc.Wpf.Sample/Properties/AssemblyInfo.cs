@@ -1,4 +1,8 @@
-﻿using System.Reflection;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: AssemblyInfo.cs
+//Version: 20151111
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using xZune.Vlc;
@@ -17,7 +21,8 @@ using xZune.Vlc;
 
 [assembly: VlcSettings(@"..\..\libvlc", new[]
             {
-                "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
+                "--intf dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file",
+                //"--rtsp-tcp"
             })] //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
 
 // 将 ComVisible 设置为 false 使此程序集中的类型

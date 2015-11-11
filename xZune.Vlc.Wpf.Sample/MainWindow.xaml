@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: MainWindow.xaml
-Version: 20151108
+Version: 20151111
 -->
 
 <Window
@@ -25,9 +25,9 @@ Version: 20151108
     </Style>
   </Window.Resources>
 
-  <Grid>
+  <Grid x:Name="LayoutParent">
 
-    <wpf:VlcPlayer x:Name="Player"/>
+    <wpf:VlcPlayer x:Name="Player"/> <!-- can comment this if adding the player dynamically -->
 
     <StackPanel Opacity="0.8">
       <Grid>

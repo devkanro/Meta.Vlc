@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.cs
-//Version: 20151108
+//Version: 20151111
 
 using System;
 using System.ComponentModel;
@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-using xZune.Vlc;
 using xZune.Vlc.Interop.MediaPlayer;
 using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;
@@ -1409,8 +1408,16 @@ namespace xZune.Vlc.Wpf
 
     #region LoadMedia
 
+    //note: if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
     public void LoadMedia(String path)
     {
+      Uri uri;
+      if (Uri.TryCreate(path, UriKind.Absolute, out uri))
+      {
+        LoadMedia(uri);
+        return;
+      }
+
       if (!(File.Exists(path) || IsRootPath(Path.GetFullPath(path))))
         throw new FileNotFoundException(String.Format("Not found: {0}", path), path);
 

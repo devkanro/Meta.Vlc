@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: ApiManager.cs
-//Version: 20151108
+//Version: 20151112
 
 using System;
 
@@ -42,7 +42,7 @@ namespace xZune.Vlc.Wpf
       Initialize();
     }
 
-    public static void Initialize(String libVlcPath, String[] vlcOption)
+    public static void Initialize(String libVlcPath, params String[] vlcOption)
     {
       LibVlcPath = libVlcPath;
       VlcOption = vlcOption;

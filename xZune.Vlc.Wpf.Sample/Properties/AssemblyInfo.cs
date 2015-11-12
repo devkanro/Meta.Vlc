@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: AssemblyInfo.cs
-//Version: 20151111
+//Version: 20151112
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,11 +19,9 @@ using xZune.Vlc;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: VlcSettings(@"..\..\libvlc", new[]
-            {
-                "-I dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file",
-                //"--rtsp-tcp"
-            })] //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
+[assembly: VlcSettings(@"..\..\libvlc", "-I dummy", "--ignore-config", "--no-video-title", "--file-logging", "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file" //,"--rtsp-tcp"
+    )]
+    //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
 // 对 COM 组件不可见。  如果需要从 COM 访问此程序集中的类型，

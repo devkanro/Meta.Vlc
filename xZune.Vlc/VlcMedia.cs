@@ -255,9 +255,21 @@ namespace xZune.Vlc
         /// 向一个媒体添加一个选项,这个选项将会确定媒体播放器将如何读取介质,
         /// </summary>
         /// <param name="options"></param>
+        [Obsolete]
         public void AddOption(String options)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
+            _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
+            handle.Free();
+        }
+        
+        /// <summary>
+        /// 向一个媒体添加选项,这个选项将会确定媒体播放器将如何读取介质,
+        /// </summary>
+        /// <param name="options"></param>
+        public void AddOption(params String[] options)
+        {
+            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(String.Join(" ", options)), GCHandleType.Pinned);
             _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
             handle.Free();
         }
@@ -271,6 +283,7 @@ namespace xZune.Vlc
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
             _addOptionFlagFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject(), flag);
+            handle.Free();
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace xZune.Vlc
 
         }
 
-        public VlcSettingsAttribute(String vlcPath, String[] option)
+        public VlcSettingsAttribute(String vlcPath, params String[] option)
         {
             LibVlcPath = vlcPath;
             VlcOption = option;

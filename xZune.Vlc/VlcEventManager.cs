@@ -20,7 +20,7 @@ namespace xZune.Vlc
         /// <param name="devString"></param>
         public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
-            if(!IsLibLoaded)
+            if (!IsLibLoaded)
             {
                 _eventAttachFunction = new LibVlcFunction<EventAttach>(libHandle, libVersion, devString);
                 _eventDetachFunction = new LibVlcFunction<EventDetach>(libHandle, libVersion, devString);
@@ -50,7 +50,7 @@ namespace xZune.Vlc
 
         public IntPtr InstancePointer { get; private set; }
 
-        public void Attach(EventTypes type, LibVlcEventCallBack callback , IntPtr userData)
+        public void Attach(EventTypes type, LibVlcEventCallBack callback, IntPtr userData)
         {
             _eventAttachFunction.Delegate(InstancePointer, type, callback, userData);
         }

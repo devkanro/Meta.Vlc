@@ -6,7 +6,6 @@ namespace xZune.Vlc
     {
         public VlcSettingsAttribute(String vlcPath) : this(vlcPath, null)
         {
-
         }
 
         public VlcSettingsAttribute(String vlcPath, params String[] option)

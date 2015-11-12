@@ -13,7 +13,7 @@ namespace xZune.Vlc
         public ModuleDescription(IntPtr pointer)
         {
             List<ModuleDescriptionItem> itemsList = new List<ModuleDescriptionItem>();
-            
+
             while (pointer != IntPtr.Zero)
             {
                 var moduleDescriptionStruct = (Interop.Core.ModuleDescription)Marshal.PtrToStructure(pointer, typeof(Interop.Core.ModuleDescription));

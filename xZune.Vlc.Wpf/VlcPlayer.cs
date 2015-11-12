@@ -4,69 +4,68 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Runtime.InteropServices;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
-
+using xZune.Vlc.Interop.Media;
 using xZune.Vlc.Interop.MediaPlayer;
 using MediaState = xZune.Vlc.Interop.Media.MediaState;
 using MouseButton = System.Windows.Input.MouseButton;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using xZune.Vlc.Interop.Media;
 
 namespace xZune.Vlc.Wpf
 {
     public class VlcPlayer : Control, IDisposable
     {
-
         #region --- Fields ---
 
         //TODO: maybe make all fields private or protected (for descendant classes to access)?
 
-        VideoLockCallback _lockCallback;
-        VideoUnlockCallback _unlockCallback;
-        VideoDisplayCallback _displayCallback;
-        VideoFormatCallback _formatCallback;
-        VideoCleanupCallback _cleanupCallback;
+        private VideoLockCallback _lockCallback;
+        private VideoUnlockCallback _unlockCallback;
+        private VideoDisplayCallback _displayCallback;
+        private VideoFormatCallback _formatCallback;
+        private VideoCleanupCallback _cleanupCallback;
 
-        GCHandle _lockCallbackHandle;
-        GCHandle _unlockCallbackHandle;
-        GCHandle _displayCallbackHandle;
-        GCHandle _formatCallbackHandle;
-        GCHandle _cleanupCallbackHandle;
+        private GCHandle _lockCallbackHandle;
+        private GCHandle _unlockCallbackHandle;
+        private GCHandle _displayCallbackHandle;
+        private GCHandle _formatCallbackHandle;
+        private GCHandle _cleanupCallbackHandle;
 
         //Position//
-        bool _setVlcPosition = true;
+        private bool _setVlcPosition = true;
 
         //Time//
-        bool _setVlcTime = true;
+        private bool _setVlcTime = true;
 
         //FPS//
         private System.Windows.Threading.DispatcherTimer _timer;
+
         private int _fpsCount;
         private bool _isRunFps;
 
         //TakeSnapshot//
-        SnapshotContext _snapshotContext;
+        private SnapshotContext _snapshotContext;
 
-        VideoDisplayContext _context;
-        int _checkCount = 0;
-        Size _sar = new Size(1, 1);
+        private VideoDisplayContext _context;
+        private int _checkCount = 0;
+        private Size _sar = new Size(1, 1);
 
         //Stop//
         private EventWaitHandle _stopWaitHandle;
 
         //Dispose//
-        bool _disposed = false;
+        private bool _disposed = false;
 
-        #endregion
+        #endregion --- Fields ---
 
         #region --- Initialization ---
 
@@ -167,7 +166,7 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        #endregion
+        #endregion --- Initialization ---
 
         #region --- Cleanup ---
 
@@ -204,7 +203,7 @@ namespace xZune.Vlc.Wpf
             Dispose(true);
         }
 
-        #endregion
+        #endregion --- Cleanup ---
 
         #region --- Properties ---
 
@@ -235,7 +234,7 @@ namespace xZune.Vlc.Wpf
                 LibVlcPathChanged(this, e);
         }
 
-        #endregion
+        #endregion LibVlcPath
 
         #region VlcOption
 
@@ -264,7 +263,7 @@ namespace xZune.Vlc.Wpf
                 VlcOptionChanged(this, e);
         }
 
-        #endregion
+        #endregion VlcOption
 
         #region ScaleTransform
 
@@ -278,7 +277,7 @@ namespace xZune.Vlc.Wpf
             set { SetValue(ScaleTransformProperty, value); }
         }
 
-        #endregion
+        #endregion ScaleTransform
 
         #region AspectRatio
 
@@ -311,7 +310,7 @@ namespace xZune.Vlc.Wpf
                 AspectRatioChanged(this, e);
         }
 
-        #endregion
+        #endregion AspectRatio
 
         #region VideoSource
 
@@ -341,7 +340,7 @@ namespace xZune.Vlc.Wpf
                 VideoSourceChanged(this, e);
         }
 
-        #endregion
+        #endregion VideoSource
 
         #region Position
 
@@ -375,7 +374,7 @@ namespace xZune.Vlc.Wpf
                 PositionChanged(this, e);
         }
 
-        #endregion
+        #endregion Position
 
         #region Time
 
@@ -409,7 +408,7 @@ namespace xZune.Vlc.Wpf
                 TimeChanged(this, e);
         }
 
-        #endregion
+        #endregion Time
 
         #region Stretch
 
@@ -422,7 +421,6 @@ namespace xZune.Vlc.Wpf
         public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register("Stretch", typeof(Stretch), typeof(VlcPlayer), new PropertyMetadata(Stretch.Uniform));
 
-
         public StretchDirection StretchDirection
         {
             get { return (StretchDirection)GetValue(StretchDirectionProperty); }
@@ -433,7 +431,7 @@ namespace xZune.Vlc.Wpf
             DependencyProperty.Register("StretchDirection", typeof(StretchDirection), typeof(VlcPlayer),
               new PropertyMetadata(StretchDirection.Both));
 
-        #endregion
+        #endregion Stretch
 
         #region FPS
 
@@ -465,7 +463,7 @@ namespace xZune.Vlc.Wpf
                 FPSChanged(this, e);
         }
 
-        #endregion
+        #endregion FPS
 
         #region IsMute
 
@@ -480,7 +478,7 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        #endregion
+        #endregion IsMute
 
         #region Volume
 
@@ -495,7 +493,7 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        #endregion
+        #endregion Volume
 
         #region AudioOutputChannel
 
@@ -505,7 +503,7 @@ namespace xZune.Vlc.Wpf
             set { if (VlcMediaPlayer != null) VlcMediaPlayer.AudioOutputChannel = value; }
         }
 
-        #endregion
+        #endregion AudioOutputChannel
 
         #region AudioTrackCount
 
@@ -514,7 +512,7 @@ namespace xZune.Vlc.Wpf
             get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrackCount : 0; }
         }
 
-        #endregion
+        #endregion AudioTrackCount
 
         #region AudioTrack
 
@@ -524,7 +522,7 @@ namespace xZune.Vlc.Wpf
             set { if (VlcMediaPlayer != null) VlcMediaPlayer.AudioTrack = value; }
         }
 
-        #endregion
+        #endregion AudioTrack
 
         #region AudioTrackDescription
 
@@ -533,7 +531,7 @@ namespace xZune.Vlc.Wpf
             get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrackDescription : null; }
         }
 
-        #endregion
+        #endregion AudioTrackDescription
 
         #region Rate
 
@@ -543,7 +541,7 @@ namespace xZune.Vlc.Wpf
             set { if (VlcMediaPlayer != null) VlcMediaPlayer.Rate = value; }
         }
 
-        #endregion
+        #endregion Rate
 
         #region Title
 
@@ -553,7 +551,7 @@ namespace xZune.Vlc.Wpf
             set { if (VlcMediaPlayer != null) VlcMediaPlayer.Title = value; }
         }
 
-        #endregion
+        #endregion Title
 
         #region TitleCount
 
@@ -562,7 +560,7 @@ namespace xZune.Vlc.Wpf
             get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.TitleCount : 0; }
         }
 
-        #endregion
+        #endregion TitleCount
 
         #region Chapter
 
@@ -572,7 +570,7 @@ namespace xZune.Vlc.Wpf
             set { if (VlcMediaPlayer != null) VlcMediaPlayer.Chapter = value; }
         }
 
-        #endregion
+        #endregion Chapter
 
         #region ChapterCount
 
@@ -581,7 +579,7 @@ namespace xZune.Vlc.Wpf
             get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.ChapterCount : 0; }
         }
 
-        #endregion
+        #endregion ChapterCount
 
         #region IsSeekable
 
@@ -590,7 +588,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public bool IsSeekable { get; private set; }
 
-        #endregion
+        #endregion IsSeekable
 
         #region State
 
@@ -599,7 +597,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public MediaState State { get; private set; }
 
-        #endregion
+        #endregion State
 
         #region Length
 
@@ -608,22 +606,21 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public TimeSpan Length { get; private set; }
 
-        #endregion
+        #endregion Length
 
         #region VlcMediaPlayer
 
         public VlcMediaPlayer VlcMediaPlayer { get; private set; }
 
-        #endregion
+        #endregion VlcMediaPlayer
 
-
-        #endregion
+        #endregion --- Properties ---
 
         #region --- Methods ---
 
         #region Path Helpers
 
-        static String CombinePath(String path1, String path2)
+        private static String CombinePath(String path1, String path2)
         {
             DirectoryInfo dir = new DirectoryInfo(Path.Combine(path1, path2));
             return dir.FullName;
@@ -645,7 +642,7 @@ namespace xZune.Vlc.Wpf
             return uri.Scheme.ToLower() != "file";
         }
 
-        #endregion
+        #endregion Path Helpers
 
         #region Property Helpers
 
@@ -666,8 +663,10 @@ namespace xZune.Vlc.Wpf
             {
                 case AspectRatio.Default:
                     return scale;
+
                 case AspectRatio._16_9:
                     return new Size(1.0 * _context.DisplayHeight / 9 * 16 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
+
                 case AspectRatio._4_3:
                     return new Size(1.0 * _context.DisplayHeight / 3 * 4 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
             }
@@ -686,11 +685,11 @@ namespace xZune.Vlc.Wpf
             Dispatcher.Invoke(new Action(() => SetValue(TimeProperty, time)));
         }
 
-        #endregion
+        #endregion Property Helpers
 
         #region Coordinate Helpers
 
-        int GetVideoPositionX(double x)
+        private int GetVideoPositionX(double x)
         {
             if (_context == null)
             {
@@ -708,12 +707,15 @@ namespace xZune.Vlc.Wpf
                         case HorizontalAlignment.Left:
                             px = (int)x;
                             break;
+
                         case HorizontalAlignment.Center:
                             px = (int)(x - ((this.ActualWidth - width) / 2));
                             break;
+
                         case HorizontalAlignment.Right:
                             px = (int)(x - (this.ActualWidth - width));
                             break;
+
                         case HorizontalAlignment.Stretch:
                             if (this.ActualWidth > width)
                             {
@@ -726,6 +728,7 @@ namespace xZune.Vlc.Wpf
                             break;
                     }
                     break;
+
                 case Stretch.Fill:
                     switch (this.StretchDirection)
                     {
@@ -735,17 +738,20 @@ namespace xZune.Vlc.Wpf
                                 px = (int)(x / this.ActualWidth * width);
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (this.ActualWidth < width)
                             {
                                 px = (int)(x / this.ActualWidth * width);
                             }
                             break;
+
                         case StretchDirection.Both:
                             px = (int)(x / this.ActualWidth * width);
                             break;
                     }
                     break;
+
                 case Stretch.Uniform:
                     scaleX = this.ActualWidth / width;
                     scaleY = this.ActualHeight / height;
@@ -767,15 +773,19 @@ namespace xZune.Vlc.Wpf
                                         case HorizontalAlignment.Left:
                                             px = (int)(x / scale);
                                             break;
+
                                         case HorizontalAlignment.Center:
                                             px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Right:
                                             px = (int)((x - (this.ActualWidth - width * scale)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Stretch:
                                             px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -788,12 +798,15 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)x;
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)(x - ((this.ActualWidth - width) / 2));
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)(x - (this.ActualWidth - width));
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         if (this.ActualWidth > width)
                                         {
@@ -807,6 +820,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (scale < 1)
                             {
@@ -821,15 +835,19 @@ namespace xZune.Vlc.Wpf
                                         case HorizontalAlignment.Left:
                                             px = (int)(x / scale);
                                             break;
+
                                         case HorizontalAlignment.Center:
                                             px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Right:
                                             px = (int)((x - (this.ActualWidth - width * scale)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Stretch:
                                             px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -842,12 +860,15 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)x;
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)(x - ((this.ActualWidth - width) / 2));
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)(x - (this.ActualWidth - width));
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         if (this.ActualWidth > width)
                                         {
@@ -861,6 +882,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.Both:
                             if (scaleX == scale)
                             {
@@ -873,12 +895,15 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)(x / scale);
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)((x - (this.ActualWidth - width * scale)) / scale);
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                         break;
@@ -887,6 +912,7 @@ namespace xZune.Vlc.Wpf
                             break;
                     }
                     break;
+
                 case Stretch.UniformToFill:
                     scaleX = ActualWidth / width;
                     scaleY = ActualHeight / height;
@@ -908,15 +934,19 @@ namespace xZune.Vlc.Wpf
                                         case HorizontalAlignment.Left:
                                             px = (int)(x / scale);
                                             break;
+
                                         case HorizontalAlignment.Center:
                                             px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Right:
                                             px = (int)((x - (this.ActualWidth - width * scale)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Stretch:
                                             px = (int)(x / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -929,12 +959,15 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)x;
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)(x - ((this.ActualWidth - width) / 2));
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)(x - (this.ActualWidth - width));
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         if (this.ActualWidth > width)
                                         {
@@ -948,6 +981,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (scale < 1)
                             {
@@ -962,12 +996,15 @@ namespace xZune.Vlc.Wpf
                                         case HorizontalAlignment.Left:
                                             px = (int)(x / scale);
                                             break;
+
                                         case HorizontalAlignment.Center:
                                             px = (int)((x - ((ActualWidth - width * scale) / 2)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Right:
                                             px = (int)((x - (ActualWidth - width * scale)) / scale);
                                             break;
+
                                         case HorizontalAlignment.Stretch:
                                             px = (int)(x / scale);
                                             break;
@@ -981,12 +1018,15 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)x;
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)(x - ((ActualWidth - width) / 2));
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)(x - (ActualWidth - width));
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         if (ActualWidth > width)
                                         {
@@ -1000,6 +1040,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.Both:
                             if (scaleX == scale)
                             {
@@ -1012,15 +1053,19 @@ namespace xZune.Vlc.Wpf
                                     case HorizontalAlignment.Left:
                                         px = (int)(x / scale);
                                         break;
+
                                     case HorizontalAlignment.Center:
                                         px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
                                         break;
+
                                     case HorizontalAlignment.Right:
                                         px = (int)((x - (this.ActualWidth - width * scale)) / scale);
                                         break;
+
                                     case HorizontalAlignment.Stretch:
                                         px = (int)(x / scale);
                                         break;
+
                                     default:
                                         break;
                                 }
@@ -1032,7 +1077,7 @@ namespace xZune.Vlc.Wpf
             return px;
         }
 
-        int GetVideoPositionY(double y)
+        private int GetVideoPositionY(double y)
         {
             double width = _context.Width * ScaleTransform.ScaleX,
                 height = _context.Height * ScaleTransform.ScaleY;
@@ -1046,12 +1091,15 @@ namespace xZune.Vlc.Wpf
                         case VerticalAlignment.Top:
                             py = (int)y;
                             break;
+
                         case VerticalAlignment.Center:
                             py = (int)(y - ((this.ActualHeight - height) / 2));
                             break;
+
                         case VerticalAlignment.Bottom:
                             py = (int)(y - (this.ActualHeight - height));
                             break;
+
                         case VerticalAlignment.Stretch:
                             if (this.ActualHeight > height)
                             {
@@ -1064,6 +1112,7 @@ namespace xZune.Vlc.Wpf
                             break;
                     }
                     break;
+
                 case Stretch.Fill:
                     switch (this.StretchDirection)
                     {
@@ -1073,17 +1122,20 @@ namespace xZune.Vlc.Wpf
                                 py = (int)(y / this.ActualHeight * height);
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (this.ActualHeight < height)
                             {
                                 py = (int)(y / this.ActualHeight * height);
                             }
                             break;
+
                         case StretchDirection.Both:
                             py = (int)(y / this.ActualHeight * height);
                             break;
                     }
                     break;
+
                 case Stretch.Uniform:
                     scaleX = this.ActualWidth / width;
                     scaleY = this.ActualHeight / height;
@@ -1105,15 +1157,19 @@ namespace xZune.Vlc.Wpf
                                         case VerticalAlignment.Top:
                                             py = (int)(y / scale);
                                             break;
+
                                         case VerticalAlignment.Center:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         case VerticalAlignment.Bottom:
                                             py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                             break;
+
                                         case VerticalAlignment.Stretch:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -1126,12 +1182,15 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)y;
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)(y - ((this.ActualHeight - height) / 2));
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)(y - (this.ActualHeight - height));
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         if (this.ActualHeight > height)
                                         {
@@ -1145,6 +1204,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (scale < 1)
                             {
@@ -1159,15 +1219,19 @@ namespace xZune.Vlc.Wpf
                                         case VerticalAlignment.Top:
                                             py = (int)(y / scale);
                                             break;
+
                                         case VerticalAlignment.Center:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         case VerticalAlignment.Bottom:
                                             py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                             break;
+
                                         case VerticalAlignment.Stretch:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -1180,12 +1244,15 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)y;
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)(y - ((this.ActualHeight - height) / 2));
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)(y - (this.ActualHeight - height));
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         if (this.ActualHeight > height)
                                         {
@@ -1199,6 +1266,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.Both:
                             if (scaleY == scale)
                             {
@@ -1211,15 +1279,19 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)(y / scale);
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                         break;
+
                                     default:
                                         break;
                                 }
@@ -1227,6 +1299,7 @@ namespace xZune.Vlc.Wpf
                             break;
                     }
                     break;
+
                 case Stretch.UniformToFill:
                     scaleX = this.ActualWidth / width;
                     scaleY = this.ActualHeight / height;
@@ -1248,15 +1321,19 @@ namespace xZune.Vlc.Wpf
                                         case VerticalAlignment.Top:
                                             py = (int)(y / scale);
                                             break;
+
                                         case VerticalAlignment.Center:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         case VerticalAlignment.Bottom:
                                             py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                             break;
+
                                         case VerticalAlignment.Stretch:
                                             py = (int)(y / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -1269,12 +1346,15 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)y;
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)(y - ((this.ActualHeight - height) / 2));
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)(y - (this.ActualHeight - height));
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         if (this.ActualHeight > height)
                                         {
@@ -1288,6 +1368,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.DownOnly:
                             if (scale < 1)
                             {
@@ -1302,15 +1383,19 @@ namespace xZune.Vlc.Wpf
                                         case VerticalAlignment.Top:
                                             py = (int)(y / scale);
                                             break;
+
                                         case VerticalAlignment.Center:
                                             py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                             break;
+
                                         case VerticalAlignment.Bottom:
                                             py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                             break;
+
                                         case VerticalAlignment.Stretch:
                                             py = (int)(y / scale);
                                             break;
+
                                         default:
                                             break;
                                     }
@@ -1323,12 +1408,15 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)y;
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)(y - ((this.ActualHeight - height) / 2));
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)(y - (this.ActualHeight - height));
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         if (this.ActualHeight > height)
                                         {
@@ -1342,6 +1430,7 @@ namespace xZune.Vlc.Wpf
                                 }
                             }
                             break;
+
                         case StretchDirection.Both:
                             if (scaleY == scale)
                             {
@@ -1354,15 +1443,19 @@ namespace xZune.Vlc.Wpf
                                     case VerticalAlignment.Top:
                                         py = (int)(y / scale);
                                         break;
+
                                     case VerticalAlignment.Center:
                                         py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
                                         break;
+
                                     case VerticalAlignment.Bottom:
                                         py = (int)((y - (this.ActualHeight - height * scale)) / scale);
                                         break;
+
                                     case VerticalAlignment.Stretch:
                                         py = (int)(y / scale);
                                         break;
+
                                     default:
                                         break;
                                 }
@@ -1374,7 +1467,7 @@ namespace xZune.Vlc.Wpf
             return py;
         }
 
-        #endregion
+        #endregion Coordinate Helpers
 
         #region FPS
 
@@ -1408,7 +1501,7 @@ namespace xZune.Vlc.Wpf
             _fpsCount = 0;
         }
 
-        #endregion
+        #endregion FPS
 
         #region LoadMedia
 
@@ -1483,7 +1576,7 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.Media.Dispose();
 
             VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
-            VlcMediaPlayer.Media.AddOption(String.Join(" ",options));
+            VlcMediaPlayer.Media.AddOption(String.Join(" ", options));
             VlcMediaPlayer.Media.ParseAsync();
         }
 
@@ -1498,7 +1591,8 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.Media.AddOption(String.Join(" ", options));
             VlcMediaPlayer.Media.ParseAsync();
         }
-        #endregion
+
+        #endregion LoadMedia
 
         #region Play/Pause
 
@@ -1518,7 +1612,7 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.PauseOrResume();
         }
 
-        #endregion
+        #endregion Play/Pause
 
         #region Stop
 
@@ -1587,6 +1681,7 @@ namespace xZune.Vlc.Wpf
         }
 
 #if DotNet45
+
         public async System.Threading.Tasks.Task StopAsync()
         {
             if (VlcMediaPlayer == null) return;
@@ -1613,9 +1708,10 @@ namespace xZune.Vlc.Wpf
 
             VideoSource = null;
         }
+
 #endif
 
-        #endregion
+        #endregion Stop
 
         public void AddOption(String option)
         {
@@ -1653,6 +1749,7 @@ namespace xZune.Vlc.Wpf
                     case MediaState.Ended:
                     case MediaState.Error:
                         break;
+
                     case MediaState.Playing:
                     case MediaState.Paused:
                         _snapshotContext = new SnapshotContext(path, format, quality);
@@ -1660,7 +1757,7 @@ namespace xZune.Vlc.Wpf
                 }
         }
 
-        #endregion
+        #endregion --- Methods ---
 
         #region --- Events ---
 
@@ -1756,11 +1853,11 @@ namespace xZune.Vlc.Wpf
             Length = VlcMediaPlayer.Length;
         }
 
-        #endregion
+        #endregion VlcMediaPlayer event handlers
 
         #region Callbacks
 
-        IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
+        private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             if (!_context.IsAspectRatioChecked)
             {
@@ -1799,12 +1896,12 @@ namespace xZune.Vlc.Wpf
             return planes = _context.MapView;
         }
 
-        void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
+        private void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
         {
             return;
         }
 
-        void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
+        private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
             if (_isRunFps)
             {
@@ -1827,6 +1924,7 @@ namespace xZune.Vlc.Wpf
                             bmpE.Save(stream);
                         }
                         break;
+
                     case SnapshotFormat.JPG:
                         var jpgE = new JpegBitmapEncoder();
                         jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
@@ -1836,6 +1934,7 @@ namespace xZune.Vlc.Wpf
                             jpgE.Save(stream);
                         }
                         break;
+
                     case SnapshotFormat.PNG:
                         var pngE = new PngBitmapEncoder();
                         pngE.Frames.Add(BitmapFrame.Create(VideoSource));
@@ -1849,7 +1948,7 @@ namespace xZune.Vlc.Wpf
             }));
         }
 
-        uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
+        private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
         {
             Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
             _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
@@ -1865,12 +1964,13 @@ namespace xZune.Vlc.Wpf
             return (uint)_context.Size;
         }
 
-        void VideoCleanupCallback(IntPtr opaque)
+        private void VideoCleanupCallback(IntPtr opaque)
         {
             _context.Dispose();
             _context = null;
         }
-        #endregion
+
+        #endregion Callbacks
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -1890,9 +1990,11 @@ namespace xZune.Vlc.Wpf
                     case MouseButton.Left:
                         VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Left);
                         break;
+
                     case MouseButton.Right:
                         VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Right);
                         break;
+
                     case MouseButton.Middle:
                     case MouseButton.XButton1:
                     case MouseButton.XButton2:
@@ -1912,9 +2014,11 @@ namespace xZune.Vlc.Wpf
                     case MouseButton.Left:
                         VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Left);
                         break;
+
                     case MouseButton.Right:
                         VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Right);
                         break;
+
                     case MouseButton.Middle:
                     case MouseButton.XButton1:
                     case MouseButton.XButton2:
@@ -1924,8 +2028,6 @@ namespace xZune.Vlc.Wpf
                 }
         }
 
-        #endregion
-
+        #endregion --- Events ---
     }
-
 }

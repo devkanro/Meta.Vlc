@@ -96,7 +96,7 @@ namespace xZune.Vlc.Interop.Core
     /// <param name="id">Java 风格的应用标识符,类似于 "com.acme.foobar"</param>
     /// <param name="version">应用程序版本,类似于 "1.2.3"</param>
     /// <param name="icon">应用程序图标,类似于 "foobar"</param>
-    [LibVlcFunction("libvlc_set_app_id","2.1.0")]
+    [LibVlcFunction("libvlc_set_app_id", "2.1.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void SetAppId(IntPtr instance, IntPtr id, IntPtr version, IntPtr icon);
 
@@ -119,7 +119,7 @@ namespace xZune.Vlc.Interop.Core
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="name">应用程序名称,类似于 "FooBar player 1.2.3",实际上只要能标识应用程序,任何字符串都是可以的</param>
     /// <param name="http">HTTP 用户代理,类似于 "FooBar/1.2.3 Python/2.6.0"</param>
-    [LibVlcFunction("libvlc_set_user_agent","2.1.0")]
+    [LibVlcFunction("libvlc_set_user_agent", "2.1.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void SetUserAgent(IntPtr instance, IntPtr name, IntPtr http);
 
@@ -141,11 +141,10 @@ namespace xZune.Vlc.Interop.Core
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void Wait(IntPtr instance);
 
-
     /// <summary>
     /// 对一个 LibVlc 的模块的说明
     /// </summary>
-    [StructLayout(LayoutKind.Sequential,CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct ModuleDescription
     {
         /// <summary>
@@ -153,21 +152,25 @@ namespace xZune.Vlc.Interop.Core
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public String Name;
+
         /// <summary>
         /// 短名称
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public String ShortName;
+
         /// <summary>
         /// 长名称
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public String LongName;
+
         /// <summary>
         /// 说明
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public String Help;
+
         /// <summary>
         /// 下一个模块,这是一个 <see cref="ModuleDescription"/> 指针
         /// </summary>
@@ -223,7 +226,7 @@ namespace xZune.Vlc.Interop.Core
         /// <param name="type">事件类型</param>
         /// <returns>返回事件类型名称</returns>
         [LibVlcFunction("libvlc_event_type_name")]
-        [UnmanagedFunctionPointer(CallingConvention.Cdecl,CharSet = CharSet.Ansi)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public delegate IntPtr GetTypeName(EventTypes type);
 
         /// <summary>
@@ -243,22 +246,27 @@ namespace xZune.Vlc.Interop.Core
             /// 媒体元数据改变
             /// </summary>
             MediaMetaChanged = 0,
+
             /// <summary>
             /// 媒体的子项被添加
             /// </summary>
             MediaSubItemAdded,
+
             /// <summary>
             /// 媒体时长改变
             /// </summary>
             MediaDurationChanged,
+
             /// <summary>
             /// 媒体解析状态被改变
             /// </summary>
             MediaParsedChanged,
+
             /// <summary>
             /// 媒体被释放
             /// </summary>
             MediaFreed,
+
             /// <summary>
             /// 媒体状态改变
             /// </summary>
@@ -268,71 +276,89 @@ namespace xZune.Vlc.Interop.Core
             /// 媒体播放器的媒体被改变
             /// </summary>
             MediaPlayerMediaChanged = 0x100,
+
             MediaPlayerNothingSpecial,
+
             /// <summary>
             /// 媒体播放器正在打开媒体
             /// </summary>
             MediaPlayerOpening,
+
             /// <summary>
             /// 媒体播放器正在缓冲媒体
             /// </summary>
             MediaPlayerBuffering,
+
             /// <summary>
             /// 媒体播放器正在播放
             /// </summary>
             MediaPlayerPlaying,
+
             /// <summary>
             /// 媒体播放器被暂停
             /// </summary>
             MediaPlayerPaused,
+
             /// <summary>
             /// 媒体播放器被停止播放
             /// </summary>
             MediaPlayerStopped,
+
             /// <summary>
             /// 媒体播放器前进
             /// </summary>
             MediaPlayerForward,
+
             /// <summary>
             /// 媒体播放器后退
             /// </summary>
             MediaPlayerBackward,
+
             /// <summary>
             /// 媒体播放器结束播放
             /// </summary>
             MediaPlayerEndReached,
+
             /// <summary>
             /// 媒体播放器遇到错误
             /// </summary>
             MediaPlayerEncounteredError,
+
             /// <summary>
             /// 媒体播放器时间改变
             /// </summary>
             MediaPlayerTimeChanged,
+
             /// <summary>
             /// 媒体播放器进度改变
             /// </summary>
             MediaPlayerPositionChanged,
+
             /// <summary>
             /// 媒体播放器是否允许寻址被改变
             /// </summary>
             MediaPlayerSeekableChanged,
+
             /// <summary>
             /// 媒体播放器是否允许被暂停被改变
             /// </summary>
             MediaPlayerPausableChanged,
+
             /// <summary>
             /// 媒体播放器标题被改变
             /// </summary>
             MediaPlayerTitleChanged,
+
             /// <summary>
             /// 媒体播放器捕获一个快照
             /// </summary>
             MediaPlayerSnapshotTaken,
+
             /// <summary>
             /// 媒体播放器长度改变
             /// </summary>
             MediaPlayerLengthChanged,
+
             /// <summary>
             /// 媒体播放器视频输出改变
             /// </summary>
@@ -342,14 +368,17 @@ namespace xZune.Vlc.Interop.Core
             /// 一个项被添加到媒体列表
             /// </summary>
             MediaListItemAdded = 0x200,
+
             /// <summary>
             /// 一个项将被添加到媒体列表
             /// </summary>
             MediaListWillAddItem,
+
             /// <summary>
             /// 一个项从媒体列表移除
             /// </summary>
             MediaListItemDeleted,
+
             /// <summary>
             /// 一个项将从媒体列表移除
             /// </summary>
@@ -359,14 +388,17 @@ namespace xZune.Vlc.Interop.Core
             /// 一个项被添加到媒体列表视图
             /// </summary>
             MediaListViewItemAdded = 0x300,
+
             /// <summary>
             /// 一个项将被添加到媒体列表视图
             /// </summary>
             MediaListViewWillAddItem,
+
             /// <summary>
             /// 一个项从媒体列表视图移除
             /// </summary>
             MediaListViewItemDeleted,
+
             /// <summary>
             /// 一个项将从媒体列表视图移除
             /// </summary>
@@ -376,10 +408,12 @@ namespace xZune.Vlc.Interop.Core
             /// 媒体列表播放器开始播放
             /// </summary>
             MediaListPlayerPlayed = 0x400,
+
             /// <summary>
             /// 媒体列表播放器跳到下个项
             /// </summary>
             MediaListPlayerNextItemSet,
+
             /// <summary>
             /// 媒体列表播放器停止
             /// </summary>
@@ -389,6 +423,7 @@ namespace xZune.Vlc.Interop.Core
             /// 媒体搜寻器开始搜寻
             /// </summary>
             MediaDiscovererStarted = 0x500,
+
             /// <summary>
             /// 媒体搜寻器搜寻结束
             /// </summary>
@@ -398,42 +433,52 @@ namespace xZune.Vlc.Interop.Core
             /// 一个 VLM 媒体被添加
             /// </summary>
             VlmMediaAdded = 0x600,
+
             /// <summary>
             /// 一个 VLM 媒体被移除
             /// </summary>
             VlmMediaRemoved,
+
             /// <summary>
             /// 一个 VLM 媒体被改变
             /// </summary>
             VlmMediaChanged,
+
             /// <summary>
             /// 一个 VLM 媒体实例开始
             /// </summary>
             VlmMediaInstanceStarted,
+
             /// <summary>
             /// 一个 VLM 媒体实例停止
             /// </summary>
             VlmMediaInstanceStopped,
+
             /// <summary>
             /// 一个 VLM 媒体实例被初始化
             /// </summary>
             VlmMediaInstanceStatusInit,
+
             /// <summary>
             /// 一个 VLM 媒体实例正在打开
             /// </summary>
             VlmMediaInstanceStatusOpening,
+
             /// <summary>
             /// 一个 VLM 媒体实例正在播放
             /// </summary>
             VlmMediaInstanceStatusPlaying,
+
             /// <summary>
             /// 一个 VLM 媒体实例被暂停
             /// </summary>
             VlmMediaInstanceStatusPause,
+
             /// <summary>
             /// 一个 VLM 媒体实例结束播放
             /// </summary>
             VlmMediaInstanceStatusEnd,
+
             /// <summary>
             /// 一个 VLM 媒体实例出现错误
             /// </summary>
@@ -469,7 +514,7 @@ namespace xZune.Vlc.Interop.Core
             [FieldOffset(8)]
             public MediaStateChangedArgs MediaStateChanged;
 
-            #endregion
+            #endregion media descriptor
 
             #region media instance
 
@@ -494,7 +539,7 @@ namespace xZune.Vlc.Interop.Core
             [FieldOffset(8)]
             public MediaPlayerVideoOutChangedArgs MediaPlayerVideoOutChanged;
 
-            #endregion
+            #endregion media instance
 
             #region media list
 
@@ -510,44 +555,42 @@ namespace xZune.Vlc.Interop.Core
             [FieldOffset(8)]
             public MediaListWillDeleteItemArgs MediaListWillDeleteItem;
 
-            #endregion
+            #endregion media list
 
             #region media list player
 
             [FieldOffset(8)]
             public MediaListPlayerNextItemSetArgs MediaListPlayerNextItemSet;
 
-            #endregion
+            #endregion media list player
 
             #region snapshot taken
 
             [FieldOffset(8)]
             public MediaPlayerSnapshotTakenArgs MediaPlayerSnapshotTaken;
 
-            #endregion
+            #endregion snapshot taken
 
             #region Length changed
 
             [FieldOffset(8)]
             public MediaPlayerLengthChangedArgs MediaPlayerLengthChanged;
 
-            #endregion
+            #endregion Length changed
 
             #region VLM media
 
             [FieldOffset(8)]
             public VlmMediaEventArgs VlmMediaEvent;
 
-            #endregion
+            #endregion VLM media
 
             #region Extra MediaPlayer
 
             [FieldOffset(8)]
             public MediaPlayerMediaChangedArgs MediaPlayerMediaChanged;
 
-            #endregion
-
-            
+            #endregion Extra MediaPlayer
         }
 
         #region media descriptor
@@ -588,7 +631,7 @@ namespace xZune.Vlc.Interop.Core
             public Media.MediaState NewState;
         }
 
-        #endregion
+        #endregion media descriptor
 
         #region media instance
 
@@ -634,7 +677,7 @@ namespace xZune.Vlc.Interop.Core
             public int NewCount;
         }
 
-        #endregion
+        #endregion media instance
 
         #region media list
 
@@ -666,9 +709,9 @@ namespace xZune.Vlc.Interop.Core
             public int Index;
         }
 
-        #endregion
+        #endregion media list
 
-        #region  media list player
+        #region media list player
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaListPlayerNextItemSetArgs
@@ -676,7 +719,7 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr ItemHandle;
         }
 
-        #endregion
+        #endregion media list player
 
         #region snapshot taken
 
@@ -686,7 +729,7 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr pszFilename;
         }
 
-        #endregion
+        #endregion snapshot taken
 
         #region Length changed
 
@@ -696,9 +739,9 @@ namespace xZune.Vlc.Interop.Core
             public long NewLength;
         }
 
-        #endregion
+        #endregion Length changed
 
-        #region  VLM media
+        #region VLM media
 
         [StructLayout(LayoutKind.Sequential)]
         public struct VlmMediaEventArgs
@@ -707,9 +750,9 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr pszInstanceName;
         }
 
-        #endregion
+        #endregion VLM media
 
-        #region  Extra MediaPlayer
+        #region Extra MediaPlayer
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaPlayerMediaChangedArgs
@@ -717,6 +760,6 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr NewMediaHandle;
         }
 
-        #endregion
+        #endregion Extra MediaPlayer
     }
 }

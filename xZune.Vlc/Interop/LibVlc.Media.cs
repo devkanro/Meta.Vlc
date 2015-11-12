@@ -9,8 +9,8 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="media">一个媒体指针</param>
     /// <param name="options"></param>
     [LibVlcFunction("libvlc_media_add_option")]
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl,CharSet = CharSet.Ansi)]
-    public delegate void MediaAddOption(IntPtr media,IntPtr options);
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+    public delegate void MediaAddOption(IntPtr media, IntPtr options);
 
     /// <summary>
     /// 向一个媒体通过可配置的标志添加一个选项,这个选项将会确定媒体播放器将如何读取介质,
@@ -46,7 +46,7 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="type">由 <see cref="MediaTrack.Type"/> 得来</param>
     /// <param name="codec">由 <see cref="MediaTrack.Codec"/> 得来</param>
     /// <returns>返回媒体的基本编码器的说明</returns>
-    [LibVlcFunction("libvlc_media_get_codec_description","3.0.0")]
+    [LibVlcFunction("libvlc_media_get_codec_description", "3.0.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate IntPtr GetCodecDescription(TrackType type, int codec);
 
@@ -145,7 +145,7 @@ namespace xZune.Vlc.Interop.Media
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="fileDescriptor">文件描述符</param>
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
-    [LibVlcFunction("libvlc_media_new_fd","1.1.5")]
+    [LibVlcFunction("libvlc_media_new_fd", "1.1.5")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr CreateMediaFormFileDescriptor(IntPtr instance, int fileDescriptor);
 
@@ -251,7 +251,7 @@ namespace xZune.Vlc.Interop.Media
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr GetSubitems(IntPtr media);
 
-    /// <summary>    
+    /// <summary>
     /// 获取媒体的基本流的描述,注意,在调用该方法之前你需要首先调用 <see cref="ParseMedia"/> 方法,或者至少播放一次.
     /// 否则,你将的得到一个空数组
     /// </summary>
@@ -269,7 +269,6 @@ namespace xZune.Vlc.Interop.Media
     [LibVlcFunction("libvlc_media_tracks_release", "2.1.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ReleaseTracks(IntPtr tracks, uint count);
-
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MediaStats
@@ -291,7 +290,6 @@ namespace xZune.Vlc.Interop.Media
         public float SendBitrate;
     }
 
-
     [StructLayout(LayoutKind.Sequential)]
     public struct MediaTrackInfo
     {
@@ -300,10 +298,12 @@ namespace xZune.Vlc.Interop.Media
         public TrackType Type;
         public int Profile;
         public int Level;
+
         /// <summary>
         /// 表示音频的通道数或者视频的帧高
         /// </summary>
         public uint ChannelsOrHeight;
+
         /// <summary>
         /// 表示音频的速率或者视频的帧宽
         /// </summary>
@@ -317,6 +317,7 @@ namespace xZune.Vlc.Interop.Media
         /// 表示音频的通道数
         /// </summary>
         public uint Channels;
+
         /// <summary>
         /// 表示音频的速率
         /// </summary>
@@ -330,10 +331,12 @@ namespace xZune.Vlc.Interop.Media
         /// 表示视频的帧高
         /// </summary>
         public uint Height;
+
         /// <summary>
         /// 表示视频的帧宽
         /// </summary>
         public uint Width;
+
         public uint SarNum;
         public uint SarDen;
         public uint FrameRateNum;
@@ -356,13 +359,17 @@ namespace xZune.Vlc.Interop.Media
         public TrackType Type;
         public int Profile;
         public int Level;
+
         /// <summary>
         /// 表示一个 Track 的具体指针,该指针可能指向 <see cref="VideoTrack"/>,<see cref="AudioTrack"/> 或者 <see cref="SubtitleTrack"/>,根据 Type 的值不同,Track 的指向数据也可能不同
         /// </summary>
         public IntPtr Track;
+
         public uint Bitrate;
+
         [MarshalAs(UnmanagedType.LPStr)]
         public String Language;
+
         [MarshalAs(UnmanagedType.LPStr)]
         public String Description;
     }

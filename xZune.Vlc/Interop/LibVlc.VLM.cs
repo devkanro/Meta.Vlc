@@ -11,7 +11,6 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void Releaseinstance(IntPtr instance);
 
-
     /// <summary>
     /// 添加广播和一个输入
     /// </summary>
@@ -26,8 +25,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_add_broadcast")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int NewBroadCastInput(IntPtr instance,string broadcastName,string inputMRL,string outputMRl,int options,IntPtr stringOptions,int boolNewBorodcast, int ifLoopBroadcast);
-
+    public delegate int NewBroadCastInput(IntPtr instance, string broadcastName, string inputMRL, string outputMRl, int options, IntPtr stringOptions, int boolNewBorodcast, int ifLoopBroadcast);
 
     /// <summary>
     /// 添加视频点播和一个输入
@@ -42,8 +40,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_add_vod")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int NewVodInput(IntPtr instance, string mediaWork, string inputMRL, int numberOptions, IntPtr addOptions, int boolNewVod,string vodMuxer);
-
+    public delegate int NewVodInput(IntPtr instance, string mediaWork, string inputMRL, int numberOptions, IntPtr addOptions, int boolNewVod, string vodMuxer);
 
     /// <summary>
     /// 删除媒体(视频点播或广播)
@@ -54,7 +51,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_del_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int DelBoroadcastOrOvd(IntPtr instance, string delBroadcastName);
-
 
     /// <summary>
     /// 启用或禁用媒体(视频点播或广播)
@@ -67,7 +63,6 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int MediaSwitch(IntPtr instance, string mediaWork, int boolNewBorodcast);
 
-
     /// <summary>
     /// 设置媒体输出
     /// </summary>
@@ -78,7 +73,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_set_output")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetMediaOutput(IntPtr instance, string mediaWork, string outputMRl);
-
 
     /// <summary>
     /// 设置媒体的 MRL 输入
@@ -91,7 +85,6 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetMediaInput(IntPtr instance, string mediaWork, string inputMRl);
 
-
     /// <summary>
     /// 增加一个媒体的 MRL 输入
     /// </summary>
@@ -102,7 +95,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_add_output")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int AddMediaInput(IntPtr instance, string mediaWork, string inputMRl);
-
 
     /// <summary>
     /// 设置媒体循环状态
@@ -115,7 +107,6 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetMediaLoop(IntPtr instance, string mediaWork, int newStatus);
 
-
     /// <summary>
     /// 设置媒体的 Vod Muxer
     /// </summary>
@@ -126,7 +117,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_set_mux ")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetVodMuxer(IntPtr instance, String mediaWork, String newMuxer);
-
 
     /// <summary>
     /// 编辑媒体参数
@@ -143,7 +133,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_change_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int EditMediaParas(IntPtr instance, String newBroadcastName, String inPutMRL, String outPutMRL, int numberOptains, IntPtr addOptains, int boolNewBoradcast, int ifLoopBroadcast);
-    
 
     /// <summary>
     /// 播放指定媒体
@@ -154,7 +143,6 @@ namespace xZune.Vlc.Interop.VLM
     [LibVlcFunction("libvlc_vlm_play_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int PlayNamedBoradcast(IntPtr instance, string mediaName);
-
 
     /// <summary>
     /// 停止指定的媒体
@@ -185,8 +173,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_seek_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int SeekInNamedBoradcast(IntPtr instance, string mediaName,float seekPercent);
-
+    public delegate int SeekInNamedBoradcast(IntPtr instance, string mediaName, float seekPercent);
 
     /// <summary>
     /// 以 JOSN 字符串的形式返回一个关于媒体的信息
@@ -198,7 +185,6 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate String ReturnJosnMessage(IntPtr instance, string namedMediaName);
 
-
     /// <summary>
     /// 通过名称或 ID 获取媒体实例的位置
     /// </summary>
@@ -208,8 +194,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_get_media_instance_position")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate float GetMediaPosition(IntPtr instance, string mediaName,int id);
-
+    public delegate float GetMediaPosition(IntPtr instance, string mediaName, int id);
 
     /// <summary>
     /// 通过名称或 ID 获取媒体实例的时间
@@ -253,5 +238,3 @@ namespace xZune.Vlc.Interop.VLM
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr GetMediaEventManager(IntPtr instance);
 }
-
-

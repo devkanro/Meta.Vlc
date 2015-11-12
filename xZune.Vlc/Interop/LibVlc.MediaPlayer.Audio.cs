@@ -27,7 +27,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="status"></param>
     [LibVlcFunction("libvlc_audio_set_mute")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SetMute(IntPtr mediaPlayer,int status);
+    public delegate void SetMute(IntPtr mediaPlayer, int status);
 
     /// <summary>
     /// 获取音频音量

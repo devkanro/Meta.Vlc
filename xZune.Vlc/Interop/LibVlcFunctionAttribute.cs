@@ -12,10 +12,12 @@ namespace xZune.Vlc.Interop
         /// 获取一个值,表示函数在 LibVlc 中的名称
         /// </summary>
         public string FunctionName { get; private set; }
+
         /// <summary>
         /// 获取一个值,表示支持该函数的最小 LibVlc 版本
         /// </summary>
         public Version MinVersion { get; private set; }
+
         /// <summary>
         /// 获取一个值,表示支持该函数的最大 LibVlc 版本
         /// </summary>
@@ -51,7 +53,7 @@ namespace xZune.Vlc.Interop
         /// <param name="functionName">函数名</param>
         /// <param name="minVersion">最低支持的 LibVlc</param>
         /// <param name="maxVersion">最高支持的 LibVlc</param>
-        public LibVlcFunctionAttribute(string functionName, string minVersion, string maxVersion) 
+        public LibVlcFunctionAttribute(string functionName, string minVersion, string maxVersion)
             : this(functionName, minVersion, maxVersion, null)
         {
         }
@@ -63,7 +65,7 @@ namespace xZune.Vlc.Interop
         /// <param name="minVersion">最低支持的 LibVlc</param>
         /// <param name="maxVersion">最高支持的 LibVlc</param>
         /// <param name="dev">特定支持的 LibVlc 开发版本</param>
-        public LibVlcFunctionAttribute(string functionName, string minVersion, string maxVersion,string dev)
+        public LibVlcFunctionAttribute(string functionName, string minVersion, string maxVersion, string dev)
         {
             FunctionName = functionName;
             if (minVersion != null)

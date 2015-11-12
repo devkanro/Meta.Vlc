@@ -18,10 +18,9 @@ using xZune.Vlc;
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: VlcSettings(@"..\..\libvlc", "-I dummy", "--ignore-config", "--no-video-title", "--file-logging", "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file" //,"--rtsp-tcp"
     )]
-    //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
+//note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
 
 // 将 ComVisible 设置为 false 使此程序集中的类型
 // 对 COM 组件不可见。  如果需要从 COM 访问此程序集中的类型，
@@ -37,16 +36,14 @@ using xZune.Vlc;
 
 //[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
 
-
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //主题特定资源词典所处位置
-    //(在页面或应用程序资源词典中
-    // 未找到某个资源的情况下使用)
+                                     //(在页面或应用程序资源词典中
+                                     // 未找到某个资源的情况下使用)
     ResourceDictionaryLocation.SourceAssembly //常规资源词典所处位置
-    //(在页面、应用程序或任何主题特定资源词典中
-    // 未找到某个资源的情况下使用)
+                                              //(在页面、应用程序或任何主题特定资源词典中
+                                              // 未找到某个资源的情况下使用)
 )]
-
 
 // 程序集的版本信息由下面四个值组成:
 //

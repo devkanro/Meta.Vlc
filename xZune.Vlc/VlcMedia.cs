@@ -20,9 +20,9 @@ namespace xZune.Vlc
         /// <param name="libHandle"></param>
         /// <param name="libVersion"></param>
         /// <param name="devString"></param>
-        public static void LoadLibVlc(IntPtr libHandle,Version libVersion, String devString)
+        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
         {
-            if(!IsLibLoaded)
+            if (!IsLibLoaded)
             {
                 _addOptionFunction = new LibVlcFunction<MediaAddOption>(libHandle, libVersion, devString);
                 _addOptionFlagFunction = new LibVlcFunction<MediaAddOptionFlag>(libHandle, libVersion, devString);
@@ -94,19 +94,19 @@ namespace xZune.Vlc
         private static LibVlcFunction<GetTracks> _getTracksFunction;
         private static LibVlcFunction<ReleaseTracks> _releaseTracksFunction;
 
-        readonly LibVlcEventCallBack _onMetaChanged;
-        readonly LibVlcEventCallBack _onSubItemAdded;
-        readonly LibVlcEventCallBack _onDurationChanged;
-        readonly LibVlcEventCallBack _onParsedChanged;
-        readonly LibVlcEventCallBack _onFreed;
-        readonly LibVlcEventCallBack _onStateChanged;
+        private readonly LibVlcEventCallBack _onMetaChanged;
+        private readonly LibVlcEventCallBack _onSubItemAdded;
+        private readonly LibVlcEventCallBack _onDurationChanged;
+        private readonly LibVlcEventCallBack _onParsedChanged;
+        private readonly LibVlcEventCallBack _onFreed;
+        private readonly LibVlcEventCallBack _onStateChanged;
 
-        GCHandle _onMetaChangedHandle;
-        GCHandle _onSubItemAddedHandle;
-        GCHandle _onDurationChangedHandle;
-        GCHandle _onParsedChangedHandle;
-        GCHandle _onFreedHandle;
-        GCHandle _onStateChangedHandle;
+        private GCHandle _onMetaChangedHandle;
+        private GCHandle _onSubItemAddedHandle;
+        private GCHandle _onDurationChangedHandle;
+        private GCHandle _onParsedChangedHandle;
+        private GCHandle _onFreedHandle;
+        private GCHandle _onStateChangedHandle;
 
         private VlcMedia(IntPtr pointer)
         {
@@ -139,20 +139,22 @@ namespace xZune.Vlc
 
         private void OnMetaChanged(ref LibVlcEventArgs arg, IntPtr userData)
         {
-            if(MetaChanged != null)
+            if (MetaChanged != null)
             {
                 MetaChanged(this, new ObjectEventArgs<MediaMetaChangedArgs>(arg.MediaMetaChanged));
             }
         }
+
         public event EventHandler<ObjectEventArgs<MediaMetaChangedArgs>> MetaChanged;
 
         private void OnSubItemAdded(ref LibVlcEventArgs arg, IntPtr userData)
         {
-            if(SubItemAdded != null)
+            if (SubItemAdded != null)
             {
                 SubItemAdded(this, new ObjectEventArgs<MediaSubitemAddedArgs>(arg.MediaSubitemAdded));
             }
         }
+
         public event EventHandler<ObjectEventArgs<MediaSubitemAddedArgs>> SubItemAdded;
 
         private void OnDurationChanged(ref LibVlcEventArgs arg, IntPtr userData)
@@ -207,7 +209,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="vlc">Vlc 对象</param>
         /// <param name="name">媒体名称</param>
-        public static VlcMedia CreateAsNewNode(Vlc vlc,String name)
+        public static VlcMedia CreateAsNewNode(Vlc vlc, String name)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
             var madia = new VlcMedia(_createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
@@ -220,7 +222,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="vlc">Vlc 对象</param>
         /// <param name="fileDescriptor">文件描述符</param>
-        public static VlcMedia CreateFormFileDescriptor(Vlc vlc,int fileDescriptor)
+        public static VlcMedia CreateFormFileDescriptor(Vlc vlc, int fileDescriptor)
         {
             return new VlcMedia(_createMediaFormFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
         }
@@ -230,7 +232,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="vlc">Vlc 对象</param>
         /// <param name="url">文件 Url</param>
-        public static VlcMedia CreateFormLocation(Vlc vlc,String url)
+        public static VlcMedia CreateFormLocation(Vlc vlc, String url)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(url), GCHandleType.Pinned);
             var media = new VlcMedia(_createMediaFormLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
@@ -243,7 +245,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="vlc">Vlc 对象</param>
         /// <param name="path">文件路径</param>
-        public static VlcMedia CreateFormPath(Vlc vlc,String path)
+        public static VlcMedia CreateFormPath(Vlc vlc, String path)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(path), GCHandleType.Pinned);
             var media = new VlcMedia(_createMediaFormPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
@@ -262,7 +264,7 @@ namespace xZune.Vlc
             _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
             handle.Free();
         }
-        
+
         /// <summary>
         /// 向一个媒体添加选项,这个选项将会确定媒体播放器将如何读取介质,
         /// </summary>
@@ -279,7 +281,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="options"></param>
         /// <param name="flag"></param>
-        public void AddOptionFlag(String options,MediaOption flag)
+        public void AddOptionFlag(String options, MediaOption flag)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
             _addOptionFlagFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject(), flag);
@@ -301,7 +303,7 @@ namespace xZune.Vlc
         /// <param name="type">由 <see cref="MediaTrack.Type"/> 得来</param>
         /// <param name="codec">由 <see cref="MediaTrack.Codec"/> 得来</param>
         /// <returns>返回媒体的基本编码器的说明</returns>
-        public static String GetCodecDescription(TrackType type,int codec)
+        public static String GetCodecDescription(TrackType type, int codec)
         {
             return InteropHelper.PtrToString(_getCodecDescriptionFunction.Delegate(type, codec));
         }
@@ -473,7 +475,7 @@ namespace xZune.Vlc
         /// </summary>
         /// <param name="type">元数据类型</param>
         /// <param name="data">元数据值</param>
-        public void SetMeta(MetaDataType type,String data)
+        public void SetMeta(MetaDataType type, String data)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(data), GCHandleType.Pinned);
             _setMetaFunction.Delegate(InstancePointer, type, handle.AddrOfPinnedObject());
@@ -487,7 +489,7 @@ namespace xZune.Vlc
         }
         */
 
-        /// <summary>    
+        /// <summary>
         /// 获取媒体的基本流的描述,注意,在调用该方法之前你需要首先调用 <see cref="VlcMedia.Parse"/> 方法,或者至少播放一次.
         /// 否则,你将的得到一个空数组
         /// </summary>
@@ -495,7 +497,7 @@ namespace xZune.Vlc
         {
             var pointer = IntPtr.Zero;
             var count = _getTracksFunction.Delegate(InstancePointer, ref pointer);
-            if(pointer == IntPtr.Zero)
+            if (pointer == IntPtr.Zero)
             {
                 var ex = VlcError.GetErrorMessage();
                 throw new Exception(ex);
@@ -518,8 +520,7 @@ namespace xZune.Vlc
             return VlcMediaPlayer.CreatFormMedia(this);
         }
 
-
-        bool _disposed;
+        private bool _disposed;
 
         protected void Dispose(bool disposing)
         {
@@ -555,13 +556,13 @@ namespace xZune.Vlc
     {
         public ObjectEventArgs()
         {
-            
         }
 
         public ObjectEventArgs(T value)
         {
             Value = value;
         }
+
         public T Value { get; set; }
     }
 }

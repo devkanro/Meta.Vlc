@@ -1832,8 +1832,7 @@ namespace xZune.Vlc.Wpf
         {
             var oldState = State;
             State = VlcMediaPlayer.State;
-
-            if (State == MediaState.Paused)
+            if (State == MediaState.Paused || State == MediaState.Ended)
             {
                 _stopWaitHandle.Set();
                 return;

@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: MainWindow.xaml.cs
-//Version: 20151111
+//Version: 20151112
 
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
 
@@ -11,90 +11,90 @@ using System.Windows.Controls;
 
 namespace xZune.Vlc.Wpf.Sample
 {
-
-  public partial class MainWindow : Window
-  {
-
-    //VlcPlayer Player = new VlcPlayer(); //uncomment if adding the player dynamically
-
-    #region --- Initialization ---
-
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-      InitializeComponent();
+        //VlcPlayer Player = new VlcPlayer(); //uncomment if adding the player dynamically
 
-      //uncomment if adding the player dynamically
-      /*
-      Player.SetValue(Canvas.ZIndexProperty, -1);
-      LayoutParent.Children.Add(Player);
-      */
+        #region --- Initialization ---
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            //uncomment if adding the player dynamically
+            /*
+            Player.SetValue(Canvas.ZIndexProperty, -1);
+            LayoutParent.Children.Add(Player);
+            */
+        }
+
+        #endregion --- Initialization ---
+
+        #region --- Cleanup ---
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Player.Dispose();
+        }
+
+        #endregion --- Cleanup ---
+
+        #region --- Events ---
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            String pathString = path.Text;
+            /*
+            Uri uri;
+            if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
+            */
+
+            Player.BeginStop((ar) =>
+            {
+                Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
+                Player.Play();
+            });
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+            Player.Play();
+        }
+
+        private void Pause_Click(object sender, RoutedEventArgs e)
+        {
+            Player.PauseOrResume();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            Player.Stop();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close(); //closing the main window will also terminate the application
+        }
+
+        private void AspectRatio_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            switch ((sender as ComboBox).SelectedIndex)
+            {
+                case 0:
+                    Player.AspectRatio = AspectRatio.Default;
+                    break;
+
+                case 1:
+                    Player.AspectRatio = AspectRatio._16_9;
+                    break;
+
+                case 2:
+                    Player.AspectRatio = AspectRatio._4_3;
+                    break;
+            }
+        }
+
+        #endregion --- Events ---
     }
-
-    #endregion
-
-    #region --- Cleanup ---
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-      base.OnClosing(e);
-      Player.Dispose();
-    }
-
-    #endregion
-
-    #region --- Events ---
-
-    private void Load_Click(object sender, RoutedEventArgs e)
-    {
-      String pathString = path.Text;
-      /*
-      Uri uri;
-      if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
-      */
-
-      Player.BeginStop((ar) =>
-      {
-        Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
-        Player.Play();
-      });
-    }
-
-    private void Play_Click(object sender, RoutedEventArgs e)
-    {
-      Player.Play();
-    }
-    private void Pause_Click(object sender, RoutedEventArgs e)
-    {
-      Player.PauseOrResume();
-    }
-
-    private void Stop_Click(object sender, RoutedEventArgs e)
-    {
-      Player.Stop();
-    }
-
-    private void Exit_Click(object sender, RoutedEventArgs e)
-    {
-      Close(); //closing the main window will also terminate the application
-    }
-
-    private void AspectRatio_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-    {
-      switch ((sender as ComboBox).SelectedIndex)
-      {
-        case 0:
-          Player.AspectRatio = AspectRatio.Default;
-          break;
-        case 1:
-          Player.AspectRatio = AspectRatio._16_9;
-          break;
-        case 2:
-          Player.AspectRatio = AspectRatio._4_3;
-          break;
-      }
-    }
-
-    #endregion
-
-  }
 }

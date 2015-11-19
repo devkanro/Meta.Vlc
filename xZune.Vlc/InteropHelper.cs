@@ -9,7 +9,7 @@ namespace xZune.Vlc
     {
         public static String PtrToString(IntPtr ptr, bool toBeFree = false)
         {
-            if(ptr == IntPtr.Zero)
+            if (ptr == IntPtr.Zero)
             {
                 return null;
             }

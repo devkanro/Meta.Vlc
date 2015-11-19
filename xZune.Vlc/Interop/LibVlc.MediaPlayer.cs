@@ -10,8 +10,10 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public struct TrackDescription
     {
         public int Id;
+
         [MarshalAs(UnmanagedType.LPStr)]
         public String Name;
+
         /// <summary>
         /// 这是一个 <see cref="TrackDescription"/> 类型的指针,指向下一个描述
         /// </summary>
@@ -23,8 +25,10 @@ namespace xZune.Vlc.Interop.MediaPlayer
     {
         [MarshalAs(UnmanagedType.LPStr)]
         public String Name;
+
         [MarshalAs(UnmanagedType.LPStr)]
         public String Description;
+
         /// <summary>
         /// 这是一个 <see cref="AudioOutput"/> 类型的指针,指向下一个音频输出
         /// </summary>
@@ -38,11 +42,13 @@ namespace xZune.Vlc.Interop.MediaPlayer
         /// 这是一个 <see cref="AudioOutputDevice"/> 类型的指针,指向下一个音频输出设备
         /// </summary>
         public IntPtr Next;
+
         /// <summary>
         /// 设备标识符
         /// </summary>
         [MarshalAs(UnmanagedType.LPStr)]
         public String Device;
+
         /// <summary>
         /// 设备描述
         /// </summary>
@@ -184,7 +190,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate void AudioFlushCallback(IntPtr opaque, Int64 pts);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="opaque"></param>
     /// <param name="pts"></param>
@@ -203,7 +209,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int AudioSetupCallback(ref IntPtr opaque, IntPtr format, ref uint rate, ref uint channels);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="opaque"></param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -331,9 +337,9 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="unlockCallback">Unlock 事件回调</param>
     /// <param name="displayCallback">Display 事件回调</param>
     /// <param name="userData">回调用用户数据</param>
-    [LibVlcFunction("libvlc_video_set_callbacks","1.1.1")]
+    [LibVlcFunction("libvlc_video_set_callbacks", "1.1.1")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SetVideoCallback(IntPtr mediaPlayer, VideoLockCallback lockCallback, VideoUnlockCallback unlockCallback, VideoDisplayCallback displayCallback,IntPtr userData);
+    public delegate void SetVideoCallback(IntPtr mediaPlayer, VideoLockCallback lockCallback, VideoUnlockCallback unlockCallback, VideoDisplayCallback displayCallback, IntPtr userData);
 
     /// <summary>
     /// 设置 Video 解码格式
@@ -344,7 +350,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="height">像素高</param>
     /// <param name="pitch">扫描线</param>
     [LibVlcFunction("libvlc_video_set_format", "1.1.1")]
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl,CharSet = CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public delegate void SetVideoFormat(IntPtr mediaPlayer, IntPtr chroma, uint width, uint height, uint pitch);
 
     /// <summary>
@@ -384,7 +390,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="resumeCallback"></param>
     /// <param name="flushCallback"></param>
     /// <param name="drainCallback"></param>
-    [LibVlcFunction("libvlc_audio_set_callbacks","2.0.0")]
+    [LibVlcFunction("libvlc_audio_set_callbacks", "2.0.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void SetAudioCallback(IntPtr mediaPlayer, AudioPlayCallback playCallback, AudioPauseCallback pauseCallback, AudioResumeCallback resumeCallback, AudioFlushCallback flushCallback, AudioDrainCallback drainCallback);
 
@@ -410,7 +416,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate void SetAudioFormatCallback(IntPtr mediaPlayer, AudioSetupCallback setupCallback, AudioCheanupCallback cheanupCallback);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <param name="volumeCallback"></param>
@@ -617,10 +623,9 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// </summary>
     /// <param name="mediaPlayer">媒体播放器对象</param>
     /// <param name="navigate"></param>
-    [LibVlcFunction("libvlc_media_player_navigate","2.2.0")]
+    [LibVlcFunction("libvlc_media_player_navigate", "2.2.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void Navigate(IntPtr mediaPlayer, NavigateMode navigate);
-
 
     /// <summary>
     /// 设置播放器播放视频时显示视频标题

@@ -8,7 +8,6 @@ namespace xZune.Vlc
 {
     public class VlcMediaPlayer : IVlcObject
     {
-
         public IntPtr InstancePointer { get; private set; }
 
         public VlcEventManager EventManager { get; private set; }
@@ -117,119 +116,117 @@ namespace xZune.Vlc
             private set;
         }
 
-        static LibVlcFunction<CreateMediaPlayer> _createMediaPlayerFunction;
-        static LibVlcFunction<CreateMediaPlayerFromMedia> _createMediaPlayerFromMediaFunction;
-        static LibVlcFunction<ReleaseMediaPlayer> _releaseMediaPlayerFunction;
-        static LibVlcFunction<RetainMediaPlayer> _retainMediaPlayerFunction;
-        static LibVlcFunction<SetMedia> _setMediaFunction;
-        static LibVlcFunction<GetMedia> _getMediaFunction;
-        static LibVlcFunction<GetEventManager> _getEventManagerFunction;
-        static LibVlcFunction<IsPlaying> _isPlayingFunction;
-        static LibVlcFunction<Play> _playFunction;
-        static LibVlcFunction<SetPause> _setPauseFunction;
-        static LibVlcFunction<SetPosition> _setPositionFunction;
-        static LibVlcFunction<Stop> _stopFunction;
-        static LibVlcFunction<SetVideoCallback> _setVideoCallbackFunction;
-        static LibVlcFunction<SetVideoFormat> _setVideoFormatFunction;
-        static LibVlcFunction<SetVideoFormatCallback> _setVideoFormatCallbackFunction;
-        static LibVlcFunction<SetHwnd> _setHwndFunction;
-        static LibVlcFunction<GetHwnd> _getHwndFunction;
-        static LibVlcFunction<SetAudioCallback> _setAudioCallbackFunction;
-        static LibVlcFunction<SetAudioFormat> _setAudioFormatFunction;
-        static LibVlcFunction<SetAudioFormatCallback> _setAudioFormatCallbackFunction;
-        static LibVlcFunction<SetAudioVolumeCallback> _setAudioVolumeCallbackFunction;
-        static LibVlcFunction<GetLength> _getLengthFunction;
-        static LibVlcFunction<GetTime> _getTimeFunction;
-        static LibVlcFunction<SetTime> _setTimeFunction;
-        static LibVlcFunction<GetPosition> _getPositionFunction;
-        static LibVlcFunction<SetChapter> _setChapterFunction;
-        static LibVlcFunction<GetChapter> _getChapterFunction;
-        static LibVlcFunction<GetChapterCount> _getChapterCountFunction;
-        static LibVlcFunction<CanPlay> _canPlayFunction;
-        static LibVlcFunction<GetTitleChapterCount> _getTitleChapterCountFunction;
-        static LibVlcFunction<SetTitle> _setTitleFunction;
-        static LibVlcFunction<GetTitle> _getTitleFunction;
-        static LibVlcFunction<GetTitleCount> _getTitleCountFunction;
-        static LibVlcFunction<PreviousChapter> _previousChapterFunction;
-        static LibVlcFunction<NextChapter> _nextChapterFunction;
-        static LibVlcFunction<GetRate> _getRateFunction;
-        static LibVlcFunction<SetRate> _setRateFunction;
-        static LibVlcFunction<GetState> _getStateFunction;
-        static LibVlcFunction<GetFps> _getFpsFunction;
-        static LibVlcFunction<HasVout> _hasVoutFunction;
-        static LibVlcFunction<IsSeekable> _isSeekableFunction;
-        static LibVlcFunction<CanPause> _canPauseFunction;
-        static LibVlcFunction<NextFrame> _nextFrameFunction;
-        static LibVlcFunction<Navigate> _navigateFunction;
-        static LibVlcFunction<SetVideoTitleDisplay> _setVideoTitleDisplayFunction;
-        static LibVlcFunction<ReleaseTrackDescription> _releaseTrackDescriptionFunction;
-        static LibVlcFunction<ToggleMute> _toggleMuteFunction;
-        static LibVlcFunction<GetMute> _getMuteFunction;
-        static LibVlcFunction<SetMute> _setMuteFunction;
-        static LibVlcFunction<GetVolume> _getVolumeFunction;
-        static LibVlcFunction<SetVolume> _setVolumeFunction;
-        static LibVlcFunction<GetCursor> _getCursorFunction;
-        static LibVlcFunction<SetCursor> _setCursorFunction;
-        static LibVlcFunction<SetMouseDown> _setMouseDownFunction;
-        static LibVlcFunction<SetMouseUp> _setMouseUpFunction;
-        static LibVlcFunction<GetOutputChannel> _getOutputChannelFunction;
-        static LibVlcFunction<SetOutputChannel> _setOutputChannelFunction;
-        static LibVlcFunction<GetAudioTrack> _getAudioTrackFunction;
-        static LibVlcFunction<SetAudioTrack> _setAudioTrackFunction;
-        static LibVlcFunction<GetAudioTrackCount> _getAudioTrackCountFunction;
-        static LibVlcFunction<GetAudioTrackDescription> _getAudioTrackDescriptionFunction;
-        static LibVlcFunction<GetSize> _getSizeFunction;
-        static LibVlcFunction<GetScale> _getScaleFunction;
-        static LibVlcFunction<SetScale> _setScaleFunction;
-        static LibVlcFunction<GetAspectRatio> _getAspectRatioFunction;
-        static LibVlcFunction<SetAspectRatio> _setAspectRatioFunction;
-        static LibVlcFunction<GetVideoWidth> _getVideoWidthFunction;
-        static LibVlcFunction<GetVideoTrack> _getVideoTrackFunction;
-        static LibVlcFunction<SetVideoTrack> _setVideoTrackFunction;
-        static LibVlcFunction<GetVideoTrackCount> _getVideoTrackCountFunction;
-        static LibVlcFunction<GetVideoTrackDescription> _getVideoTrackDescriptionFunction;
+        private static LibVlcFunction<CreateMediaPlayer> _createMediaPlayerFunction;
+        private static LibVlcFunction<CreateMediaPlayerFromMedia> _createMediaPlayerFromMediaFunction;
+        private static LibVlcFunction<ReleaseMediaPlayer> _releaseMediaPlayerFunction;
+        private static LibVlcFunction<RetainMediaPlayer> _retainMediaPlayerFunction;
+        private static LibVlcFunction<SetMedia> _setMediaFunction;
+        private static LibVlcFunction<GetMedia> _getMediaFunction;
+        private static LibVlcFunction<GetEventManager> _getEventManagerFunction;
+        private static LibVlcFunction<IsPlaying> _isPlayingFunction;
+        private static LibVlcFunction<Play> _playFunction;
+        private static LibVlcFunction<SetPause> _setPauseFunction;
+        private static LibVlcFunction<SetPosition> _setPositionFunction;
+        private static LibVlcFunction<Stop> _stopFunction;
+        private static LibVlcFunction<SetVideoCallback> _setVideoCallbackFunction;
+        private static LibVlcFunction<SetVideoFormat> _setVideoFormatFunction;
+        private static LibVlcFunction<SetVideoFormatCallback> _setVideoFormatCallbackFunction;
+        private static LibVlcFunction<SetHwnd> _setHwndFunction;
+        private static LibVlcFunction<GetHwnd> _getHwndFunction;
+        private static LibVlcFunction<SetAudioCallback> _setAudioCallbackFunction;
+        private static LibVlcFunction<SetAudioFormat> _setAudioFormatFunction;
+        private static LibVlcFunction<SetAudioFormatCallback> _setAudioFormatCallbackFunction;
+        private static LibVlcFunction<SetAudioVolumeCallback> _setAudioVolumeCallbackFunction;
+        private static LibVlcFunction<GetLength> _getLengthFunction;
+        private static LibVlcFunction<GetTime> _getTimeFunction;
+        private static LibVlcFunction<SetTime> _setTimeFunction;
+        private static LibVlcFunction<GetPosition> _getPositionFunction;
+        private static LibVlcFunction<SetChapter> _setChapterFunction;
+        private static LibVlcFunction<GetChapter> _getChapterFunction;
+        private static LibVlcFunction<GetChapterCount> _getChapterCountFunction;
+        private static LibVlcFunction<CanPlay> _canPlayFunction;
+        private static LibVlcFunction<GetTitleChapterCount> _getTitleChapterCountFunction;
+        private static LibVlcFunction<SetTitle> _setTitleFunction;
+        private static LibVlcFunction<GetTitle> _getTitleFunction;
+        private static LibVlcFunction<GetTitleCount> _getTitleCountFunction;
+        private static LibVlcFunction<PreviousChapter> _previousChapterFunction;
+        private static LibVlcFunction<NextChapter> _nextChapterFunction;
+        private static LibVlcFunction<GetRate> _getRateFunction;
+        private static LibVlcFunction<SetRate> _setRateFunction;
+        private static LibVlcFunction<GetState> _getStateFunction;
+        private static LibVlcFunction<GetFps> _getFpsFunction;
+        private static LibVlcFunction<HasVout> _hasVoutFunction;
+        private static LibVlcFunction<IsSeekable> _isSeekableFunction;
+        private static LibVlcFunction<CanPause> _canPauseFunction;
+        private static LibVlcFunction<NextFrame> _nextFrameFunction;
+        private static LibVlcFunction<Navigate> _navigateFunction;
+        private static LibVlcFunction<SetVideoTitleDisplay> _setVideoTitleDisplayFunction;
+        private static LibVlcFunction<ReleaseTrackDescription> _releaseTrackDescriptionFunction;
+        private static LibVlcFunction<ToggleMute> _toggleMuteFunction;
+        private static LibVlcFunction<GetMute> _getMuteFunction;
+        private static LibVlcFunction<SetMute> _setMuteFunction;
+        private static LibVlcFunction<GetVolume> _getVolumeFunction;
+        private static LibVlcFunction<SetVolume> _setVolumeFunction;
+        private static LibVlcFunction<GetCursor> _getCursorFunction;
+        private static LibVlcFunction<SetCursor> _setCursorFunction;
+        private static LibVlcFunction<SetMouseDown> _setMouseDownFunction;
+        private static LibVlcFunction<SetMouseUp> _setMouseUpFunction;
+        private static LibVlcFunction<GetOutputChannel> _getOutputChannelFunction;
+        private static LibVlcFunction<SetOutputChannel> _setOutputChannelFunction;
+        private static LibVlcFunction<GetAudioTrack> _getAudioTrackFunction;
+        private static LibVlcFunction<SetAudioTrack> _setAudioTrackFunction;
+        private static LibVlcFunction<GetAudioTrackCount> _getAudioTrackCountFunction;
+        private static LibVlcFunction<GetAudioTrackDescription> _getAudioTrackDescriptionFunction;
+        private static LibVlcFunction<GetSize> _getSizeFunction;
+        private static LibVlcFunction<GetScale> _getScaleFunction;
+        private static LibVlcFunction<SetScale> _setScaleFunction;
+        private static LibVlcFunction<GetAspectRatio> _getAspectRatioFunction;
+        private static LibVlcFunction<SetAspectRatio> _setAspectRatioFunction;
+        private static LibVlcFunction<GetVideoWidth> _getVideoWidthFunction;
+        private static LibVlcFunction<GetVideoTrack> _getVideoTrackFunction;
+        private static LibVlcFunction<SetVideoTrack> _setVideoTrackFunction;
+        private static LibVlcFunction<GetVideoTrackCount> _getVideoTrackCountFunction;
+        private static LibVlcFunction<GetVideoTrackDescription> _getVideoTrackDescriptionFunction;
 
+        private readonly LibVlcEventCallBack _onPlaying;
+        private readonly LibVlcEventCallBack _onPaused;
+        private readonly LibVlcEventCallBack _onOpening;
+        private readonly LibVlcEventCallBack _onBuffering;
+        private readonly LibVlcEventCallBack _onStoped;
+        private readonly LibVlcEventCallBack _onForward;
+        private readonly LibVlcEventCallBack _onBackward;
+        private readonly LibVlcEventCallBack _onEndReached;
+        private readonly LibVlcEventCallBack _onMediaChanged;
+        private readonly LibVlcEventCallBack _onNothingSpecial;
+        private readonly LibVlcEventCallBack _onPausableChanged;
+        private readonly LibVlcEventCallBack _onPositionChanged;
+        private readonly LibVlcEventCallBack _onSeekableChanged;
+        private readonly LibVlcEventCallBack _onSnapshotTaken;
+        private readonly LibVlcEventCallBack _onTimeChanged;
+        private readonly LibVlcEventCallBack _onTitleChanged;
+        private readonly LibVlcEventCallBack _onVideoOutChanged;
+        private readonly LibVlcEventCallBack _onLengthChanged;
+        private readonly LibVlcEventCallBack _onEncounteredError;
 
-        readonly LibVlcEventCallBack _onPlaying;
-        readonly LibVlcEventCallBack _onPaused;
-        readonly LibVlcEventCallBack _onOpening;
-        readonly LibVlcEventCallBack _onBuffering;
-        readonly LibVlcEventCallBack _onStoped;
-        readonly LibVlcEventCallBack _onForward;
-        readonly LibVlcEventCallBack _onBackward;
-        readonly LibVlcEventCallBack _onEndReached;
-        readonly LibVlcEventCallBack _onMediaChanged;
-        readonly LibVlcEventCallBack _onNothingSpecial;
-        readonly LibVlcEventCallBack _onPausableChanged;
-        readonly LibVlcEventCallBack _onPositionChanged;
-        readonly LibVlcEventCallBack _onSeekableChanged;
-        readonly LibVlcEventCallBack _onSnapshotTaken;
-        readonly LibVlcEventCallBack _onTimeChanged;
-        readonly LibVlcEventCallBack _onTitleChanged;
-        readonly LibVlcEventCallBack _onVideoOutChanged;
-        readonly LibVlcEventCallBack _onLengthChanged;
-        readonly LibVlcEventCallBack _onEncounteredError;
-
-        GCHandle _onPlayingHandle;
-        GCHandle _onPausedHandle;
-        GCHandle _onOpeningHandle;
-        GCHandle _onBufferingHandle;
-        GCHandle _onStopedHandle;
-        GCHandle _onForwardHandle;
-        GCHandle _onBackwardHandle;
-        GCHandle _onEndReachedHandle;
-        GCHandle _onMediaChangedHandle;
-        GCHandle _onNothingSpecialHandle;
-        GCHandle _onPausableChangedHandle;
-        GCHandle _onPositionChangedHandle;
-        GCHandle _onSeekableChangedHandle;
-        GCHandle _onSnapshotTakenHandle;
-        GCHandle _onTimeChangedHandle;
-        GCHandle _onTitleChangedHandle;
-        GCHandle _onVideoOutChangedHandle;
-        GCHandle _onLengthChangedHandle;
-        GCHandle _onEncounteredErrorHandle;
-
+        private GCHandle _onPlayingHandle;
+        private GCHandle _onPausedHandle;
+        private GCHandle _onOpeningHandle;
+        private GCHandle _onBufferingHandle;
+        private GCHandle _onStopedHandle;
+        private GCHandle _onForwardHandle;
+        private GCHandle _onBackwardHandle;
+        private GCHandle _onEndReachedHandle;
+        private GCHandle _onMediaChangedHandle;
+        private GCHandle _onNothingSpecialHandle;
+        private GCHandle _onPausableChangedHandle;
+        private GCHandle _onPositionChangedHandle;
+        private GCHandle _onSeekableChangedHandle;
+        private GCHandle _onSnapshotTakenHandle;
+        private GCHandle _onTimeChangedHandle;
+        private GCHandle _onTitleChangedHandle;
+        private GCHandle _onVideoOutChangedHandle;
+        private GCHandle _onLengthChangedHandle;
+        private GCHandle _onEncounteredErrorHandle;
 
         private VlcMediaPlayer(IntPtr pointer)
         {
@@ -300,7 +297,8 @@ namespace xZune.Vlc
         }
 
         #region 一般事件
-        void OnPlaying(ref LibVlcEventArgs eventArgs, IntPtr userData)
+
+        private void OnPlaying(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Playing != null)
             {
@@ -310,172 +308,190 @@ namespace xZune.Vlc
 
         public event EventHandler Playing;
 
-        void OnPaused(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnPaused(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Paused != null)
             {
                 Paused(this, new EventArgs());
             }
         }
+
         public event EventHandler Paused;
 
-        void OnOpening(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnOpening(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Opening != null)
             {
                 Opening(this, new EventArgs());
             }
         }
+
         public event EventHandler Opening;
 
-        void OnBuffering(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnBuffering(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Buffering != null)
             {
                 Buffering(this, new MediaPlayerBufferingEventArgs(eventArgs.MediaPlayerBuffering.NewCache));
             }
         }
+
         public event EventHandler<MediaPlayerBufferingEventArgs> Buffering;
 
-
-        void OnStoped(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnStoped(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Stoped != null)
             {
                 Stoped(this, new EventArgs());
             }
         }
+
         public event EventHandler Stoped;
 
-        void OnForward(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnForward(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Forward != null)
             {
                 Forward(this, new EventArgs());
             }
         }
+
         public event EventHandler Forward;
 
-        void OnBackward(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnBackward(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Backward != null)
             {
                 Backward(this, new EventArgs());
             }
         }
+
         public event EventHandler Backward;
 
-        void OnEndReached(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnEndReached(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (EndReached != null)
             {
                 EndReached(this, new EventArgs());
             }
         }
+
         public event EventHandler EndReached;
 
-        void OnMediaChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnMediaChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (MediaChanged != null)
             {
                 MediaChanged(this, new MediaPlayerMediaChangedEventArgs(HandleManager.GetVlcObject(eventArgs.MediaPlayerMediaChanged.NewMediaHandle) as VlcMedia));
             }
         }
+
         public event EventHandler<MediaPlayerMediaChangedEventArgs> MediaChanged;
 
-        void OnNothingSpecial(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnNothingSpecial(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (NothingSpecial != null)
             {
                 NothingSpecial(this, new EventArgs());
             }
         }
+
         public event EventHandler NothingSpecial;
 
-
-        void OnPausableChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnPausableChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (PausableChanged != null)
             {
                 PausableChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler PausableChanged;
 
-        void OnPositionChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnPositionChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (PositionChanged != null)
             {
                 PositionChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler PositionChanged;
 
-        void OnSeekableChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnSeekableChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (SeekableChanged != null)
             {
                 SeekableChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler SeekableChanged;
 
-        void OnSnapshotTaken(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnSnapshotTaken(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (SnapshotTaken != null)
             {
                 SnapshotTaken(this, new EventArgs());
             }
         }
+
         public event EventHandler SnapshotTaken;
 
-        void OnTimeChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnTimeChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (TimeChanged != null)
             {
                 TimeChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler TimeChanged;
 
-        void OnTitleChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnTitleChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (TitleChanged != null)
             {
                 TitleChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler TitleChanged;
 
-        void OnVideoOutChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnVideoOutChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (VideoOutChanged != null)
             {
                 VideoOutChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler VideoOutChanged;
 
-        void OnLengthChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnLengthChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (LengthChanged != null)
             {
                 LengthChanged(this, new EventArgs());
             }
         }
+
         public event EventHandler LengthChanged;
 
-        void OnEncounteredError(ref LibVlcEventArgs eventArgs, IntPtr userData)
+        private void OnEncounteredError(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (EncounteredError != null)
             {
                 EncounteredError(this, new EventArgs());
             }
         }
+
         public event EventHandler EncounteredError;
-        #endregion
+
+        #endregion 一般事件
 
         #region 属性 Media
+
         public VlcMedia Media
         {
             get
@@ -583,7 +599,6 @@ namespace xZune.Vlc
                 return _getChapterCountFunction.Delegate(InstancePointer);
             }
         }
-
 
         /// <summary>
         /// 获取一个值,该值表示现在媒体是否可以进行播放
@@ -841,9 +856,10 @@ namespace xZune.Vlc
             }
         }
 
-        #endregion
+        #endregion 属性 Media
 
         #region 方法
+
         /// <summary>
         /// 使 <see cref="VlcMediaPlayer"/> 开始播放
         /// </summary>
@@ -1020,7 +1036,7 @@ namespace xZune.Vlc
             _navigateFunction.Delegate(InstancePointer, mode);
         }
 
-        bool _disposed;
+        private bool _disposed;
 
         protected void Dispose(bool disposing)
         {
@@ -1084,9 +1100,9 @@ namespace xZune.Vlc
         {
             Dispose(true);
         }
-        #endregion
-    }
 
+        #endregion 方法
+    }
 
     public class MediaPlayerBufferingEventArgs : EventArgs
     {
@@ -1094,6 +1110,7 @@ namespace xZune.Vlc
         {
             NewCache = newCache;
         }
+
         public float NewCache { get; private set; }
     }
 
@@ -1103,6 +1120,7 @@ namespace xZune.Vlc
         {
             NewMedia = newMedia;
         }
+
         public VlcMedia NewMedia { get; private set; }
     }
 }

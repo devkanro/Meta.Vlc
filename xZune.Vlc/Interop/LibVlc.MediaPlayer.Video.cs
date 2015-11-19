@@ -18,7 +18,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     [LibVlcFunction("libvlc_video_set_mouse_up", "2.2.0", null, "xZune")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int SetMouseUp(IntPtr mediaPlayer, uint num, MouseButton mouseButton);
-    
+
     [LibVlcFunction("libvlc_video_get_size")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int GetSize(IntPtr mediaPlayer, uint num, ref uint px, ref uint py);
@@ -38,7 +38,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     [LibVlcFunction("libvlc_video_set_aspect_ratio")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void SetAspectRatio(IntPtr mediaPlayer, IntPtr scale);
-    
+
     [LibVlcFunction("libvlc_video_get_width")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int GetVideoWidth(IntPtr mediaPlayer);

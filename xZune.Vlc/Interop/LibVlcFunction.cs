@@ -12,7 +12,6 @@ namespace xZune.Vlc.Interop
         /// <param name="libHandle">提供的 LibVlc 库句柄</param>
         public LibVlcFunction(IntPtr libHandle) : this(libHandle, null, null)
         {
-
         }
 
         /// <summary>
@@ -20,7 +19,7 @@ namespace xZune.Vlc.Interop
         /// </summary>
         /// <param name="libHandle">提供的 LibVlc 库句柄</param>
         /// <param name="libVersion">库版本</param>
-        public LibVlcFunction(IntPtr libHandle,Version libVersion,String Dev)
+        public LibVlcFunction(IntPtr libHandle, Version libVersion, String Dev)
         {
             IsEnable = false;
             object[] attrs = typeof(T).GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
@@ -28,20 +27,20 @@ namespace xZune.Vlc.Interop
             LibVlcFunctionAttribute functionInfo = null;
             foreach (var item in attrs)
             {
-                if(item is LibVlcFunctionAttribute)
+                if (item is LibVlcFunctionAttribute)
                 {
                     functionInfo = item as LibVlcFunctionAttribute;
                     break;
                 }
             }
 
-            if(functionInfo == null)
+            if (functionInfo == null)
             {
                 throw new Exception("对于 LibVlcFunction,需要添加 LibVlcFunctionAttribute 才能正常读取函数");
             }
 
             FunctionName = functionInfo.FunctionName;
-            if((libVersion == null || ((functionInfo.MinVersion == null || functionInfo.MinVersion <= libVersion) && (functionInfo.MaxVersion == null || functionInfo.MaxVersion >= libVersion))) && (functionInfo.Dev == null || functionInfo.Dev == Dev))
+            if ((libVersion == null || ((functionInfo.MinVersion == null || functionInfo.MinVersion <= libVersion) && (functionInfo.MaxVersion == null || functionInfo.MaxVersion >= libVersion))) && (functionInfo.Dev == null || functionInfo.Dev == Dev))
             {
                 IsEnable = true;
 
@@ -70,7 +69,6 @@ namespace xZune.Vlc.Interop
         /// </summary>
         public String FunctionName { get; private set; }
 
-
         private T functionDelegate;
 
         /// <summary>
@@ -80,7 +78,7 @@ namespace xZune.Vlc.Interop
         {
             get
             {
-                if(!IsEnable)
+                if (!IsEnable)
                 {
                     throw new Exception(String.Format("该函数不可用,请确保当前 LibVlc 版本中{0}函数可用", FunctionName));
                 }

@@ -23,15 +23,17 @@ namespace xZune.Vlc
                 case TrackType.Audio:
                     AudioTrack = (AudioTrack)Marshal.PtrToStructure(track.Track, typeof(AudioTrack));
                     break;
+
                 case TrackType.Video:
                     VideoTrack = (VideoTrack)Marshal.PtrToStructure(track.Track, typeof(VideoTrack));
                     break;
+
                 case TrackType.Text:
                     SubtitleTrack = (SubtitleTrack)Marshal.PtrToStructure(track.Track, typeof(SubtitleTrack));
                     break;
-
             }
         }
+
         public uint Codec { get; private set; }
         public uint OriginalFourcc { get; private set; }
         public int Id { get; private set; }

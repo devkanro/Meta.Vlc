@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: AspectRatio.cs
-//Version: 20151108
+//Version: 20151112
 
 namespace xZune.Vlc.Wpf
 {
@@ -13,10 +13,12 @@ namespace xZune.Vlc.Wpf
         /// Default aspect ratio
         /// </summary>
         Default,
+
         /// <summary>
         /// 16:9
         /// </summary>
         _16_9,
+
         /// <summary>
         /// 4:3
         /// </summary>

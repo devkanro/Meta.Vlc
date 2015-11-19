@@ -6,8 +6,7 @@ namespace xZune.Vlc
 {
     public static class Win32Api
     {
-
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi ,EntryPoint = "LoadLibrary")]
+        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi, EntryPoint = "LoadLibrary")]
         private static extern IntPtr LoadLibraryStatic(string lpFileName);
 
         /// <summary>
@@ -18,7 +17,7 @@ namespace xZune.Vlc
         /// <returns>返回 DLL 模块句柄,如果出错将抛出异常</returns>
         public static IntPtr LoadLibrary(string lpFileName)
         {
-            if(!System.IO.File.Exists(lpFileName))
+            if (!System.IO.File.Exists(lpFileName))
             {
                 throw new Exception(String.Format("模块文件不存在:{0}", lpFileName));
             }
@@ -105,7 +104,6 @@ namespace xZune.Vlc
         /// <returns>如果成功会返回 true ,否则会返回 false,请通过 GetLastError 获取更多信息</returns>
         [DllImport("kernel32", SetLastError = true)]
         public static extern bool CloseHandle(IntPtr handle);
-
 
         [DllImport("kernel32")]
         public static extern int GetLastError();

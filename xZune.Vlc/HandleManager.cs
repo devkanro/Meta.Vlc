@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace xZune.Vlc
 {
-    static class HandleManager
+    internal static class HandleManager
     {
-        readonly static Dictionary<IntPtr, IVlcObject> HandleDic = new Dictionary<IntPtr, IVlcObject>();
+        private static readonly Dictionary<IntPtr, IVlcObject> HandleDic = new Dictionary<IntPtr, IVlcObject>();
 
         public static IVlcObject GetVlcObject(IntPtr pointer)
         {
-            if(HandleDic.ContainsKey(pointer))
+            if (HandleDic.ContainsKey(pointer))
             {
                 return HandleDic[pointer];
             }
@@ -35,5 +35,4 @@ namespace xZune.Vlc
             }
         }
     }
-
 }

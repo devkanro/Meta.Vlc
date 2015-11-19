@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: MainWindow.xaml
-Version: 20151111
+Version: 20151112
 -->
 
 <Window
@@ -16,53 +16,52 @@ Version: 20151111
   Width="525" Height="350"
 
   WindowState="Maximized"
-  WindowStyle="None"
-  >
+  WindowStyle="None">
 
-  <Window.Resources>
-    <Style TargetType="Button">
-      <Setter Property="Padding" Value="5,2" />
-    </Style>
-  </Window.Resources>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="5,2" />
+        </Style>
+    </Window.Resources>
 
-  <Grid x:Name="LayoutParent">
+    <Grid x:Name="LayoutParent">
 
-    <wpf:VlcPlayer x:Name="Player"/> <!-- can comment this if adding the player dynamically -->
+        <wpf:VlcPlayer x:Name="Player" />
+        <!-- can comment this if adding the player dynamically -->
 
-    <StackPanel Opacity="0.8">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+        <StackPanel Opacity="0.8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-        <TextBox x:Name="path"/>
+                <TextBox x:Name="path" />
 
-        <Button Grid.Column="1" Content="Load" Click="Load_Click"/>
-      </Grid>
+                <Button Grid.Column="1" Content="Load" Click="Load_Click" />
+            </Grid>
 
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition/>
-          <ColumnDefinition/>
-          <ColumnDefinition/>
-          <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="0" Content="Play" HorizontalAlignment="Stretch" Click="Play_Click" />
-        <Button Grid.Column="1" Content="Pause" Click="Pause_Click" />
-        <Button Grid.Column="2" Content="Stop" Click="Stop_Click" />
-        <Button Grid.Column="3" Content="Exit" Click="Exit_Click" />
-      </Grid>
+                <Button Grid.Column="0" Content="Play" HorizontalAlignment="Stretch" Click="Play_Click" />
+                <Button Grid.Column="1" Content="Pause" Click="Pause_Click" />
+                <Button Grid.Column="2" Content="Stop" Click="Stop_Click" />
+                <Button Grid.Column="3" Content="Exit" Click="Exit_Click" />
+            </Grid>
 
-      <ComboBox SelectedIndex="0" SelectionChanged="AspectRatio_SelectionChanged">
-        <ComboBoxItem Content="Default"/>
-        <ComboBoxItem Content="16:9"/>
-        <ComboBoxItem Content="4:3"/>
-      </ComboBox>
+            <ComboBox SelectedIndex="0" SelectionChanged="AspectRatio_SelectionChanged">
+                <ComboBoxItem Content="Default" />
+                <ComboBoxItem Content="16:9" />
+                <ComboBoxItem Content="4:3" />
+            </ComboBox>
+        </StackPanel>
 
-    </StackPanel>
-
-    <ProgressBar Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001"/>
-  </Grid>
+        <ProgressBar Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001" />
+    </Grid>
 </Window>

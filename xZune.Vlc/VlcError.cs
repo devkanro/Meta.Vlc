@@ -32,8 +32,8 @@ namespace xZune.Vlc
             private set;
         }
 
-        static LibVlcFunction<ErrorMessage> _errorMessageFunction;
-        static LibVlcFunction<CleanError> _cleanErrorFunction;
+        private static LibVlcFunction<ErrorMessage> _errorMessageFunction;
+        private static LibVlcFunction<CleanError> _cleanErrorFunction;
 
         /// <summary>
         /// 获取一个可读的 LibVlc 错误信息

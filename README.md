@@ -18,6 +18,12 @@ Install [xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)
 PM> Install-Package xZune.Vlc.Wpf 
 ```
 
+## Build Status
+
+Branch(分支) | Status(状态) | Description(描述)
+--- | --- | ---
+master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/xzune-vlc/branch/master) | xZune.Vlc
+
 ## Change Log  
 
 ###10.23

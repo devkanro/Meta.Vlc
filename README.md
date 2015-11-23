@@ -18,6 +18,18 @@ Install [xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)
 PM> Install-Package xZune.Vlc.Wpf 
 ```
 
+Install [xZune.Vlc.Lib](https://www.nuget.org/packages/xZune.Vlc.Lib/)
+```Powershell
+PM> Install-Package xZune.Vlc.Lib
+```
+>xZune.Vlc.Lib 包含所有 LibVlc 的文件，你可以在 xZune.Vlc 与 xZune.Vlc.Wpf 中使用这些 Dll。  
+>LibVlc 的版本：  
+>2.2.0-xZune Weatherwax  
+>   
+>xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf.   
+>LibVlc Version:   
+>2.2.0-xZune Weatherwax   
+
 ## Build Status
 
 Branch(分支) | Status(状态) | Description(描述)

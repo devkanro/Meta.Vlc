@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>xZune.Vlc.Wpf</id>
-        <version>15.10.25</version>
+        <version>15.11.24</version>
         <title>xZune.Vlc.Wpf</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -29,7 +29,10 @@
     </metadata>
     <files>
         <file src="..\Release\.NET 3.5\xZune.Vlc.Wpf.dll" target="lib\net35\xZune.Vlc.Wpf.dll" />
+        <file src="..\Release\.NET 3.5\xZune.Vlc.Wpf.XML" target="lib\net35\xZune.Vlc.Wpf.XML" />
         <file src="..\Release\.NET 4.0\xZune.Vlc.Wpf.dll" target="lib\net40\xZune.Vlc.Wpf.dll" />
+        <file src="..\Release\.NET 4.0\xZune.Vlc.Wpf.XML" target="lib\net40\xZune.Vlc.Wpf.XML" />
         <file src="..\Release\.NET 4.5\xZune.Vlc.Wpf.dll" target="lib\net45\xZune.Vlc.Wpf.dll" />
+        <file src="..\Release\.NET 4.5\xZune.Vlc.Wpf.XML" target="lib\net45\xZune.Vlc.Wpf.XML" />
     </files>
 </package>

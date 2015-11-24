@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>xZune.Vlc</id>
-        <version>15.10.25</version>
+        <version>15.11.24</version>
         <title>xZune.Vlc</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -18,9 +18,14 @@
     </metadata>
     <files>
         <file src="..\Release\.NET 2.0\xZune.Vlc.dll" target="lib\net20\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 2.0\xZune.Vlc.XML" target="lib\net20\xZune.Vlc.XML" />
         <file src="..\Release\.NET 3.0\xZune.Vlc.dll" target="lib\net30\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 3.0\xZune.Vlc.XML" target="lib\net30\xZune.Vlc.XML" />
         <file src="..\Release\.NET 3.5\xZune.Vlc.dll" target="lib\net35\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 3.5\xZune.Vlc.XML" target="lib\net35\xZune.Vlc.XML" />
         <file src="..\Release\.NET 4.0\xZune.Vlc.dll" target="lib\net40\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 4.0\xZune.Vlc.XML" target="lib\net40\xZune.Vlc.XML" />
         <file src="..\Release\.NET 4.5\xZune.Vlc.dll" target="lib\net45\xZune.Vlc.dll" />
+        <file src="..\Release\.NET 4.5\xZune.Vlc.XML" target="lib\net45\xZune.Vlc.XML" />
     </files>
 </package>

@@ -11,7 +11,7 @@
         <iconUrl>http://images1.videolan.org/images/largeVLC.png</iconUrl>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
         <developmentDependency>true</developmentDependency>
-        <description>xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf.
+        <description>xZune.Vlc.Lib includes all files of LibVlc. You can use these dlls for xZune.Vlc and xZune.Vlc.Wpf.
 
 LibVlc Version:
 2.2.0-xZune Weatherwax</description>

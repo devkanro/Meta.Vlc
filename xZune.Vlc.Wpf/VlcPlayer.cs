@@ -1523,7 +1523,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.ParseAsync();
         }
 
@@ -1532,7 +1532,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer == null) return;
 
             if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
         }
 
@@ -1547,7 +1547,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -1560,7 +1560,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -1575,7 +1575,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormPath(path);
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(String.Join(" ", options));
             VlcMediaPlayer.Media.ParseAsync();
         }
@@ -1587,7 +1587,7 @@ namespace xZune.Vlc.Wpf
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFormLocation(uri.ToString());
+            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.AddOption(String.Join(" ", options));
             VlcMediaPlayer.Media.ParseAsync();
         }

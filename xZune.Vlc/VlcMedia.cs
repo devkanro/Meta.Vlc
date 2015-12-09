@@ -38,9 +38,9 @@ namespace xZune.Vlc
                 _getUserDataFunction = new LibVlcFunction<GetUserData>(libHandle, libVersion, devString);
                 _isParsedFunction = new LibVlcFunction<IsParsed>(libHandle, libVersion, devString);
                 _createMediaAsNewNodeFunction = new LibVlcFunction<CreateMediaAsNewNode>(libHandle, libVersion, devString);
-                _createMediaFormFileDescriptorFunction = new LibVlcFunction<CreateMediaFormFileDescriptor>(libHandle, libVersion, devString);
-                _createMediaFormLocationFunction = new LibVlcFunction<CreateMediaFormLocation>(libHandle, libVersion, devString);
-                _createMediaFormPathFunction = new LibVlcFunction<CreateMediaFormPath>(libHandle, libVersion, devString);
+                _createMediaFromFileDescriptorFunction = new LibVlcFunction<CreateMediaFromFileDescriptor>(libHandle, libVersion, devString);
+                _createMediaFromLocationFunction = new LibVlcFunction<CreateMediaFromLocation>(libHandle, libVersion, devString);
+                _createMediaFromPathFunction = new LibVlcFunction<CreateMediaFromPath>(libHandle, libVersion, devString);
                 _parseMediaFunction = new LibVlcFunction<ParseMedia>(libHandle, libVersion, devString);
                 _parseMediaAsyncFunction = new LibVlcFunction<ParseMediaAsync>(libHandle, libVersion, devString);
                 _parseMediaWithOptionAsyncFunction = new LibVlcFunction<ParseMediaWithOptionAsync>(libHandle, libVersion, devString);
@@ -79,9 +79,9 @@ namespace xZune.Vlc
         private static LibVlcFunction<GetUserData> _getUserDataFunction;
         private static LibVlcFunction<IsParsed> _isParsedFunction;
         private static LibVlcFunction<CreateMediaAsNewNode> _createMediaAsNewNodeFunction;
-        private static LibVlcFunction<CreateMediaFormFileDescriptor> _createMediaFormFileDescriptorFunction;
-        private static LibVlcFunction<CreateMediaFormLocation> _createMediaFormLocationFunction;
-        private static LibVlcFunction<CreateMediaFormPath> _createMediaFormPathFunction;
+        private static LibVlcFunction<CreateMediaFromFileDescriptor> _createMediaFromFileDescriptorFunction;
+        private static LibVlcFunction<CreateMediaFromLocation> _createMediaFromLocationFunction;
+        private static LibVlcFunction<CreateMediaFromPath> _createMediaFromPathFunction;
         private static LibVlcFunction<ParseMedia> _parseMediaFunction;
         private static LibVlcFunction<ParseMediaAsync> _parseMediaAsyncFunction;
         private static LibVlcFunction<ParseMediaWithOptionAsync> _parseMediaWithOptionAsyncFunction;
@@ -224,7 +224,7 @@ namespace xZune.Vlc
         /// <param name="fileDescriptor">文件描述符</param>
         public static VlcMedia CreateFormFileDescriptor(Vlc vlc, int fileDescriptor)
         {
-            return new VlcMedia(_createMediaFormFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
+            return new VlcMedia(_createMediaFromFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace xZune.Vlc
         public static VlcMedia CreateFormLocation(Vlc vlc, String url)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(url), GCHandleType.Pinned);
-            var media = new VlcMedia(_createMediaFormLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            var media = new VlcMedia(_createMediaFromLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
             handle.Free();
             return media;
         }
@@ -248,7 +248,7 @@ namespace xZune.Vlc
         public static VlcMedia CreateFormPath(Vlc vlc, String path)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(path), GCHandleType.Pinned);
-            var media = new VlcMedia(_createMediaFormPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            var media = new VlcMedia(_createMediaFromPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
             handle.Free();
             return media;
         }

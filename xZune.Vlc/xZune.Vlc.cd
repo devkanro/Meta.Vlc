@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="xZune.Vlc.HandleManager">
+    <Position X="8.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>HandleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.InteropHelper">
+    <Position X="10" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>InteropHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.MediaTrack">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACQAgAAAAAAEQAAAAAAIAAAABARAAAAAAQgA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.ModuleDescription" BaseTypeListCollapsed="true">
+    <Position X="10" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModuleDescription.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.ModuleDescriptionItem">
+    <Position X="10" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEgAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>ModuleDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.TrackDescription" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAACAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TrackDescription.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.Vlc" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>CAEQMQDEACQUAACBIcBEAEQAAKYBAAgQAIpgAAAAgAI=</HashCode>
+      <FileName>Vlc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.VlcError">
+    <Position X="10" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAEIAAAAAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQA=</HashCode>
+      <FileName>VlcError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.VlcEventManager" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="0.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAEEgAACAQAAIAAIBIAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcEventManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.VlcMedia" BaseTypeListCollapsed="true">
+    <Position X="6" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>jBlgWH1EBPGeQGlYJJRuDQABIBgwoCBIQASABAAKCCI=</HashCode>
+      <FileName>VlcMedia.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.ObjectEventArgs&lt;T&gt;">
+    <Position X="12.25" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>VlcMedia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.VlcMediaPlayer" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>4z5vm7ek1LSd2nUqOurV9TtfnF8p6WE+uzJ6vIyf4ec=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="xZune.Vlc.MediaPlayerBufferingEventArgs">
+    <Position X="12.25" Y="3.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.MediaPlayerMediaChangedEventArgs">
+    <Position X="12.25" Y="5.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.VlcSettingsAttribute">
+    <Position X="12.25" Y="10" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcSettingsAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.Win32Api">
+    <Position X="10" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAQAAAQCAEAAACCAAAAQAAQAAIAAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="xZune.Vlc.Size">
+    <Position X="15.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAgAAAAEAAAAAAAIAAAAAAAAAAAiA=</HashCode>
+      <FileName>Size.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="xZune.Vlc.IVlcObject">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IVlcObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="xZune.Vlc.PageAccess">
+    <Position X="15.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAIAAIABQgAAAAEAAAAAAAAgAAAAAIAAAggAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="xZune.Vlc.FileMapAccess">
+    <Position X="15.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAgAiAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

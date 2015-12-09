@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc - .Net 2.0", "xZune.VLC\xZune.Vlc - .Net 2.0.csproj", "{966C7E4A-C5BE-411C-B822-A17E9FCA0B69}"
 EndProject
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc - .Net 4.0", "xZu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc - .Net 4.5", "xZune.VLC\xZune.Vlc - .Net 4.5.csproj", "{174900EB-956F-4435-87F2-677F014DD5DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xZune.VLC", "xZune.VLC", "{C65FB565-E565-4AAB-A1A9-2868B9C650EF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xZune.Vlc", "xZune.Vlc", "{C65FB565-E565-4AAB-A1A9-2868B9C650EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf - .Net 3.5", "xZune.VLC.WPF\xZune.Vlc.Wpf - .Net 3.5.csproj", "{F4026089-4DBE-4C6E-B3FD-9153A5925FEB}"
 EndProject
@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf - .Net 4.0", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf - .Net 4.5", "xZune.VLC.WPF\xZune.Vlc.Wpf - .Net 4.5.csproj", "{C53E6715-C8BF-4BE4-943D-C003F0F01876}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xZune.VLC.WPF", "xZune.VLC.WPF", "{4087973B-E53B-4C99-9797-E7B3B2B8FE5E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xZune.Vlc.Wpf", "xZune.Vlc.Wpf", "{4087973B-E53B-4C99-9797-E7B3B2B8FE5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf.Sample - .Net 4.5", "xZune.VLC.WPF.Sample\xZune.Vlc.Wpf.Sample - .Net 4.5.csproj", "{D4CB3A9B-5257-4011-8B81-CF4FBF1B088D}"
 EndProject
@@ -30,6 +30,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf.Sample - .Net 3.5", "xZune.VLC.WPF.Sample\xZune.Vlc.Wpf.Sample - .Net 3.5.csproj", "{9DDC048A-6053-4639-B054-DCCCD14E1EF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xZune.Vlc.Wpf.Sample - .Net 4.0", "xZune.VLC.WPF.Sample\xZune.Vlc.Wpf.Sample - .Net 4.0.csproj", "{F945C93E-61B8-4144-9C12-D01D7C4E6F8E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{E9EFA3F7-D91B-4CFC-85F3-AD2297A6F7BA}"
+	ProjectSection(SolutionItems) = preProject
+		xZune.VLC\xZune.Vlc.cd = xZune.VLC\xZune.Vlc.cd
+		xZune.VLC\Interop\xZune.Vlc.Interop.cd = xZune.VLC\Interop\xZune.Vlc.Interop.cd
+		xZune.VLC.WPF\xZune.Vlc.Wpf.cd = xZune.VLC.WPF\xZune.Vlc.Wpf.cd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

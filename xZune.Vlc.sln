@@ -38,6 +38,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{E9
 		xZune.VLC.WPF\xZune.Vlc.Wpf.cd = xZune.VLC.WPF\xZune.Vlc.Wpf.cd
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{CD9F68BC-0A2D-4EF3-8642-B584832FEF97}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\xZune.Vlc.Lib.nuspec = NuGet\xZune.Vlc.Lib.nuspec
+		NuGet\xZune.Vlc.nuspec = NuGet\xZune.Vlc.nuspec
+		NuGet\xZune.Vlc.Wpf.nuspec = NuGet\xZune.Vlc.Wpf.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

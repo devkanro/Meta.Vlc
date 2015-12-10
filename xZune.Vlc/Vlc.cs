@@ -403,7 +403,7 @@ namespace xZune.Vlc
         /// 通过给定的文件描述符创建一个新的 VlcMedia
         /// </summary>
         /// <param name="fileDescriptor">文件描述符</param>
-        public VlcMedia CreateMediaFormFileDescriptor(int fileDescriptor)
+        public VlcMedia CreateMediaFromFileDescriptor(int fileDescriptor)
         {
             return VlcMedia.CreateFormFileDescriptor(this, fileDescriptor);
         }
@@ -412,7 +412,7 @@ namespace xZune.Vlc
         /// 通过给定的文件 Url 创建一个新的 VlcMedia,该 Url 的格式必须以 "file://" 开头,参见 "RFC3986".
         /// </summary>
         /// <param name="url">文件 Url</param>
-        public VlcMedia CreateMediaFormLocation(String url)
+        public VlcMedia CreateMediaFromLocation(String url)
         {
             return VlcMedia.CreateFormLocation(this, url);
         }
@@ -421,7 +421,7 @@ namespace xZune.Vlc
         /// 通过给定的文件路径创建一个新的 VlcMedia
         /// </summary>
         /// <param name="path">文件路径</param>
-        public VlcMedia CreateMediaFormPath(String path)
+        public VlcMedia CreateMediaFromPath(String path)
         {
             return VlcMedia.CreateFormPath(this, path);
         }

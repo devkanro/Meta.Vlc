@@ -127,12 +127,12 @@ namespace xZune.Vlc.Interop.VLM
     /// <param name="outPutMRL"></param>
     /// <param name="numberOptains"></param>
     /// <param name="addOptains"></param>
-    /// <param name="boolNewBoradcast"></param>
+    /// <param name="boolNewBroadcast"></param>
     /// <param name="ifLoopBroadcast"></param>
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_change_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int EditMediaParas(IntPtr instance, String newBroadcastName, String inPutMRL, String outPutMRL, int numberOptains, IntPtr addOptains, int boolNewBoradcast, int ifLoopBroadcast);
+    public delegate int EditMediaParas(IntPtr instance, String newBroadcastName, String inPutMRL, String outPutMRL, int numberOptains, IntPtr addOptains, int boolNewBroadcast, int ifLoopBroadcast);
 
     /// <summary>
     /// 播放指定媒体
@@ -142,7 +142,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_play_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int PlayNamedBoradcast(IntPtr instance, string mediaName);
+    public delegate int PlayNamedBroadcast(IntPtr instance, string mediaName);
 
     /// <summary>
     /// 停止指定的媒体
@@ -152,7 +152,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_stop_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int StopNamedBoradcast(IntPtr instance, string mediaName);
+    public delegate int StopNamedBroadcast(IntPtr instance, string mediaName);
 
     /// <summary>
     /// 暂停指定的媒体
@@ -162,7 +162,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_pause_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int PauseNamedBoradcast(IntPtr instance, string mediaName);
+    public delegate int PauseNamedBroadcast(IntPtr instance, string mediaName);
 
     /// <summary>
     /// 在指定的广播中寻找
@@ -173,7 +173,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <returns></returns>
     [LibVlcFunction("libvlc_vlm_seek_media")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int SeekInNamedBoradcast(IntPtr instance, string mediaName, float seekPercent);
+    public delegate int SeekInNamedBroadcast(IntPtr instance, string mediaName, float seekPercent);
 
     /// <summary>
     /// 以 JOSN 字符串的形式返回一个关于媒体的信息

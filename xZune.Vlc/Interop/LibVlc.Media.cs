@@ -147,18 +147,18 @@ namespace xZune.Vlc.Interop.Media
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
     [LibVlcFunction("libvlc_media_new_fd", "1.1.5")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate IntPtr CreateMediaFormFileDescriptor(IntPtr instance, int fileDescriptor);
+    public delegate IntPtr CreateMediaFromFileDescriptor(IntPtr instance, int fileDescriptor);
 
     /// <summary>
     /// 通过给定的文件 Url 创建一个媒体,该 Url 的格式必须以 "file://" 开头,参见 "RFC3986".
-    /// 对于打开本地媒体,其实我们更推荐使用 <see cref="CreateMediaFormPath"/>
+    /// 对于打开本地媒体,其实我们更推荐使用 <see cref="CreateMediaFromPath"/>
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="url">媒体的文件 Url</param>
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
     [LibVlcFunction("libvlc_media_new_location")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    public delegate IntPtr CreateMediaFormLocation(IntPtr instance, IntPtr url);
+    public delegate IntPtr CreateMediaFromLocation(IntPtr instance, IntPtr url);
 
     /// <summary>
     /// 通过给定的文件路径创建一个媒体
@@ -168,7 +168,7 @@ namespace xZune.Vlc.Interop.Media
     /// <returns>创建的媒体对象指针,发送错误时会返回 NULL</returns>
     [LibVlcFunction("libvlc_media_new_path")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Auto)]
-    public delegate IntPtr CreateMediaFormPath(IntPtr instance, IntPtr path);
+    public delegate IntPtr CreateMediaFromPath(IntPtr instance, IntPtr path);
 
     /// <summary>
     /// 解析一个媒体,获取媒体的元数据和轨道信息

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="xZune.Vlc.Wpf.ApiManager">
+    <Position X="8.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAQAACAAAAAAAAAgAAAAAAQAABAAAAAA=</HashCode>
+      <FileName>ApiManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.Wpf.SnapshotContext">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAJAAAAAAAQAAAgAAAAAAACQAAAABAA=</HashCode>
+      <FileName>SnapshotContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="xZune.Vlc.Wpf.VideoDisplayContext" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAARCAEgAAAAAAAAUAAAACgARAAAQAAEAAAAAA=</HashCode>
+      <FileName>VideoDisplayContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="xZune.Vlc.Wpf.VlcPlayer" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>0R8QDBgFEKo1jUAiC0gU6mBZtRE1owDhripyBJYDwaE=</HashCode>
+      <FileName>VlcPlayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="xZune.Vlc.Wpf.AspectRatio">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAABAAABAAAAAA=</HashCode>
+      <FileName>AspectRatio.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="xZune.Vlc.Wpf.SnapshotFormat">
+    <Position X="6.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAEAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SnapshotFormat.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -24,8 +24,11 @@
   </Class>
   <Class Name="xZune.Vlc.Wpf.VlcPlayer" BaseTypeListCollapsed="true">
     <Position X="0.5" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>0R8QDBgFEKo1jUAiC0gU6mBZtRE1owDhripyBJYDwaE=</HashCode>
+      <HashCode>0R8QDBgFEKo1jUAiC0AU6mBZtRE1owDhripyBJYDwaE=</HashCode>
       <FileName>VlcPlayer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />

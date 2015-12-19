@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -23,7 +24,7 @@ namespace xZune.Vlc.Wpf
     public partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
     {
         #region --- Fields ---
-
+        
         //TODO: maybe make all fields private or protected (for descendant classes to access)?
 
         private VideoLockCallback _lockCallback;

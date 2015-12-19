@@ -55,18 +55,18 @@ SHA: 80723064078314c70089496e2793d4f261d6e983
 04.添加注释
 为大多数的公开类,属性与方法提供英文注释。  
 
-01.Support loop the media
+01.Support loop the media  
 You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.  
 You can set it to Repeat to loop the media.
 
-02.Support INotifyPropertyChanged
+02.Support INotifyPropertyChanged  
 Support some properties changed notify.
 
-03.New Stop method group
+03.New Stop method group  
 We changed the Stop methods, it will be more rigorous logic.  
 But intensive media state operation may lead to deadlock.
 
-04.Add more comments
+04.Add more comments  
 We provide more english comments for public class, methods and properties. 
 
 ###10.23

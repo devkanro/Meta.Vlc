@@ -496,7 +496,7 @@ namespace xZune.Vlc
             {
                 var p = Marshal.ReadIntPtr(temp);
                 result[i] = new MediaTrack(p);
-                temp = (IntPtr)((int)temp + Marshal.SizeOf(typeof(IntPtr)));
+                temp = (IntPtr)((Int64)temp + IntPtr.Size);
             }
 
             _releaseTracksFunction.Delegate(pointer, count);

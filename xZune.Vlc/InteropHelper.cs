@@ -60,5 +60,7 @@ namespace xZune.Vlc
 
             return Marshal.UnsafeAddrOfPinnedArrayElement(ptrs, 0);
         }
+
+
     }
 }

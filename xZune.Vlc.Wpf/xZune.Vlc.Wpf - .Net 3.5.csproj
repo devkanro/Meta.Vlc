@@ -43,6 +43,9 @@
   <ItemGroup>
     <Compile Include="ApiManager.cs" />
     <Compile Include="AspectRatio.cs" />
+    <Compile Include="EndBehavior.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -58,8 +61,12 @@
     </Compile>
     <Compile Include="SnapshotContext.cs" />
     <Compile Include="SnapshotFormat.cs" />
+    <Compile Include="StopRequest.cs" />
     <Compile Include="VideoDisplayContext.cs" />
     <Compile Include="VlcPlayer.cs" />
+    <Compile Include="VlcPlayer.DependencyProperties.cs" />
+    <Compile Include="VlcPlayer.Events.cs" />
+    <Compile Include="VlcPlayer.Properties.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

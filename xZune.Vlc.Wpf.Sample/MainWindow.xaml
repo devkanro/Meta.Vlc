@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: MainWindow.xaml
-Version: 20151112
+Version: 20151220
 -->
 
 <Window
@@ -13,10 +13,7 @@ Version: 20151112
 
   Title="xZune.Vlc.Wpf.Sample"
 
-  Width="525" Height="350"
-
-  WindowState="Maximized"
-  WindowStyle="None">
+  Width="525" Height="350">
 
     <Window.Resources>
         <Style TargetType="Button">
@@ -26,7 +23,7 @@ Version: 20151112
 
     <Grid x:Name="LayoutParent">
 
-        <wpf:VlcPlayer x:Name="Player" />
+        <wpf:VlcPlayer x:Name="Player" EndBehavior="Stop"/>
         <!-- can comment this if adding the player dynamically -->
 
         <StackPanel Opacity="0.8">
@@ -62,6 +59,6 @@ Version: 20151112
             </ComboBox>
         </StackPanel>
 
-        <ProgressBar Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001" />
+        <ProgressBar x:Name="ProgressBar" Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001" MouseDown="ProgressBar_MouseDown" />
     </Grid>
 </Window>

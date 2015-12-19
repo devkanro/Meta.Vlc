@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: MainWindow.xaml.cs
-//Version: 20151112
+//Version: 20151220
 
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
 
@@ -50,7 +50,7 @@ namespace xZune.Vlc.Wpf.Sample
             if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
             */
 
-            Player.BeginStop((ar) =>
+            Player.BeginStop(() =>
             {
                 Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
                 Player.Play();
@@ -95,6 +95,13 @@ namespace xZune.Vlc.Wpf.Sample
             }
         }
 
+
+        private void ProgressBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ProgressBar.Value = e.GetPosition(ProgressBar).X/ProgressBar.ActualWidth;
+        }
+
         #endregion --- Events ---
+
     }
 }

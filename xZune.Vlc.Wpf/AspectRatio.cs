@@ -5,12 +5,12 @@
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// Aspect ratio enumeration
+    /// Aspect ratio enumeration.
     /// </summary>
     public enum AspectRatio
     {
         /// <summary>
-        /// Default aspect ratio
+        /// Default aspect ratio.
         /// </summary>
         Default,
 

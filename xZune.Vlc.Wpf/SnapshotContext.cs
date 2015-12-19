@@ -1,13 +1,13 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: SnapshotContext.cs
-//Version: 20151112
+//Version: 20151220
 
 using System;
 using System.IO;
 
 namespace xZune.Vlc.Wpf
 {
-    public class SnapshotContext
+    internal class SnapshotContext
     {
         #region --- Fields ---
 
@@ -50,7 +50,7 @@ namespace xZune.Vlc.Wpf
             return Name;
         }
 
-        internal static String GetMediaName(String path)
+        private static String GetMediaName(String path)
         {
             if (VlcPlayer.IsRootPath(path))
             {

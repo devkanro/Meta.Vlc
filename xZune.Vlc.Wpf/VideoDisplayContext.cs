@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VideoDisplayContext.cs
-//Version: 20151112
+//Version: 20151220
 
 using System;
 using System.Diagnostics;
@@ -13,9 +13,9 @@ using xZune.Vlc.Interop.Media;
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// Context used to render video data
+    /// Context used to render video data.
     /// </summary>
-    public class VideoDisplayContext : IDisposable
+    internal class VideoDisplayContext : IDisposable
     {
         #region --- Fields ---
 

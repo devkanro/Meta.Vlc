@@ -35,7 +35,7 @@ namespace xZune.Vlc
 
         public static GCHandle StringToPtr(String str)
         {
-            var handle = GCHandle.Alloc(Encoding.UTF8.GetByteCount(str), GCHandleType.Pinned);
+            var handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(str), GCHandleType.Pinned);
             return handle;
         }
 
@@ -60,5 +60,7 @@ namespace xZune.Vlc
 
             return Marshal.UnsafeAddrOfPinnedArrayElement(ptrs, 0);
         }
+
+
     }
 }

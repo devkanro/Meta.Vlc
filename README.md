@@ -38,6 +38,37 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 
 ## Change Log  
 
+###12.20
+SHA: 80723064078314c70089496e2793d4f261d6e983  
+
+01.可循环播放视频
+通过设置 EndBehavior 来设置当媒体播放完毕后的动作,支持 Nothing,Stop,Repeat 三种模式。  
+当设置为 Repeat 时,会自动的重新播放视频。
+
+02.提供属性变更通知
+现在已为大部分的属性提供属性变更通知。
+
+03.新的 Stop 方法
+更改 Stop 模式，大致与之前差不多，但是逻辑更为清晰与严谨。  
+但是密集的调用 Stop 与其他控制媒体播放的方法(例如: Play)，仍然可能会导致资源死锁。  
+
+04.添加注释
+为大多数的公开类,属性与方法提供英文注释。  
+
+01.Support loop the media  
+You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.  
+You can set it to Repeat to loop the media.
+
+02.Support INotifyPropertyChanged  
+Support some properties changed notify.
+
+03.New Stop method group  
+We changed the Stop methods, it will be more rigorous logic.  
+But intensive media state operation may lead to deadlock.
+
+04.Add more comments  
+We provide more english comments for public class, methods and properties. 
+
 ###10.23
 SHA: fba747bd44e190a79c3456bd97bad2396fd84122  
 01.自动修复 DAR  

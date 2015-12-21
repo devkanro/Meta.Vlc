@@ -254,18 +254,6 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 向一个媒体添加一个选项,这个选项将会确定媒体播放器将如何读取介质,
-        /// </summary>
-        /// <param name="options"></param>
-        [Obsolete]
-        public void AddOption(String options)
-        {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
-            _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
-            handle.Free();
-        }
-
-        /// <summary>
         /// 向一个媒体添加选项,这个选项将会确定媒体播放器将如何读取介质,
         /// </summary>
         /// <param name="options"></param>
@@ -508,7 +496,7 @@ namespace xZune.Vlc
             {
                 var p = Marshal.ReadIntPtr(temp);
                 result[i] = new MediaTrack(p);
-                temp = (IntPtr)((int)temp + Marshal.SizeOf(typeof(IntPtr)));
+                temp = (IntPtr)((Int64)temp + IntPtr.Size);
             }
 
             _releaseTracksFunction.Delegate(pointer, count);

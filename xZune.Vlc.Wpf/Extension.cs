@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace xZune.Vlc.Wpf
 {
@@ -26,24 +27,19 @@ namespace xZune.Vlc.Wpf
                 return safeValue;
             }
         }
-
+        
         /// <summary>
-        /// Return this value, if one of objs is null return default(T).
+        /// Return the value from the selector, unless the object is null. Then return the default value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRet"></typeparam>
         /// <param name="value"></param>
-        /// <param name="objs"></param>
+        /// <param name="selector"></param>
+        /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static T DefaultValueWhenNull<T>(this T value, params object[] objs)
+        public static TRet DefaultValueWhenNull<T,TRet>(this T value, Func<T,TRet> selector, TRet defaultValue = default(TRet))
         {
-            if (objs.All(o => o != null))
-            {
-                return value;
-            }
-            else
-            {
-                return default(T);
-            }
+            return value == null ? defaultValue : selector(value);
         }
     }
 }

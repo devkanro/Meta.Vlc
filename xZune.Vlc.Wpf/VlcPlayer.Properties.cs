@@ -18,7 +18,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public float Position
         {
-            get { return VlcMediaPlayer.Position.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Position); }
             set
             {
                 if (Position == value || VlcMediaPlayer == null || !IsSeekable) return;
@@ -35,7 +35,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public TimeSpan Time
         {
-            get { return VlcMediaPlayer.Time.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Time); }
             set
             {
                 if (Time == value || VlcMediaPlayer == null || !IsSeekable) return;
@@ -52,7 +52,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public float FPS
         {
-            get { return VlcMediaPlayer.Fps.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Fps); }
         }
 
         #endregion FPS
@@ -64,7 +64,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public bool IsMute
         {
-            get { return VlcMediaPlayer.IsMute.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.IsMute); }
             set
             {
                 if (IsMute == value || VlcMediaPlayer == null) return;
@@ -90,7 +90,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int Volume
         {
-            get { return VlcMediaPlayer.Volume.SafeValueWhenNull(100, VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Volume, 100); }
             set
             {
                 if (Volume == value || VlcMediaPlayer == null) return;
@@ -116,7 +116,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public AudioOutputChannel AudioOutputChannel
         {
-            get { return VlcMediaPlayer.AudioOutputChannel.SafeValueWhenNull(AudioOutputChannel.Error, VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioOutputChannel, AudioOutputChannel.Error); }
             set
             {
                 if (AudioOutputChannel == value || VlcMediaPlayer == null) return;
@@ -133,7 +133,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int AudioTrackCount
         {
-            get { return VlcMediaPlayer.AudioTrackCount.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackCount); }
         }
 
         #endregion AudioTrackCount
@@ -145,7 +145,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int AudioTrack
         {
-            get { return VlcMediaPlayer.AudioTrack.SafeValueWhenNull(-1, VlcMediaPlayer); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrack, - 1); } //note: assuming a 0-based index
             set
             {
                 if (AudioTrack == value || VlcMediaPlayer == null) return;
@@ -162,7 +162,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public TrackDescription AudioTrackDescription
         {
-            get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.AudioTrackDescription : null; }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackDescription); }
         }
 
         #endregion AudioTrackDescription
@@ -174,7 +174,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public float Rate
         {
-            get { return (VlcMediaPlayer != null) ? VlcMediaPlayer.Rate : 0; }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Rate); }
             set
             {
                 if (Rate == value || VlcMediaPlayer == null) return;
@@ -191,7 +191,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int Title
         {
-            get { return VlcMediaPlayer.Title.SafeValueWhenNull(-1, VlcMediaPlayer); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Title, -1); } //note: assuming a 0-based index
             set
             {
                 if (Title == value || VlcMediaPlayer == null) return;
@@ -208,7 +208,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int TitleCount
         {
-            get { return VlcMediaPlayer.TitleCount.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.TitleCount); }
         }
 
         #endregion TitleCount
@@ -237,7 +237,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int ChapterCount
         {
-            get { return VlcMediaPlayer.ChapterCount.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.ChapterCount); }
         }
 
         #endregion ChapterCount
@@ -249,7 +249,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public bool IsSeekable
         {
-            get { return VlcMediaPlayer.IsSeekable.SafeValueWhenNull(true, VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.IsSeekable, true); }
         }
 
         #endregion IsSeekable
@@ -261,7 +261,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public MediaState State
         {
-            get { return VlcMediaPlayer.State.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.State); }
         }
 
         #endregion State
@@ -273,7 +273,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public TimeSpan Length
         {
-            get { return VlcMediaPlayer.Length.DefaultValueWhenNull(VlcMediaPlayer); }
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Length); }
         }
 
         #endregion Length

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>xZune.Vlc</id>
-        <version>15.11.24</version>
+        <version>15.12.22</version>
         <title>xZune.Vlc</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -17,15 +17,70 @@
         <tags>vlc libvlc xZune media video</tags>
     </metadata>
     <files>
-        <file src="..\Release\.NET 2.0\xZune.Vlc.dll" target="lib\net20\xZune.Vlc.dll" />
-        <file src="..\Release\.NET 2.0\xZune.Vlc.XML" target="lib\net20\xZune.Vlc.XML" />
-        <file src="..\Release\.NET 3.0\xZune.Vlc.dll" target="lib\net30\xZune.Vlc.dll" />
-        <file src="..\Release\.NET 3.0\xZune.Vlc.XML" target="lib\net30\xZune.Vlc.XML" />
-        <file src="..\Release\.NET 3.5\xZune.Vlc.dll" target="lib\net35\xZune.Vlc.dll" />
-        <file src="..\Release\.NET 3.5\xZune.Vlc.XML" target="lib\net35\xZune.Vlc.XML" />
-        <file src="..\Release\.NET 4.0\xZune.Vlc.dll" target="lib\net40\xZune.Vlc.dll" />
-        <file src="..\Release\.NET 4.0\xZune.Vlc.XML" target="lib\net40\xZune.Vlc.XML" />
-        <file src="..\Release\.NET 4.5\xZune.Vlc.dll" target="lib\net45\xZune.Vlc.dll" />
-        <file src="..\Release\.NET 4.5\xZune.Vlc.XML" target="lib\net45\xZune.Vlc.XML" />
+        <file src="..\x64\Release\.NET 2.0\zh-CHS\mscorlib.resources.dll" target="lib\net20\x64\zh-CHS\mscorlib.resources.dll" />
+        <file src="..\x64\Release\.NET 2.0\big5.nlp" target="lib\net20\x64\big5.nlp" />
+        <file src="..\x64\Release\.NET 2.0\bopomofo.nlp" target="lib\net20\x64\bopomofo.nlp" />
+        <file src="..\x64\Release\.NET 2.0\ksc.nlp" target="lib\net20\x64\ksc.nlp" />
+        <file src="..\x64\Release\.NET 2.0\mscorlib.dll" target="lib\net20\x64\mscorlib.dll" />
+        <file src="..\x64\Release\.NET 2.0\normidna.nlp" target="lib\net20\x64\normidna.nlp" />
+        <file src="..\x64\Release\.NET 2.0\normnfc.nlp" target="lib\net20\x64\normnfc.nlp" />
+        <file src="..\x64\Release\.NET 2.0\normnfd.nlp" target="lib\net20\x64\normnfd.nlp" />
+        <file src="..\x64\Release\.NET 2.0\normnfkc.nlp" target="lib\net20\x64\normnfkc.nlp" />
+        <file src="..\x64\Release\.NET 2.0\normnfkd.nlp" target="lib\net20\x64\normnfkd.nlp" />
+        <file src="..\x64\Release\.NET 2.0\prc.nlp" target="lib\net20\x64\prc.nlp" />
+        <file src="..\x64\Release\.NET 2.0\prcp.nlp" target="lib\net20\x64\prcp.nlp" />
+        <file src="..\x64\Release\.NET 2.0\sortkey.nlp" target="lib\net20\x64\sortkey.nlp" />
+        <file src="..\x64\Release\.NET 2.0\sorttbls.nlp" target="lib\net20\x64\sorttbls.nlp" />
+        <file src="..\x64\Release\.NET 2.0\xjis.nlp" target="lib\net20\x64\xjis.nlp" />
+        <file src="..\x64\Release\.NET 2.0\xZune.Vlc.dll" target="lib\net20\x64\xZune.Vlc.dll" />
+        <file src="..\x64\Release\.NET 2.0\xZune.Vlc.XML" target="lib\net20\x64\xZune.Vlc.XML" />
+        <file src="..\x86\Release\.NET 2.0\xZune.Vlc.dll" target="lib\net20\x86\xZune.Vlc.dll" />
+        <file src="..\x86\Release\.NET 2.0\xZune.Vlc.XML" target="lib\net20\x86\xZune.Vlc.XML" />
+        <file src="..\x64\Release\.NET 3.0\zh-CHS\mscorlib.resources.dll" target="lib\net30\x64\zh-CHS\mscorlib.resources.dll" />
+        <file src="..\x64\Release\.NET 3.0\big5.nlp" target="lib\net30\x64\big5.nlp" />
+        <file src="..\x64\Release\.NET 3.0\bopomofo.nlp" target="lib\net30\x64\bopomofo.nlp" />
+        <file src="..\x64\Release\.NET 3.0\ksc.nlp" target="lib\net30\x64\ksc.nlp" />
+        <file src="..\x64\Release\.NET 3.0\mscorlib.dll" target="lib\net30\x64\mscorlib.dll" />
+        <file src="..\x64\Release\.NET 3.0\normidna.nlp" target="lib\net30\x64\normidna.nlp" />
+        <file src="..\x64\Release\.NET 3.0\normnfc.nlp" target="lib\net30\x64\normnfc.nlp" />
+        <file src="..\x64\Release\.NET 3.0\normnfd.nlp" target="lib\net30\x64\normnfd.nlp" />
+        <file src="..\x64\Release\.NET 3.0\normnfkc.nlp" target="lib\net30\x64\normnfkc.nlp" />
+        <file src="..\x64\Release\.NET 3.0\normnfkd.nlp" target="lib\net30\x64\normnfkd.nlp" />
+        <file src="..\x64\Release\.NET 3.0\prc.nlp" target="lib\net30\x64\prc.nlp" />
+        <file src="..\x64\Release\.NET 3.0\prcp.nlp" target="lib\net30\x64\prcp.nlp" />
+        <file src="..\x64\Release\.NET 3.0\sortkey.nlp" target="lib\net30\x64\sortkey.nlp" />
+        <file src="..\x64\Release\.NET 3.0\sorttbls.nlp" target="lib\net30\x64\sorttbls.nlp" />
+        <file src="..\x64\Release\.NET 3.0\xjis.nlp" target="lib\net30\x64\xjis.nlp" />
+        <file src="..\x64\Release\.NET 3.0\xZune.Vlc.dll" target="lib\net30\x64\xZune.Vlc.dll" />
+        <file src="..\x64\Release\.NET 3.0\xZune.Vlc.XML" target="lib\net30\x64\xZune.Vlc.XML" />
+        <file src="..\x86\Release\.NET 3.0\xZune.Vlc.dll" target="lib\net30\x86\xZune.Vlc.dll" />
+        <file src="..\x86\Release\.NET 3.0\xZune.Vlc.XML" target="lib\net30\x86\xZune.Vlc.XML" />
+        <file src="..\x64\Release\.NET 3.5\zh-CHS\mscorlib.resources.dll" target="lib\net35\x64\zh-CHS\mscorlib.resources.dll" />
+        <file src="..\x64\Release\.NET 3.5\big5.nlp" target="lib\net35\x64\big5.nlp" />
+        <file src="..\x64\Release\.NET 3.5\bopomofo.nlp" target="lib\net35\x64\bopomofo.nlp" />
+        <file src="..\x64\Release\.NET 3.5\ksc.nlp" target="lib\net35\x64\ksc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\mscorlib.dll" target="lib\net35\x64\mscorlib.dll" />
+        <file src="..\x64\Release\.NET 3.5\normidna.nlp" target="lib\net35\x64\normidna.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfc.nlp" target="lib\net35\x64\normnfc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfd.nlp" target="lib\net35\x64\normnfd.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfkc.nlp" target="lib\net35\x64\normnfkc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfkd.nlp" target="lib\net35\x64\normnfkd.nlp" />
+        <file src="..\x64\Release\.NET 3.5\prc.nlp" target="lib\net35\x64\prc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\prcp.nlp" target="lib\net35\x64\prcp.nlp" />
+        <file src="..\x64\Release\.NET 3.5\sortkey.nlp" target="lib\net35\x64\sortkey.nlp" />
+        <file src="..\x64\Release\.NET 3.5\sorttbls.nlp" target="lib\net35\x64\sorttbls.nlp" />
+        <file src="..\x64\Release\.NET 3.5\xjis.nlp" target="lib\net35\x64\xjis.nlp" />
+        <file src="..\x64\Release\.NET 3.5\xZune.Vlc.dll" target="lib\net35\x64\xZune.Vlc.dll" />
+        <file src="..\x64\Release\.NET 3.5\xZune.Vlc.XML" target="lib\net35\x64\xZune.Vlc.XML" />
+        <file src="..\x86\Release\.NET 3.5\xZune.Vlc.dll" target="lib\net35\x86\xZune.Vlc.dll" />
+        <file src="..\x86\Release\.NET 3.5\xZune.Vlc.XML" target="lib\net35\x86\xZune.Vlc.XML" />
+        <file src="..\x64\Release\.NET 4.0\xZune.Vlc.dll" target="lib\net40\x64\xZune.Vlc.dll" />
+        <file src="..\x64\Release\.NET 4.0\xZune.Vlc.XML" target="lib\net40\x64\xZune.Vlc.XML" />
+        <file src="..\x86\Release\.NET 4.0\xZune.Vlc.dll" target="lib\net40\x86\xZune.Vlc.dll" />
+        <file src="..\x86\Release\.NET 4.0\xZune.Vlc.xml" target="lib\net40\x86\xZune.Vlc.xml" />
+        <file src="..\x64\Release\.NET 4.5\xZune.Vlc.dll" target="lib\net45\x64\xZune.Vlc.dll" />
+        <file src="..\x64\Release\.NET 4.5\xZune.Vlc.XML" target="lib\net45\x64\xZune.Vlc.XML" />
+        <file src="..\x86\Release\.NET 4.5\xZune.Vlc.dll" target="lib\net45\x86\xZune.Vlc.dll" />
+        <file src="..\x86\Release\.NET 4.5\xZune.Vlc.XML" target="lib\net45\x86\xZune.Vlc.XML" />
     </files>
 </package>

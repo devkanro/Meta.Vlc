@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>..\x64\Debug\.NET 3.5\</OutputPath>
     <DefineConstants>TRACE;DEBUG;DotNet35</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -41,9 +41,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
+    <OutputPath>..\x64\Release\.NET 3.5\</OutputPath>
     <DefineConstants>TRACE;DotNet35</DefineConstants>
-    <DocumentationFile>..\Release\.NET 3.5\xZune.Vlc.XML</DocumentationFile>
+    <DocumentationFile>..\x64\Release\.NET 3.5\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\x86\Debug\.NET 3.5\</OutputPath>
     <DefineConstants>TRACE;DEBUG;DotNet35</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -60,9 +60,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\x86\Release\.NET 3.5\</OutputPath>
     <DefineConstants>TRACE;DotNet35</DefineConstants>
-    <DocumentationFile>..\Release\.NET 3.5\xZune.Vlc.XML</DocumentationFile>
+    <DocumentationFile>..\x86\Release\.NET 3.5\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>

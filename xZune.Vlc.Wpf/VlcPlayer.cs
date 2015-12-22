@@ -66,42 +66,39 @@ namespace xZune.Vlc.Wpf
             ScaleTransform = new ScaleTransform(1, 1);
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                if (!ApiManager.IsInitialized)
+                String libVlcPath = null;
+                String[] libVlcOption = null;
+
+                var vlcSettings =
+                    System.Reflection.Assembly.GetEntryAssembly()
+                        .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
+
+                if (vlcSettings.Length > 0)
                 {
-                    String libVlcPath = null;
-                    String[] libVlcOption = null;
+                    var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
 
-                    var vlcSettings =
-                        System.Reflection.Assembly.GetEntryAssembly()
-                            .GetCustomAttributes(typeof(VlcSettingsAttribute), false);
-
-                    if (vlcSettings.Length > 0)
+                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
                     {
-                        var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
-
-                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
-                        {
-                            libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
-                                ? vlcSettingsAttribute.LibVlcPath
-                                : CombinePath(
-                                    Path.GetDirectoryName(
-                                        System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName),
-                                    vlcSettingsAttribute.LibVlcPath);
-                        }
-
-                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
-                            libVlcOption = vlcSettingsAttribute.VlcOption;
+                        libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
+                            ? vlcSettingsAttribute.LibVlcPath
+                            : CombinePath(
+                                Path.GetDirectoryName(
+                                    System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName),
+                                vlcSettingsAttribute.LibVlcPath);
                     }
 
-                    if (LibVlcPath != null)
-                        libVlcPath = Path.IsPathRooted(LibVlcPath) ? LibVlcPath : CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
-
-                    if (VlcOption != null)
-                        libVlcOption = VlcOption;
-
-                    if (libVlcPath != null)
-                        Initialize(libVlcPath, libVlcOption);
+                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
+                        libVlcOption = vlcSettingsAttribute.VlcOption;
                 }
+
+                if (LibVlcPath != null)
+                    libVlcPath = Path.IsPathRooted(LibVlcPath) ? LibVlcPath : CombinePath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName), LibVlcPath);
+
+                if (VlcOption != null)
+                    libVlcOption = VlcOption;
+
+                if (libVlcPath != null)
+                    Initialize(libVlcPath, libVlcOption);
             }
             base.OnInitialized(e);
         }
@@ -129,9 +126,10 @@ namespace xZune.Vlc.Wpf
         /// <param name="libVlcOption"></param>
         public void Initialize(String libVlcPath, params String[] libVlcOption)
         {
-            if (ApiManager.IsInitialized) return;
-
-            ApiManager.Initialize(libVlcPath, libVlcOption);
+            if (!ApiManager.IsInitialized)
+            {
+                ApiManager.Initialize(libVlcPath, libVlcOption);
+            }
 
             VlcMediaPlayer = ApiManager.Vlc.CreateMediaPlayer();
             if (VlcMediaPlayer != null)

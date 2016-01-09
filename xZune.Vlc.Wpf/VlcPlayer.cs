@@ -395,7 +395,7 @@ namespace xZune.Vlc.Wpf
         #region Stop
 
         /// <summary>
-        /// Stop media, this method can be called on UI thread, you must async call it.
+        /// Stop media, this method can't be called on UI thread, you must async call it.
         /// </summary>
         public void Stop()
         {

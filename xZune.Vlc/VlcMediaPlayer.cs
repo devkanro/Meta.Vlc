@@ -847,7 +847,7 @@ namespace xZune.Vlc
 
         public String AspectRatio
         {
-            get { return InteropHelper.PtrToString(_getAspectRatioFunction.Delegate.Invoke(InstancePointer), true); }
+            get { return InteropHelper.PtrToString(_getAspectRatioFunction.Delegate.Invoke(InstancePointer), -1,true); }
             set
             {
                 var handle = InteropHelper.StringToPtr(value);
@@ -883,9 +883,9 @@ namespace xZune.Vlc
             _setAudioCallbackFunction.Delegate(InstancePointer, playCallback, pauseCallback, resumeCallback, flushCallback, drainCallback);
         }
 
-        public void SetAudioFormatCallback(AudioSetupCallback setupCallback, AudioCheanupCallback cheanupCallback)
+        public void SetAudioFormatCallback(AudioSetupCallback setupCallback, AudioCleanupCallback cleanupCallback)
         {
-            _setAudioFormatCallbackFunction.Delegate(InstancePointer, setupCallback, cheanupCallback);
+            _setAudioFormatCallbackFunction.Delegate(InstancePointer, setupCallback, cleanupCallback);
         }
 
         public void SetAudioVolumeCallback(AudioSetVolumeCallback volumeCallback)

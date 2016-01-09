@@ -7,30 +7,47 @@ namespace xZune.Vlc
 {
     public static class InteropHelper
     {
-        public static String PtrToString(IntPtr ptr, bool toBeFree = false)
+        public static String PtrToString(IntPtr ptr , int count = -1, bool toBeFree = false, Encoding  encoding = null)
         {
             if (ptr == IntPtr.Zero)
             {
                 return null;
             }
+            if (encoding == null)
+            {
+                encoding = Encoding.UTF8;
+            }
 
-            int offset = 0;
-            byte tmp = Marshal.ReadByte(ptr, offset);
             List<byte> buffer = new List<byte>(1024);
 
-            while (tmp != 0)
+            if (count == -1)
             {
-                buffer.Add(tmp);
-                offset++;
-                tmp = Marshal.ReadByte(ptr, offset);
+                int offset = 0;
+                byte tmp = Marshal.ReadByte(ptr, offset);
+                while (tmp != 0)
+                {
+                    buffer.Add(tmp);
+                    offset++;
+                    tmp = Marshal.ReadByte(ptr, offset);
+                }
             }
+            else
+            {
+                byte tmp = 0;
+                for (int i = 0; i < count; i++)
+                {
+                    tmp = Marshal.ReadByte(ptr, i);
+                    buffer.Add(tmp);
+                }
+            }
+            
 
             if (toBeFree)
             {
                 Vlc.Free(ptr);
             }
 
-            return Encoding.UTF8.GetString(buffer.ToArray());
+            return encoding.GetString(buffer.ToArray());
         }
 
         public static GCHandle StringToPtr(String str)

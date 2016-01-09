@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.Events.cs
-//Version: 20151220
+//Version: 20160109
 
 using System;
 using System.Diagnostics;
@@ -103,6 +103,7 @@ namespace xZune.Vlc.Wpf
                         switch (EndBehavior)
                         {
                             case EndBehavior.Nothing:
+
                                 break;
 
                             case EndBehavior.Stop:
@@ -110,12 +111,12 @@ namespace xZune.Vlc.Wpf
                                 break;
 
                             case EndBehavior.Repeat:
-                                _stopRequest = new StopRequest(this, () =>
+                                Action repeatAction = () =>
                                 {
-                                    _stopRequest = null;
-                                    Play();
-                                });
-                                _stopRequest.Send();
+                                    VlcMediaPlayer.Stop();
+                                    VlcMediaPlayer.Play();
+                                };
+                                repeatAction.EasyInvoke();
                                 break;
                         }
                         break;
@@ -139,8 +140,15 @@ namespace xZune.Vlc.Wpf
 
         #region Callbacks
 
+        #region Video callbacks
+
         private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
+            if (VlcMediaPlayer.Volume != Volume)
+            {
+                VlcMediaPlayer.Volume = Volume;
+            }
+
             if (!_context.IsAspectRatioChecked)
             {
                 var tracks = VlcMediaPlayer.Media.GetTracks();
@@ -157,7 +165,8 @@ namespace xZune.Vlc.Wpf
                         {
                             _context.IsAspectRatioChecked = true;
                             Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
-                            Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth, _context.DisplayHeight));
+                            Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
+                                _context.DisplayHeight));
                         }
                         else
                         {
@@ -196,7 +205,10 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.BMP:
                         var bmpE = new BmpBitmapEncoder();
                         bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name)))
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
+                            )
                         {
                             bmpE.Save(stream);
                         }
@@ -205,7 +217,10 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.JPG:
                         var jpgE = new JpegBitmapEncoder();
                         jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name)))
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
+                            )
                         {
                             jpgE.QualityLevel = _snapshotContext.Quality;
                             jpgE.Save(stream);
@@ -215,7 +230,10 @@ namespace xZune.Vlc.Wpf
                     case SnapshotFormat.PNG:
                         var pngE = new PngBitmapEncoder();
                         pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (Stream stream = File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name)))
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
+                            )
                         {
                             pngE.Save(stream);
                         }
@@ -225,28 +243,80 @@ namespace xZune.Vlc.Wpf
             }));
         }
 
-        private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height, ref uint pitches, ref uint lines)
+        private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,
+            ref uint pitches, ref uint lines)
         {
             Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
             if (_context == null)
             {
-                _context = new VideoDisplayContext(width, height, PixelFormats.Bgr32);
+                _context = new VideoDisplayContext(width, height, ChromaType.RV32);
             }
-            chroma = BitConverter.ToUInt32(new[] { (byte)'R', (byte)'V', (byte)'3', (byte)'2' }, 0);
-            width = (uint)_context.Width;
-            height = (uint)_context.Height;
-            pitches = (uint)_context.Stride;
-            lines = (uint)_context.Height;
+            chroma = (uint)_context.ChromaType;
+            width = (uint) _context.Width;
+            height = (uint) _context.Height;
+            pitches = (uint) _context.Stride;
+            lines = (uint) _context.Height;
             Dispatcher.Invoke(new Action(() =>
             {
                 VideoSource = _context.Image;
             }));
-            return (uint)_context.Size;
+            return (uint) _context.Size;
         }
 
         private void VideoCleanupCallback(IntPtr opaque)
         {
         }
+
+        #endregion
+
+        #region Audio callbacks
+
+        //private int AudioFormatSetupCallback(ref IntPtr opaque, IntPtr format, ref uint rate, ref uint channels)
+        //{
+        //    string formatStr = InteropHelper.PtrToString(format, 4);
+        //    Debug.WriteLine(String.Format("Sound format: {0}",formatStr));
+        //    Debug.WriteLine(String.Format("Sound rate: {0}", rate));
+        //    Debug.WriteLine(String.Format("Sound channels: {0}", channels));
+
+        //    return 0;
+        //}
+
+        //private void AudioFormatCleanupCallback(IntPtr opaque)
+        //{
+
+        //}
+
+        //private void AudioPlayCallback(IntPtr opaque, IntPtr sample, uint count, Int64 pts)
+        //{
+        //    VlcMediaPlayer.Volume = Volume;
+        //}
+
+        //private void AudioPauseCallback(IntPtr opaque,  Int64 pts)
+        //{
+
+        //}
+
+        //private void AudioResumeCallback(IntPtr opaque, Int64 pts)
+        //{
+
+        //}
+
+        //private void AudioFlushCallback(IntPtr opaque, Int64 pts)
+        //{
+
+        //}
+
+        //private void AudioDrainCallback(IntPtr opaque, Int64 pts)
+        //{
+
+        //}
+
+        //private void AudioSetVolumeCallback(IntPtr opaque, float volume, bool mute)
+        //{
+            
+        //}
+
+        #endregion
 
         #endregion Callbacks
 
@@ -254,7 +324,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseMove(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune"))
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD) 
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
         }
 
@@ -262,7 +332,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseUp(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune"))
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD)
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:
@@ -286,7 +356,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseDown(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune"))
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD)
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:

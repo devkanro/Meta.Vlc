@@ -213,7 +213,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// </summary>
     /// <param name="opaque"></param>
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void AudioCheanupCallback(IntPtr opaque);
+    public delegate void AudioCleanupCallback(IntPtr opaque);
 
     /// <summary>
     /// 音频设置音量时,调用此回调
@@ -413,7 +413,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="cheanupCallback"></param>
     [LibVlcFunction("libvlc_audio_set_format_callbacks", "2.0.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SetAudioFormatCallback(IntPtr mediaPlayer, AudioSetupCallback setupCallback, AudioCheanupCallback cheanupCallback);
+    public delegate void SetAudioFormatCallback(IntPtr mediaPlayer, AudioSetupCallback setupCallback, AudioCleanupCallback cheanupCallback);
 
     /// <summary>
     ///

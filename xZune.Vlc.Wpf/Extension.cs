@@ -1,5 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: Extension.cs
+//Version: 20160109
+
+using System;
+using System.IO;
+using System.Windows.Media;
 
 namespace xZune.Vlc.Wpf
 {
@@ -9,26 +14,6 @@ namespace xZune.Vlc.Wpf
     public static class Extension
     {
         /// <summary>
-        /// Return this value, if one of objs is null return safeValue.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <param name="safeValue"></param>
-        /// <param name="objs"></param>
-        /// <returns></returns>
-        public static T SafeValueWhenNull<T>(this T value, T safeValue, params object[] objs)
-        {
-            if (objs.All(o => o != null))
-            {
-                return value;
-            }
-            else
-            {
-                return safeValue;
-            }
-        }
-        
-        /// <summary>
         /// Return the value from the selector, unless the object is null. Then return the default value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -37,9 +22,99 @@ namespace xZune.Vlc.Wpf
         /// <param name="selector"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static TRet DefaultValueWhenNull<T,TRet>(this T value, Func<T,TRet> selector, TRet defaultValue = default(TRet))
+        public static TRet DefaultValueWhenNull<T, TRet>(this T value, Func<T, TRet> selector, TRet defaultValue = default(TRet))
         {
             return value == null ? defaultValue : selector(value);
+        }
+
+        /// <summary>
+        /// Combine path to src path.
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <param name="extPath"></param>
+        /// <returns></returns>
+        public static string CombinePath(this string srcPath, string extPath)
+        {
+            DirectoryInfo dir = new DirectoryInfo(Path.Combine(srcPath, extPath));
+            return dir.FullName;
+        }
+
+        /// <summary>
+        /// Check a path is a drive root directory or not.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool IsDriveRootDirectory(this string path)
+        {
+            Uri uri = path.ToUri();
+            if (uri != null && uri.IsFile)
+            {
+                DirectoryInfo dir = new DirectoryInfo(uri.LocalPath);
+
+                return dir.Root.FullName == dir.FullName;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Convert a path to uri.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static Uri ToUri(this string str)
+        {
+            Uri result = null;
+            Uri.TryCreate(str.FormatPath(), UriKind.Absolute, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Format a path with '/' and ends with '/'.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string FormatPath(this string path)
+        {
+            path = path.Replace('\\', '/');
+            if (!path.EndsWith("/"))
+            {
+                path += '/';
+            }
+            return path;
+        }
+
+        public static PixelFormat GetPixelFormat(this ChromaType chroma)
+        {
+            switch (chroma)
+            {
+                case ChromaType.RV15:
+                    return PixelFormats.Bgr555;
+                case ChromaType.RV16:
+                    return PixelFormats.Bgr565;
+                case ChromaType.RV24:
+                    return PixelFormats.Bgr24;
+                case ChromaType.RV32:
+                    return PixelFormats.Bgr32;
+                case ChromaType.RGBA:
+                    return PixelFormats.Bgra32;
+                default:
+                    throw new NotSupportedException(String.Format("Not support pixel format: {0}", chroma));
+            }
+        }
+
+        /// <summary>
+        /// Quickly async invoke a action.
+        /// </summary>
+        /// <param name="action"></param>
+        public static void EasyInvoke(this Action action)
+        {
+            action.BeginInvoke(ar =>
+            {
+                action.EndInvoke(ar);
+            }, null);
         }
     }
 }

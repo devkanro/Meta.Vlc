@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VideoDisplayContext.cs
-//Version: 20151220
+//Version: 20160109
 
 using System;
 using System.Diagnostics;
@@ -25,24 +25,25 @@ namespace xZune.Vlc.Wpf
 
         #region --- Initialization ---
 
-        public VideoDisplayContext(uint width, uint height, PixelFormat format)
-            : this((int)width, (int)height, format)
+        public VideoDisplayContext(uint width, uint height, ChromaType chroma)
+            : this((int)width, (int)height, chroma)
         {
         }
 
-        public VideoDisplayContext(double width, double height, PixelFormat format)
-            : this((int)width, (int)height, format)
+        public VideoDisplayContext(double width, double height, ChromaType chroma)
+            : this((int)width, (int)height, chroma)
         {
         }
 
-        public VideoDisplayContext(int width, int height, PixelFormat format)
+        public VideoDisplayContext(int width, int height, ChromaType chroma)
         {
+            ChromaType = chroma;
+            PixelFormat = chroma.GetPixelFormat();
             IsAspectRatioChecked = false;
-            Size = width * height * format.BitsPerPixel / 8;
+            Size = width * height * PixelFormat.BitsPerPixel / 8;
             DisplayWidth = Width = width;
             DisplayHeight = Height = height;
-            PixelFormat = format;
-            Stride = width * format.BitsPerPixel / 8;
+            Stride = width * PixelFormat.BitsPerPixel / 8;
             FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
             MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint)Size);
             Application.Current.Dispatcher.Invoke(new Action(() =>
@@ -88,6 +89,7 @@ namespace xZune.Vlc.Wpf
         public IntPtr MapView { get; private set; }
         public InteropBitmap Image { get; private set; }
         public bool IsAspectRatioChecked { get; set; }
+        public ChromaType ChromaType { get; set; }
 
         #endregion --- Properties ---
 

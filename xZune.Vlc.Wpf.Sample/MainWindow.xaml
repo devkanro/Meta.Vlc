@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: MainWindow.xaml
-Version: 20151220
+Version: 20160109
 -->
 
 <Window
@@ -23,7 +23,7 @@ Version: 20151220
 
     <Grid x:Name="LayoutParent">
 
-        <wpf:VlcPlayer x:Name="Player" EndBehavior="Stop"/>
+        <wpf:VlcPlayer x:Name="Player" EndBehavior="Repeat"/>
         <!-- can comment this if adding the player dynamically -->
 
         <StackPanel Opacity="0.8">
@@ -52,11 +52,28 @@ Version: 20151220
                 <Button Grid.Column="3" Content="Exit" Click="Exit_Click" />
             </Grid>
 
-            <ComboBox SelectedIndex="0" SelectionChanged="AspectRatio_SelectionChanged">
-                <ComboBoxItem Content="Default" />
-                <ComboBoxItem Content="16:9" />
-                <ComboBoxItem Content="4:3" />
-            </ComboBox>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox SelectedIndex="0" SelectionChanged="AspectRatio_SelectionChanged">
+                    <ComboBoxItem Content="Default" />
+                    <ComboBoxItem Content="16:9" />
+                    <ComboBoxItem Content="4:3" />
+                </ComboBox>
+
+                <Grid Grid.Column="1" Background="#FFDDDDDD">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Volume:" VerticalAlignment="Center"></TextBlock>
+                    <Slider Grid.Column="1" Value="{Binding Volume, ElementName=Player}" VerticalAlignment="Center" Maximum="100"/>
+                </Grid>
+            </Grid>
+
         </StackPanel>
 
         <ProgressBar x:Name="ProgressBar" Opacity="0.8" Value="{Binding Position, ElementName=Player}" VerticalAlignment="Bottom" Height="10" Maximum="1" SmallChange="0.00001" MouseDown="ProgressBar_MouseDown" />

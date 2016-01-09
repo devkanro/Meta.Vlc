@@ -45,7 +45,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     /// <param name="volume">0~100之间</param>
     [LibVlcFunction("libvlc_audio_set_volume")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SetVolume(IntPtr mediaPlayer, int volume);
+    public delegate int SetVolume(IntPtr mediaPlayer, int volume);
 
     /// <summary>
     /// 获取音频输出通道

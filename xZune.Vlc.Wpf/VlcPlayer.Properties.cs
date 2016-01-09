@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.Properties.cs
-//Version: 20151220
+//Version: 20160109
 
 using System;
 using System.Windows.Threading;
@@ -85,17 +85,18 @@ namespace xZune.Vlc.Wpf
 
         #region Volume
 
+        private int _volume = 100;
         /// <summary>
         /// Get or set volume of media.
         /// </summary>
         public int Volume
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Volume, 100); }
+            get { return _volume; }
             set
             {
-                if (Volume == value || VlcMediaPlayer == null) return;
-                VlcMediaPlayer.Volume = value;
-
+                if (_volume == value || VlcMediaPlayer == null) return;
+                VlcMediaPlayer.Volume = _volume = value;
+                
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     OnPropertyChanged(() => Volume);
@@ -220,7 +221,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int Chapter
         {
-            get { return VlcMediaPlayer.Chapter.SafeValueWhenNull(-1, VlcMediaPlayer); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Chapter, -1); } //note: assuming a 0-based index
             set
             {
                 if (Chapter == value || VlcMediaPlayer == null) return;

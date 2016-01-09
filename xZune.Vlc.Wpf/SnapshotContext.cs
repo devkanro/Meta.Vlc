@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: SnapshotContext.cs
-//Version: 20151220
+//Version: 20160109
 
 using System;
 using System.IO;
@@ -19,9 +19,7 @@ namespace xZune.Vlc.Wpf
 
         public SnapshotContext(String path, SnapshotFormat format, int quality)
         {
-            Path = path.Replace('/', '\\');
-            if (Path[Path.Length - 1] == '\\')
-                Path = Path.Substring(0, Path.Length - 1);
+            Path = path.FormatPath();
             Format = format;
             Quality = quality;
         }
@@ -52,7 +50,7 @@ namespace xZune.Vlc.Wpf
 
         private static String GetMediaName(String path)
         {
-            if (VlcPlayer.IsRootPath(path))
+            if (path.IsDriveRootDirectory())
             {
                 path = path.Replace('/', '\\').ToUpper();
                 foreach (var item in DriveInfo.GetDrives())

@@ -18,8 +18,9 @@ using xZune.Vlc;
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: VlcSettings(@"..\..\libvlc", "-I dummy", "--ignore-config", "--no-video-title", "--file-logging", "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file" //,"--rtsp-tcp"
-    )]
+[assembly: VlcSettings(@"..\..\libvlc", "-I", "--dummy-quiet", "--ignore-config", "--no-video-title", "--no-sub-autodetect-file")]
+//[assembly: VlcSettings(@"..\..\libvlc", "-I dummy", "--ignore-config", "--no-video-title", "--file-logging", "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file" //,"--rtsp-tcp"
+//    )]
 //note: you may need to add the option --rtsp-tcp to pass RTSP through a VPN (e.g if you want to access some IP Camera behind a firewall by tunneling to its local network via VPN)
 
 // 将 ComVisible 设置为 false 使此程序集中的类型

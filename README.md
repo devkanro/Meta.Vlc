@@ -38,21 +38,78 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 
 ## Change Log  
 
+###01.09
+SHA: 60d9cace26923830a0f13c8f65485f8394dc19e5  
+
+01.修复无法在媒体停止时更改音量  
+修复由 [#68](https://github.com/higankanshi/xZune.Vlc/issues/68) 提出的问题。
+
+02.更改 Stop 方法组  
+现在可以使用更简单好用的 Stop 方法，`Stop()` 方法不能在 UI 线程被调用，需要异步执行。  
+```CSharp
+// .NET 4.5
+
+Task.Run(() => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // 或者其他媒体操作。
+}
+```
+```CSharp
+// .NET 4.0(及以下)
+
+Action stopAction = () => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // 或者其他媒体操作。
+}
+
+stopAction.EasyInvoke();
+```
+`BeginStop(Action callback = null)` 方法简单封装了异步停止操作，与之前操作一致。
+
+01.Fix unable to set the Volume when media stopped  
+Fix [#68](https://github.com/higankanshi/xZune.Vlc/issues/68) issue.
+
+02.Change Stop method group  
+Now we have simpler and better Stop method，`Stop()` method can't be called on UI thread, you must async call it.  
+```CSharp
+// .NET 4.5
+
+Task.Run(() => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // Or other someting.
+}
+```
+```CSharp
+// .NET 4.0(and lower)
+
+Action stopAction = () => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // Or other someting.
+}
+
+stopAction.EasyInvoke();
+```
+`BeginStop(Action callback = null)` easy to stop media like before.
+
 ###12.20
 SHA: 80723064078314c70089496e2793d4f261d6e983  
 
-01.可循环播放视频
+01.可循环播放视频  
 通过设置 EndBehavior 来设置当媒体播放完毕后的动作,支持 Nothing,Stop,Repeat 三种模式。  
 当设置为 Repeat 时,会自动的重新播放视频。
 
-02.提供属性变更通知
+02.提供属性变更通知  
 现在已为大部分的属性提供属性变更通知。
 
-03.新的 Stop 方法
+03.新的 Stop 方法  
 更改 Stop 模式，大致与之前差不多，但是逻辑更为清晰与严谨。  
 但是密集的调用 Stop 与其他控制媒体播放的方法(例如: Play)，仍然可能会导致资源死锁。  
 
-04.添加注释
+04.添加注释  
 为大多数的公开类,属性与方法提供英文注释。  
 
 01.Support loop the media  

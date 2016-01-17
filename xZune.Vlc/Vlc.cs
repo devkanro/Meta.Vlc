@@ -268,6 +268,7 @@ namespace xZune.Vlc
                 VlcEventManager.LoadLibVlc(LibHandle, LibVersion, devString);
                 VlcMedia.LoadLibVlc(LibHandle, LibVersion, devString);
                 VlcMediaPlayer.LoadLibVlc(LibHandle, LibVersion, devString);
+                AudioEqualizer.LoadLibVlc(LibHandle, LibVersion, devString);
                 IsLibLoaded = true;
             }
         }

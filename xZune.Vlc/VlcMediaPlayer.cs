@@ -103,6 +103,7 @@ namespace xZune.Vlc
                 _setVideoTrackFunction = new LibVlcFunction<SetVideoTrack>(libHandle, libVersion, devString);
                 _getVideoTrackCountFunction = new LibVlcFunction<GetVideoTrackCount>(libHandle, libVersion, devString);
                 _getVideoTrackDescriptionFunction = new LibVlcFunction<GetVideoTrackDescription>(libHandle, libVersion, devString);
+                _setEqualizerFunction = new LibVlcFunction<SetEqualizer>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -187,6 +188,7 @@ namespace xZune.Vlc
         private static LibVlcFunction<SetVideoTrack> _setVideoTrackFunction;
         private static LibVlcFunction<GetVideoTrackCount> _getVideoTrackCountFunction;
         private static LibVlcFunction<GetVideoTrackDescription> _getVideoTrackDescriptionFunction;
+        private static LibVlcFunction<SetEqualizer> _setEqualizerFunction;
 
         private readonly LibVlcEventCallBack _onPlaying;
         private readonly LibVlcEventCallBack _onPaused;
@@ -1034,6 +1036,11 @@ namespace xZune.Vlc
         public void Navigate(NavigateMode mode)
         {
             _navigateFunction.Delegate(InstancePointer, mode);
+        }
+
+        public bool SetEqualizer(AudioEqualizer equalizer)
+        {
+            return _setEqualizerFunction.Delegate(InstancePointer, equalizer == null ? IntPtr.Zero : equalizer.InstancePointer) == 0;
         }
 
         private bool _disposed;

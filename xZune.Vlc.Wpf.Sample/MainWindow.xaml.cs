@@ -60,9 +60,6 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
-            Player.AudioEqualizer = ae;
-
             Player.Play();
         }
 

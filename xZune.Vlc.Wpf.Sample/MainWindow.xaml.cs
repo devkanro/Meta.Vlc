@@ -5,6 +5,7 @@
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,7 +50,7 @@ namespace xZune.Vlc.Wpf.Sample
             Uri uri;
             if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
             */
-            
+
             Player.BeginStop(() =>
             {
                 Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
@@ -59,6 +60,9 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
+            Player.AudioEqualizer = ae;
+
             Player.Play();
         }
 
@@ -98,7 +102,7 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void ProgressBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var value = (float) (e.GetPosition(ProgressBar).X/ProgressBar.ActualWidth);
+            var value = (float)(e.GetPosition(ProgressBar).X / ProgressBar.ActualWidth);
             ProgressBar.Value = value;
         }
 

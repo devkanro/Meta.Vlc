@@ -488,16 +488,7 @@ namespace xZune.Vlc.Wpf
                         break;
                 }
         }
-
-        /// <summary>
-        /// Apply new equalizer settings to a media player.<para/> The media player does not keep a reference to the supplied equalizer so you should set it again when you changed some value of equalizer.<para/> After you set equalizer you can dispose it. if you want to disable equalizer set it to <see cref="null"/>.
-        /// </summary>
-        /// <param name="equalizer"></param>
-        public bool SetAudioEqualizer(AudioEqualizer equalizer)
-        {
-            return VlcMediaPlayer.SetEqualizer(equalizer);
-        }
-
+        
         #endregion --- Methods ---
 
         #region --- NotifyPropertyChanged ---

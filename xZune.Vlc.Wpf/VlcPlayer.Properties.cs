@@ -86,6 +86,7 @@ namespace xZune.Vlc.Wpf
         #region Volume
 
         private int _volume = 100;
+
         /// <summary>
         /// Get or set volume of media.
         /// </summary>
@@ -287,5 +288,37 @@ namespace xZune.Vlc.Wpf
         public VlcMediaPlayer VlcMediaPlayer { get; private set; }
 
         #endregion VlcMediaPlayer
+
+        #region AudioEqualizer
+        private AudioEqualizer _audioEqualizer;
+
+        /// <summary>
+        /// Get or set audio equalizer.
+        /// </summary>
+        public AudioEqualizer AudioEqualizer
+        {
+            get { return _audioEqualizer; }
+            set
+            {
+                if (_audioEqualizer != null)
+                {
+                    _audioEqualizer.PropertyChanged -= AudioEqualizer_PropertyChanged;
+                }
+                if (value != null)
+                {
+                    value.PropertyChanged += AudioEqualizer_PropertyChanged;
+                }
+                _audioEqualizer = value;
+                VlcMediaPlayer.SetEqualizer(_audioEqualizer);
+            }
+        }
+
+        private void AudioEqualizer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            VlcMediaPlayer.SetEqualizer(_audioEqualizer);
+        }
+
+        #endregion
+
     }
 }

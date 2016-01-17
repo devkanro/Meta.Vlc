@@ -1038,6 +1038,10 @@ namespace xZune.Vlc
             _navigateFunction.Delegate(InstancePointer, mode);
         }
 
+        /// <summary>
+        /// Apply new equalizer settings to a media player.<para/> The media player does not keep a reference to the supplied equalizer so you should set it again when you changed some value of equalizer.<para/> After you set equalizer you can dispose it. if you want to disable equalizer set it to <see cref="null"/>.
+        /// </summary>
+        /// <param name="equalizer"></param>
         public bool SetEqualizer(AudioEqualizer equalizer)
         {
             return _setEqualizerFunction.Delegate(InstancePointer, equalizer == null ? IntPtr.Zero : equalizer.InstancePointer) == 0;

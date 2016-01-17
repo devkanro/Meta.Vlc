@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.MediaPlayer;
 
@@ -7,7 +11,7 @@ namespace xZune.Vlc
     /// <summary>
     /// Audio equalizer of VLC.
     /// </summary>
-    public class AudioEqualizer : IVlcObject
+    public class AudioEqualizer : IVlcObject, IEnumerable<float>, INotifyPropertyChanged
     {
         #region --- Fields ---
 
@@ -41,6 +45,15 @@ namespace xZune.Vlc
         {
             InstancePointer = _createEqualizerFunction.Delegate();
             HandleManager.Add(this);
+        }
+
+        /// <summary>
+        /// Create a new equalizer, with initial frequency values copied from an existing preset.
+        /// </summary>
+        /// <param name="type"></param>
+        public AudioEqualizer(PresetAudioEqualizerType type) : this((uint) type)
+        {
+            
         }
 
         /// <summary>
@@ -112,7 +125,11 @@ namespace xZune.Vlc
         public float Preamp
         {
             get { return _getEqualizerPreampFunction.Delegate(InstancePointer); }
-            set { _setEqualizerPreampFunction.Delegate(InstancePointer, value); }
+            set
+            {
+                OnPropertyChanged("Preamp");
+                _setEqualizerPreampFunction.Delegate(InstancePointer, value);
+            }
         }
 
         /// <summary>
@@ -122,8 +139,24 @@ namespace xZune.Vlc
         /// <returns></returns>
         public float this[uint band] 
         {
-            get { return _getEqualizerAmplificationFunction.Delegate(InstancePointer, band); }
-            set { _setEqualizerAmplificationFunction.Delegate(InstancePointer, value, band); }
+            get
+            {
+                if (band >= EqualizerBandCount)
+                {
+                    throw new IndexOutOfRangeException("Band index should less than AudioEqualizer.EqualizerBandCount");
+                }
+                return _getEqualizerAmplificationFunction.Delegate(InstancePointer, band);
+            }
+            set
+            {
+                if (band >= EqualizerBandCount)
+                {
+                    throw new IndexOutOfRangeException("Band index should less than AudioEqualizer.EqualizerBandCount");
+                }
+
+                OnPropertyChanged(null);
+                _setEqualizerAmplificationFunction.Delegate(InstancePointer, value, band);
+            }
         }
 
         #endregion
@@ -162,7 +195,7 @@ namespace xZune.Vlc
         /// <returns></returns>
         public static String GetPresetEqualizerName(uint index)
         {
-            return InteropHelper.PtrToString(_getEqualizerPresetNameFunction.Delegate(index),-1,true);
+            return InteropHelper.PtrToString(_getEqualizerPresetNameFunction.Delegate(index));
         }
 
         /// <summary>
@@ -174,6 +207,75 @@ namespace xZune.Vlc
         {
             return _getEqualizerBandFrequencyFunction.Delegate(index);
         }
+
+        public IEnumerator<float> GetEnumerator()
+        {
+            return new AudioEqualizerEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #region --- NotifyPropertyChanged ---
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion --- NotifyPropertyChanged ---
+
         #endregion
+
+        class AudioEqualizerEnumerator : IEnumerator<float>
+        {
+            private int _index = -1;
+            private AudioEqualizer _audioEqualizer;
+
+            public AudioEqualizerEnumerator(AudioEqualizer equalizer)
+            {
+                _audioEqualizer = equalizer;
+            }
+
+            public void Dispose()
+            {
+
+            }
+
+            public bool MoveNext()
+            {
+                if (_index < AudioEqualizer.EqualizerBandCount - 1)
+                {
+                    _index++;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public void Reset()
+            {
+                _index = -1;
+            }
+
+            public float Current
+            {
+                get { return _audioEqualizer[(uint)_index]; }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
+        }
     }
 }

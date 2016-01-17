@@ -91,6 +91,7 @@
     <Compile Include="IVlcObject.cs" />
     <Compile Include="MediaTrack.cs" />
     <Compile Include="ModuleDescription.cs" />
+    <Compile Include="PresetAudioEqualizerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Size.cs" />
     <Compile Include="TrackDescription.cs" />

@@ -38,6 +38,61 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 
 ## Change Log  
 
+###01.17
+SHA: a0299dc7cbc162c84541afeef046171810ef9580
+
+01.为音频添加均衡器(需要 LibVlc 2.2.0 以上)  
+现在可使用 AudioEqualizer 为音频提供均衡器，并提供 18 种预置均衡器与 10 个可自定义放大数值的频带。
+```CSharp
+//使用预置的均衡器设置初始化均衡器。
+AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
+Player.AudioEqualizer = ae;
+
+//使用默认设置初始化均衡器，并为 10 个频带赋值。
+AudioEqualizer ae = new AudioEqualizer();
+ae.Preamp = 12;
+ae[0] = -1.11022E-15f;
+ae[1] = -1.11022E-15f;
+ae[2] = -1.11022E-15f;
+ae[3] = -1.11022E-15f;
+ae[4] = -1.11022E-15f;
+ae[5] = -1.11022E-15f;
+ae[6] = -7.2f;
+ae[7] = -7.2f;
+ae[8] = -7.2f;
+ae[9] = -9.6f;
+Player.AudioEqualizer = ae;
+```
+>**注意：**  
+> `xZune.Vlc.VlcMediaPlayer` 不会引用均衡器实例，仅会复制其值，但是 AudioEqualizer 提供了属性变更通知，你可以使用其属性变更事件来重新设置均衡器。   
+> `xZune.Vlc.Wpf.VlcPlayer` 会引用均衡器实例，并且监听了当前均衡器的属性变更事件，当当前均衡器有变更会自动的为 VlcMediaPlayer 重新设置均衡器。  
+
+01.Add audio equalizer support.  
+Now we can use AudioEqualizer to provide equalizer for VlcPlayer, have 18 preset equalizers and 10 frequency bands.  
+```CSharp
+//use preset equalizer setting to initilaize AudioEqualizer.
+AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
+Player.AudioEqualizer = ae;
+
+//use default setting to initilaize AudioEqualizer and set every frequency bands.
+AudioEqualizer ae = new AudioEqualizer();
+ae.Preamp = 12;
+ae[0] = -1.11022E-15f;
+ae[1] = -1.11022E-15f;
+ae[2] = -1.11022E-15f;
+ae[3] = -1.11022E-15f;
+ae[4] = -1.11022E-15f;
+ae[5] = -1.11022E-15f;
+ae[6] = -7.2f;
+ae[7] = -7.2f;
+ae[8] = -7.2f;
+ae[9] = -9.6f;
+Player.AudioEqualizer = ae;
+```
+>**Note**：  
+> The `xZune.Vlc.VlcMediaPlayer` **will not** keep a reference to the supplied equalizer so you need set it again after you changed some value of `AudioEqualizer`, we provide PropertyChanged event for `AudioEqualizer` you can use this to reset equalizer.   
+> The `xZune.Vlc.Wpf.VlcPlayer` **will** keep a reference to the supplied equalizer, when you changed some value of `AudioEqualizer`, it will auto reset equalizer for `VlcMediaPlayer`.  
+
 ###01.09
 SHA: 60d9cace26923830a0f13c8f65485f8394dc19e5  
 

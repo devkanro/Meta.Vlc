@@ -182,15 +182,38 @@ _**07.loop the media.**_
 当设置为 Stop 时，会自动停止视频，屏幕会被清空，并且可以直接使用播放方法重新播放视频，这是默认的行为。    
 当设置为 Repeat 时，会自动的重新播放视频。  
 
-You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.   
-If you set it to Nothing, player will do nothing after media ended, you need stop it, and you can play again.    
-If you set it to Stop, player will set to stop.    
-If you set it to Repeat, player will atuo play again media.    
+*You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.*   
+*If you set it to Nothing, player will do nothing after media ended, you need stop it, and you can play again.*    
+*If you set it to Stop, player will set to stop.*    
+*If you set it to Repeat, player will atuo play again media.*    
 
 **08.特殊的 VLC 功能。**   
 _**08.Some other extension for VLC.**_   
 xZune.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-xZune) 32bit 版本。如果您需要在更低或者更高的 VLC 版本上使用 xZune.Vlc，您可能需要自己编译 VLC for xZune.Vlc，以保证 xZune.Vlc 拓展功能可用。  
-_xZune.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-xZune) 32bit version now.But you want to use xZune.Vlc with later or lower version,you could need compile VLC for xZune.Vlc by yourself,to ensure that the expansions are available. _  
+*xZune.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-xZune) 32bit version now.But you want to use xZune.Vlc with later or lower version,you could need compile VLC for xZune.Vlc by yourself,to ensure that the expansions are available.*  
 
 查看 [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) 来获取编译 xZune 专用的 VLC 教程。   
-_See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune._  
+*See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune.*  
+
+## Other Project  
+**已经在使用 xZune.Vlc 的项目：**  
+_**Already in use xZune.Vlc:**_  
+
+**[FoscamController](http://foscamcontroller.codeplex.com/)**    
+This is a Library and Demo WPF program for controlling MJPEG and HD models of Foscam IP PTZ (Pan-Tilt-Zoom) Cameras and displaying MJPEG and H.264/RTSP video.   
+
+**[FiloStreamer](https://github.com/TheThing/FiloStreamer)**  
+FiloStreamer is a simple GUI application frontend on top of ffmpeg, designed to simplify and ease configuring and setting up local live stream from a Blackmagic Decklink card source.     
+
+**[SenpaiCopy](https://github.com/coczero/SenpaiCopy)**  
+SenpaiCopy is a simple tool to copy image and video files from a source folder to one or more other folders. It supports a variety of image and video formats, with more to come in the future. It also allows for quickly searching an image on google. SenpaiCopy is made for people with huge amounts of folders to sort images into.  
+
+**[Popcorn](https://github.com/bbougot/Popcorn)**  
+An application which aims to provide a simple interface to watch any movie.  
+
+**xZune 系列：**  
+_**xZune Suit:**_  
+
+**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**
+Zune 风格的音频可视化控件。  
+*Zune style audio visualizer.*  

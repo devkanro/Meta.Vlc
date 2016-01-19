@@ -193,7 +193,7 @@ xZune.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-
 *xZune.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-xZune) 32bit version now.But you want to use xZune.Vlc with later or lower version,you could need compile VLC for xZune.Vlc by yourself,to ensure that the expansions are available.*  
 
 查看 [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) 来获取编译 xZune 专用的 VLC 教程。   
-*See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune.*  
+*See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune.*   
 
 ## Other Project  
 **已经在使用 xZune.Vlc 的项目：**  
@@ -208,12 +208,12 @@ FiloStreamer is a simple GUI application frontend on top of ffmpeg, designed to 
 **[SenpaiCopy](https://github.com/coczero/SenpaiCopy)**  
 SenpaiCopy is a simple tool to copy image and video files from a source folder to one or more other folders. It supports a variety of image and video formats, with more to come in the future. It also allows for quickly searching an image on google. SenpaiCopy is made for people with huge amounts of folders to sort images into.  
 
-**[Popcorn](https://github.com/bbougot/Popcorn)**  
+**[Popcorn](https://github.com/bbougot/Popcorn)**    
 An application which aims to provide a simple interface to watch any movie.  
 
 **xZune 系列：**  
 _**xZune Suit:**_  
 
-**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**
+**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**  
 Zune 风格的音频可视化控件。  
 *Zune style audio visualizer.*  

@@ -4,7 +4,7 @@
 
 xZune.Vlc 是一个 LibVlc 封装库的 .NET 实现,封装了大部分的 LibVlc 的功能,该项目主要是为了寻求一个在 WPF 上使用 Vlc 的完美的解决方案,xZune.Vlc 提供一个原生的 WPF 播放控件(xZune.Vlc.Wpf),该控件采用 InteropBitmap 与共享内存进行播放视频,是一个原生的 WPF 控件,不存在 HwndHost 的空域问题.  
 
-xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.  
+_xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue._  
 
 ## NuGet Packages
 
@@ -26,9 +26,9 @@ PM> Install-Package xZune.Vlc.Lib
 >LibVlc 的版本：  
 >2.2.0-xZune Weatherwax  
 >   
->xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf.   
->LibVlc Version:   
->2.2.0-xZune Weatherwax   
+>_xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf._   
+>_LibVlc Version:_   
+>_2.2.0-xZune Weatherwax_   
 
 ## Build Status
 
@@ -36,354 +36,161 @@ Branch(分支) | Status(状态) | Description(描述)
 --- | --- | ---
 master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/xzune-vlc/branch/master) | xZune.Vlc
 
-## Change Log  
-
-###01.17
-SHA: a0299dc7cbc162c84541afeef046171810ef9580
-
-01.为音频添加均衡器(需要 LibVlc 2.2.0 以上)  
-现在可使用 AudioEqualizer 为音频提供均衡器，并提供 18 种预置均衡器与 10 个可自定义放大数值的频带。
-```CSharp
-//使用预置的均衡器设置初始化均衡器。
-AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
-Player.AudioEqualizer = ae;
-
-//使用默认设置初始化均衡器，并为 10 个频带赋值。
-AudioEqualizer ae = new AudioEqualizer();
-ae.Preamp = 12;
-ae[0] = -1.11022E-15f;
-ae[1] = -1.11022E-15f;
-ae[2] = -1.11022E-15f;
-ae[3] = -1.11022E-15f;
-ae[4] = -1.11022E-15f;
-ae[5] = -1.11022E-15f;
-ae[6] = -7.2f;
-ae[7] = -7.2f;
-ae[8] = -7.2f;
-ae[9] = -9.6f;
-Player.AudioEqualizer = ae;
-```
->**注意：**  
-> `xZune.Vlc.VlcMediaPlayer` 不会引用均衡器实例，仅会复制其值，但是 AudioEqualizer 提供了属性变更通知，你可以使用其属性变更事件来重新设置均衡器。   
-> `xZune.Vlc.Wpf.VlcPlayer` 会引用均衡器实例，并且监听了当前均衡器的属性变更事件，当当前均衡器有变更会自动的为 VlcMediaPlayer 重新设置均衡器。  
-
-01.Add audio equalizer support.  
-Now we can use AudioEqualizer to provide equalizer for VlcPlayer, have 18 preset equalizers and 10 frequency bands.  
-```CSharp
-//use preset equalizer setting to initilaize AudioEqualizer.
-AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
-Player.AudioEqualizer = ae;
-
-//use default setting to initilaize AudioEqualizer and set every frequency bands.
-AudioEqualizer ae = new AudioEqualizer();
-ae.Preamp = 12;
-ae[0] = -1.11022E-15f;
-ae[1] = -1.11022E-15f;
-ae[2] = -1.11022E-15f;
-ae[3] = -1.11022E-15f;
-ae[4] = -1.11022E-15f;
-ae[5] = -1.11022E-15f;
-ae[6] = -7.2f;
-ae[7] = -7.2f;
-ae[8] = -7.2f;
-ae[9] = -9.6f;
-Player.AudioEqualizer = ae;
-```
->**Note**：  
-> The `xZune.Vlc.VlcMediaPlayer` **will not** keep a reference to the supplied equalizer so you need set it again after you changed some value of `AudioEqualizer`, we provide PropertyChanged event for `AudioEqualizer` you can use this to reset equalizer.   
-> The `xZune.Vlc.Wpf.VlcPlayer` **will** keep a reference to the supplied equalizer, when you changed some value of `AudioEqualizer`, it will auto reset equalizer for `VlcMediaPlayer`.  
-
-###01.09
-SHA: 60d9cace26923830a0f13c8f65485f8394dc19e5  
-
-01.修复无法在媒体停止时更改音量  
-修复由 [#68](https://github.com/higankanshi/xZune.Vlc/issues/68) 提出的问题。
-
-02.更改 Stop 方法组  
-现在可以使用更简单好用的 Stop 方法，`Stop()` 方法不能在 UI 线程被调用，需要异步执行。  
-```CSharp
-// .NET 4.5
-
-Task.Run(() => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // 或者其他媒体操作。
-}
-```
-```CSharp
-// .NET 4.0(及以下)
-
-Action stopAction = () => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // 或者其他媒体操作。
-}
-
-stopAction.EasyInvoke();
-```
-`BeginStop(Action callback = null)` 方法简单封装了异步停止操作，与之前操作一致。
-
-01.Fix unable to set the Volume when media stopped  
-Fix [#68](https://github.com/higankanshi/xZune.Vlc/issues/68) issue.
-
-02.Change Stop method group  
-Now we have simpler and better Stop method，`Stop()` method can't be called on UI thread, you must async call it.  
-```CSharp
-// .NET 4.5
-
-Task.Run(() => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // Or other someting.
-}
-```
-```CSharp
-// .NET 4.0(and lower)
-
-Action stopAction = () => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // Or other someting.
-}
-
-stopAction.EasyInvoke();
-```
-`BeginStop(Action callback = null)` easy to stop media like before.
-
-###12.20
-SHA: 80723064078314c70089496e2793d4f261d6e983  
-
-01.可循环播放视频  
-通过设置 EndBehavior 来设置当媒体播放完毕后的动作,支持 Nothing,Stop,Repeat 三种模式。  
-当设置为 Repeat 时,会自动的重新播放视频。
-
-02.提供属性变更通知  
-现在已为大部分的属性提供属性变更通知。
-
-03.新的 Stop 方法  
-更改 Stop 模式，大致与之前差不多，但是逻辑更为清晰与严谨。  
-但是密集的调用 Stop 与其他控制媒体播放的方法(例如: Play)，仍然可能会导致资源死锁。  
-
-04.添加注释  
-为大多数的公开类,属性与方法提供英文注释。  
-
-01.Support loop the media  
-You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.  
-You can set it to Repeat to loop the media.
-
-02.Support INotifyPropertyChanged  
-Support some properties changed notify.
-
-03.New Stop method group  
-We changed the Stop methods, it will be more rigorous logic.  
-But intensive media state operation may lead to deadlock.
-
-04.Add more comments  
-We provide more english comments for public class, methods and properties. 
-
-###10.23
-SHA: fba747bd44e190a79c3456bd97bad2396fd84122  
-01.自动修复 DAR  
-现在可以通过读取 SAR 来获取正确的 DAR 与显示分辨率,用于解决指定 SAR 下显示比例异常。
-
-02.添加 AspectRatio 属性   
-现在可以使用`VlcPlayer.AspectRatio`属性来将视频调整至指定的横宽比。
-
-01.Auto correct DAR  
-Now we can auto correct DAR and video display size by load SAR. It used for fix sometimes video size is wrong.
-
-02.Add AspectRatio property  
-Now we can change the aspect ratio of video by `VlcPlayer.AspectRatio` property.  
-
-###07.18  
-SHA: 5d4144ba64d568b36cd789e482e9ed1281525c25  
-01.更改字符集至 UTF-8  
-我们更改了 xZune.Vlc 与 LibVlc 的互操作字符串字符集至 UTF-8,解决中文路径的媒体文件无法播放的问题.  
-  
-02.添加 Title 与 Chapter 属性    
-现在可以使用 `VlcPlayer.Title`与`VlcPlayer.Chapter`属性来控制多章节的媒体.  
-  
-01.Change the Character set to UTF-8  
-We change the Character set to UTF-8,to fix some problem in chinese system.  
-
-02.Add Title and Chapter properties  
-Now you can use `VlcPlayer.Title`and`VlcPlayer.Chapter`to control the media which has multiple chapters.  
- 
-###07.15
-SHA: 3fe6a38934f5418e77dd4c180579d471ec697dd5  
-如果你仍然在使用旧版本的 xZune.Vlc,这里列举了一些新版本的 xZune.Vlc 所拥有新的特性.  
-  
-01.更多的 .NET 版本支持.  
-在之前我们更改了 xZune.Vlc 的代码,使其能够在多个 .NET 版本上使用,以下是相关的兼容信息:  
-
-.NET 版本 | xZune.Vlc | xZune.Vlc.Wpf | xZune.Vlc.Wpf.Sample
------------- | ------------- | ------------- | -------------
-.NET 2.0 | :o: | :x: | :x:
-.NET 3.0 | :o: | :x: | :x:
-.NET 3.5 | :o: | :interrobang: | :o:
-.NET 4.0 | :o: | :interrobang: | :o:
-.NET 4.5 | :o: | :o: | :o:
-
->:o: :兼容     :x: :不兼容       :interrobang: :部分功能可能不可用  
-  
-02.更多控件初始化方案  
-现在,你可以使用 3 种方案来初始化 VlcPlayer 控件,VlcSettingsAttribute 特性 和 VlcPlayer.LibVlcPath 属性仍然可用,当你不设置这些特性与属性时,你就需要手动调用 `Vlcplayer.Initialize(libVlcPath, libVlcOption)` 来初始化控件.  
-他们之间的优先级为 VlcPlayer.LibVlcPath > VlcSettingsAttribute > Vlcplayer.Initialize  
-
-03.新的 Stop 方法组  
-现在你可以通过 3 个不同的 Stop 方法来停止媒体的播放.  
->VlcPlayer.Stop() 方法:  
->该方法将 Stop 操作提交给后台线程,由后台线程来完成 Stop 操作,所以会立即返回.但是 Stop 仍然是个耗时操作,所以请勿在此方法后调用其它媒体相关操作,以免造成死锁.  
->示例:  
->```CSharp
->vlcPlayer.Stop();
->//不要在此方法后调用媒体相关操作.  
->```
-   
->VlcPlayer.BeginStop(AsyncCallback) 方法:  
->该方法将 Stop 操作提交给后台线程,并提供一个 AsyncCallback 当 Stop 操作完成,将调用此 AsyncCallback.  
->示例:  
->```CSharp
->vlcPlayer.BeginStop(ar =>
->{
->	//TODO: 在这里可进行媒体相关操作.
->});
->//不要在此方法后调用媒体相关操作,请在 AsyncCallback 中异步进行.  
->```
-    
->VlcPlayer.StopAsync() 方法:  
->仅支持 .NET 4.5 ,该方法是 async/await 异步操作,使用 await 关键字确保 Stop 操作完成后,继续进行下面的操作.  
->示例:  
->```CSharp
->await vlcPlayer.StopAsync();
->//TODO: 在这里可进行媒体相关操作.
->```
-  
-If you are still using the old version of xZune.Vlc,Here are some new features of the new version.  
-  
-01.More .NET version support.  
-We change the code of xZune.Vlc,make it to be used on multiple versions .NET,those are compatible informations:  
-
+## .Net Support
 .NET Version | xZune.Vlc | xZune.Vlc.Wpf | xZune.Vlc.Wpf.Sample
 ------------ | ------------- | ------------- | -------------
 .NET 2.0 | :o: | :x: | :x:
 .NET 3.0 | :o: | :x: | :x:
-.NET 3.5 | :o: | :interrobang: | :o:
-.NET 4.0 | :o: | :interrobang: | :o:
+.NET 3.5 | :o: | :o: | :o:
+.NET 4.0 | :o: | :o: | :o:
 .NET 4.5 | :o: | :o: | :o:
 
->:o: :Compatible :x: :Incompatible  :interrobang: :Some functions may not be available  
-  
-02.More way of control initialization   
-Now,you have 3 ways to initialize VlcPlayer ,VlcSettingsAttribute and VlcPlayer.LibVlcPath also is available.When you don't set those,you need call `Vlcplayer.Initialize(libVlcPath, libVlcOption)` to initialize VlcPlayer.  
-Priority: VlcPlayer.LibVlcPath > VlcSettingsAttribute > Vlcplayer.Initialize  
-
-03.New Stop methods  
-Now you can use 3 different way to Stop a media.  
->VlcPlayer.Stop() method:  
->This method send Stop operation to background threading, so it will immediately return.But Stop is still a time consuming operation. So please do not call other media operations after this method, so as to avoid deadlock.  
->Sample:  
->```CSharp
->vlcPlayer.Stop();
->//Do not call other media operations.  
->```
-  
->VlcPlayer.BeginStop(AsyncCallback) method:  
->This method send Stop operation to background threading, and you can set a AsyncCallback parameter. When the Stop operation completed, AsyncCallback will be called.  
->Sample:  
->```CSharp
->vlcPlayer.BeginStop(ar =>
->{
->	//TODO: You can call other media operations here.
->});
->//Do not call other media operations, please call those in AsyncCallback.  
->```
-  
->VlcPlayer.StopAsync() method:
->Only .NET 4.5 support, this method is a async/await operation, use await keyword to make it async.  
->Sample:  
->```CSharp
->await vlcPlayer.StopAsync();
->//TODO: You can call other media operations here.
->```
+>:o: :兼容/Compatible     
+>:x: :不兼容/Incompatible       
+>:interrobang: :部分功能可能不可用/Some functions may not be available  
 
 ## Quick Start
 
-在您的项目中快速使用 xZune.Vlc:  
+在您的项目中快速使用 xZune.Vlc：  
+_Quick start xZune.Vlc in your project:_  
 
-01.在项目中添加对 xZune.Vlc 的程序集的引用.  
+**01.在项目中添加对 xZune.Vlc 的程序集的引用。**    
+_**01.Add the references of xZune.Vlc to your project.**_  
 ```
 xZune.Vlc.dll
 xZune.Vlc.Wpf.dll
 ```
 
-02.在项目的属性中设置 LibVlc 库的目录.  
-在`$(Your Project)\Properties\AssemblyInfo.cs`中添加 VlcSettingsAttribute.  
+**02.在项目的属性中设置 LibVlc 库的目录。**  
+_**02.Set the path of LibVlc in properties of your project.**_     
+在`$(Your Project)\Properties\AssemblyInfo.cs`中添加 VlcSettingsAttribute。  
+_Add a VlcSettingsAttribute in `$(Your Project)\Properties\AssemblyInfo.cs`._  
 ```CSharp
 //设置 LibVlc 的目录
-[assembly: VlcSettings(@"..\..\..\LibVlc")] 
-
-//设置 LibVlc 初始化时的选项
-[assembly: VlcSettings(@"..\..\..\LibVlc",new String[] { "-I", "dummy", "--ignore-config", "--no-video-title" })]
-```
->参考:  
->https://github.com/higankanshi/xZune.Vlc/blob/master/xZune.Vlc.Wpf.Sample/Properties/AssemblyInfo.cs
-
-03.在 Xaml 中加入 VlcPlayer 控件.  
-```XAML
-<wpf:VlcPlayer xmlns:wpf="clr-namespace:xZune.Vlc.Wpf;assembly=xZune.Vlc.Wpf" x:Name="vlcPlayer"/>
-```
-
-04.载入媒体并播放.  
-```CSharp
-vlcPlayer.LoadMedia(@"C:\VlcTest.mp4"); //载入本地文件
-//vlcPlayer.LoadMedia(@"H:\"); //载入DVD光盘
-//vlcPlayer.LoadMedia(new Uri("http://127.0.0.1")); //载入网络流
-vlcPlayer.Play(); //Play the media 播放媒体
-```
-
-05.停止媒体与释放资源.  
-
-可以使用`await vlcPlayer.Stop()`在一个异步方法内停止视频播放,该操作是一个异步操作,需要 50ms 以上的延迟来完成停止操作,请务必使用`await`关键字保证 vlcPlayer 的停止播放结束后再载入新的视频,以免发生死锁.  
-
-可以在程序结束时调用`vlcPlayer.Dispose()`释放所有资源.  
-
-
-Quick start xZune.Vlc in your project:  
-
-01.Add the references of xZune.Vlc to your project.  
-```
-xZune.Vlc.dll
-xZune.Vlc.Wpf.dll
-```
-
-02.Set the path of LibVlc in properties of your project.  
-Add a VlcSettingsAttribute in `$(Your Project)\Properties\AssemblyInfo.cs`.   
-```CSharp  
 //Set the path of LibVlc
 [assembly: VlcSettings(@"..\..\..\LibVlc")] 
 
+//设置 LibVlc 初始化时的选项
 //Set the path and options of LibVlc
-[assembly: VlcSettings(@"..\..\..\LibVlc",new String[] { "-I", "dummy", "--ignore-config", "--no-video-title" })]
+[assembly: VlcSettings(@"..\..\..\LibVlc", "-I", "dummy", "--ignore-config", "--no-video-title" )]
 ```
->See:  
+>参考:  
+>_See:_  
 >https://github.com/higankanshi/xZune.Vlc/blob/master/xZune.Vlc.Wpf.Sample/Properties/AssemblyInfo.cs
 
-03.Add the VlcPlayer Control in your Xaml  
+**03.在 Xaml 中加入 VlcPlayer 控件。**   
+_**03.Add the VlcPlayer Control in your Xaml**_  
 ```XAML
 <wpf:VlcPlayer xmlns:wpf="clr-namespace:xZune.Vlc.Wpf;assembly=xZune.Vlc.Wpf" x:Name="vlcPlayer"/>
 ```
 
-04.Load and Play the media.  
+**04.载入媒体并播放。**    
+_**04.Load and Play the media.**_    
 ```CSharp
-vlcPlayer.LoadMedia(@"C:\VlcTest.mp4"); //Load a local file
-//vlcPlayer.LoadMedia(@"H:\"); //Load a DVD
-//vlcPlayer.LoadMedia(new Uri("http://127.0.0.1")); //Load a Network Stream
-vlcPlayer.Play(); //Play the media
+vlcPlayer.LoadMedia(@"C:\VlcTest.mp4");             //载入本地文件    Load a local file
+//vlcPlayer.LoadMedia(@"H:\");                      //载入DVD光盘     Load a DVD
+//vlcPlayer.LoadMedia(new Uri("http://127.0.0.1")); //载入网络流      Load a Network Stream
+vlcPlayer.Play();                                   //播放媒体        Play the media
 ```
 
-05.Stop the media and Release the resources.  
+**05.停止媒体与释放资源。**     
+_**05.Stop the media and Release the resources.**_  
 
-You can use `await vlcPlayer.Stop()`to stop a media in a async method,this operation is a async operation,we need at least 50ms to stop the media.Please use the `await` KeyWord to keep load a new media after stop old media over,in order to avoid a death lock.  
+`vlcPlayer.Stop()`在 UI 线程被调用会导致出现死锁，所以它不能在 UI 线程被调用，你需要将所有和其他一起的操作异步进行。   
+`vlcPlayer.BeginStop()`提供简单的回调模型的异步操作，需要所有结束后的媒体操作都在回调中进行。    
 
-You can call the `vlcPlayer.Dispose()`to release the resource when you exit.
+_If you call `vlcPlayer.Stop()` on UI thread, it will case deadlock, so you should call it and other media operations what be called after stop by async._  
+_`vlcPlayer.BeginStop()` provide a easy way call stop on UI thread, but you should use the callback._  
+__
+```CSharp
+// 在 .NET 4.5 中使用 Stop
+// Use Stop with .NET 4.5
+
+Task.Run(() => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
+}
+```
+```CSharp
+// 在 .NET 4.0(及以下) 中使用 Stop
+// Use Stop with .NET 4.0(and lower)
+
+Action stopAction = () => 
+{
+  VlcPlayer.Stop();
+  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
+}
+
+stopAction.EasyInvoke();
+```
+```CSharp
+// 使用 BeginStop
+// Use BeginStop
+
+VlcPlayer.BeginStop(()=>
+{
+  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
+});
+```  
+
+可以在程序结束时调用`vlcPlayer.Dispose()`释放所有资源。   
+_You can call the `vlcPlayer.Dispose()`to release the resource when you exit._  
+
+**06.为音频输出使用均衡器(需要 LibVlc 2.2.0 以上)。**  
+_**06.Add equalizer for audio(Need LibVlc 2.2.0 and higher).**_  
+
+使用 AudioEqualizer 为音频提供均衡器，并提供 18 种预置均衡器与 10 个可自定义放大数值的频带。  
+_Now we can use AudioEqualizer to provide equalizer for VlcPlayer, have 18 preset equalizers and 10 frequency bands._   
+```CSharp
+//使用预置的均衡器设置初始化均衡器。
+//use preset equalizer setting to initilaize AudioEqualizer.
+
+AudioEqualizer ae = new AudioEqualizer(PresetAudioEqualizerType.Classical);
+Player.AudioEqualizer = ae;
+
+
+//使用默认设置初始化均衡器，并为 10 个频带赋值。
+//use default setting to initilaize AudioEqualizer and set every frequency bands.
+
+AudioEqualizer ae = new AudioEqualizer();
+ae.Preamp = 12;
+ae[0] = -1.11022E-15f;
+ae[1] = -1.11022E-15f;
+ae[2] = -1.11022E-15f;
+ae[3] = -1.11022E-15f;
+ae[4] = -1.11022E-15f;
+ae[5] = -1.11022E-15f;
+ae[6] = -7.2f;
+ae[7] = -7.2f;
+ae[8] = -7.2f;
+ae[9] = -9.6f;
+Player.AudioEqualizer = ae;
+```
+>**注意(_Note_)：**  
+> `xZune.Vlc.VlcMediaPlayer` 不会引用均衡器实例，仅会复制其值，但是 AudioEqualizer 提供了属性变更通知，你可以使用其属性变更事件来重新设置均衡器。   
+> `xZune.Vlc.Wpf.VlcPlayer` 会引用均衡器实例，并且监听了当前均衡器的属性变更事件，当当前均衡器有变更会自动的为 VlcMediaPlayer 重新设置均衡器。  
+>   
+> The `xZune.Vlc.VlcMediaPlayer` **will not** keep a reference to the supplied equalizer so you need set it again after you changed some value of `AudioEqualizer`, we provide PropertyChanged event for `AudioEqualizer` you can use this to reset equalizer.   
+> The `xZune.Vlc.Wpf.VlcPlayer` **will** keep a reference to the supplied equalizer, when you changed some value of `AudioEqualizer`, it will auto reset equalizer for `VlcMediaPlayer`.  
+
+  
+**07.循环播放视频。**    
+_**07.loop the media.**_    
+通过设置 EndBehavior 来设置当媒体播放完毕后的动作,支持 Nothing,Stop,Repeat 三种模式。    
+当设置为 Nothing 时，会什么都不做，屏幕仍然会显示最后一帧的画面，你需要先将播放器停止才能重新播放视频。  
+当设置为 Stop 时，会自动停止视频，屏幕会被清空，并且可以直接使用播放方法重新播放视频，这是默认的行为。    
+当设置为 Repeat 时，会自动的重新播放视频。  
+
+You can set the EndBehavior property to set behavior when media ended. Support Nothing,Stop,Repeat mode.   
+If you set it to Nothing, player will do nothing after media ended, you need stop it, and you can play again.    
+If you set it to Stop, player will set to stop.    
+If you set it to Repeat, player will atuo play again media.    
+
+**08.特殊的 VLC 功能。**   
+_**08.Some other extension for VLC.**_   
+xZune.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-xZune) 32bit 版本。如果您需要在更低或者更高的 VLC 版本上使用 xZune.Vlc，您可能需要自己编译 VLC for xZune.Vlc，以保证 xZune.Vlc 拓展功能可用。  
+_xZune.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-xZune) 32bit version now.But you want to use xZune.Vlc with later or lower version,you could need compile VLC for xZune.Vlc by yourself,to ensure that the expansions are available. _  
+
+查看 [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) 来获取编译 xZune 专用的 VLC 教程。   
+_See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune._  

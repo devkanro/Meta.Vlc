@@ -108,10 +108,11 @@ namespace xZune.Vlc
         private GCHandle _onFreedHandle;
         private GCHandle _onStateChangedHandle;
 
-        private VlcMedia(IntPtr pointer)
+        private VlcMedia(IVlcObject parentVlcObject,  IntPtr pointer)
         {
+            VlcInstance = parentVlcObject.VlcInstance;
             InstancePointer = pointer;
-            EventManager = new VlcEventManager(_getEventManagerFunction.Delegate(InstancePointer));
+            EventManager = new VlcEventManager(this, _getEventManagerFunction.Delegate(InstancePointer));
 
             _onMetaChanged = OnMetaChanged;
             _onSubItemAdded = OnSubItemAdded;
@@ -202,6 +203,8 @@ namespace xZune.Vlc
         /// </summary>
         public IntPtr InstancePointer { get; private set; }
 
+        public Vlc VlcInstance { get; private set; }
+
         public VlcEventManager EventManager { get; private set; }
 
         /// <summary>
@@ -212,7 +215,7 @@ namespace xZune.Vlc
         public static VlcMedia CreateAsNewNode(Vlc vlc, String name)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
-            var madia = new VlcMedia(_createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            var madia = new VlcMedia(vlc, _createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
             handle.Free();
             return madia;
         }
@@ -224,7 +227,7 @@ namespace xZune.Vlc
         /// <param name="fileDescriptor">文件描述符</param>
         public static VlcMedia CreateFormFileDescriptor(Vlc vlc, int fileDescriptor)
         {
-            return new VlcMedia(_createMediaFromFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
+            return new VlcMedia(vlc, _createMediaFromFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace xZune.Vlc
         public static VlcMedia CreateFormLocation(Vlc vlc, String url)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(url), GCHandleType.Pinned);
-            var media = new VlcMedia(_createMediaFromLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            var media = new VlcMedia(vlc, _createMediaFromLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
             handle.Free();
             return media;
         }
@@ -248,7 +251,7 @@ namespace xZune.Vlc
         public static VlcMedia CreateFormPath(Vlc vlc, String path)
         {
             GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(path), GCHandleType.Pinned);
-            var media = new VlcMedia(_createMediaFromPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
+            var media = new VlcMedia(vlc, _createMediaFromPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
             handle.Free();
             return media;
         }
@@ -282,7 +285,7 @@ namespace xZune.Vlc
         /// <returns>复制的媒体对象</returns>
         public VlcMedia Duplicate()
         {
-            return new VlcMedia(_duplicateFunction.Delegate(InstancePointer));
+            return new VlcMedia(this, _duplicateFunction.Delegate(InstancePointer));
         }
 
         /// <summary>

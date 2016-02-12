@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.MediaPlayer;
 
@@ -118,6 +117,11 @@ namespace xZune.Vlc
         }
 
         public IntPtr InstancePointer { get; private set; }
+
+        /// <summary>
+        /// Aways return <see cref="null"/>.
+        /// </summary>
+        public Vlc VlcInstance { get { return null; } }
 
         /// <summary>
         /// Get or set the current pre-amplification value from an equalizer.

@@ -20,42 +20,6 @@ namespace xZune.Vlc.Interop.MediaPlayer
         public IntPtr Next;
     }
 
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct AudioOutput
-    {
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Name;
-
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Description;
-
-        /// <summary>
-        /// 这是一个 <see cref="AudioOutput"/> 类型的指针,指向下一个音频输出
-        /// </summary>
-        public IntPtr Next;
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    public struct AudioOutputDevice
-    {
-        /// <summary>
-        /// 这是一个 <see cref="AudioOutputDevice"/> 类型的指针,指向下一个音频输出设备
-        /// </summary>
-        public IntPtr Next;
-
-        /// <summary>
-        /// 设备标识符
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Device;
-
-        /// <summary>
-        /// 设备描述
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Description;
-    }
-
     public struct Rectangle
     {
         public int Top;

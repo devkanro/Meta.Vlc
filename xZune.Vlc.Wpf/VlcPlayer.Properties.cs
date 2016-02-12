@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.Properties.cs
-//Version: 20160109
+//Version: 20160213
 
 using System;
 using System.Windows.Threading;
@@ -317,6 +317,12 @@ namespace xZune.Vlc.Wpf
         {
             VlcMediaPlayer.SetEqualizer(_audioEqualizer);
         }
+
+        #endregion
+
+        #region CreateMode
+
+        public PlayerCreateMode CreateMode { get; set; } 
 
         #endregion
 

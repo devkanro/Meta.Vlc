@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: VlcPlayer.cs
-//Version: 20160109
+//Version: 20160213
 
 using System;
 using System.ComponentModel;
@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -147,7 +146,19 @@ namespace xZune.Vlc.Wpf
                 ApiManager.Initialize(libVlcPath, libVlcOption);
             }
 
-            VlcMediaPlayer = ApiManager.Vlc.CreateMediaPlayer();
+            switch (CreateMode)
+            {
+                case PlayerCreateMode.NewVlcInstance:
+                    var vlc = new Vlc(libVlcOption);
+                    VlcMediaPlayer = vlc.CreateMediaPlayer();
+                    ApiManager.Vlcs.Add(vlc);
+                    break;
+                case PlayerCreateMode.Default:
+                default:
+                    VlcMediaPlayer = ApiManager.DefaultVlc.CreateMediaPlayer();
+                    break;
+            }
+            
             if (VlcMediaPlayer != null)
             {
                 VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
@@ -285,7 +296,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromPath(path);
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -306,7 +317,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromLocation(uri.ToString());
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -332,7 +343,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromPath(path);
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
@@ -356,7 +367,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = ApiManager.Vlc.CreateMediaFromLocation(uri.ToString());
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
@@ -488,7 +499,68 @@ namespace xZune.Vlc.Wpf
                         break;
                 }
         }
-        
+
+        /// <summary>
+        /// Gets a list of potential audio output devices. 
+        /// </summary>
+        /// <returns></returns>
+        public AudioDeviceList EnumAudioDeviceList()
+        {
+            return VlcMediaPlayer.EnumAudioDeviceList();
+        }
+
+        /// <summary>
+        /// Gets a list of audio output devices for a given audio output module. 
+        /// </summary>
+        /// <param name="audioOutput"></param>
+        /// <returns></returns>
+        public AudioDeviceList GetAudioDeviceList(AudioOutput audioOutput)
+        {
+            return VlcMediaPlayer.GetAudioDeviceList(audioOutput);
+        }
+
+        /// <summary>
+        /// Gets the list of available audio output modules. 
+        /// </summary>
+        /// <returns></returns>
+        public AudioOutputList GetAudioOutputList()
+        {
+            return VlcMediaPlayer.GetAudioOutputList();
+        }
+
+        /// <summary>
+        /// Selects an audio output module. 
+        /// Any change will take be effect only after playback is stopped and restarted. Audio output cannot be changed while playing.
+        /// </summary>
+        /// <param name="audioOutput"></param>
+        /// <returns></returns>
+        public bool SetAudioOutput(AudioOutput audioOutput)
+        {
+            return VlcMediaPlayer.SetAudioOutput(audioOutput);
+        }
+
+        /// <summary>
+        /// Get the current audio output device identifier. 
+        /// </summary>
+        public String GetAudioDevice()
+        {
+            return VlcMediaPlayer.GetAudioDevice();
+        }
+
+        /// <summary>
+        /// Configures an explicit audio output device. If the module paramater is NULL, 
+        /// audio output will be moved to the device specified by the device identifier string immediately. 
+        /// This is the recommended usage. A list of adequate potential device strings can be obtained with <see cref="EnumAudioDeviceList"/>. 
+        /// However passing NULL is supported in LibVLC version 2.2.0 and later only; in earlier versions, this function would have no effects when the module parameter was NULL. 
+        /// If the module parameter is not NULL, the device parameter of the corresponding audio output, if it exists, will be set to the specified string. 
+        /// Note that some audio output modules do not have such a parameter (notably MMDevice and PulseAudio).
+        /// A list of adequate potential device strings can be obtained with <see cref="GetAudioDeviceList"/>.
+        /// </summary>
+        public void SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)
+        {
+            VlcMediaPlayer.SetAudioDevice(audioOutput, audioDevice);
+        }
+
         #endregion --- Methods ---
 
         #region --- NotifyPropertyChanged ---
@@ -508,5 +580,20 @@ namespace xZune.Vlc.Wpf
         }
 
         #endregion --- NotifyPropertyChanged ---
+    }
+
+    /// <summary>
+    /// VlcPlayer create mode.
+    /// </summary>
+    public enum PlayerCreateMode
+    {
+        /// <summary>
+        /// Create a new <see cref="VlcPlayer"/> instance with default <see cref="Vlc"/> instance.
+        /// </summary>
+        Default,
+        /// <summary>
+        /// Create a new <see cref="VlcPlayer"/> instance with a new <see cref="Vlc"/> instance.
+        /// </summary>
+        NewVlcInstance
     }
 }

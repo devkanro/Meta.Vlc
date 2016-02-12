@@ -1,8 +1,9 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: ApiManager.cs
-//Version: 20151220
+//Version: 20160213
 
 using System;
+using System.Collections.Generic;
 
 namespace xZune.Vlc.Wpf
 {
@@ -11,6 +12,12 @@ namespace xZune.Vlc.Wpf
     /// </summary>
     public static class ApiManager
     {
+        #region --- Fields ---
+
+        public static Vlc _defaultVlc;
+
+        #endregion
+
         #region --- Properties ---
 
         /// <summary>
@@ -24,9 +31,25 @@ namespace xZune.Vlc.Wpf
         public static String[] VlcOption { get; private set; }
 
         /// <summary>
-        /// The instance of VLC.
+        /// The list of VLC.
         /// </summary>
-        public static xZune.Vlc.Vlc Vlc { get; private set; }
+        public static List<Vlc> Vlcs { get; private set; }
+
+        /// <summary>
+        /// Default VLC instance.
+        /// </summary>
+        public static Vlc DefaultVlc
+        {
+            get
+            {
+                if (_defaultVlc == null)
+                {
+                    Vlcs.Add(_defaultVlc = new Vlc(VlcOption));
+                }
+
+                return _defaultVlc;
+            }
+        }
 
         /// <summary>
         /// The state of VLC initialization.
@@ -46,8 +69,8 @@ namespace xZune.Vlc.Wpf
         private static void Initialize()
         {
             if (IsInitialized) return;
+            Vlcs = new List<Vlc>();
             Vlc.LoadLibVlc(LibVlcPath);
-            Vlc = new Vlc(VlcOption);
             IsInitialized = true;
         }
 
@@ -82,8 +105,12 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public static void ReleaseAll()
         {
-            if (Vlc != null)
-                Vlc.Dispose();
+            if (Vlcs == null) return;
+            foreach (var vlc in Vlcs)
+            {
+                vlc.Dispose();
+            }
+            Vlcs.Clear();
         }
 
         #endregion --- Cleanup ---

@@ -73,13 +73,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioDevice.cs" />
     <Compile Include="AudioEqualizer.cs" />
+    <Compile Include="AudioOutput.cs" />
     <Compile Include="HandleManager.cs" />
     <Compile Include="InteropHelper.cs" />
     <Compile Include="Interop\LibVlc.Core.cs" />
     <Compile Include="Interop\LibVlc.Media.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.Audio.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs" />
+    <Compile Include="Interop\LibVlc.MediaPlayer.Audio.Output.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.cs" />
     <Compile Include="Interop\LibVlc.MediaPlayer.Video.cs" />
     <Compile Include="Interop\LibVlc.Time.cs" />

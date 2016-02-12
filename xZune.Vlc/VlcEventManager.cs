@@ -42,13 +42,16 @@ namespace xZune.Vlc
         private static LibVlcFunction<EventDetach> _eventDetachFunction;
         private static LibVlcFunction<GetTypeName> _getTypeNameFunction;
 
-        public VlcEventManager(IntPtr pointer)
+        public VlcEventManager(IVlcObject parentVlcObject, IntPtr pointer)
         {
+            VlcInstance = parentVlcObject.VlcInstance;
             InstancePointer = pointer;
             HandleManager.Add(this);
         }
 
         public IntPtr InstancePointer { get; private set; }
+
+        public Vlc VlcInstance { get; private set; }
 
         public void Attach(EventTypes type, LibVlcEventCallBack callback, IntPtr userData)
         {

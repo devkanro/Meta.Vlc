@@ -5,5 +5,7 @@ namespace xZune.Vlc
     public interface IVlcObject : IDisposable
     {
         IntPtr InstancePointer { get; }
+
+        Vlc VlcInstance { get; }
     }
 }

@@ -12,14 +12,34 @@ namespace xZune.Vlc
 
         public VlcEventManager EventManager { get; private set; }
 
+        public Vlc VlcInstance { get; private set; }
+
         public static VlcMediaPlayer Create(Vlc vlc)
         {
-            return new VlcMediaPlayer(_createMediaPlayerFunction.Delegate(vlc.InstancePointer));
+            return new VlcMediaPlayer(vlc, _createMediaPlayerFunction.Delegate(vlc.InstancePointer));
         }
 
         public static VlcMediaPlayer CreatFormMedia(VlcMedia media)
         {
-            return new VlcMediaPlayer(_createMediaPlayerFromMediaFunction.Delegate(media.InstancePointer));
+            return new VlcMediaPlayer(media, _createMediaPlayerFromMediaFunction.Delegate(media.InstancePointer));
+        }
+
+        /// <summary>
+        /// Frees the list of available audio output modules. 
+        /// </summary>
+        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioOutput"/>. </param>
+        public static void ReleaseAudioOutputList(IntPtr pointer)
+        {
+            _releaseAudioOutputListFunction.Delegate(pointer);
+        }
+
+        /// <summary>
+        /// Frees a list of available audio output devices. 
+        /// </summary>
+        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioDevice"/>. </param>
+        public static void ReleaseAudioDeviceList(IntPtr pointer)
+        {
+            _releaseAudioDeviceListFunction.Delegate(pointer);
         }
 
         /// <summary>
@@ -104,6 +124,14 @@ namespace xZune.Vlc
                 _getVideoTrackCountFunction = new LibVlcFunction<GetVideoTrackCount>(libHandle, libVersion, devString);
                 _getVideoTrackDescriptionFunction = new LibVlcFunction<GetVideoTrackDescription>(libHandle, libVersion, devString);
                 _setEqualizerFunction = new LibVlcFunction<SetEqualizer>(libHandle, libVersion, devString);
+                _enumAudioDeviceListFunction = new LibVlcFunction<EnumAudioDeviceList>(libHandle, libVersion, devString);
+                _getAudioDeviceListFunction = new LibVlcFunction<GetAudioDeviceList>(libHandle, libVersion, devString);
+                _releaseAudioDeviceListFunction = new LibVlcFunction<ReleaseAudioDeviceList>(libHandle, libVersion, devString);
+                _getAudioOutputListFunction = new LibVlcFunction<GetAudioOutputList>(libHandle, libVersion, devString);
+                _releaseAudioOutputListFunction = new LibVlcFunction<ReleaseAudioOutputList>(libHandle, libVersion, devString);
+                _setAudioOutputFunction = new LibVlcFunction<SetAudioOutput>(libHandle, libVersion, devString);
+                _setAudioDeviceFunction = new LibVlcFunction<SetAudioDevice>(libHandle, libVersion, devString);
+                _getAudioDeviceFunction = new LibVlcFunction<GetAudioDevice>(libHandle, libVersion, devString);
                 IsLibLoaded = true;
             }
         }
@@ -189,6 +217,14 @@ namespace xZune.Vlc
         private static LibVlcFunction<GetVideoTrackCount> _getVideoTrackCountFunction;
         private static LibVlcFunction<GetVideoTrackDescription> _getVideoTrackDescriptionFunction;
         private static LibVlcFunction<SetEqualizer> _setEqualizerFunction;
+        private static LibVlcFunction<EnumAudioDeviceList>      _enumAudioDeviceListFunction;
+        private static LibVlcFunction<GetAudioDeviceList>       _getAudioDeviceListFunction;
+        private static LibVlcFunction<ReleaseAudioDeviceList>   _releaseAudioDeviceListFunction;
+        private static LibVlcFunction<GetAudioOutputList>       _getAudioOutputListFunction;
+        private static LibVlcFunction<ReleaseAudioOutputList>   _releaseAudioOutputListFunction;
+        private static LibVlcFunction<SetAudioOutput>           _setAudioOutputFunction;
+        private static LibVlcFunction<SetAudioDevice>           _setAudioDeviceFunction;
+        private static LibVlcFunction<GetAudioDevice>           _getAudioDeviceFunction;
 
         private readonly LibVlcEventCallBack _onPlaying;
         private readonly LibVlcEventCallBack _onPaused;
@@ -230,10 +266,11 @@ namespace xZune.Vlc
         private GCHandle _onLengthChangedHandle;
         private GCHandle _onEncounteredErrorHandle;
 
-        private VlcMediaPlayer(IntPtr pointer)
+        private VlcMediaPlayer(IVlcObject parentVlcObject, IntPtr pointer)
         {
+            VlcInstance = parentVlcObject.VlcInstance;
             InstancePointer = pointer;
-            EventManager = new VlcEventManager(_getEventManagerFunction.Delegate(InstancePointer));
+            EventManager = new VlcEventManager(this, _getEventManagerFunction.Delegate(InstancePointer));
 
             HandleManager.Add(this);
 
@@ -1045,6 +1082,82 @@ namespace xZune.Vlc
         public bool SetEqualizer(AudioEqualizer equalizer)
         {
             return _setEqualizerFunction.Delegate(InstancePointer, equalizer == null ? IntPtr.Zero : equalizer.InstancePointer) == 0;
+        }
+
+        /// <summary>
+        /// Gets a list of potential audio output devices. 
+        /// </summary>
+        /// <returns></returns>
+        public AudioDeviceList EnumAudioDeviceList()
+        {
+            return new AudioDeviceList(_enumAudioDeviceListFunction.Delegate(InstancePointer));
+        }
+
+        /// <summary>
+        /// Gets a list of audio output devices for a given audio output module. 
+        /// </summary>
+        /// <param name="audioOutput"></param>
+        /// <returns></returns>
+        public AudioDeviceList GetAudioDeviceList(AudioOutput audioOutput)
+        {
+            var handle = InteropHelper.StringToPtr(audioOutput.Name);
+            var result = new AudioDeviceList(_getAudioDeviceListFunction.Delegate(VlcInstance.InstancePointer, handle.AddrOfPinnedObject()));
+            handle.Free();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets the list of available audio output modules. 
+        /// </summary>
+        /// <returns></returns>
+        public AudioOutputList GetAudioOutputList()
+        {
+            return new AudioOutputList(_getAudioOutputListFunction.Delegate(VlcInstance.InstancePointer));
+        }
+
+        /// <summary>
+        /// Selects an audio output module. 
+        /// Any change will take be effect only after playback is stopped and restarted. Audio output cannot be changed while playing.
+        /// </summary>
+        /// <param name="audioOutput"></param>
+        /// <returns></returns>
+        public bool SetAudioOutput(AudioOutput audioOutput)
+        {
+            var handle = InteropHelper.StringToPtr(audioOutput.Name);
+            var result = _setAudioOutputFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
+            handle.Free();
+            return result == 0;
+        }
+
+        /// <summary>
+        /// Get the current audio output device identifier. 
+        /// </summary>
+        public String GetAudioDevice()
+        {
+            return InteropHelper.PtrToString(_getAudioDeviceFunction.Delegate(InstancePointer));
+        }
+
+        /// <summary>
+        /// Configures an explicit audio output device. If the module paramater is NULL, 
+        /// audio output will be moved to the device specified by the device identifier string immediately. 
+        /// This is the recommended usage. A list of adequate potential device strings can be obtained with <see cref="EnumAudioDeviceList"/>. 
+        /// However passing NULL is supported in LibVLC version 2.2.0 and later only; in earlier versions, this function would have no effects when the module parameter was NULL. 
+        /// If the module parameter is not NULL, the device parameter of the corresponding audio output, if it exists, will be set to the specified string. 
+        /// Note that some audio output modules do not have such a parameter (notably MMDevice and PulseAudio).
+        /// A list of adequate potential device strings can be obtained with <see cref="GetAudioDeviceList"/>.
+        /// </summary>
+        public void SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)
+        {
+            var outputHandle = audioOutput == null ? null : new GCHandle? (InteropHelper.StringToPtr(audioOutput.Name));
+            var deviceHandle = InteropHelper.StringToPtr(audioDevice.Device);
+            _setAudioDeviceFunction.Delegate(InstancePointer,
+                outputHandle == null ? IntPtr.Zero : outputHandle.Value.AddrOfPinnedObject(),
+                deviceHandle.AddrOfPinnedObject());
+            if (outputHandle.HasValue)
+            {
+                outputHandle.Value.Free();
+            }
+            deviceHandle.Free();
         }
 
         private bool _disposed;

@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: Vlc.cs
-//Version: 20151111
+//Version: 20160213
 
 using System;
 using System.ComponentModel;
@@ -206,6 +206,8 @@ namespace xZune.Vlc
         /// 获取 Vlc 实例的指针
         /// </summary>
         public IntPtr InstancePointer { get; private set; }
+
+        public Vlc VlcInstance { get { return this; } }
 
         #endregion --- Properties ---
 

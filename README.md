@@ -49,6 +49,21 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 >:x: :不兼容/Incompatible       
 >:interrobang: :部分功能可能不可用/Some functions may not be available  
 
+## Change Log
+
+### 2016/02/13
+SHA1:b5b6a020e041a0d9e9b1e911debdd606b4911971
+
+**01.支持音频设备系列 API。**  
+_**01.Support audio dvice APIs**._
+新添加的 `VlcPlayer.SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)` 方法可以由指定的音频设备播放媒体的音频。  
+_New audio dvice API `VlcPlayer.SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)` can select a audio device to display audio of media._  
+
+**02.多 VLC 实例支持。**  
+_**02.Mutil VLC instance support.**_  
+可以通过 `VlcPlayer.CreateMode` 属性来设置创建 VlcMediaPlayer 时是使用默认 VLC 实例或者新建一个 VLC 实例。  
+_You can set create VlcMediaPlayer with default VLC instance or create a new VLC instance by `VlcPlayer.CreateMode` property._
+
 ## Quick Start
 
 在您的项目中快速使用 xZune.Vlc：  

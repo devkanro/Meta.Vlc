@@ -15,7 +15,7 @@ namespace xZune.Vlc
             _pointer = pointer;
             if (pointer != IntPtr.Zero)
             {
-                Marshal.PtrToStructure(pointer, _struct);
+                _struct = (Interop.MediaPlayer.AudioOutput)Marshal.PtrToStructure(pointer, typeof(Interop.MediaPlayer.AudioOutput));
                 Name = InteropHelper.PtrToString(_struct.Name);
                 Description = InteropHelper.PtrToString(_struct.Description);
             }

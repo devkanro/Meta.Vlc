@@ -147,33 +147,14 @@ namespace xZune.Vlc.Interop.Core
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct ModuleDescription
     {
-        /// <summary>
-        /// 名称
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Name;
-
-        /// <summary>
-        /// 短名称
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String ShortName;
-
-        /// <summary>
-        /// 长名称
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String LongName;
-
-        /// <summary>
-        /// 说明
-        /// </summary>
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Help;
-
-        /// <summary>
-        /// 下一个模块,这是一个 <see cref="ModuleDescription"/> 指针
-        /// </summary>
+        public IntPtr Name;
+        
+        public IntPtr ShortName;
+        
+        public IntPtr LongName;
+        
+        public IntPtr Help;
+        
         public IntPtr Next;
     }
 

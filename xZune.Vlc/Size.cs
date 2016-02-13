@@ -1,17 +1,21 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: Size.cs
-//Version: 20151108
+//Version: 20160213
 
 using System;
 
 namespace xZune.Vlc
 {
+    /// <summary>
+    /// A struct with width and height, for downward compatibility.
+    /// </summary>
     [Serializable]
     public struct Size
     {
         public Size(double width, double height)
           : this() //needed for VS2013 to compile, else complains that "this" is used before all of its fields have been assigned
         {
+            
             Width = width;
             Height = height;
         }

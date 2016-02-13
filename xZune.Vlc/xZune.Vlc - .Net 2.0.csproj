@@ -76,6 +76,7 @@
     <Compile Include="AudioDevice.cs" />
     <Compile Include="AudioEqualizer.cs" />
     <Compile Include="AudioOutput.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="HandleManager.cs" />
     <Compile Include="InteropHelper.cs" />
     <Compile Include="Interop\LibVlc.Core.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Vlc.cs" />
     <Compile Include="VlcError.cs" />
     <Compile Include="VlcEventManager.cs" />
+    <Compile Include="LibVlcManager.cs" />
     <Compile Include="VlcMedia.cs" />
     <Compile Include="VlcMediaPlayer.cs" />
     <Compile Include="VlcSettingsAttribute.cs" />

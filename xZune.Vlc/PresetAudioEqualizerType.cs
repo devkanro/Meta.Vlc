@@ -1,5 +1,12 @@
-﻿namespace xZune.Vlc
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: PresetAudioEqualizerType.cs
+//Version: 20160213
+
+namespace xZune.Vlc
 {
+    /// <summary>
+    /// Preset audio equlizer type.
+    /// </summary>
     public enum PresetAudioEqualizerType : uint
     {
         Flat,

@@ -3,6 +3,7 @@
 //Version: 20160109
 
 //Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
+//      and http://dveo.com/downloads/TS-sample-files/San_Diego_Clip.ts
 
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,11 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
-            Player.PauseOrResume();
+            //Player.PauseOrResume();
+
+            var devices = Player.EnumAudioDeviceList();
+            var outputs = Player.GetAudioOutputList();
+            Player.SetAudioDevice(null, devices[2]);
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)

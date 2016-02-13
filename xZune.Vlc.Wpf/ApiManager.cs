@@ -70,7 +70,7 @@ namespace xZune.Vlc.Wpf
         {
             if (IsInitialized) return;
             Vlcs = new List<Vlc>();
-            Vlc.LoadLibVlc(LibVlcPath);
+            LibVlcManager.LoadLibVlc(LibVlcPath);
             IsInitialized = true;
         }
 

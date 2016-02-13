@@ -346,8 +346,7 @@ namespace xZune.Vlc.Interop.Media
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct SubtitleTrack
     {
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Encoding;
+        public IntPtr Encoding;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -366,12 +365,10 @@ namespace xZune.Vlc.Interop.Media
         public IntPtr Track;
 
         public uint Bitrate;
-
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Language;
-
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Description;
+        
+        public IntPtr Language;
+        
+        public IntPtr Description;
     }
 
     public enum TrackType

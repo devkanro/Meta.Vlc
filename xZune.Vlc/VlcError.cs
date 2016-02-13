@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: VlcError.cs
+//Version: 20160213
+
+using System;
 
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Error;
@@ -7,24 +11,18 @@ namespace xZune.Vlc
 {
     public static class VlcError
     {
-        /// <summary>
-        /// 载入 LibVlc 的 Error 模块,该方法会在 <see cref="Vlc.LoadLibVlc()"/> 中自动被调用
-        /// </summary>
-        /// <param name="libHandle"></param>
-        /// <param name="libVersion"></param>
-        /// <param name="devString"></param>
-        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
+        internal static void LoadLibVlc()
         {
             if (!IsLibLoaded)
             {
-                _errorMessageFunction = new LibVlcFunction<ErrorMessage>(libHandle, libVersion, devString);
-                _cleanErrorFunction = new LibVlcFunction<CleanError>(libHandle, libVersion, devString);
+                _errorMessageFunction = new LibVlcFunction<ErrorMessage>();
+                _cleanErrorFunction = new LibVlcFunction<CleanError>();
                 IsLibLoaded = true;
             }
         }
 
         /// <summary>
-        /// 获取一个值,该值指示当前模块是否被载入
+        /// LibVlc error module loaded or not.
         /// </summary>
         public static bool IsLibLoaded
         {
@@ -36,17 +34,19 @@ namespace xZune.Vlc
         private static LibVlcFunction<CleanError> _cleanErrorFunction;
 
         /// <summary>
-        /// 获取一个可读的 LibVlc 错误信息
+        /// Get a readable error message.
         /// </summary>
-        /// <returns>返回一个可读的 LibVlc 错误信息,如果没有错误信息将返回 NULL</returns>
+        /// <returns>return a readable LibVlc error message, if there are no error will return <see cref="null"/></returns>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public static String GetErrorMessage()
         {
             return InteropHelper.PtrToString(_errorMessageFunction.Delegate());
         }
 
         /// <summary>
-        /// 清除当前线程的 LibVlc 的错误信息
+        /// Clear error message of current thread.
         /// </summary>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public static void CleanError()
         {
             _cleanErrorFunction.Delegate();

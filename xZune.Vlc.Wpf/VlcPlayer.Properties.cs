@@ -162,7 +162,7 @@ namespace xZune.Vlc.Wpf
         /// <summary>
         /// Get description of audio track.
         /// </summary>
-        public TrackDescription AudioTrackDescription
+        public TrackDescriptionList AudioTrackDescription
         {
             get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackDescription); }
         }

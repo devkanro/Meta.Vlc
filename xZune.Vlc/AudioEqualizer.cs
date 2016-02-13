@@ -1,14 +1,19 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: AudioEqualizer.cs
+//Version: 20160213
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.MediaPlayer;
 
 namespace xZune.Vlc
 {
     /// <summary>
-    /// Audio equalizer of VLC.
+    /// Audio equalizer of VLC player.
     /// </summary>
     public class AudioEqualizer : IVlcObject, IEnumerable<float>, INotifyPropertyChanged
     {
@@ -166,28 +171,22 @@ namespace xZune.Vlc
         #endregion
 
         #region --- Methods ---
-
-        /// <summary>
-        /// 载入 LibVlc 的 AudioEqualizer 模块,该方法会在 <see cref="Vlc.LoadLibVlc()"/> 中自动被调用
-        /// </summary>
-        /// <param name="libHandle"></param>
-        /// <param name="libVersion"></param>
-        /// <param name="devString"></param>
-        public static void LoadLibVlc(IntPtr libHandle, Version libVersion, String devString)
+        
+        internal static void LoadLibVlc()
         {
             if(IsLibLoaded) return;
             
-            _createEqualizerFunction = new LibVlcFunction<CreateEqualizer>(libHandle, libVersion, devString);
-            _createEqualizerFromPresetFunction = new LibVlcFunction<CreateEqualizerFromPreset>(libHandle, libVersion, devString);
-            _releaseEqualizerFunction = new LibVlcFunction<ReleaseEqualizer>(libHandle, libVersion, devString);
-            _getEqualizerPresetCountFunction = new LibVlcFunction<GetEqualizerPresetCount>(libHandle, libVersion, devString);
-            _getEqualizerPresetNameFunction = new LibVlcFunction<GetEqualizerPresetName>(libHandle, libVersion, devString);
-            _getEqualizerBandCountFunction = new LibVlcFunction<GetEqualizerBandCount>(libHandle, libVersion, devString);
-            _getEqualizerBandFrequencyFunction = new LibVlcFunction<GetEqualizerBandFrequency>(libHandle, libVersion, devString);
-            _setEqualizerPreampFunction = new LibVlcFunction<SetEqualizerPreamp>(libHandle, libVersion, devString);
-            _getEqualizerPreampFunction = new LibVlcFunction<GetEqualizerPreamp>(libHandle, libVersion, devString);
-            _setEqualizerAmplificationFunction = new LibVlcFunction<SetEqualizerAmplification>(libHandle, libVersion, devString);
-            _getEqualizerAmplificationFunction = new LibVlcFunction<GetEqualizerAmplification>(libHandle, libVersion, devString);
+            _createEqualizerFunction = new LibVlcFunction<CreateEqualizer>();
+            _createEqualizerFromPresetFunction = new LibVlcFunction<CreateEqualizerFromPreset>();
+            _releaseEqualizerFunction = new LibVlcFunction<ReleaseEqualizer>();
+            _getEqualizerPresetCountFunction = new LibVlcFunction<GetEqualizerPresetCount>();
+            _getEqualizerPresetNameFunction = new LibVlcFunction<GetEqualizerPresetName>();
+            _getEqualizerBandCountFunction = new LibVlcFunction<GetEqualizerBandCount>();
+            _getEqualizerBandFrequencyFunction = new LibVlcFunction<GetEqualizerBandFrequency>();
+            _setEqualizerPreampFunction = new LibVlcFunction<SetEqualizerPreamp>();
+            _getEqualizerPreampFunction = new LibVlcFunction<GetEqualizerPreamp>();
+            _setEqualizerAmplificationFunction = new LibVlcFunction<SetEqualizerAmplification>();
+            _getEqualizerAmplificationFunction = new LibVlcFunction<GetEqualizerAmplification>();
 
             IsLibLoaded = true;
         }

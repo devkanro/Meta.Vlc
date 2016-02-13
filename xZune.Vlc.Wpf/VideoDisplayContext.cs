@@ -8,8 +8,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-using xZune.Vlc.Interop.Media;
-
 namespace xZune.Vlc.Wpf
 {
     /// <summary>

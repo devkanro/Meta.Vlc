@@ -1,74 +1,97 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: ModuleDescription.cs
+//Version: 20160213
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc
 {
-    public class ModuleDescription : IDisposable
+    /// <summary>
+    /// A warpper for <see cref="Interop.Core.ModuleDescription"/> struct.
+    /// </summary>
+    public class ModuleDescription
+    {
+        internal ModuleDescription(IntPtr pointer)
+        {
+            _pointer = pointer;
+            if (pointer != IntPtr.Zero)
+            {
+                _struct = (Interop.Core.ModuleDescription)Marshal.PtrToStructure(pointer, typeof(Interop.Core.ModuleDescription));
+                Name = InteropHelper.PtrToString(_struct.Name);
+                ShortName = InteropHelper.PtrToString(_struct.ShortName);
+                LongName = InteropHelper.PtrToString(_struct.LongName);
+                Help = InteropHelper.PtrToString(_struct.Help);
+            }
+        }
+
+        internal Interop.Core.ModuleDescription _struct;
+        internal IntPtr _pointer;
+
+        public String Name { get; private set; }
+
+        public String ShortName { get; private set; }
+
+        public String LongName { get; private set; }
+
+        public String Help { get; private set; }
+    }
+
+    /// <summary>
+    /// A list warpper for <see cref="Interop.Core.ModuleDescription"/> linklist struct.
+    /// </summary>
+    public class ModuleDescriptionList : IDisposable, IEnumerable<ModuleDescription>, IEnumerable
     {
         /// <summary>
-        /// 通过指针来初始化 ModuleDescription
+        /// Create a readonly list by a pointer of <see cref="Interop.Core.ModuleDescription"/>.
         /// </summary>
-        /// <param name="pointer">提供的指针</param>
-        public ModuleDescription(IntPtr pointer)
+        /// <param name="pointer"></param>
+        public ModuleDescriptionList(IntPtr pointer)
         {
-            List<ModuleDescriptionItem> itemsList = new List<ModuleDescriptionItem>();
+            _list = new List<ModuleDescription>();
+            _pointer = pointer;
 
             while (pointer != IntPtr.Zero)
             {
-                var moduleDescriptionStruct = (Interop.Core.ModuleDescription)Marshal.PtrToStructure(pointer, typeof(Interop.Core.ModuleDescription));
-                itemsList.Add(new ModuleDescriptionItem(moduleDescriptionStruct));
-                pointer = moduleDescriptionStruct.Next;
-            }
+                var ModuleDescription = new ModuleDescription(pointer);
+                _list.Add(ModuleDescription);
 
-            Items = itemsList.ToArray();
+                pointer = ModuleDescription._struct.Next;
+            }
         }
 
-        /// <summary>
-        /// 获取这个 ModuleDescription 的指针
-        /// </summary>
-        public IntPtr Pointer { get; private set; }
+        private List<ModuleDescription> _list;
+        private IntPtr _pointer;
 
-        /// <summary>
-        /// 获取这个 ModuleDescription 包含的子项
-        /// </summary>
-        public ModuleDescriptionItem[] Items { get; private set; }
+        public IEnumerator<ModuleDescription> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
 
-        /// <summary>
-        /// 获取这个 ModuleDescription 包含的子项的个数
-        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public int Count
         {
-            get
-            {
-                return Items.Length;
-            }
+            get { return _list.Count; }
         }
 
-        /// <summary>
-        /// 释放当前的 ModuleDescription 资源
-        /// </summary>
+        public ModuleDescription this[int index]
+        {
+            get { return _list[index]; }
+        }
+
         public void Dispose()
         {
-            Vlc.ReleaseModuleDescription(this);
-            Items = null;
-            Pointer = IntPtr.Zero;
-        }
-    }
+            if (_pointer == IntPtr.Zero) return;
 
-    public class ModuleDescriptionItem
-    {
-        public ModuleDescriptionItem(Interop.Core.ModuleDescription @struct)
-        {
-            Name = @struct.Name;
-            ShortName = @struct.ShortName;
-            LongName = @struct.LongName;
-            Description = @struct.Help;
+            LibVlcManager.ReleaseModuleDescriptionList(_pointer);
+            _pointer = IntPtr.Zero;
+            _list.Clear();
         }
-
-        public String Name { get; private set; }
-        public String ShortName { get; private set; }
-        public String LongName { get; private set; }
-        public String Description { get; private set; }
     }
 }

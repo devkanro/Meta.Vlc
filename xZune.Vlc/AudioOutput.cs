@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: AudioOutput.cs
+//Version: 20160213
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -79,7 +83,7 @@ namespace xZune.Vlc
         {
             if (_pointer == IntPtr.Zero) return;
 
-            VlcMediaPlayer.ReleaseAudioOutputList(_pointer);
+            LibVlcManager.ReleaseAudioOutputList(_pointer);
             _pointer = IntPtr.Zero;
             _list.Clear();
         }

@@ -1,89 +1,172 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: LibVlcFunction.cs
+//Version: 20160213
+
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace xZune.Vlc.Interop
 {
+    /// <summary>
+    /// A dynamic mapper of LibVlc functions.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class LibVlcFunction<T>
     {
         /// <summary>
-        /// 使用提供的 LibVlc 库句柄初始化一个 LibVlcFunction,不指定库版本
+        /// Load a LibVlc function from unmanaged to managed.
         /// </summary>
-        /// <param name="libHandle">提供的 LibVlc 库句柄</param>
-        public LibVlcFunction(IntPtr libHandle) : this(libHandle, null, null)
-        {
-        }
-
-        /// <summary>
-        /// 使用提供的指定版本的 LibVlc 库句柄初始化一个 LibVlcFunction
-        /// </summary>
-        /// <param name="libHandle">提供的 LibVlc 库句柄</param>
-        /// <param name="libVersion">库版本</param>
-        public LibVlcFunction(IntPtr libHandle, Version libVersion, String Dev)
+        /// <exception cref="TypeLoadException">A custom attribute type cannot be loaded. </exception>
+        /// <exception cref="NoLibVlcFunctionAttributeException">For LibVlcFunction, need LibVlcFunctionAttribute to get Infomation of function.</exception>
+        /// <exception cref="FunctionNotFoundException">Can't find function in dll.</exception>
+        public LibVlcFunction()
         {
             IsEnable = false;
-            object[] attrs = typeof(T).GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
 
-            LibVlcFunctionAttribute functionInfo = null;
+            object[] attrs = typeof(T).GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
+            
             foreach (var item in attrs)
             {
                 if (item is LibVlcFunctionAttribute)
                 {
-                    functionInfo = item as LibVlcFunctionAttribute;
+                    FunctionInfomation = item as LibVlcFunctionAttribute;
                     break;
                 }
             }
 
-            if (functionInfo == null)
+            if (FunctionInfomation == null)
             {
-                throw new Exception("对于 LibVlcFunction,需要添加 LibVlcFunctionAttribute 才能正常读取函数");
+                throw new NoLibVlcFunctionAttributeException();
             }
 
-            FunctionName = functionInfo.FunctionName;
-            if ((libVersion == null || ((functionInfo.MinVersion == null || functionInfo.MinVersion <= libVersion) && (functionInfo.MaxVersion == null || functionInfo.MaxVersion >= libVersion))) && (functionInfo.Dev == null || functionInfo.Dev == Dev))
+            if (LibVlcManager.LibVlcVersion == null || LibVlcManager.LibVlcVersion.IsFunctionAvailable(FunctionInfomation))
             {
                 IsEnable = true;
 
                 IntPtr procAddress;
                 try
                 {
-                    procAddress = Win32Api.GetProcAddress(libHandle, FunctionName);
+                    procAddress = Win32Api.GetProcAddress(LibVlcManager.LibVlcHandle, FunctionInfomation.FunctionName.Trim());
                 }
                 catch (Win32Exception e)
                 {
-                    throw new Exception(String.Format("在提供的 LibVlc 中找不到函数 {0}", FunctionName), e);
+                    throw new FunctionNotFoundException(FunctionInfomation, LibVlcManager.LibVlcVersion, e);
                 }
 
                 var del = Marshal.GetDelegateForFunctionPointer(procAddress, typeof(T));
-                functionDelegate = (T)Convert.ChangeType(del, typeof(T));
+                _functionDelegate = (T)Convert.ChangeType(del, typeof(T));
             }
         }
 
         /// <summary>
-        /// 获取一个值,该值指示该 <see cref="LibVlcFunction{T}"/> 是否正确载入,并且可用
+        /// Get this <see cref="LibVlcFunction{T}"/> is available or not.
         /// </summary>
         public bool IsEnable { get; private set; }
 
         /// <summary>
-        /// 获取一个字符串,表示该函数在 LibVlc 中的名称,类似于 "libvlc_get_version"
+        /// Get infomation of this <see cref="LibVlcFunction{T}"/>.
         /// </summary>
-        public String FunctionName { get; private set; }
+        public LibVlcFunctionAttribute FunctionInfomation { get; private set; }
 
-        private T functionDelegate;
+        private readonly T _functionDelegate;
 
         /// <summary>
-        /// 获取当前该 LibVlcFunction 的委托,当 IsEnable 属性为 False 时会抛出异常
+        /// Get delegate of this <see cref="LibVlcFunction{T}"/>, if <see cref="IsEnable"/> is false, this method will throw exception.
         /// </summary>
+        /// <exception cref="FunctionNotAvailableException" accessor="get">This function isn't available on current version LibVlc.</exception>
         public T Delegate
         {
             get
             {
                 if (!IsEnable)
                 {
-                    throw new Exception(String.Format("该函数不可用,请确保当前 LibVlc 版本中{0}函数可用", FunctionName));
+                    throw new FunctionNotAvailableException(FunctionInfomation, LibVlcManager.LibVlcVersion);
                 }
-                return functionDelegate;
+                return _functionDelegate;
             }
+        }
+    }
+
+    /// <summary>
+    /// Version infomation of LibVlc.
+    /// </summary>
+    public class LibVlcVersion
+    {
+        /// <summary>
+        /// Create LibVlcVersion from version string, it must like "2.2.0-xZune Weatherwax".
+        /// </summary>
+        /// <param name="versionString">version string</param>
+        /// <exception cref="VersionStringParseException">Can't parse libvlc version string, it must like "2.2.0-xZune Weatherwax".</exception>
+        /// <exception cref="OverflowException">At least one component of version represents a number greater than <see cref="Int32.MaxValue" />.</exception>
+        public LibVlcVersion(String versionString)
+        {
+            var match = Regex.Match(versionString.Trim(), @"^([0-9.]*)-([\S]*)(?: ([\S]*))?");
+            if (!match.Success)
+            {
+                throw new VersionStringParseException(versionString);
+            }
+
+            switch (match.Groups.Count)
+            {
+                case 3:
+                    Version = new Version(match.Groups[1].Value);
+                    DevString = match.Groups[2].Value;
+                    break;
+                case 4:
+                    Version = new Version(match.Groups[1].Value);
+                    DevString = match.Groups[2].Value;
+                    if (match.Groups[3].Success)
+                    {
+                        CodeName = match.Groups[3].Value;
+                    }
+                    break;
+                default:
+                    throw new VersionStringParseException(versionString);
+            }
+        }
+
+        /// <summary>
+        /// Version of LibVlc.
+        /// </summary>
+        public Version Version { get; private set; }
+
+        /// <summary>
+        /// DevString of LibVlc.
+        /// </summary>
+        public String DevString { get; private set; }
+
+        /// <summary>
+        /// Code name of LibVlc.
+        /// </summary>
+        public String CodeName { get; private set; }
+
+        /// <summary>
+        /// Check a function is available for this version.
+        /// </summary>
+        /// <param name="functionInfo"></param>
+        /// <returns></returns>
+        public bool IsFunctionAvailable(LibVlcFunctionAttribute functionInfo)
+        {
+            var result = true;
+
+            if (functionInfo.MinVersion != null)
+            {
+                result = functionInfo.MinVersion < Version;
+            }
+
+            if (functionInfo.MaxVersion != null)
+            {
+                result = result && Version < functionInfo.MaxVersion;
+            }
+
+            if (functionInfo.Dev != null)
+            {
+                result = result && DevString == functionInfo.Dev;
+            }
+
+            return result;
         }
     }
 }

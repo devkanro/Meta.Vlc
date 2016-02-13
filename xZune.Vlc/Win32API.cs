@@ -1,9 +1,16 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: Win32Api.cs
+//Version: 20160213
+
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc
 {
+    /// <summary>
+    /// Some method of Win32 APIs.
+    /// </summary>
     public static class Win32Api
     {
         [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi, EntryPoint = "LoadLibrary")]

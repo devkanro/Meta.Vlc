@@ -1,58 +1,91 @@
-﻿using System;
+﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+//Filename: TrackDescription.cs
+//Version: 20160213
+
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc
 {
-    public class TrackDescription : IDisposable
+    /// <summary>
+    /// A warpper for <see cref="Interop.MediaPlayer.TrackDescription"/> struct.
+    /// </summary>
+    public class TrackDescription
+    {
+        internal TrackDescription(IntPtr pointer)
+        {
+            _pointer = pointer;
+            if (pointer != IntPtr.Zero)
+            {
+                _struct = (Interop.MediaPlayer.TrackDescription)Marshal.PtrToStructure(pointer, typeof(Interop.MediaPlayer.TrackDescription));
+                Name = InteropHelper.PtrToString(_struct.Name);
+                Id = _struct.Id;
+            }
+        }
+
+        internal Interop.MediaPlayer.TrackDescription _struct;
+        internal IntPtr _pointer;
+
+        public String Name { get; private set; }
+
+        public int Id { get; private set; }
+    }
+
+    /// <summary>
+    /// A list warpper for <see cref="Interop.MediaPlayer.TrackDescription"/> linklist struct.
+    /// </summary>
+    public class TrackDescriptionList : IDisposable, IEnumerable<TrackDescription>, IEnumerable
     {
         /// <summary>
-        /// 通过指针来初始化 TrackDescription
+        /// Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.TrackDescription"/>.
         /// </summary>
-        /// <param name="pointer">提供的指针</param>
-        public TrackDescription(IntPtr pointer)
+        /// <param name="pointer"></param>
+        public TrackDescriptionList(IntPtr pointer)
         {
-            Dictionary<int, String> itemsList = new Dictionary<int, String>();
+            _list = new List<TrackDescription>();
+            _pointer = pointer;
 
             while (pointer != IntPtr.Zero)
             {
-                var trackDescriptionStruct = (Interop.MediaPlayer.TrackDescription)Marshal.PtrToStructure(pointer, typeof(Interop.MediaPlayer.TrackDescription));
-                itemsList.Add(trackDescriptionStruct.Id, trackDescriptionStruct.Name);
-                pointer = trackDescriptionStruct.Next;
-            }
+                var TrackDescription = new TrackDescription(pointer);
+                _list.Add(TrackDescription);
 
-            Items = itemsList;
+                pointer = TrackDescription._struct.Next;
+            }
         }
 
-        /// <summary>
-        /// 获取这个 TrackDescription 的指针
-        /// </summary>
-        public IntPtr Pointer { get; private set; }
+        private List<TrackDescription> _list;
+        private IntPtr _pointer;
 
-        /// <summary>
-        /// 获取这个 TrackDescription 包含的子项
-        /// </summary>
-        public Dictionary<int, String> Items { get; private set; }
+        public IEnumerator<TrackDescription> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
 
-        /// <summary>
-        /// 获取这个 TrackDescription 包含的子项的个数
-        /// </summary>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public int Count
         {
-            get
-            {
-                return Items.Count;
-            }
+            get { return _list.Count; }
         }
 
-        /// <summary>
-        /// 释放当前的 ModuleDescription 资源
-        /// </summary>
+        public TrackDescription this[int index]
+        {
+            get { return _list[index]; }
+        }
+
         public void Dispose()
         {
-            VlcMediaPlayer.ReleaseTrackDescription(this);
-            Items = null;
-            Pointer = IntPtr.Zero;
+            if (_pointer == IntPtr.Zero) return;
+
+            LibVlcManager.ReleaseTrackDescriptionList(_pointer);
+            _pointer = IntPtr.Zero;
+            _list.Clear();
         }
     }
 }

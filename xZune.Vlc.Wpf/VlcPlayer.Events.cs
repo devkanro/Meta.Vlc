@@ -152,36 +152,34 @@ namespace xZune.Vlc.Wpf
             if (!_context.IsAspectRatioChecked)
             {
                 var tracks = VlcMediaPlayer.Media.GetTracks();
-                MediaTrack videoMediaTrack = tracks.FirstOrDefault(t => t.Type == TrackType.Video);
+                var videoMediaTracks = tracks.TakeWhile(t => t is VideoTrack).Select(t => t as VideoTrack).ToList();
+                var videoTrack = videoMediaTracks.FirstOrDefault();
 
-                if (videoMediaTrack != null && videoMediaTrack.Type == TrackType.Video)
+                if (videoTrack != null)
                 {
-                    if (videoMediaTrack.VideoTrack != null)
-                    {
-                        _context.CheckDisplaySize(videoMediaTrack.VideoTrack.Value);
-                        var scale = GetScaleTransform();
+                    _context.CheckDisplaySize(videoTrack);
+                    var scale = GetScaleTransform();
 
-                        if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
+                    if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
+                    {
+                        _context.IsAspectRatioChecked = true;
+                        Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
+                        Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
+                            _context.DisplayHeight));
+                    }
+                    else
+                    {
+                        _checkCount++;
+                        if (_checkCount > 5)
                         {
                             _context.IsAspectRatioChecked = true;
-                            Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
-                            Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
-                                _context.DisplayHeight));
                         }
-                        else
-                        {
-                            _checkCount++;
-                            if (_checkCount > 5)
-                            {
-                                _context.IsAspectRatioChecked = true;
-                            }
-                        }
-
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
-                        }));
                     }
+
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
+                    }));
                 }
             }
             return planes = _context.MapView;
@@ -252,15 +250,15 @@ namespace xZune.Vlc.Wpf
                 _context = new VideoDisplayContext(width, height, ChromaType.RV32);
             }
             chroma = (uint)_context.ChromaType;
-            width = (uint) _context.Width;
-            height = (uint) _context.Height;
-            pitches = (uint) _context.Stride;
-            lines = (uint) _context.Height;
+            width = (uint)_context.Width;
+            height = (uint)_context.Height;
+            pitches = (uint)_context.Stride;
+            lines = (uint)_context.Height;
             Dispatcher.Invoke(new Action(() =>
             {
                 VideoSource = _context.Image;
             }));
-            return (uint) _context.Size;
+            return (uint)_context.Size;
         }
 
         private void VideoCleanupCallback(IntPtr opaque)
@@ -313,7 +311,7 @@ namespace xZune.Vlc.Wpf
 
         //private void AudioSetVolumeCallback(IntPtr opaque, float volume, bool mute)
         //{
-            
+
         //}
 
         #endregion
@@ -324,7 +322,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseMove(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD) 
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
         }
 
@@ -332,7 +330,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseUp(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD)
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:
@@ -356,7 +354,7 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseDown(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (Vlc.LibDev == "xZune") && _isDVD)
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:

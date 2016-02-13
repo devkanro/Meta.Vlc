@@ -10,13 +10,9 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public struct TrackDescription
     {
         public int Id;
-
-        [MarshalAs(UnmanagedType.LPStr)]
-        public String Name;
-
-        /// <summary>
-        /// 这是一个 <see cref="TrackDescription"/> 类型的指针,指向下一个描述
-        /// </summary>
+        
+        public IntPtr Name;
+        
         public IntPtr Next;
     }
 

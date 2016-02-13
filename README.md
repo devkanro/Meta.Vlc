@@ -52,10 +52,33 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 ## Change Log
 
 ### 2016/02/13
+SHA1:6ec4d6aa5823702af6cafe8cb3d4c0ec3e58602a
+
+**01.提供更多结构体封装。**  
+_**01.Wrap more sturct.**_  
+提供全新的各种结构体封装方式，更易于使用。  
+_We changed the wrapper of each struct, make more easy to use._
+
+**02.更改 LibVlc 初始化方式。**  
+_**02.Changed the LibVlc initialize mode.**_  
+提供新的 `LibVlcManager` 类来管理 LibVlc 的初始化，让初始化逻辑更清晰。  
+_New `LibVlcManager` class to manage initialization of LibVlc._
+
+**03.添加更多的英文注释。**
+_**03.Add more English comment.**_
+
+> **注意(_Note_):**  
+> 本次更改更倾向于底层代码优化与清理，如果你主要使用 xZune.Vlc 而不是 xZune.Vlc.Wpf，你可能需要做比较多的更改来兼容这次变更。  
+> 如果你只是使用 xZune.Vlc.Wpf 只是部分涉及到 `TrackDescription` 结构，`MediaTrack` 结构，或是其他结构的 API 有小部分变更。   
+>  
+> _This commit is only changed and clear up some lowest layer code, if you using xZune.Vlc not xZune.Vlc.Wpf, maybe you should changed many code to compatible this commit._  
+> _If you using xZune.Vlc.Wpf, only some APIs about `TrackDescription` struct, `MediaTrack` struct or other struct have changed._
+
+### 2016/02/13
 SHA1:b5b6a020e041a0d9e9b1e911debdd606b4911971
 
 **01.支持音频设备系列 API。**  
-_**01.Support audio dvice APIs**._
+_**01.Support audio dvice APIs**._  
 新添加的 `VlcPlayer.SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)` 方法可以由指定的音频设备播放媒体的音频。  
 _New audio dvice API `VlcPlayer.SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)` can select a audio device to display audio of media._  
 

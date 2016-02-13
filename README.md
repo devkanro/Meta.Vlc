@@ -51,6 +51,14 @@ master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n4
 
 ## Change Log
 
+### 2016/02/14
+SHA1:185dfe8d8c713c1ff10fadaaf0f97af2ecc3aabc
+
+**01.添加 VLM 系列 APIs。**  
+_**01.Add VLM APIs.**_  
+你可以使用 `Vlc` 类提供的 `Vlm*()` 系列方法来使用 VLM 功能。  
+_You can use the `Vlm*()` methods of `Vlc` class to use VLM functions._
+
 ### 2016/02/13
 SHA1:6ec4d6aa5823702af6cafe8cb3d4c0ec3e58602a
 

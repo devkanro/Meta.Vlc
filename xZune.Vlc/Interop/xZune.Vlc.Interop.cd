@@ -1435,7 +1435,7 @@
       <FileName>Interop\LibVlc.Time.cs</FileName>
     </TypeIdentifier>
   </Delegate>
-  <Delegate Name="xZune.Vlc.Interop.VLM.Releaseinstance" Collapsed="true">
+  <Delegate Name="xZune.Vlc.Interop.VLM.ReleaseVlmInstance" Collapsed="true">
     <Position X="7.5" Y="15" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
@@ -1445,133 +1445,133 @@
   <Delegate Name="xZune.Vlc.Interop.VLM.NewBroadCastInput" Collapsed="true">
     <Position X="5.75" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAIAAAAAABAAABAAAAAEAAAAAAAEAAQAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAIAAAAAAAAAABAAAAAAAAAAAAAEAAQAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.NewVodInput" Collapsed="true">
     <Position X="9.25" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAABAIAAAAAAAAAAgAAAAEAAACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAACAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.DelBoroadcastOrOvd" Collapsed="true">
     <Position X="16.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.MediaSwitch" Collapsed="true">
     <Position X="2.25" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.SetMediaOutput" Collapsed="true">
     <Position X="14.5" Y="16.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.SetMediaInput" Collapsed="true">
     <Position X="11" Y="16.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.AddMediaInput" Collapsed="true">
     <Position X="2.25" Y="9" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.SetMediaLoop" Collapsed="true">
     <Position X="12.75" Y="16.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.SetVodMuxer" Collapsed="true">
     <Position X="23.25" Y="17.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.EditMediaParas" Collapsed="true">
     <Position X="18" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAIAAAAAABAAABAAAAAEAAAAAAAEAAQAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAIAAAAAAAAAABAAAAAAAAAAAAAEAAQAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.PlayNamedBroadcast" Collapsed="true">
     <Position X="23.25" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.StopNamedBroadcast" Collapsed="true">
     <Position X="4" Y="18" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.PauseNamedBroadcast" Collapsed="true">
     <Position X="19.75" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.SeekInNamedBroadcast" Collapsed="true">
     <Position X="4" Y="15.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABBAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
-  <Delegate Name="xZune.Vlc.Interop.VLM.ReturnJosnMessage" Collapsed="true">
+  <Delegate Name="xZune.Vlc.Interop.VLM.ReturnJsonMessage" Collapsed="true">
     <Position X="0.5" Y="15.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.GetMediaPosition" Collapsed="true">
     <Position X="9.25" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.GetMediaTime" Collapsed="true">
     <Position X="11" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.GetMediaLength" Collapsed="true">
     <Position X="7.5" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>
   <Delegate Name="xZune.Vlc.Interop.VLM.GetMediaBackRate" Collapsed="true">
     <Position X="4" Y="12" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAABAAAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Interop\LibVlc.VLM.cs</FileName>
     </TypeIdentifier>
   </Delegate>

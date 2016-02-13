@@ -177,10 +177,10 @@
   <Class Name="xZune.Vlc.Vlc" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="14.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAAMADEACQUAACBAYAAAAQEAKQBAAgQAAggECAAgBA=</HashCode>
+      <HashCode>KUkAcPnMMy9UAiHbCcLFTB5kKrRFoA5QHygovTJBgBA=</HashCode>
       <FileName>Vlc.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="xZune.Vlc.VlcError" Collapsed="true">
     <Position X="16" Y="8.75" Width="1.5" />

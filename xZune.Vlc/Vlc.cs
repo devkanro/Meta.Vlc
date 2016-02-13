@@ -1,6 +1,6 @@
 ﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 //Filename: Vlc.cs
-//Version: 20160213
+//Version: 20160214
 
 using System;
 using System.Runtime.InteropServices;
@@ -8,10 +8,12 @@ using System.Text;
 
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core;
+using xZune.Vlc.Interop.Core.Events;
+using xZune.Vlc.Interop.VLM;
 
 namespace xZune.Vlc
 {
-    public class Vlc : IVlcObject
+    public partial class Vlc
     {
         #region --- Fields ---
 
@@ -109,7 +111,46 @@ namespace xZune.Vlc
                 throw new Exception(ex);
             }
 
+            EventManager = new VlcEventManager(this, _getMediaEventManagerFunction.Delegate(InstancePointer));
+
+            _onVlmMediaAdded = OnVlmMediaAdded;
+            _onVlmMediaRemoved = OnVlmMediaRemoved;
+            _onVlmMediaChanged = OnVlmMediaChanged;
+            _onVlmMediaInstanceStarted = OnVlmMediaInstanceStarted;
+            _onVlmMediaInstanceStopped = OnVlmMediaInstanceStopped;
+            _onVlmMediaInstanceStatusInit = OnVlmMediaInstanceStatusInit;
+            _onVlmMediaInstanceStatusOpening = OnVlmMediaInstanceStatusOpening;
+            _onVlmMediaInstanceStatusPlaying = OnVlmMediaInstanceStatusPlaying;
+            _onVlmMediaInstanceStatusPause = OnVlmMediaInstanceStatusPause;
+            _onVlmMediaInstanceStatusEnd = OnVlmMediaInstanceStatusEnd;
+            _onVlmMediaInstanceStatusError = OnVlmMediaInstanceStatusError;
+
+            _onVlmMediaAddedHandle = GCHandle.Alloc(_onVlmMediaAdded);
+            _onVlmMediaRemovedHandle = GCHandle.Alloc(_onVlmMediaRemoved);
+            _onVlmMediaChangedHandle = GCHandle.Alloc(_onVlmMediaChanged);
+            _onVlmMediaInstanceStartedHandle = GCHandle.Alloc(_onVlmMediaInstanceStarted);
+            _onVlmMediaInstanceStoppedHandle = GCHandle.Alloc(_onVlmMediaInstanceStopped);
+            _onVlmMediaInstanceStatusInitHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusInit);
+            _onVlmMediaInstanceStatusOpeningHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusOpening);
+            _onVlmMediaInstanceStatusPlayingHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusPlaying);
+            _onVlmMediaInstanceStatusPauseHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusPause);
+            _onVlmMediaInstanceStatusEndHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusEnd);
+            _onVlmMediaInstanceStatusErrorHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusError);
+            
             HandleManager.Add(this);
+
+            EventManager.Attach(EventTypes.VlmMediaAdded, _onVlmMediaAdded, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaRemoved, _onVlmMediaRemoved, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaChanged, _onVlmMediaChanged, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStarted, _onVlmMediaInstanceStarted, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStopped, _onVlmMediaInstanceStopped, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusInit, _onVlmMediaInstanceStatusInit, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusOpening, _onVlmMediaInstanceStatusOpening, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusPlaying, _onVlmMediaInstanceStatusPlaying, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusPause, _onVlmMediaInstanceStatusPause, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusEnd, _onVlmMediaInstanceStatusEnd, IntPtr.Zero);
+            EventManager.Attach(EventTypes.VlmMediaInstanceStatusError, _onVlmMediaInstanceStatusError, IntPtr.Zero);
+
         }
 
         #endregion --- Initialization ---
@@ -127,6 +168,18 @@ namespace xZune.Vlc
 
             InstancePointer = IntPtr.Zero;
 
+            _onVlmMediaAddedHandle.Free();
+            _onVlmMediaRemovedHandle.Free();
+            _onVlmMediaChangedHandle.Free();
+            _onVlmMediaInstanceStartedHandle.Free();
+            _onVlmMediaInstanceStoppedHandle.Free();
+            _onVlmMediaInstanceStatusInitHandle.Free();
+            _onVlmMediaInstanceStatusOpeningHandle.Free();
+            _onVlmMediaInstanceStatusPlayingHandle.Free();
+            _onVlmMediaInstanceStatusPauseHandle.Free();
+            _onVlmMediaInstanceStatusEndHandle.Free();
+            _onVlmMediaInstanceStatusErrorHandle.Free();
+            
             _disposed = true;
         }
 
@@ -176,6 +229,27 @@ namespace xZune.Vlc
             _setAppIdFunction = new LibVlcFunction<SetAppId>();
             _getAudioFilterListFunction = new LibVlcFunction<GetAudioFilterList>();
             _getVideoFilterListFunction = new LibVlcFunction<GetVideoFilterList>();
+            _releaseVlmInstanceFunction = new LibVlcFunction<ReleaseVlmInstance>();
+            _newBroadCastInputFunction = new LibVlcFunction<NewBroadCastInput>();
+            _newVodInputFunction = new LibVlcFunction<NewVodInput>();
+            _delBoroadcastOrOvdFunction = new LibVlcFunction<DelBoroadcastOrOvd>();
+            _mediaSwitchFunction = new LibVlcFunction<MediaSwitch>();
+            _setMediaOutputFunction = new LibVlcFunction<SetMediaOutput>();
+            _setMediaInputFunction = new LibVlcFunction<SetMediaInput>();
+            _addMediaInputFunction = new LibVlcFunction<AddMediaInput>();
+            _setMediaLoopFunction = new LibVlcFunction<SetMediaLoop>();
+            _setVodMuxerFunction = new LibVlcFunction<SetVodMuxer>();
+            _editMediaParasFunction = new LibVlcFunction<EditMediaParas>();
+            _playNamedBroadcastFunction = new LibVlcFunction<PlayNamedBroadcast>();
+            _stopNamedBroadcastFunction = new LibVlcFunction<StopNamedBroadcast>();
+            _pauseNamedBroadcastFunction = new LibVlcFunction<PauseNamedBroadcast>();
+            _seekInNamedBroadcastFunction = new LibVlcFunction<SeekInNamedBroadcast>();
+            _returnJsonMessageFunction = new LibVlcFunction<ReturnJsonMessage>();
+            _getMediaPositionFunction = new LibVlcFunction<GetMediaPosition>();
+            _getMediaTimeFunction = new LibVlcFunction<GetMediaTime>();
+            _getMediaLengthFunction = new LibVlcFunction<GetMediaLength>();
+            _getMediaBackRateFunction = new LibVlcFunction<GetMediaBackRate>();
+            _getMediaEventManagerFunction = new LibVlcFunction<GetMediaEventManager>();
             IsLibLoaded = true;
         }
 

@@ -101,6 +101,7 @@
     <Compile Include="Size.cs" />
     <Compile Include="TrackDescription.cs" />
     <Compile Include="Vlc.cs" />
+    <Compile Include="Vlc.Vlm.cs" />
     <Compile Include="VlcError.cs" />
     <Compile Include="VlcEventManager.cs" />
     <Compile Include="VlcMedia.cs" />

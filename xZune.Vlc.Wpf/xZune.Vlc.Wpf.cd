@@ -29,7 +29,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="xZune.Vlc.Wpf.VlcPlayer" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="xZune.Vlc.Wpf.VlcPlayer" BaseTypeListCollapsed="true">
     <Position X="2.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>8Q0ADAgBUCg1jUAiK0AU6mNZtBEBg4CgqwJzBJKD4SI=</HashCode>

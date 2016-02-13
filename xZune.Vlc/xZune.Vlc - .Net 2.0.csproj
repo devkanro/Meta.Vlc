@@ -104,6 +104,7 @@
     <Compile Include="VlcMedia.cs" />
     <Compile Include="VlcMediaPlayer.cs" />
     <Compile Include="VlcSettingsAttribute.cs" />
+    <Compile Include="Vlc.Vlm.cs" />
     <Compile Include="Win32Api.cs" />
   </ItemGroup>
   <ItemGroup>

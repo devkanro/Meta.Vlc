@@ -122,7 +122,7 @@ namespace xZune.Vlc
         /// <param name="versionString"></param>
         public VersionStringParseException(String versionString)
             : base(
-                String.Format("Can't parse libvlc version string \"{0}\", it must be like \"2.2.0-xZune Weatherwax\"."))
+                String.Format("Can't parse libvlc version string \"{0}\", it must be like \"2.2.0-xZune Weatherwax\".", versionString))
         {
             VersionString = versionString;
         }

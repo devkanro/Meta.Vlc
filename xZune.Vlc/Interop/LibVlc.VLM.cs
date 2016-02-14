@@ -92,7 +92,7 @@ namespace xZune.Vlc.Interop.VLM
     /// <param name="mediaWork"></param>
     /// <param name="inputMRl"></param>
     /// <returns></returns>
-    [LibVlcFunction("libvlc_vlm_add_output")]
+    [LibVlcFunction("libvlc_vlm_add_input")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int AddMediaInput(IntPtr instance, IntPtr mediaWork, IntPtr inputMRl);
 

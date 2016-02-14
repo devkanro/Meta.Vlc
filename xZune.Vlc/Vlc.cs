@@ -87,6 +87,8 @@ namespace xZune.Vlc
         /// <summary>
         ///     使用默认的参数初始化一个 Vlc 实例
         /// </summary>
+        /// <exception cref="VlcCreateFailException">Can't create a Vlc instence, check your Vlc options.</exception>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public Vlc() :
             this(new[]
             {
@@ -100,6 +102,8 @@ namespace xZune.Vlc
         ///     提供指定的参数初始化一个 Vlc 实例
         /// </summary>
         /// <param name="argv"></param>
+        /// <exception cref="VlcCreateFailException">Can't create a Vlc instence, check your Vlc options.</exception>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public Vlc(String[] argv)
         {
             InstancePointer = argv == null
@@ -109,7 +113,7 @@ namespace xZune.Vlc
             if (InstancePointer == IntPtr.Zero)
             {
                 var ex = VlcError.GetErrorMessage();
-                throw new Exception(ex);
+                throw new VlcCreateFailException(ex);
             }
 
             EventManager = new VlcEventManager(this, _getMediaEventManagerFunction.Delegate(InstancePointer));

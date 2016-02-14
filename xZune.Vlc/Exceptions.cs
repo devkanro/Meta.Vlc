@@ -139,7 +139,7 @@ namespace xZune.Vlc
     }
 
     /// <summary>
-    ///     If some exception throwed when loading LibVlc, this exception will be throwed, maybe you should check the LibVlc
+    ///     If some exception throwed when loading LibVlc, this exception will be throwed. Maybe you should check the LibVlc
     ///     target platform and your app target platform.
     /// </summary>
     public class LibVlcLoadLibraryException : LibVlcException
@@ -158,6 +158,27 @@ namespace xZune.Vlc
             : base(
                 "Can't load LibVlc dlls, check the platform and LibVlc target platform (should be same, x86 or x64).",
                 innerException)
+        {
+        }
+    }
+
+    /// <summary>
+    ///     If create a new Vlc instence return NULL, this exception will be throwed. Maybe you should check your Vlc options.
+    /// </summary>
+    public class VlcCreateFailException : LibVlcException
+    {
+        /// <summary>
+        ///     Create a <see cref="VlcCreateFailException" />.
+        /// </summary>
+        public VlcCreateFailException() : this(null)
+        {
+        }
+
+        /// <summary>
+        ///     Create a <see cref="VlcCreateFailException" /> with some message.
+        /// </summary>
+        public VlcCreateFailException(String message)
+            : base("Can't create a Vlc instence, check your Vlc options." + (message == null ? "" : String.Format(" Maybe those message \"{0}\" mean sometion for you.",message)))
         {
         }
     }

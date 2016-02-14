@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: Extension.cs
-//Version: 20160109
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: Extension.cs
+// Version: 20160214
 
 using System;
 using System.IO;
@@ -9,12 +9,12 @@ using System.Windows.Media;
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// Some extension method.
+    ///     Some extension method.
     /// </summary>
     public static class Extension
     {
         /// <summary>
-        /// Return the value from the selector, unless the object is null. Then return the default value.
+        ///     Return the value from the selector, unless the object is null. Then return the default value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TRet"></typeparam>
@@ -22,13 +22,14 @@ namespace xZune.Vlc.Wpf
         /// <param name="selector"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static TRet DefaultValueWhenNull<T, TRet>(this T value, Func<T, TRet> selector, TRet defaultValue = default(TRet))
+        public static TRet DefaultValueWhenNull<T, TRet>(this T value, Func<T, TRet> selector,
+            TRet defaultValue = default(TRet))
         {
             return value == null ? defaultValue : selector(value);
         }
 
         /// <summary>
-        /// Combine path to src path.
+        ///     Combine path to src path.
         /// </summary>
         /// <param name="srcPath"></param>
         /// <param name="extPath"></param>
@@ -40,7 +41,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Check a path is a drive root directory or not.
+        ///     Check a path is a drive root directory or not.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -53,14 +54,11 @@ namespace xZune.Vlc.Wpf
 
                 return dir.Root.FullName == dir.FullName;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
-        /// Convert a path to uri.
+        ///     Convert a path to uri.
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
@@ -72,7 +70,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Format a path with '/' and ends with '/'.
+        ///     Format a path with '/' and ends with '/'.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -92,29 +90,31 @@ namespace xZune.Vlc.Wpf
             {
                 case ChromaType.RV15:
                     return PixelFormats.Bgr555;
+
                 case ChromaType.RV16:
                     return PixelFormats.Bgr565;
+
                 case ChromaType.RV24:
                     return PixelFormats.Bgr24;
+
                 case ChromaType.RV32:
                     return PixelFormats.Bgr32;
+
                 case ChromaType.RGBA:
                     return PixelFormats.Bgra32;
+
                 default:
                     throw new NotSupportedException(String.Format("Not support pixel format: {0}", chroma));
             }
         }
 
         /// <summary>
-        /// Quickly async invoke a action.
+        ///     Quickly async invoke a action.
         /// </summary>
         /// <param name="action"></param>
         public static void EasyInvoke(this Action action)
         {
-            action.BeginInvoke(ar =>
-            {
-                action.EndInvoke(ar);
-            }, null);
+            action.BeginInvoke(ar => { action.EndInvoke(ar); }, null);
         }
     }
 }

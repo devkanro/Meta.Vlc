@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcPlayer.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcPlayer.cs
+// Version: 20160214
 
 using System;
 using System.ComponentModel;
@@ -19,7 +19,7 @@ using MediaState = xZune.Vlc.Interop.Media.MediaState;
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// VLC media player.
+    ///     VLC media player.
     /// </summary>
     public partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
     {
@@ -41,7 +41,6 @@ namespace xZune.Vlc.Wpf
         //private AudioCleanupCallback _audioCleanupCallback;
         //private AudioSetVolumeCallback _audioSetVolumeCallback;
 
-
         private GCHandle _lockCallbackHandle;
         private GCHandle _unlockCallbackHandle;
         private GCHandle _displayCallbackHandle;
@@ -60,11 +59,11 @@ namespace xZune.Vlc.Wpf
         private SnapshotContext _snapshotContext;
 
         private VideoDisplayContext _context;
-        private int _checkCount = 0;
-        private bool _isDVD = false;
-        
+        private int _checkCount;
+        private bool _isDVD;
+
         //Dispose//
-        private bool _disposed = false;
+        private bool _disposed;
 
         #endregion --- Fields ---
 
@@ -72,7 +71,8 @@ namespace xZune.Vlc.Wpf
 
         static VlcPlayer()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(VlcPlayer), new FrameworkPropertyMetadata(typeof(VlcPlayer)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (VlcPlayer),
+                new FrameworkPropertyMetadata(typeof (VlcPlayer)));
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -84,8 +84,8 @@ namespace xZune.Vlc.Wpf
                 String[] libVlcOption = null;
 
                 var vlcSettings =
-                    System.Reflection.Assembly.GetEntryAssembly()
-                        .GetCustomAttributes(typeof(VlcSettingsAttribute), false);
+                    Assembly.GetEntryAssembly()
+                        .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
 
                 if (vlcSettings.Length > 0)
                 {
@@ -119,23 +119,17 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Initialize VLC player with path of LibVlc.
+        ///     Initialize VLC player with path of LibVlc.
         /// </summary>
         /// <param name="libVlcPath"></param>
         public void Initialize(String libVlcPath)
         {
-            Initialize(libVlcPath, new[]
-            {
-      #if DEBUG
-                "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
-      #else
-                "-I", "dummy", "--dummy-quiet", "--ignore-config", "--no-video-title", "--no-sub-autodetect-file"
-      #endif
-      });
+            Initialize(libVlcPath, "-I", "dummy", "--ignore-config", "--no-video-title", "--file-logging",
+                "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file");
         }
 
         /// <summary>
-        /// Initialize VLC player with path of LibVlc and options.
+        ///     Initialize VLC player with path of LibVlc and options.
         /// </summary>
         /// <param name="libVlcPath"></param>
         /// <param name="libVlcOption"></param>
@@ -153,12 +147,13 @@ namespace xZune.Vlc.Wpf
                     VlcMediaPlayer = vlc.CreateMediaPlayer();
                     ApiManager.Vlcs.Add(vlc);
                     break;
+
                 case PlayerCreateMode.Default:
                 default:
                     VlcMediaPlayer = ApiManager.DefaultVlc.CreateMediaPlayer();
                     break;
             }
-            
+
             if (VlcMediaPlayer != null)
             {
                 VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
@@ -186,7 +181,6 @@ namespace xZune.Vlc.Wpf
                 //_audioDrainCallback = AudioDrainCallback;
                 //_audioSetVolumeCallback = AudioSetVolumeCallback;
 
-
                 _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
                 _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
                 _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
@@ -206,7 +200,6 @@ namespace xZune.Vlc.Wpf
                 //VlcMediaPlayer.SetAudioCallback(_audioPlayCallback, _audioPauseCallback, _audioResumeCallback, _audioFlushCallback, _audioDrainCallback);
                 //VlcMediaPlayer.SetAudioFormatCallback(_audioSetupCallback, _audioCleanupCallback);
                 //VlcMediaPlayer.SetAudioVolumeCallback(_audioSetVolumeCallback);
-
             }
         }
 
@@ -215,7 +208,7 @@ namespace xZune.Vlc.Wpf
         #region --- Cleanup ---
 
         /// <summary>
-        /// Cleanup the player used resource.
+        ///     Cleanup the player used resource.
         /// </summary>
         /// <param name="disposing"></param>
         protected void Dispose(bool disposing)
@@ -255,7 +248,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Cleanup the player used resource.
+        ///     Cleanup the player used resource.
         /// </summary>
         public void Dispose()
         {
@@ -270,7 +263,7 @@ namespace xZune.Vlc.Wpf
 
         //note: if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
         /// <summary>
-        /// Load a media by file path.
+        ///     Load a media by file path.
         /// </summary>
         /// <param name="path"></param>
         public void LoadMedia(String path)
@@ -302,7 +295,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Load a media by uri.
+        ///     Load a media by uri.
         /// </summary>
         /// <param name="uri"></param>
         public void LoadMedia(Uri uri)
@@ -323,7 +316,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Load a media by file path and options.
+        ///     Load a media by file path and options.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="options"></param>
@@ -350,7 +343,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Load a media by uri and options.
+        ///     Load a media by uri and options.
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="options"></param>
@@ -378,7 +371,7 @@ namespace xZune.Vlc.Wpf
         #region Play/Pause
 
         /// <summary>
-        /// Play media.
+        ///     Play media.
         /// </summary>
         public void Play()
         {
@@ -393,7 +386,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Pause or resume media.
+        ///     Pause or resume media.
         /// </summary>
         public void PauseOrResume()
         {
@@ -406,19 +399,16 @@ namespace xZune.Vlc.Wpf
         #region Stop
 
         /// <summary>
-        /// Stop media, this method can't be called on UI thread, you must async call it.
+        ///     Stop media, this method can't be called on UI thread, you must async call it.
         /// </summary>
         public void Stop()
         {
             VlcMediaPlayer.Stop();
-            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-            {
-                VideoSource = null;
-            }));
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { VideoSource = null; }));
         }
 
         /// <summary>
-        /// Easy aync call stop method.
+        ///     Easy aync call stop method.
         /// </summary>
         /// <param name="callback"></param>
         public void BeginStop(Action callback = null)
@@ -437,7 +427,7 @@ namespace xZune.Vlc.Wpf
         #endregion Stop
 
         /// <summary>
-        /// Add options to media.
+        ///     Add options to media.
         /// </summary>
         /// <param name="option"></param>
         public void AddOption(params String[] option)
@@ -447,7 +437,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Show next frame.
+        ///     Show next frame.
         /// </summary>
         public void NextFrame()
         {
@@ -456,7 +446,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Inactive with DVD menu.
+        ///     Inactive with DVD menu.
         /// </summary>
         /// <param name="mode"></param>
         public void Navigate(NavigateMode mode)
@@ -466,7 +456,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Toggle mute mode.
+        ///     Toggle mute mode.
         /// </summary>
         public void ToggleMute()
         {
@@ -475,7 +465,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Take a snapshot.
+        ///     Take a snapshot.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="format"></param>
@@ -501,7 +491,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Gets a list of potential audio output devices. 
+        ///     Gets a list of potential audio output devices.
         /// </summary>
         /// <returns></returns>
         public AudioDeviceList EnumAudioDeviceList()
@@ -510,7 +500,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Gets a list of audio output devices for a given audio output module. 
+        ///     Gets a list of audio output devices for a given audio output module.
         /// </summary>
         /// <param name="audioOutput"></param>
         /// <returns></returns>
@@ -520,7 +510,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Gets the list of available audio output modules. 
+        ///     Gets the list of available audio output modules.
         /// </summary>
         /// <returns></returns>
         public AudioOutputList GetAudioOutputList()
@@ -529,8 +519,9 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Selects an audio output module. 
-        /// Any change will take be effect only after playback is stopped and restarted. Audio output cannot be changed while playing.
+        ///     Selects an audio output module.
+        ///     Any change will take be effect only after playback is stopped and restarted. Audio output cannot be changed while
+        ///     playing.
         /// </summary>
         /// <param name="audioOutput"></param>
         /// <returns></returns>
@@ -540,7 +531,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Get the current audio output device identifier. 
+        ///     Get the current audio output device identifier.
         /// </summary>
         public String GetAudioDevice()
         {
@@ -548,13 +539,16 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Configures an explicit audio output device. If the module paramater is NULL, 
-        /// audio output will be moved to the device specified by the device identifier string immediately. 
-        /// This is the recommended usage. A list of adequate potential device strings can be obtained with <see cref="EnumAudioDeviceList"/>. 
-        /// However passing NULL is supported in LibVLC version 2.2.0 and later only; in earlier versions, this function would have no effects when the module parameter was NULL. 
-        /// If the module parameter is not NULL, the device parameter of the corresponding audio output, if it exists, will be set to the specified string. 
-        /// Note that some audio output modules do not have such a parameter (notably MMDevice and PulseAudio).
-        /// A list of adequate potential device strings can be obtained with <see cref="GetAudioDeviceList"/>.
+        ///     Configures an explicit audio output device. If the module paramater is NULL,
+        ///     audio output will be moved to the device specified by the device identifier string immediately.
+        ///     This is the recommended usage. A list of adequate potential device strings can be obtained with
+        ///     <see cref="EnumAudioDeviceList" />.
+        ///     However passing NULL is supported in LibVLC version 2.2.0 and later only; in earlier versions, this function would
+        ///     have no effects when the module parameter was NULL.
+        ///     If the module parameter is not NULL, the device parameter of the corresponding audio output, if it exists, will be
+        ///     set to the specified string.
+        ///     Note that some audio output modules do not have such a parameter (notably MMDevice and PulseAudio).
+        ///     A list of adequate potential device strings can be obtained with <see cref="GetAudioDeviceList" />.
         /// </summary>
         public void SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)
         {
@@ -583,16 +577,17 @@ namespace xZune.Vlc.Wpf
     }
 
     /// <summary>
-    /// VlcPlayer create mode.
+    ///     VlcPlayer create mode.
     /// </summary>
     public enum PlayerCreateMode
     {
         /// <summary>
-        /// Create a new <see cref="VlcPlayer"/> instance with default <see cref="Vlc"/> instance.
+        ///     Create a new <see cref="VlcPlayer" /> instance with default <see cref="Vlc" /> instance.
         /// </summary>
         Default,
+
         /// <summary>
-        /// Create a new <see cref="VlcPlayer"/> instance with a new <see cref="Vlc"/> instance.
+        ///     Create a new <see cref="VlcPlayer" /> instance with a new <see cref="Vlc" /> instance.
         /// </summary>
         NewVlcInstance
     }

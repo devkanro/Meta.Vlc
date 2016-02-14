@@ -1,35 +1,19 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: LibVlcFunctionAttribute.cs
+// Version: 20160214
+
+using System;
 
 namespace xZune.Vlc.Interop
 {
     /// <summary>
-    /// 为 LibVlc 函数委托初始化提供必要的信息
+    ///     为 LibVlc 函数委托初始化提供必要的信息
     /// </summary>
     [AttributeUsage(AttributeTargets.Delegate, AllowMultiple = true)]
     public class LibVlcFunctionAttribute : Attribute
     {
         /// <summary>
-        /// 获取一个值,表示函数在 LibVlc 中的名称
-        /// </summary>
-        public string FunctionName { get; private set; }
-
-        /// <summary>
-        /// 获取一个值,表示支持该函数的最小 LibVlc 版本
-        /// </summary>
-        public Version MinVersion { get; private set; }
-
-        /// <summary>
-        /// 获取一个值,表示支持该函数的最大 LibVlc 版本
-        /// </summary>
-        public Version MaxVersion { get; private set; }
-
-        /// <summary>
-        /// 获取一个值,表示特定的开发版本
-        /// </summary>
-        public String Dev { get; private set; }
-
-        /// <summary>
-        /// 指定该委托在 LibVlc 中的函数名,不限定 LibVlc 的版本
+        ///     指定该委托在 LibVlc 中的函数名,不限定 LibVlc 的版本
         /// </summary>
         /// <param name="functionName">函数名</param>
         public LibVlcFunctionAttribute(string functionName)
@@ -38,7 +22,7 @@ namespace xZune.Vlc.Interop
         }
 
         /// <summary>
-        /// 指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc
+        ///     指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc
         /// </summary>
         /// <param name="functionName">函数名</param>
         /// <param name="minVersion">最低支持的 LibVlc</param>
@@ -48,7 +32,7 @@ namespace xZune.Vlc.Interop
         }
 
         /// <summary>
-        /// 指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc,也不高于指定的最大版本
+        ///     指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc,也不高于指定的最大版本
         /// </summary>
         /// <param name="functionName">函数名</param>
         /// <param name="minVersion">最低支持的 LibVlc</param>
@@ -59,7 +43,7 @@ namespace xZune.Vlc.Interop
         }
 
         /// <summary>
-        /// 指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc,也不高于指定的最大版本
+        ///     指定该委托在 LibVlc 中的函数名,并要求不低于指定版本的 LibVlc,也不高于指定的最大版本
         /// </summary>
         /// <param name="functionName">函数名</param>
         /// <param name="minVersion">最低支持的 LibVlc</param>
@@ -75,5 +59,25 @@ namespace xZune.Vlc.Interop
             if (dev != null)
                 Dev = dev;
         }
+
+        /// <summary>
+        ///     获取一个值,表示函数在 LibVlc 中的名称
+        /// </summary>
+        public string FunctionName { get; private set; }
+
+        /// <summary>
+        ///     获取一个值,表示支持该函数的最小 LibVlc 版本
+        /// </summary>
+        public Version MinVersion { get; private set; }
+
+        /// <summary>
+        ///     获取一个值,表示支持该函数的最大 LibVlc 版本
+        /// </summary>
+        public Version MaxVersion { get; private set; }
+
+        /// <summary>
+        ///     获取一个值,表示特定的开发版本
+        /// </summary>
+        public String Dev { get; private set; }
     }
 }

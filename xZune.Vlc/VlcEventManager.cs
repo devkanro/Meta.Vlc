@@ -1,24 +1,65 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcEventManager.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcEventManager.cs
+// Version: 20160214
 
 using System;
-
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
 
 namespace xZune.Vlc
 {
     /// <summary>
-    /// A manager of LibVlc event system.
+    ///     A manager of LibVlc event system.
     /// </summary>
     public class VlcEventManager : IVlcObject
     {
+        private static LibVlcFunction<EventAttach> _eventAttachFunction;
+        private static LibVlcFunction<EventDetach> _eventDetachFunction;
+        private static LibVlcFunction<GetTypeName> _getTypeNameFunction;
+
         static VlcEventManager()
         {
             IsLibLoaded = false;
         }
-        
+
+        /// <summary>
+        ///     Create a event manager with parent Vlc object and pointer of event manager.
+        /// </summary>
+        /// <param name="parentVlcObject"></param>
+        /// <param name="pointer"></param>
+        public VlcEventManager(IVlcObject parentVlcObject, IntPtr pointer)
+        {
+            VlcInstance = parentVlcObject.VlcInstance;
+            InstancePointer = pointer;
+            HandleManager.Add(this);
+        }
+
+        /// <summary>
+        ///     LibVlc event module loaded or not.
+        /// </summary>
+        public static bool IsLibLoaded { get; private set; }
+
+        /// <summary>
+        ///     Pointer of this event manager.
+        /// </summary>
+        public IntPtr InstancePointer { get; private set; }
+
+        /// <summary>
+        ///     A relation <see cref="Vlc" /> of this object.
+        /// </summary>
+        public Vlc VlcInstance { get; private set; }
+
+        /// <summary>
+        ///     Release this event manager.
+        /// </summary>
+        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+        public void Dispose()
+        {
+            HandleManager.Remove(this);
+            LibVlcManager.Free(InstancePointer);
+            InstancePointer = IntPtr.Zero;
+        }
+
         internal static void LoadLibVlc()
         {
             if (!IsLibLoaded)
@@ -31,42 +72,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// LibVlc event module loaded or not.
-        /// </summary>
-        public static bool IsLibLoaded
-        {
-            get;
-            private set;
-        }
-
-        private static LibVlcFunction<EventAttach> _eventAttachFunction;
-        private static LibVlcFunction<EventDetach> _eventDetachFunction;
-        private static LibVlcFunction<GetTypeName> _getTypeNameFunction;
-
-        /// <summary>
-        /// Create a event manager with parent Vlc object and pointer of event manager.
-        /// </summary>
-        /// <param name="parentVlcObject"></param>
-        /// <param name="pointer"></param>
-        public VlcEventManager(IVlcObject parentVlcObject, IntPtr pointer)
-        {
-            VlcInstance = parentVlcObject.VlcInstance;
-            InstancePointer = pointer;
-            HandleManager.Add(this);
-        }
-
-        /// <summary>
-        /// Pointer of this event manager.
-        /// </summary>
-        public IntPtr InstancePointer { get; private set; }
-
-        /// <summary>
-        /// A relation <see cref="Vlc"/> of this object.
-        /// </summary>
-        public Vlc VlcInstance { get; private set; }
-
-        /// <summary>
-        /// Attach a event with a callback.
+        ///     Attach a event with a callback.
         /// </summary>
         /// <param name="type">event type</param>
         /// <param name="callback">callback which will be called when event case</param>
@@ -77,7 +83,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Deattach a event with a callback.
+        ///     Deattach a event with a callback.
         /// </summary>
         /// <param name="type">event type</param>
         /// <param name="callback">callback which will be called when event case</param>
@@ -88,24 +94,13 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get event type name.
+        ///     Get event type name.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         public static String GetEventTypeName(EventTypes type)
         {
             return InteropHelper.PtrToString(_getTypeNameFunction.Delegate(type));
-        }
-
-        /// <summary>
-        /// Release this event manager.
-        /// </summary>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public void Dispose()
-        {
-            HandleManager.Remove(this);
-            LibVlcManager.Free(InstancePointer);
-            InstancePointer = IntPtr.Zero;
         }
     }
 }

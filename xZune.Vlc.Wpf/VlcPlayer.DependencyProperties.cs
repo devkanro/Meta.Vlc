@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcPlayer.DependencyProperties.cs
-//Version: 20151220
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcPlayer.DependencyProperties.cs
+// Version: 20160214
 
 using System;
 using System.Windows;
@@ -15,44 +15,44 @@ namespace xZune.Vlc.Wpf
         #region LibVlcPath
 
         /// <summary>
-        /// The path of LibVlc, it is a DependencyProperty.
+        ///     The path of LibVlc, it is a DependencyProperty.
         /// </summary>
         public String LibVlcPath
         {
-            get { return (String)GetValue(LibVlcPathProperty); }
+            get { return (String) GetValue(LibVlcPathProperty); }
             set { SetValue(LibVlcPathProperty, value); }
         }
 
         public static readonly DependencyProperty LibVlcPathProperty =
-          DependencyProperty.Register("LibVlcPath", typeof(String), typeof(VlcPlayer), null);
+            DependencyProperty.Register("LibVlcPath", typeof (String), typeof (VlcPlayer), null);
 
         #endregion LibVlcPath
 
         #region VlcOption
 
         /// <summary>
-        /// The options of LibVlc, it is a DependencyProperty.
+        ///     The options of LibVlc, it is a DependencyProperty.
         /// </summary>
         public String[] VlcOption
         {
-            get { return (String[])GetValue(VlcOptionProperty); }
+            get { return (String[]) GetValue(VlcOptionProperty); }
             set { SetValue(VlcOptionProperty, value); }
         }
 
         public static readonly DependencyProperty VlcOptionProperty =
-          DependencyProperty.Register("VlcOption", typeof(String[]), typeof(VlcPlayer), null);
+            DependencyProperty.Register("VlcOption", typeof (String[]), typeof (VlcPlayer), null);
 
         #endregion VlcOption
 
         #region ScaleTransform
 
         internal static readonly DependencyProperty ScaleTransformProperty =
-          DependencyProperty.Register("ScaleTransform", typeof(ScaleTransform), typeof(VlcPlayer),
-            new PropertyMetadata(default(ScaleTransform)));
+            DependencyProperty.Register("ScaleTransform", typeof (ScaleTransform), typeof (VlcPlayer),
+                new PropertyMetadata(default(ScaleTransform)));
 
         internal ScaleTransform ScaleTransform
         {
-            get { return (ScaleTransform)GetValue(ScaleTransformProperty); }
+            get { return (ScaleTransform) GetValue(ScaleTransformProperty); }
             set { SetValue(ScaleTransformProperty, value); }
         }
 
@@ -61,15 +61,15 @@ namespace xZune.Vlc.Wpf
         #region AspectRatio
 
         public static readonly DependencyProperty PropertyTypeProperty =
-          DependencyProperty.Register("PropertyType", typeof(AspectRatio), typeof(VlcPlayer),
-            new PropertyMetadata(AspectRatio.Default, OnAspectRatioChanged));
+            DependencyProperty.Register("PropertyType", typeof (AspectRatio), typeof (VlcPlayer),
+                new PropertyMetadata(AspectRatio.Default, OnAspectRatioChanged));
 
         /// <summary>
-        /// The aspect ratio of video, it is a DependencyProperty.
+        ///     The aspect ratio of video, it is a DependencyProperty.
         /// </summary>
         public AspectRatio AspectRatio
         {
-            get { return (AspectRatio)GetValue(PropertyTypeProperty); }
+            get { return (AspectRatio) GetValue(PropertyTypeProperty); }
             set { SetValue(PropertyTypeProperty, value); }
         }
 
@@ -86,56 +86,57 @@ namespace xZune.Vlc.Wpf
         #region VideoSource
 
         /// <summary>
-        /// The image data of video, it is a DependencyProperty.
+        ///     The image data of video, it is a DependencyProperty.
         /// </summary>
         public InteropBitmap VideoSource
         {
-            get { return (InteropBitmap)GetValue(VideoSourceProperty); }
+            get { return (InteropBitmap) GetValue(VideoSourceProperty); }
             private set { SetValue(VideoSourceProperty, value); }
         }
 
         public static readonly DependencyProperty VideoSourceProperty =
-            DependencyProperty.Register("VideoSource", typeof(InteropBitmap), typeof(VlcPlayer), null);
+            DependencyProperty.Register("VideoSource", typeof (InteropBitmap), typeof (VlcPlayer), null);
 
         #endregion VideoSource
 
         #region Stretch
 
         /// <summary>
-        /// The stretch mode of video.
+        ///     The stretch mode of video.
         /// </summary>
         public Stretch Stretch
         {
-            get { return (Stretch)GetValue(StretchProperty); }
+            get { return (Stretch) GetValue(StretchProperty); }
             set { SetValue(StretchProperty, value); }
         }
 
         public static readonly DependencyProperty StretchProperty =
-            DependencyProperty.Register("Stretch", typeof(Stretch), typeof(VlcPlayer), new PropertyMetadata(Stretch.Uniform));
+            DependencyProperty.Register("Stretch", typeof (Stretch), typeof (VlcPlayer),
+                new PropertyMetadata(Stretch.Uniform));
 
         /// <summary>
-        /// The stretch direction of video.
+        ///     The stretch direction of video.
         /// </summary>
         public StretchDirection StretchDirection
         {
-            get { return (StretchDirection)GetValue(StretchDirectionProperty); }
+            get { return (StretchDirection) GetValue(StretchDirectionProperty); }
             set { SetValue(StretchDirectionProperty, value); }
         }
 
         public static readonly DependencyProperty StretchDirectionProperty =
-            DependencyProperty.Register("StretchDirection", typeof(StretchDirection), typeof(VlcPlayer),
-              new PropertyMetadata(StretchDirection.Both));
+            DependencyProperty.Register("StretchDirection", typeof (StretchDirection), typeof (VlcPlayer),
+                new PropertyMetadata(StretchDirection.Both));
 
         #endregion Stretch
 
         #region EndBehavior
 
         public static readonly DependencyProperty EndBehaviorProperty = DependencyProperty.Register(
-            "EndBehavior", typeof(EndBehavior), typeof(VlcPlayer), new PropertyMetadata(EndBehavior.Default));
+            "EndBehavior", typeof (EndBehavior), typeof (VlcPlayer), new PropertyMetadata(EndBehavior.Default));
 
         public EndBehavior EndBehavior
         {
-            get { return (EndBehavior)GetValue(EndBehaviorProperty); }
+            get { return (EndBehavior) GetValue(EndBehaviorProperty); }
             set { SetValue(EndBehaviorProperty, value); }
         }
 

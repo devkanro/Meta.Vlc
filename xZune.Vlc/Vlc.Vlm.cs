@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: Vlc.Vlm.cs
-//Version: 20160214
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: Vlc.Vlm.cs
+// Version: 20160214
 
 using System;
 using System.Runtime.InteropServices;
@@ -35,29 +35,29 @@ namespace xZune.Vlc
         private static LibVlcFunction<GetMediaEventManager> _getMediaEventManagerFunction;
 
         private readonly LibVlcEventCallBack _onVlmMediaAdded;
-        private readonly LibVlcEventCallBack _onVlmMediaRemoved;
         private readonly LibVlcEventCallBack _onVlmMediaChanged;
         private readonly LibVlcEventCallBack _onVlmMediaInstanceStarted;
-        private readonly LibVlcEventCallBack _onVlmMediaInstanceStopped;
-        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusInit;
-        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusOpening;
-        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusPlaying;
-        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusPause;
         private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusEnd;
         private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusError;
+        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusInit;
+        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusOpening;
+        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusPause;
+        private readonly LibVlcEventCallBack _onVlmMediaInstanceStatusPlaying;
+        private readonly LibVlcEventCallBack _onVlmMediaInstanceStopped;
+        private readonly LibVlcEventCallBack _onVlmMediaRemoved;
 
         private GCHandle _onVlmMediaAddedHandle;
-        private GCHandle _onVlmMediaRemovedHandle;
         private GCHandle _onVlmMediaChangedHandle;
         private GCHandle _onVlmMediaInstanceStartedHandle;
-        private GCHandle _onVlmMediaInstanceStoppedHandle;
-        private GCHandle _onVlmMediaInstanceStatusInitHandle;
-        private GCHandle _onVlmMediaInstanceStatusOpeningHandle;
-        private GCHandle _onVlmMediaInstanceStatusPlayingHandle;
-        private GCHandle _onVlmMediaInstanceStatusPauseHandle;
         private GCHandle _onVlmMediaInstanceStatusEndHandle;
         private GCHandle _onVlmMediaInstanceStatusErrorHandle;
-        
+        private GCHandle _onVlmMediaInstanceStatusInitHandle;
+        private GCHandle _onVlmMediaInstanceStatusOpeningHandle;
+        private GCHandle _onVlmMediaInstanceStatusPauseHandle;
+        private GCHandle _onVlmMediaInstanceStatusPlayingHandle;
+        private GCHandle _onVlmMediaInstanceStoppedHandle;
+        private GCHandle _onVlmMediaRemovedHandle;
+
         public VlcEventManager EventManager { get; private set; }
 
         public void VlmRelease()
@@ -117,7 +117,7 @@ namespace xZune.Vlc
             var nameHandle = InteropHelper.StringToPtr(name);
 
             var result = _mediaSwitchFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), enable) == 0;
-            
+
             nameHandle.Free();
 
             return result;
@@ -128,7 +128,9 @@ namespace xZune.Vlc
             var nameHandle = InteropHelper.StringToPtr(name);
             var outputHandle = InteropHelper.StringToPtr(output);
 
-            var result = _setMediaOutputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), outputHandle.AddrOfPinnedObject()) == 0;
+            var result =
+                _setMediaOutputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(),
+                    outputHandle.AddrOfPinnedObject()) == 0;
 
             nameHandle.Free();
             outputHandle.Free();
@@ -141,7 +143,9 @@ namespace xZune.Vlc
             var nameHandle = InteropHelper.StringToPtr(name);
             var inputHandle = InteropHelper.StringToPtr(input);
 
-            var result = _setMediaInputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), inputHandle.AddrOfPinnedObject()) == 0;
+            var result =
+                _setMediaInputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(),
+                    inputHandle.AddrOfPinnedObject()) == 0;
 
             nameHandle.Free();
             inputHandle.Free();
@@ -154,7 +158,9 @@ namespace xZune.Vlc
             var nameHandle = InteropHelper.StringToPtr(name);
             var inputHandle = InteropHelper.StringToPtr(input);
 
-            var result = _addMediaInputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), inputHandle.AddrOfPinnedObject()) == 0;
+            var result =
+                _addMediaInputFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(),
+                    inputHandle.AddrOfPinnedObject()) == 0;
 
             nameHandle.Free();
             inputHandle.Free();
@@ -178,7 +184,9 @@ namespace xZune.Vlc
             var nameHandle = InteropHelper.StringToPtr(name);
             var muxerHandle = InteropHelper.StringToPtr(muxer);
 
-            var result = _setVodMuxerFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), muxerHandle.AddrOfPinnedObject()) == 0;
+            var result =
+                _setVodMuxerFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(),
+                    muxerHandle.AddrOfPinnedObject()) == 0;
 
             nameHandle.Free();
             muxerHandle.Free();
@@ -241,7 +249,9 @@ namespace xZune.Vlc
         {
             var nameHandle = InteropHelper.StringToPtr(name);
 
-            var result = _seekInNamedBroadcastFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), percentage) == 0;
+            var result =
+                _seekInNamedBroadcastFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), percentage) ==
+                0;
 
             nameHandle.Free();
 

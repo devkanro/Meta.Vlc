@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: LibVlcManager.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: LibVlcManager.cs
+// Version: 20160214
 
 using System;
 using System.ComponentModel;
@@ -13,7 +13,8 @@ using xZune.Vlc.Interop.MediaPlayer;
 namespace xZune.Vlc
 {
     /// <summary>
-    /// LibVlc dlls manager, load LibVlc and initialize LibVlc to use. Some public method also in this class, like <see cref="Free"/> method.
+    ///     LibVlc dlls manager, load LibVlc and initialize LibVlc to use. Some public method also in this class, like
+    ///     <see cref="Free" /> method.
     /// </summary>
     public static class LibVlcManager
     {
@@ -28,15 +29,49 @@ namespace xZune.Vlc
         private static LibVlcFunction<ReleaseTracks> _releaseTracksFunction;
 
         /// <summary>
-        /// Load LibVlc dlls, and mapping all function.
+        ///     LibVlc loaded or not.
+        /// </summary>
+        public static bool IsLibLoaded { get; private set; }
+
+        /// <summary>
+        ///     Handle of libvlc.dll.
+        /// </summary>
+        public static IntPtr LibVlcHandle { get; private set; }
+
+        /// <summary>
+        ///     Handle of libvlccore.dll.
+        /// </summary>
+        public static IntPtr LibVlcVCoreHandle { get; private set; }
+
+        /// <summary>
+        ///     Directory of LibVlc dlls.
+        /// </summary>
+        public static String LibVlcDirectory { get; set; }
+
+        /// <summary>
+        ///     Version infomation of LibVlc.
+        /// </summary>
+        public static LibVlcVersion LibVlcVersion { get; set; }
+
+        /// <summary>
+        ///     Load LibVlc dlls, and mapping all function.
         /// </summary>
         /// <param name="libVlcDirectory">directory of LibVlc</param>
-        /// <exception cref="LibVlcLoadLibraryException">Can't load LibVlc dlls, check the platform and LibVlc target platform (should be same, x86 or x64).</exception>
+        /// <exception cref="LibVlcLoadLibraryException">
+        ///     Can't load LibVlc dlls, check the platform and LibVlc target platform
+        ///     (should be same, x86 or x64).
+        /// </exception>
         /// <exception cref="TypeLoadException">A custom attribute type cannot be loaded. </exception>
-        /// <exception cref="NoLibVlcFunctionAttributeException">For LibVlcFunction, need LibVlcFunctionAttribute to get Infomation of function.</exception>
+        /// <exception cref="NoLibVlcFunctionAttributeException">
+        ///     For LibVlcFunction, need LibVlcFunctionAttribute to get Infomation
+        ///     of function.
+        /// </exception>
         /// <exception cref="FunctionNotFoundException">Can't find function in dll.</exception>
         /// <exception cref="VersionStringParseException">Can't parse libvlc version string, it must like "2.2.0-xZune Weatherwax".</exception>
-        /// <exception cref="OverflowException">At least one component of version represents a number greater than <see cref="F:System.Int32.MaxValue" />.</exception>
+        /// <exception cref="OverflowException">
+        ///     At least one component of version represents a number greater than
+        ///     <see cref="F:System.Int32.MaxValue" />.
+        /// </exception>
         public static void LoadLibVlc(String libVlcDirectory = null)
         {
             LibVlcDirectory = libVlcDirectory == null ? "" : libVlcDirectory;
@@ -54,7 +89,7 @@ namespace xZune.Vlc
             {
                 throw new LibVlcLoadLibraryException(e);
             }
-            
+
             _getVersionFunction = new LibVlcFunction<GetVersion>();
             LibVlcVersion = new LibVlcVersion(GetVersion());
 
@@ -76,50 +111,25 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// LibVlc loaded or not.
-        /// </summary>
-        public static bool IsLibLoaded { get; private set; }
-        
-        /// <summary>
-        /// Handle of libvlc.dll.
-        /// </summary>
-        public static IntPtr LibVlcHandle { get; private set; }
-
-        /// <summary>
-        /// Handle of libvlccore.dll.
-        /// </summary>
-        public static IntPtr LibVlcVCoreHandle { get; private set; }
-
-        /// <summary>
-        /// Directory of LibVlc dlls.
-        /// </summary>
-        public static String LibVlcDirectory { get; set; }
-
-        /// <summary>
-        /// Version infomation of LibVlc.
-        /// </summary>
-        public static LibVlcVersion LibVlcVersion { get; set; }
-        
-        /// <summary>
-        /// Get version string of LibVlc.
+        ///     Get version string of LibVlc.
         /// </summary>
         /// <returns></returns>
         public static String GetVersion()
         {
             return InteropHelper.PtrToString(_getVersionFunction.Delegate());
         }
-        
+
         /// <summary>
-        /// Get compiler infomation of LibVlc.
+        ///     Get compiler infomation of LibVlc.
         /// </summary>
         /// <returns></returns>
         public static String GetCompiler()
         {
             return InteropHelper.PtrToString(_getCompilerFunction.Delegate());
         }
-        
+
         /// <summary>
-        /// Get changeset of LibVlc.
+        ///     Get changeset of LibVlc.
         /// </summary>
         /// <returns></returns>
         public static String GetChangeset()
@@ -128,7 +138,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Frees an heap allocation returned by a LibVLC function, like ANSI C free() method. 
+        ///     Frees an heap allocation returned by a LibVLC function, like ANSI C free() method.
         /// </summary>
         /// <param name="pointer">the pointer of object to be released </param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
@@ -138,7 +148,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Release a list of module descriptions. 
+        ///     Release a list of module descriptions.
         /// </summary>
         /// <param name="moduleDescriptionList">the list to be released </param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
@@ -148,9 +158,9 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Frees the list of available audio output modules. 
+        ///     Frees the list of available audio output modules.
         /// </summary>
-        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioOutput"/>. </param>
+        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioOutput" />. </param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public static void ReleaseAudioOutputList(IntPtr pointer)
         {
@@ -158,9 +168,9 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Frees a list of available audio output devices. 
+        ///     Frees a list of available audio output devices.
         /// </summary>
-        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioDevice"/>. </param>
+        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioDevice" />. </param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public static void ReleaseAudioDeviceList(IntPtr pointer)
         {
@@ -168,7 +178,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Release (free) pointer of <see cref="TrackDescriptionList"/>. 
+        ///     Release (free) pointer of <see cref="TrackDescriptionList" />.
         /// </summary>
         /// <param name="pointer"></param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
@@ -178,7 +188,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Release media descriptor's elementary streams description array. 
+        ///     Release media descriptor's elementary streams description array.
         /// </summary>
         /// <param name="pointer">pointer tracks info array to release </param>
         /// <param name="count">number of elements in the array </param>

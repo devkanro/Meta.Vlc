@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: HandleManager.cs
+// Version: 20160214
+
+using System;
 using System.Collections.Generic;
 
 namespace xZune.Vlc
@@ -13,10 +17,7 @@ namespace xZune.Vlc
             {
                 return HandleDic[pointer];
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public static void Add(IVlcObject vlcObject)

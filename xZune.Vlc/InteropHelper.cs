@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: InteropHelper.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: InteropHelper.cs
+// Version: 20160214
 
 using System;
 using System.Collections.Generic;
@@ -10,19 +10,19 @@ using System.Text;
 namespace xZune.Vlc
 {
     /// <summary>
-    /// Some helper method of interopping with unmanaged dlls.
+    ///     Some helper method of interopping with unmanaged dlls.
     /// </summary>
     public static class InteropHelper
     {
         /// <summary>
-        /// Convert a pointer of string to manmaged <see cref="String"/>.
+        ///     Convert a pointer of string to manmaged <see cref="String" />.
         /// </summary>
         /// <param name="ptr">pointer of string</param>
         /// <param name="count">count of string, -1 mean auto check the end char</param>
         /// <param name="toBeFree">free this pointer when convert over</param>
         /// <param name="encoding">encoding of string</param>
         /// <returns>result string</returns>
-        public static String PtrToString(IntPtr ptr , int count = -1, bool toBeFree = false, Encoding  encoding = null)
+        public static String PtrToString(IntPtr ptr, int count = -1, bool toBeFree = false, Encoding encoding = null)
         {
             if (ptr == IntPtr.Zero)
             {
@@ -55,7 +55,6 @@ namespace xZune.Vlc
                     buffer.Add(tmp);
                 }
             }
-            
 
             if (toBeFree)
             {
@@ -66,10 +65,11 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Pinned a <see cref="String"/> to get pointer of this, you should call <see cref="GCHandle.Free"/> when all is over.
+        ///     Pinned a <see cref="String" /> to get pointer of this, you should call <see cref="GCHandle.Free" /> when all is
+        ///     over.
         /// </summary>
         /// <param name="str">string you need pinned</param>
-        /// <returns>GCHandle of <see cref="String"/>, you can call <see cref="GCHandle.AddrOfPinnedObject"/> to get pointer.</returns>
+        /// <returns>GCHandle of <see cref="String" />, you can call <see cref="GCHandle.AddrOfPinnedObject" /> to get pointer.</returns>
         public static GCHandle StringToPtr(String str)
         {
             var handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(str), GCHandleType.Pinned);
@@ -77,11 +77,11 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Convert a pointer array to <see cref="String"/> array. 
+        ///     Convert a pointer array to <see cref="String" /> array.
         /// </summary>
         /// <param name="ptrs">pointer array</param>
         /// <param name="length">length of pointer array</param>
-        /// <returns><see cref="String"/> array</returns>
+        /// <returns><see cref="String" /> array</returns>
         public static String[] PtrsToStringArray(IntPtr[] ptrs, int length)
         {
             String[] result = new String[length];
@@ -93,10 +93,10 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get a pointer of <see cref="String"/> array.
+        ///     Get a pointer of <see cref="String" /> array.
         /// </summary>
-        /// <param name="strings"><see cref="String"/> array</param>
-        /// <returns>pointer of <see cref="String"/> array</returns>
+        /// <param name="strings"><see cref="String" /> array</param>
+        /// <returns>pointer of <see cref="String" /> array</returns>
         public static IntPtr StringArrayToPtr(String[] strings)
         {
             IntPtr[] ptrs = new IntPtr[strings.Length];

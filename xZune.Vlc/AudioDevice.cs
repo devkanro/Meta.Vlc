@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: AudioDevice.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: AudioDevice.cs
+// Version: 20160214
 
 using System;
 using System.Collections;
@@ -10,23 +10,26 @@ using System.Runtime.InteropServices;
 namespace xZune.Vlc
 {
     /// <summary>
-    /// A warpper for <see cref="Interop.MediaPlayer.AudioDevice"/> struct.
+    ///     A warpper for <see cref="Interop.MediaPlayer.AudioDevice" /> struct.
     /// </summary>
     public class AudioDevice
     {
+        internal IntPtr _pointer;
+
+        internal Interop.MediaPlayer.AudioDevice _struct;
+
         internal AudioDevice(IntPtr pointer)
         {
             _pointer = pointer;
             if (pointer != IntPtr.Zero)
             {
-                _struct = (Interop.MediaPlayer.AudioDevice)Marshal.PtrToStructure(pointer, typeof(Interop.MediaPlayer.AudioDevice));
+                _struct =
+                    (Interop.MediaPlayer.AudioDevice)
+                        Marshal.PtrToStructure(pointer, typeof (Interop.MediaPlayer.AudioDevice));
                 Device = InteropHelper.PtrToString(_struct.Device);
                 Description = InteropHelper.PtrToString(_struct.Description);
             }
         }
-
-        internal Interop.MediaPlayer.AudioDevice _struct;
-        internal IntPtr _pointer;
 
         public String Device { get; private set; }
 
@@ -34,12 +37,15 @@ namespace xZune.Vlc
     }
 
     /// <summary>
-    /// A list warpper for <see cref="Interop.MediaPlayer.AudioDevice"/> linklist struct.
+    ///     A list warpper for <see cref="Interop.MediaPlayer.AudioDevice" /> linklist struct.
     /// </summary>
     public class AudioDeviceList : IDisposable, IEnumerable<AudioDevice>, IEnumerable
     {
+        private List<AudioDevice> _list;
+        private IntPtr _pointer;
+
         /// <summary>
-        /// Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.AudioDevice"/>.
+        ///     Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.AudioDevice" />.
         /// </summary>
         /// <param name="pointer"></param>
         public AudioDeviceList(IntPtr pointer)
@@ -54,19 +60,6 @@ namespace xZune.Vlc
 
                 pointer = AudioDevice._struct.Next;
             }
-        }
-
-        private List<AudioDevice> _list;
-        private IntPtr _pointer;
-
-        public IEnumerator<AudioDevice> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public int Count
@@ -86,6 +79,16 @@ namespace xZune.Vlc
             LibVlcManager.ReleaseAudioDeviceList(_pointer);
             _pointer = IntPtr.Zero;
             _list.Clear();
+        }
+
+        public IEnumerator<AudioDevice> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

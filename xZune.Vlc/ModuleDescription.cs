@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: ModuleDescription.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: ModuleDescription.cs
+// Version: 20160214
 
 using System;
 using System.Collections;
@@ -10,25 +10,28 @@ using System.Runtime.InteropServices;
 namespace xZune.Vlc
 {
     /// <summary>
-    /// A warpper for <see cref="Interop.Core.ModuleDescription"/> struct.
+    ///     A warpper for <see cref="Interop.Core.ModuleDescription" /> struct.
     /// </summary>
     public class ModuleDescription
     {
+        internal IntPtr _pointer;
+
+        internal Interop.Core.ModuleDescription _struct;
+
         internal ModuleDescription(IntPtr pointer)
         {
             _pointer = pointer;
             if (pointer != IntPtr.Zero)
             {
-                _struct = (Interop.Core.ModuleDescription)Marshal.PtrToStructure(pointer, typeof(Interop.Core.ModuleDescription));
+                _struct =
+                    (Interop.Core.ModuleDescription)
+                        Marshal.PtrToStructure(pointer, typeof (Interop.Core.ModuleDescription));
                 Name = InteropHelper.PtrToString(_struct.Name);
                 ShortName = InteropHelper.PtrToString(_struct.ShortName);
                 LongName = InteropHelper.PtrToString(_struct.LongName);
                 Help = InteropHelper.PtrToString(_struct.Help);
             }
         }
-
-        internal Interop.Core.ModuleDescription _struct;
-        internal IntPtr _pointer;
 
         public String Name { get; private set; }
 
@@ -40,12 +43,15 @@ namespace xZune.Vlc
     }
 
     /// <summary>
-    /// A list warpper for <see cref="Interop.Core.ModuleDescription"/> linklist struct.
+    ///     A list warpper for <see cref="Interop.Core.ModuleDescription" /> linklist struct.
     /// </summary>
     public class ModuleDescriptionList : IDisposable, IEnumerable<ModuleDescription>, IEnumerable
     {
+        private List<ModuleDescription> _list;
+        private IntPtr _pointer;
+
         /// <summary>
-        /// Create a readonly list by a pointer of <see cref="Interop.Core.ModuleDescription"/>.
+        ///     Create a readonly list by a pointer of <see cref="Interop.Core.ModuleDescription" />.
         /// </summary>
         /// <param name="pointer"></param>
         public ModuleDescriptionList(IntPtr pointer)
@@ -60,19 +66,6 @@ namespace xZune.Vlc
 
                 pointer = ModuleDescription._struct.Next;
             }
-        }
-
-        private List<ModuleDescription> _list;
-        private IntPtr _pointer;
-
-        public IEnumerator<ModuleDescription> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public int Count
@@ -92,6 +85,16 @@ namespace xZune.Vlc
             LibVlcManager.ReleaseModuleDescriptionList(_pointer);
             _pointer = IntPtr.Zero;
             _list.Clear();
+        }
+
+        public IEnumerator<ModuleDescription> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -1,22 +1,61 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: AudioEqualizer.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: AudioEqualizer.cs
+// Version: 20160214
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.MediaPlayer;
 
 namespace xZune.Vlc
 {
     /// <summary>
-    /// Audio equalizer of VLC player.
+    ///     Audio equalizer of VLC player.
     /// </summary>
     public class AudioEqualizer : IVlcObject, IEnumerable<float>, INotifyPropertyChanged
     {
+        private class AudioEqualizerEnumerator : IEnumerator<float>
+        {
+            private AudioEqualizer _audioEqualizer;
+            private int _index = -1;
+
+            public AudioEqualizerEnumerator(AudioEqualizer equalizer)
+            {
+                _audioEqualizer = equalizer;
+            }
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext()
+            {
+                if (_index < EqualizerBandCount - 1)
+                {
+                    _index++;
+                    return true;
+                }
+                return false;
+            }
+
+            public void Reset()
+            {
+                _index = -1;
+            }
+
+            public float Current
+            {
+                get { return _audioEqualizer[(uint) _index]; }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return Current; }
+            }
+        }
+
         #region --- Fields ---
 
         private bool _disposed;
@@ -37,13 +76,12 @@ namespace xZune.Vlc
 
         #endregion LibVlcFunctions
 
-
         #endregion --- Fields ---
 
-
         #region --- Initialization ---
+
         /// <summary>
-        /// Create a new default equalizer, with all frequency values zeroed.
+        ///     Create a new default equalizer, with all frequency values zeroed.
         /// </summary>
         public AudioEqualizer()
         {
@@ -52,16 +90,15 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Create a new equalizer, with initial frequency values copied from an existing preset.
+        ///     Create a new equalizer, with initial frequency values copied from an existing preset.
         /// </summary>
         /// <param name="type"></param>
         public AudioEqualizer(PresetAudioEqualizerType type) : this((uint) type)
         {
-            
         }
 
         /// <summary>
-        /// Create a new equalizer, with initial frequency values copied from an existing preset.
+        ///     Create a new equalizer, with initial frequency values copied from an existing preset.
         /// </summary>
         /// <param name="index"></param>
         public AudioEqualizer(uint index)
@@ -96,17 +133,14 @@ namespace xZune.Vlc
         #endregion --- Cleanup ---
 
         #region --- Properties ---
-        /// <summary>
-        /// 获取一个值,该值指示当前模块是否被载入
-        /// </summary>
-        public static bool IsLibLoaded
-        {
-            get;
-            private set;
-        }
 
         /// <summary>
-        /// Get the number of equalizer presets.
+        ///     获取一个值,该值指示当前模块是否被载入
+        /// </summary>
+        public static bool IsLibLoaded { get; private set; }
+
+        /// <summary>
+        ///     Get the number of equalizer presets.
         /// </summary>
         public static uint PresetEqualizerCount
         {
@@ -114,7 +148,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get the number of distinct frequency bands for an equalizer.
+        ///     Get the number of distinct frequency bands for an equalizer.
         /// </summary>
         public static uint EqualizerBandCount
         {
@@ -124,12 +158,15 @@ namespace xZune.Vlc
         public IntPtr InstancePointer { get; private set; }
 
         /// <summary>
-        /// Aways return <see cref="null"/>.
+        ///     Aways return <see cref="null" />.
         /// </summary>
-        public Vlc VlcInstance { get { return null; } }
+        public Vlc VlcInstance
+        {
+            get { return null; }
+        }
 
         /// <summary>
-        /// Get or set the current pre-amplification value from an equalizer.
+        ///     Get or set the current pre-amplification value from an equalizer.
         /// </summary>
         public float Preamp
         {
@@ -142,11 +179,11 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get or set the amplification value for a particular equalizer frequency band. 
+        ///     Get or set the amplification value for a particular equalizer frequency band.
         /// </summary>
         /// <param name="band">frequency band index.</param>
         /// <returns></returns>
-        public float this[uint band] 
+        public float this[uint band]
         {
             get
             {
@@ -168,14 +205,14 @@ namespace xZune.Vlc
             }
         }
 
-        #endregion
+        #endregion --- Properties ---
 
         #region --- Methods ---
-        
+
         internal static void LoadLibVlc()
         {
-            if(IsLibLoaded) return;
-            
+            if (IsLibLoaded) return;
+
             _createEqualizerFunction = new LibVlcFunction<CreateEqualizer>();
             _createEqualizerFromPresetFunction = new LibVlcFunction<CreateEqualizerFromPreset>();
             _releaseEqualizerFunction = new LibVlcFunction<ReleaseEqualizer>();
@@ -192,7 +229,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get the name of a particular equalizer preset.
+        ///     Get the name of a particular equalizer preset.
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -202,7 +239,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// Get a particular equalizer band frequency.
+        ///     Get a particular equalizer band frequency.
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -224,7 +261,7 @@ namespace xZune.Vlc
         #region --- NotifyPropertyChanged ---
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
         protected virtual void OnPropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
@@ -235,50 +272,6 @@ namespace xZune.Vlc
 
         #endregion --- NotifyPropertyChanged ---
 
-        #endregion
-
-        class AudioEqualizerEnumerator : IEnumerator<float>
-        {
-            private int _index = -1;
-            private AudioEqualizer _audioEqualizer;
-
-            public AudioEqualizerEnumerator(AudioEqualizer equalizer)
-            {
-                _audioEqualizer = equalizer;
-            }
-
-            public void Dispose()
-            {
-
-            }
-
-            public bool MoveNext()
-            {
-                if (_index < AudioEqualizer.EqualizerBandCount - 1)
-                {
-                    _index++;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            public void Reset()
-            {
-                _index = -1;
-            }
-
-            public float Current
-            {
-                get { return _audioEqualizer[(uint)_index]; }
-            }
-
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
-        }
+        #endregion --- Methods ---
     }
 }

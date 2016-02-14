@@ -1,21 +1,21 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: Size.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: Size.cs
+// Version: 20160214
 
 using System;
 
 namespace xZune.Vlc
 {
     /// <summary>
-    /// A struct with width and height, for downward compatibility.
+    ///     A struct with width and height, for downward compatibility.
     /// </summary>
     [Serializable]
     public struct Size
     {
         public Size(double width, double height)
-          : this() //needed for VS2013 to compile, else complains that "this" is used before all of its fields have been assigned
+            : this()
+            //needed for VS2013 to compile, else complains that "this" is used before all of its fields have been assigned
         {
-            
             Width = width;
             Height = height;
         }
@@ -51,9 +51,8 @@ namespace xZune.Vlc
         public override bool Equals(object obj)
         {
             if (obj is Size)
-                return (Size)obj == this;
-            else
-                return false;
+                return (Size) obj == this;
+            return false;
         }
 
         public override int GetHashCode()

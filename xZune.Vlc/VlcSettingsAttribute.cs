@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcSettingsAttribute.cs
+// Version: 20160214
+
+using System;
 
 namespace xZune.Vlc
 {

@@ -1,11 +1,10 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: Vlc.cs
-//Version: 20160214
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: Vlc.cs
+// Version: 20160214
 
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core;
 using xZune.Vlc.Interop.Core.Events;
@@ -22,57 +21,56 @@ namespace xZune.Vlc
         #region LibVlcFunctions
 
         /// <summary>
-        /// 创建并初始化一个 LibVlc 实例,并提供相应的参数,这些参数和命令行提供的参数类似,会影响到 LibVlc 实例的默认配置.
-        /// 有效参数的列表取决于 LibVlc 版本,操作系统,可用 LibVlc 插件和平台.无效或不支持的参数会导致实例创建失败
+        ///     创建并初始化一个 LibVlc 实例,并提供相应的参数,这些参数和命令行提供的参数类似,会影响到 LibVlc 实例的默认配置.
+        ///     有效参数的列表取决于 LibVlc 版本,操作系统,可用 LibVlc 插件和平台.无效或不支持的参数会导致实例创建失败
         /// </summary>
         private static LibVlcFunction<NewInstance> _newInstanceFunction;
 
         /// <summary>
-        /// 递减 LibVlc 实例的引用计数,如果它达到零,将会释放这个实例
+        ///     递减 LibVlc 实例的引用计数,如果它达到零,将会释放这个实例
         /// </summary>
         private static LibVlcFunction<ReleaseInstance> _releaseInstanceFunction;
 
         /// <summary>
-        /// 递增 LibVlc 实例的引用计数,当调用 NewInstance 初始化成功时,引用计数将初始化为1
+        ///     递增 LibVlc 实例的引用计数,当调用 NewInstance 初始化成功时,引用计数将初始化为1
         /// </summary>
         private static LibVlcFunction<RetainInstance> _retainInstanceFunction;
 
         /// <summary>
-        /// 尝试启动一个用户接口,用于 LibVlc 实例
+        ///     尝试启动一个用户接口,用于 LibVlc 实例
         /// </summary>
         private static LibVlcFunction<AddInterface> _addInterfaceFunction;
 
         /// <summary>
-        /// 为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait"/> 一起使用.
-        /// 而且,这个函数应该在播放一个列表或者开始一个用户接口前被调用,否则可能导致 LibVlc 在注册该回调前退出
+        ///     为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait" /> 一起使用.
+        ///     而且,这个函数应该在播放一个列表或者开始一个用户接口前被调用,否则可能导致 LibVlc 在注册该回调前退出
         /// </summary>
         private static LibVlcFunction<SetExitHandler> _setExitHandlerFunction;
 
         /// <summary>
-        /// 等待,直到一个接口导致 LibVlc 实例退出为止,在使用之前,应该使用 <see cref="AddInterface"/> 添加至少一个用户接口.
-        /// 实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="SetExitHandler"/>
+        ///     等待,直到一个接口导致 LibVlc 实例退出为止,在使用之前,应该使用 <see cref="AddInterface" /> 添加至少一个用户接口.
+        ///     实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="SetExitHandler" />
         /// </summary>
         private static LibVlcFunction<Wait> _waitFunction;
 
         /// <summary>
-        /// 设置一个用户代理字符串,当一个协议需要它的时候,LibVlc 将会提供该字符串
+        ///     设置一个用户代理字符串,当一个协议需要它的时候,LibVlc 将会提供该字符串
         /// </summary>
         private static LibVlcFunction<SetUserAgent> _setUserAgentFunction;
 
         /// <summary>
-        /// 设置一些元信息关于该应用程序
+        ///     设置一些元信息关于该应用程序
         /// </summary>
         private static LibVlcFunction<SetAppId> _setAppIdFunction;
-        
+
         /// <summary>
-        /// 获取可用的音频过滤器
+        ///     获取可用的音频过滤器
         /// </summary>
         private static LibVlcFunction<GetAudioFilterList> _getAudioFilterListFunction;
 
         /// <summary>
-        /// 获取可用的视频过滤器
+        ///     获取可用的视频过滤器
         /// </summary>
-
         private static LibVlcFunction<GetVideoFilterList> _getVideoFilterListFunction;
 
         #endregion LibVlcFunctions
@@ -87,23 +85,26 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 使用默认的参数初始化一个 Vlc 实例
+        ///     使用默认的参数初始化一个 Vlc 实例
         /// </summary>
         public Vlc() :
             this(new[]
             {
-                "-I", "dummy", "--ignore-config", "--no-video-title","--file-logging","--logfile=log.txt","--verbose=2","--no-sub-autodetect-file"
+                "-I", "dummy", "--ignore-config", "--no-video-title", "--file-logging", "--logfile=log.txt",
+                "--verbose=2", "--no-sub-autodetect-file"
             })
         {
         }
 
         /// <summary>
-        /// 提供指定的参数初始化一个 Vlc 实例
+        ///     提供指定的参数初始化一个 Vlc 实例
         /// </summary>
         /// <param name="argv"></param>
         public Vlc(String[] argv)
         {
-            InstancePointer = argv == null ? _newInstanceFunction.Delegate(0, IntPtr.Zero) : _newInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
+            InstancePointer = argv == null
+                ? _newInstanceFunction.Delegate(0, IntPtr.Zero)
+                : _newInstanceFunction.Delegate(argv.Length, InteropHelper.StringArrayToPtr(argv));
 
             if (InstancePointer == IntPtr.Zero)
             {
@@ -136,7 +137,7 @@ namespace xZune.Vlc
             _onVlmMediaInstanceStatusPauseHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusPause);
             _onVlmMediaInstanceStatusEndHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusEnd);
             _onVlmMediaInstanceStatusErrorHandle = GCHandle.Alloc(_onVlmMediaInstanceStatusError);
-            
+
             HandleManager.Add(this);
 
             EventManager.Attach(EventTypes.VlmMediaAdded, _onVlmMediaAdded, IntPtr.Zero);
@@ -150,7 +151,6 @@ namespace xZune.Vlc
             EventManager.Attach(EventTypes.VlmMediaInstanceStatusPause, _onVlmMediaInstanceStatusPause, IntPtr.Zero);
             EventManager.Attach(EventTypes.VlmMediaInstanceStatusEnd, _onVlmMediaInstanceStatusEnd, IntPtr.Zero);
             EventManager.Attach(EventTypes.VlmMediaInstanceStatusError, _onVlmMediaInstanceStatusError, IntPtr.Zero);
-
         }
 
         #endregion --- Initialization ---
@@ -179,12 +179,12 @@ namespace xZune.Vlc
             _onVlmMediaInstanceStatusPauseHandle.Free();
             _onVlmMediaInstanceStatusEndHandle.Free();
             _onVlmMediaInstanceStatusErrorHandle.Free();
-            
+
             _disposed = true;
         }
 
         /// <summary>
-        /// 释放当前 Vlc 资源
+        ///     释放当前 Vlc 资源
         /// </summary>
         public void Dispose()
         {
@@ -196,25 +196,30 @@ namespace xZune.Vlc
         #region --- Properties ---
 
         /// <summary>
-        /// 获取一个值,该值指示当前模块是否被载入
+        ///     获取一个值,该值指示当前模块是否被载入
         /// </summary>
-        public static bool IsLibLoaded
-        {
-            get;
-            private set;
-        }
-        
+        public static bool IsLibLoaded { get; private set; }
+
         /// <summary>
-        /// 获取 Vlc 实例的指针
+        ///     获取 Vlc 实例的指针
         /// </summary>
         public IntPtr InstancePointer { get; private set; }
 
-        public Vlc VlcInstance { get { return this; } }
+        public Vlc VlcInstance
+        {
+            get { return this; }
+        }
 
         #endregion --- Properties ---
 
         #region --- Methods ---
-        
+
+        /// <exception cref="TypeLoadException">A custom attribute type cannot be loaded. </exception>
+        /// <exception cref="NoLibVlcFunctionAttributeException">
+        ///     For LibVlcFunction, need LibVlcFunctionAttribute to get Infomation
+        ///     of function.
+        /// </exception>
+        /// <exception cref="FunctionNotFoundException">Can't find function in dll.</exception>
         internal static void LoadLibVlc()
         {
             if (IsLibLoaded) return;
@@ -254,7 +259,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 递增引用计数,在使用 xZune.Vlc 时,一般是不需要调用此方法,引用计数是由 Vlc 类托管的
+        ///     递增引用计数,在使用 xZune.Vlc 时,一般是不需要调用此方法,引用计数是由 Vlc 类托管的
         /// </summary>
         public void Retain()
         {
@@ -262,7 +267,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 尝试添加一个用户接口
+        ///     尝试添加一个用户接口
         /// </summary>
         /// <param name="name">接口名,为 NULL 则为默认</param>
         /// <returns>是否成功添加接口</returns>
@@ -275,8 +280,8 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 等待,直到一个接口导致实例退出为止,在使用之前,应该使用 <see cref="AddInterface"/> 添加至少一个用户接口.
-        /// 实际上这个方法只会导致线程阻塞
+        ///     等待,直到一个接口导致实例退出为止,在使用之前,应该使用 <see cref="AddInterface" /> 添加至少一个用户接口.
+        ///     实际上这个方法只会导致线程阻塞
         /// </summary>
         public void Wait()
         {
@@ -284,7 +289,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 设置一个用户代理字符串,当一个协议需要它的时候,将会提供该字符串
+        ///     设置一个用户代理字符串,当一个协议需要它的时候,将会提供该字符串
         /// </summary>
         /// <param name="name">应用程序名称,类似于 "FooBar player 1.2.3",实际上只要能标识应用程序,任何字符串都是可以的</param>
         /// <param name="http">HTTP 用户代理,类似于 "FooBar/1.2.3 Python/2.6.0"</param>
@@ -292,13 +297,14 @@ namespace xZune.Vlc
         {
             var nameHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
             var httpHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(http), GCHandleType.Pinned);
-            _setUserAgentFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(), httpHandle.AddrOfPinnedObject());
+            _setUserAgentFunction.Delegate(InstancePointer, nameHandle.AddrOfPinnedObject(),
+                httpHandle.AddrOfPinnedObject());
             nameHandle.Free();
             httpHandle.Free();
         }
 
         /// <summary>
-        /// 设置一些元信息关于该应用程序
+        ///     设置一些元信息关于该应用程序
         /// </summary>
         /// <param name="id">Java 风格的应用标识符,类似于 "com.acme.foobar"</param>
         /// <param name="version">应用程序版本,类似于 "1.2.3"</param>
@@ -308,14 +314,15 @@ namespace xZune.Vlc
             var idHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(id), GCHandleType.Pinned);
             var versionHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(version), GCHandleType.Pinned);
             var iconHandle = GCHandle.Alloc(Encoding.UTF8.GetBytes(icon), GCHandleType.Pinned);
-            _setAppIdFunction.Delegate(InstancePointer, idHandle.AddrOfPinnedObject(), versionHandle.AddrOfPinnedObject(), iconHandle.AddrOfPinnedObject());
+            _setAppIdFunction.Delegate(InstancePointer, idHandle.AddrOfPinnedObject(),
+                versionHandle.AddrOfPinnedObject(), iconHandle.AddrOfPinnedObject());
             idHandle.Free();
             versionHandle.Free();
             iconHandle.Free();
         }
-        
+
         /// <summary>
-        /// 获取可用的音频过滤器
+        ///     获取可用的音频过滤器
         /// </summary>
         public ModuleDescriptionList GetAudioFilterList()
         {
@@ -323,7 +330,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 获取可用的视频过滤器
+        ///     获取可用的视频过滤器
         /// </summary>
         public ModuleDescriptionList GetVideoFilterList()
         {
@@ -331,7 +338,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 通过名称创建一个新的 VlcMedia
+        ///     通过名称创建一个新的 VlcMedia
         /// </summary>
         /// <param name="name">媒体名称</param>
         public VlcMedia CreateMediaAsNewNode(String name)
@@ -340,7 +347,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 通过给定的文件描述符创建一个新的 VlcMedia
+        ///     通过给定的文件描述符创建一个新的 VlcMedia
         /// </summary>
         /// <param name="fileDescriptor">文件描述符</param>
         public VlcMedia CreateMediaFromFileDescriptor(int fileDescriptor)
@@ -349,7 +356,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 通过给定的文件 Url 创建一个新的 VlcMedia,该 Url 的格式必须以 "file://" 开头,参见 "RFC3986".
+        ///     通过给定的文件 Url 创建一个新的 VlcMedia,该 Url 的格式必须以 "file://" 开头,参见 "RFC3986".
         /// </summary>
         /// <param name="url">文件 Url</param>
         public VlcMedia CreateMediaFromLocation(String url)
@@ -358,7 +365,7 @@ namespace xZune.Vlc
         }
 
         /// <summary>
-        /// 通过给定的文件路径创建一个新的 VlcMedia
+        ///     通过给定的文件路径创建一个新的 VlcMedia
         /// </summary>
         /// <param name="path">文件路径</param>
         public VlcMedia CreateMediaFromPath(String path)

@@ -1,10 +1,14 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: LibVlc.MediaPlayer.Audio.cs
+// Version: 20160214
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc.Interop.MediaPlayer
 {
     /// <summary>
-    /// 切换音频静音状态
+    ///     切换音频静音状态
     /// </summary>
     /// <param name="mediaPlayer"></param>
     [LibVlcFunction("libvlc_audio_toggle_mute")]
@@ -12,7 +16,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate void ToggleMute(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 获取音频静音状态
+    ///     获取音频静音状态
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns>0为正常,1为静音,-1为未定义</returns>
@@ -21,7 +25,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int GetMute(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 设置音频静音状态
+    ///     设置音频静音状态
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <param name="status"></param>
@@ -30,7 +34,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate void SetMute(IntPtr mediaPlayer, int status);
 
     /// <summary>
-    /// 获取音频音量
+    ///     获取音频音量
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns>0~100之间</returns>
@@ -39,7 +43,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int GetVolume(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 设置音频音量
+    ///     设置音频音量
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <param name="volume">0~100之间</param>
@@ -48,7 +52,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int SetVolume(IntPtr mediaPlayer, int volume);
 
     /// <summary>
-    /// 获取音频输出通道
+    ///     获取音频输出通道
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns></returns>
@@ -57,7 +61,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate AudioOutputChannel GetOutputChannel(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 设置音频输出通道
+    ///     设置音频输出通道
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <param name="channel"></param>
@@ -67,7 +71,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int SetOutputChannel(IntPtr mediaPlayer, AudioOutputChannel channel);
 
     /// <summary>
-    /// 获取音频轨道数
+    ///     获取音频轨道数
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns></returns>
@@ -76,7 +80,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int GetAudioTrackCount(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 获取当前音轨
+    ///     获取当前音轨
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns></returns>
@@ -85,7 +89,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int GetAudioTrack(IntPtr mediaPlayer);
 
     /// <summary>
-    /// 设置当前音轨
+    ///     设置当前音轨
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <param name="track"></param>
@@ -95,7 +99,7 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate int SetAudioTrack(IntPtr mediaPlayer, int track);
 
     /// <summary>
-    /// 获取音轨描述
+    ///     获取音轨描述
     /// </summary>
     /// <param name="mediaPlayer"></param>
     /// <returns></returns>

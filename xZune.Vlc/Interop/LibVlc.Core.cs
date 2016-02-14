@@ -1,10 +1,14 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: LibVlc.Core.cs
+// Version: 20160214
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc.Interop.Core
 {
     /// <summary>
-    /// 尝试启动一个用户接口,用于 LibVlc 实例
+    ///     尝试启动一个用户接口,用于 LibVlc 实例
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="name">接口名,为 NULL 则为默认</param>
@@ -14,16 +18,16 @@ namespace xZune.Vlc.Interop.Core
     public delegate int AddInterface(IntPtr instance, IntPtr name);
 
     /// <summary>
-    /// 获取可用的音频过滤器
+    ///     获取可用的音频过滤器
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
-    /// <returns>可用音频过滤器列表指针,这是一个 <see cref="ModuleDescription"/> 类型的指针</returns>
+    /// <returns>可用音频过滤器列表指针,这是一个 <see cref="ModuleDescription" /> 类型的指针</returns>
     [LibVlcFunction("libvlc_audio_filter_list_get")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr GetAudioFilterList(IntPtr instance);
 
     /// <summary>
-    /// 释放由 LibVlc 函数返回的指针资源,其作用类似于 C语言 中的 free() 函数
+    ///     释放由 LibVlc 函数返回的指针资源,其作用类似于 C语言 中的 free() 函数
     /// </summary>
     /// <param name="pointer">指针</param>
     [LibVlcFunction("libvlc_free")]
@@ -31,7 +35,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate void Free(IntPtr pointer);
 
     /// <summary>
-    /// 获取 LibVlc 的变更集(?)
+    ///     获取 LibVlc 的变更集(?)
     /// </summary>
     /// <returns>返回 LibVlc 的变更集,类似于 "aa9bce0bc4"</returns>
     [LibVlcFunction("libvlc_get_changeset")]
@@ -39,7 +43,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate IntPtr GetChangeset();
 
     /// <summary>
-    /// 获取 LibVlc 的编译器信息
+    ///     获取 LibVlc 的编译器信息
     /// </summary>
     /// <returns>返回 LibVlc 的编译器信息</returns>
     [LibVlcFunction("libvlc_get_compiler")]
@@ -47,7 +51,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate IntPtr GetCompiler();
 
     /// <summary>
-    /// 获取 LibVlc 的版本信息
+    ///     获取 LibVlc 的版本信息
     /// </summary>
     /// <returns>返回 LibVlc 的版本信息,类似于 "1.1.0-git The Luggage"</returns>
     [LibVlcFunction("libvlc_get_version")]
@@ -55,7 +59,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate IntPtr GetVersion();
 
     /// <summary>
-    /// 释放 <see cref="ModuleDescription"/> 的资源
+    ///     释放 <see cref="ModuleDescription" /> 的资源
     /// </summary>
     /// <param name="moduleDescription">资源指针</param>
     [LibVlcFunction("libvlc_module_description_list_release")]
@@ -63,8 +67,8 @@ namespace xZune.Vlc.Interop.Core
     public delegate void ReleaseLibVlcModuleDescription(IntPtr moduleDescription);
 
     /// <summary>
-    /// 创建并初始化一个 LibVlc 实例,并提供相应的参数,这些参数和命令行提供的参数类似,会影响到 LibVlc 实例的默认配置.
-    /// 有效参数的列表取决于 LibVlc 版本,操作系统,可用 LibVlc 插件和平台.无效或不支持的参数会导致实例创建失败
+    ///     创建并初始化一个 LibVlc 实例,并提供相应的参数,这些参数和命令行提供的参数类似,会影响到 LibVlc 实例的默认配置.
+    ///     有效参数的列表取决于 LibVlc 版本,操作系统,可用 LibVlc 插件和平台.无效或不支持的参数会导致实例创建失败
     /// </summary>
     /// <param name="argsCount">参数个数</param>
     /// <param name="argv">参数列表</param>
@@ -74,7 +78,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate IntPtr NewInstance(int argsCount, IntPtr argv);
 
     /// <summary>
-    /// 递减 LibVlc 实例的引用计数,如果它达到零,将会释放这个实例
+    ///     递减 LibVlc 实例的引用计数,如果它达到零,将会释放这个实例
     /// </summary>
     /// <param name="instance">需要释放的 LibVlc 实例指针</param>
     [LibVlcFunction("libvlc_release")]
@@ -82,7 +86,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate void ReleaseInstance(IntPtr instance);
 
     /// <summary>
-    /// 递增 LibVlc 实例的引用计数,当调用 NewInstance 初始化成功时,引用计数将初始化为1
+    ///     递增 LibVlc 实例的引用计数,当调用 NewInstance 初始化成功时,引用计数将初始化为1
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     [LibVlcFunction("libvlc_retain")]
@@ -90,7 +94,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate void RetainInstance(IntPtr instance);
 
     /// <summary>
-    /// 设置一些元信息关于该应用程序
+    ///     设置一些元信息关于该应用程序
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="id">Java 风格的应用标识符,类似于 "com.acme.foobar"</param>
@@ -101,8 +105,8 @@ namespace xZune.Vlc.Interop.Core
     public delegate void SetAppId(IntPtr instance, IntPtr id, IntPtr version, IntPtr icon);
 
     /// <summary>
-    /// 为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait"/> 一起使用.
-    /// 而且,这个函数应该在播放一个列表或者开始一个用户接口前被调用,否则可能导致 LibVlc 在注册该回调前退出
+    ///     为 LibVlc 设置一个回调,该回调将会在 LibVlc 退出时被调用,不能与 <see cref="Wait" /> 一起使用.
+    ///     而且,这个函数应该在播放一个列表或者开始一个用户接口前被调用,否则可能导致 LibVlc 在注册该回调前退出
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="handler">函数指针,这是一个参数为 void*,无返回值的函数指针</param>
@@ -114,7 +118,7 @@ namespace xZune.Vlc.Interop.Core
     public delegate void ExitHandler(IntPtr data);
 
     /// <summary>
-    /// 设置一个用户代理字符串,当一个协议需要它的时候,LibVlc 将会提供该字符串
+    ///     设置一个用户代理字符串,当一个协议需要它的时候,LibVlc 将会提供该字符串
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     /// <param name="name">应用程序名称,类似于 "FooBar player 1.2.3",实际上只要能标识应用程序,任何字符串都是可以的</param>
@@ -124,17 +128,17 @@ namespace xZune.Vlc.Interop.Core
     public delegate void SetUserAgent(IntPtr instance, IntPtr name, IntPtr http);
 
     /// <summary>
-    /// 获取可用的视频过滤器
+    ///     获取可用的视频过滤器
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
-    /// <returns>可用视频过滤器列表指针,这是一个 <see cref="ModuleDescription"/> 类型的指针</returns>
+    /// <returns>可用视频过滤器列表指针,这是一个 <see cref="ModuleDescription" /> 类型的指针</returns>
     [LibVlcFunction("libvlc_video_filter_list_get")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate IntPtr GetVideoFilterList(IntPtr instance);
 
     /// <summary>
-    /// 等待,直到一个接口导致 LibVlc 实例退出为止,在使用之前,应该使用 <see cref="AddInterface"/> 添加至少一个用户接口.
-    /// 实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="SetExitHandler"/>
+    ///     等待,直到一个接口导致 LibVlc 实例退出为止,在使用之前,应该使用 <see cref="AddInterface" /> 添加至少一个用户接口.
+    ///     实际上这个方法只会导致一个线程阻塞,建议使用 <see cref="SetExitHandler" />
     /// </summary>
     /// <param name="instance">LibVlc 实例指针</param>
     [LibVlcFunction("libvlc_wait")]
@@ -142,26 +146,26 @@ namespace xZune.Vlc.Interop.Core
     public delegate void Wait(IntPtr instance);
 
     /// <summary>
-    /// 对一个 LibVlc 的模块的说明
+    ///     对一个 LibVlc 的模块的说明
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     public struct ModuleDescription
     {
         public IntPtr Name;
-        
+
         public IntPtr ShortName;
-        
+
         public IntPtr LongName;
-        
+
         public IntPtr Help;
-        
+
         public IntPtr Next;
     }
 
     namespace Error
     {
         /// <summary>
-        /// 获取一个可读的 LibVlc 错误信息
+        ///     获取一个可读的 LibVlc 错误信息
         /// </summary>
         /// <returns>返回一个可读的 LibVlc 错误信息,如果没有错误信息将返回 NULL</returns>
         [LibVlcFunction("libvlc_errmsg")]
@@ -169,7 +173,7 @@ namespace xZune.Vlc.Interop.Core
         public delegate IntPtr ErrorMessage();
 
         /// <summary>
-        /// 清除当前线程的 LibVlc 的错误信息
+        ///     清除当前线程的 LibVlc 的错误信息
         /// </summary>
         [LibVlcFunction("libvlc_clearerr")]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -179,7 +183,7 @@ namespace xZune.Vlc.Interop.Core
     namespace Events
     {
         /// <summary>
-        /// 为一个事件通知注册一个回调
+        ///     为一个事件通知注册一个回调
         /// </summary>
         /// <param name="manager">事件管理器</param>
         /// <param name="type">事件类型</param>
@@ -191,7 +195,7 @@ namespace xZune.Vlc.Interop.Core
         public delegate int EventAttach(IntPtr manager, EventTypes type, LibVlcEventCallBack callback, IntPtr userData);
 
         /// <summary>
-        /// 为一个事件通知取消注册一个回调
+        ///     为一个事件通知取消注册一个回调
         /// </summary>
         /// <param name="manager">事件管理器</param>
         /// <param name="type">事件类型</param>
@@ -202,7 +206,7 @@ namespace xZune.Vlc.Interop.Core
         public delegate void EventDetach(IntPtr manager, EventTypes type, LibVlcEventCallBack callback, IntPtr userData);
 
         /// <summary>
-        /// 获取事件类型名称
+        ///     获取事件类型名称
         /// </summary>
         /// <param name="type">事件类型</param>
         /// <returns>返回事件类型名称</returns>
@@ -211,7 +215,7 @@ namespace xZune.Vlc.Interop.Core
         public delegate IntPtr GetTypeName(EventTypes type);
 
         /// <summary>
-        /// 表示一个 LibVlc 的事件回调代理
+        ///     表示一个 LibVlc 的事件回调代理
         /// </summary>
         /// <param name="eventArgs">事件参数</param>
         /// <param name="userData">用户数据指针</param>
@@ -219,249 +223,249 @@ namespace xZune.Vlc.Interop.Core
         public delegate void LibVlcEventCallBack(ref LibVlcEventArgs eventArgs, IntPtr userData);
 
         /// <summary>
-        /// 事件类型
+        ///     事件类型
         /// </summary>
         public enum EventTypes : uint
         {
             /// <summary>
-            /// 媒体元数据改变
+            ///     媒体元数据改变
             /// </summary>
             MediaMetaChanged = 0,
 
             /// <summary>
-            /// 媒体的子项被添加
+            ///     媒体的子项被添加
             /// </summary>
             MediaSubItemAdded,
 
             /// <summary>
-            /// 媒体时长改变
+            ///     媒体时长改变
             /// </summary>
             MediaDurationChanged,
 
             /// <summary>
-            /// 媒体解析状态被改变
+            ///     媒体解析状态被改变
             /// </summary>
             MediaParsedChanged,
 
             /// <summary>
-            /// 媒体被释放
+            ///     媒体被释放
             /// </summary>
             MediaFreed,
 
             /// <summary>
-            /// 媒体状态改变
+            ///     媒体状态改变
             /// </summary>
             MediaStateChanged,
 
             /// <summary>
-            /// 媒体播放器的媒体被改变
+            ///     媒体播放器的媒体被改变
             /// </summary>
             MediaPlayerMediaChanged = 0x100,
 
             MediaPlayerNothingSpecial,
 
             /// <summary>
-            /// 媒体播放器正在打开媒体
+            ///     媒体播放器正在打开媒体
             /// </summary>
             MediaPlayerOpening,
 
             /// <summary>
-            /// 媒体播放器正在缓冲媒体
+            ///     媒体播放器正在缓冲媒体
             /// </summary>
             MediaPlayerBuffering,
 
             /// <summary>
-            /// 媒体播放器正在播放
+            ///     媒体播放器正在播放
             /// </summary>
             MediaPlayerPlaying,
 
             /// <summary>
-            /// 媒体播放器被暂停
+            ///     媒体播放器被暂停
             /// </summary>
             MediaPlayerPaused,
 
             /// <summary>
-            /// 媒体播放器被停止播放
+            ///     媒体播放器被停止播放
             /// </summary>
             MediaPlayerStopped,
 
             /// <summary>
-            /// 媒体播放器前进
+            ///     媒体播放器前进
             /// </summary>
             MediaPlayerForward,
 
             /// <summary>
-            /// 媒体播放器后退
+            ///     媒体播放器后退
             /// </summary>
             MediaPlayerBackward,
 
             /// <summary>
-            /// 媒体播放器结束播放
+            ///     媒体播放器结束播放
             /// </summary>
             MediaPlayerEndReached,
 
             /// <summary>
-            /// 媒体播放器遇到错误
+            ///     媒体播放器遇到错误
             /// </summary>
             MediaPlayerEncounteredError,
 
             /// <summary>
-            /// 媒体播放器时间改变
+            ///     媒体播放器时间改变
             /// </summary>
             MediaPlayerTimeChanged,
 
             /// <summary>
-            /// 媒体播放器进度改变
+            ///     媒体播放器进度改变
             /// </summary>
             MediaPlayerPositionChanged,
 
             /// <summary>
-            /// 媒体播放器是否允许寻址被改变
+            ///     媒体播放器是否允许寻址被改变
             /// </summary>
             MediaPlayerSeekableChanged,
 
             /// <summary>
-            /// 媒体播放器是否允许被暂停被改变
+            ///     媒体播放器是否允许被暂停被改变
             /// </summary>
             MediaPlayerPausableChanged,
 
             /// <summary>
-            /// 媒体播放器标题被改变
+            ///     媒体播放器标题被改变
             /// </summary>
             MediaPlayerTitleChanged,
 
             /// <summary>
-            /// 媒体播放器捕获一个快照
+            ///     媒体播放器捕获一个快照
             /// </summary>
             MediaPlayerSnapshotTaken,
 
             /// <summary>
-            /// 媒体播放器长度改变
+            ///     媒体播放器长度改变
             /// </summary>
             MediaPlayerLengthChanged,
 
             /// <summary>
-            /// 媒体播放器视频输出改变
+            ///     媒体播放器视频输出改变
             /// </summary>
             MediaPlayerVideoOutChanged,
 
             /// <summary>
-            /// 一个项被添加到媒体列表
+            ///     一个项被添加到媒体列表
             /// </summary>
             MediaListItemAdded = 0x200,
 
             /// <summary>
-            /// 一个项将被添加到媒体列表
+            ///     一个项将被添加到媒体列表
             /// </summary>
             MediaListWillAddItem,
 
             /// <summary>
-            /// 一个项从媒体列表移除
+            ///     一个项从媒体列表移除
             /// </summary>
             MediaListItemDeleted,
 
             /// <summary>
-            /// 一个项将从媒体列表移除
+            ///     一个项将从媒体列表移除
             /// </summary>
             MediaListWillDeleteItem,
 
             /// <summary>
-            /// 一个项被添加到媒体列表视图
+            ///     一个项被添加到媒体列表视图
             /// </summary>
             MediaListViewItemAdded = 0x300,
 
             /// <summary>
-            /// 一个项将被添加到媒体列表视图
+            ///     一个项将被添加到媒体列表视图
             /// </summary>
             MediaListViewWillAddItem,
 
             /// <summary>
-            /// 一个项从媒体列表视图移除
+            ///     一个项从媒体列表视图移除
             /// </summary>
             MediaListViewItemDeleted,
 
             /// <summary>
-            /// 一个项将从媒体列表视图移除
+            ///     一个项将从媒体列表视图移除
             /// </summary>
             MediaListViewWillDeleteItem,
 
             /// <summary>
-            /// 媒体列表播放器开始播放
+            ///     媒体列表播放器开始播放
             /// </summary>
             MediaListPlayerPlayed = 0x400,
 
             /// <summary>
-            /// 媒体列表播放器跳到下个项
+            ///     媒体列表播放器跳到下个项
             /// </summary>
             MediaListPlayerNextItemSet,
 
             /// <summary>
-            /// 媒体列表播放器停止
+            ///     媒体列表播放器停止
             /// </summary>
             MediaListPlayerStopped,
 
             /// <summary>
-            /// 媒体搜寻器开始搜寻
+            ///     媒体搜寻器开始搜寻
             /// </summary>
             MediaDiscovererStarted = 0x500,
 
             /// <summary>
-            /// 媒体搜寻器搜寻结束
+            ///     媒体搜寻器搜寻结束
             /// </summary>
             MediaDiscovererEnded,
 
             /// <summary>
-            /// 一个 VLM 媒体被添加
+            ///     一个 VLM 媒体被添加
             /// </summary>
             VlmMediaAdded = 0x600,
 
             /// <summary>
-            /// 一个 VLM 媒体被移除
+            ///     一个 VLM 媒体被移除
             /// </summary>
             VlmMediaRemoved,
 
             /// <summary>
-            /// 一个 VLM 媒体被改变
+            ///     一个 VLM 媒体被改变
             /// </summary>
             VlmMediaChanged,
 
             /// <summary>
-            /// 一个 VLM 媒体实例开始
+            ///     一个 VLM 媒体实例开始
             /// </summary>
             VlmMediaInstanceStarted,
 
             /// <summary>
-            /// 一个 VLM 媒体实例停止
+            ///     一个 VLM 媒体实例停止
             /// </summary>
             VlmMediaInstanceStopped,
 
             /// <summary>
-            /// 一个 VLM 媒体实例被初始化
+            ///     一个 VLM 媒体实例被初始化
             /// </summary>
             VlmMediaInstanceStatusInit,
 
             /// <summary>
-            /// 一个 VLM 媒体实例正在打开
+            ///     一个 VLM 媒体实例正在打开
             /// </summary>
             VlmMediaInstanceStatusOpening,
 
             /// <summary>
-            /// 一个 VLM 媒体实例正在播放
+            ///     一个 VLM 媒体实例正在播放
             /// </summary>
             VlmMediaInstanceStatusPlaying,
 
             /// <summary>
-            /// 一个 VLM 媒体实例被暂停
+            ///     一个 VLM 媒体实例被暂停
             /// </summary>
             VlmMediaInstanceStatusPause,
 
             /// <summary>
-            /// 一个 VLM 媒体实例结束播放
+            ///     一个 VLM 媒体实例结束播放
             /// </summary>
             VlmMediaInstanceStatusEnd,
 
             /// <summary>
-            /// 一个 VLM 媒体实例出现错误
+            ///     一个 VLM 媒体实例出现错误
             /// </summary>
             VlmMediaInstanceStatusError
         }
@@ -469,107 +473,83 @@ namespace xZune.Vlc.Interop.Core
         [StructLayout(LayoutKind.Explicit)]
         public struct LibVlcEventArgs
         {
-            [FieldOffset(0)]
-            public EventTypes Type;
+            [FieldOffset(0)] public EventTypes Type;
 
-            [FieldOffset(4)]
-            public IntPtr ObjectHandle;
+            [FieldOffset(4)] public IntPtr ObjectHandle;
 
             #region media descriptor
 
-            [FieldOffset(8)]
-            public MediaMetaChangedArgs MediaMetaChanged;
+            [FieldOffset(8)] public MediaMetaChangedArgs MediaMetaChanged;
 
-            [FieldOffset(8)]
-            public MediaSubitemAddedArgs MediaSubitemAdded;
+            [FieldOffset(8)] public MediaSubitemAddedArgs MediaSubitemAdded;
 
-            [FieldOffset(8)]
-            public MediaDurationChangedArgs MediaDurationChanged;
+            [FieldOffset(8)] public MediaDurationChangedArgs MediaDurationChanged;
 
-            [FieldOffset(8)]
-            public MediaParsedChangedArgs MediaParsedChanged;
+            [FieldOffset(8)] public MediaParsedChangedArgs MediaParsedChanged;
 
-            [FieldOffset(8)]
-            public MediaFreedArgs MediaFreed;
+            [FieldOffset(8)] public MediaFreedArgs MediaFreed;
 
-            [FieldOffset(8)]
-            public MediaStateChangedArgs MediaStateChanged;
+            [FieldOffset(8)] public MediaStateChangedArgs MediaStateChanged;
 
             #endregion media descriptor
 
             #region media instance
 
-            [FieldOffset(8)]
-            public MediaPlayerBufferingArgs MediaPlayerBuffering;
+            [FieldOffset(8)] public MediaPlayerBufferingArgs MediaPlayerBuffering;
 
-            [FieldOffset(8)]
-            public MediaPlayerPositionChangedArgs MediaPlayerPositionChanged;
+            [FieldOffset(8)] public MediaPlayerPositionChangedArgs MediaPlayerPositionChanged;
 
-            [FieldOffset(8)]
-            public MediaPlayerTimeChangedArgs MediaPlayerTimeChanged;
+            [FieldOffset(8)] public MediaPlayerTimeChangedArgs MediaPlayerTimeChanged;
 
-            [FieldOffset(8)]
-            public MediaPlayerTitleChangedArgs MediaPlayerTitleChanged;
+            [FieldOffset(8)] public MediaPlayerTitleChangedArgs MediaPlayerTitleChanged;
 
-            [FieldOffset(8)]
-            public MediaPlayerSeekableChangedArgs MediaPlayerSeekableChanged;
+            [FieldOffset(8)] public MediaPlayerSeekableChangedArgs MediaPlayerSeekableChanged;
 
-            [FieldOffset(8)]
-            public MediaPlayerPausableChangedArgs MediaPlayerPausableChanged;
+            [FieldOffset(8)] public MediaPlayerPausableChangedArgs MediaPlayerPausableChanged;
 
-            [FieldOffset(8)]
-            public MediaPlayerVideoOutChangedArgs MediaPlayerVideoOutChanged;
+            [FieldOffset(8)] public MediaPlayerVideoOutChangedArgs MediaPlayerVideoOutChanged;
 
             #endregion media instance
 
             #region media list
 
-            [FieldOffset(8)]
-            public MediaListItemAddedArgs MediaListItemAdded;
+            [FieldOffset(8)] public MediaListItemAddedArgs MediaListItemAdded;
 
-            [FieldOffset(8)]
-            public MediaListWillAddItemArgs MediaListWillAddItem;
+            [FieldOffset(8)] public MediaListWillAddItemArgs MediaListWillAddItem;
 
-            [FieldOffset(8)]
-            public MediaListItemDeletedArgs MediaListItemDeleted;
+            [FieldOffset(8)] public MediaListItemDeletedArgs MediaListItemDeleted;
 
-            [FieldOffset(8)]
-            public MediaListWillDeleteItemArgs MediaListWillDeleteItem;
+            [FieldOffset(8)] public MediaListWillDeleteItemArgs MediaListWillDeleteItem;
 
             #endregion media list
 
             #region media list player
 
-            [FieldOffset(8)]
-            public MediaListPlayerNextItemSetArgs MediaListPlayerNextItemSet;
+            [FieldOffset(8)] public MediaListPlayerNextItemSetArgs MediaListPlayerNextItemSet;
 
             #endregion media list player
 
             #region snapshot taken
 
-            [FieldOffset(8)]
-            public MediaPlayerSnapshotTakenArgs MediaPlayerSnapshotTaken;
+            [FieldOffset(8)] public MediaPlayerSnapshotTakenArgs MediaPlayerSnapshotTaken;
 
             #endregion snapshot taken
 
             #region Length changed
 
-            [FieldOffset(8)]
-            public MediaPlayerLengthChangedArgs MediaPlayerLengthChanged;
+            [FieldOffset(8)] public MediaPlayerLengthChangedArgs MediaPlayerLengthChanged;
 
             #endregion Length changed
 
             #region VLM media
 
-            [FieldOffset(8)]
-            public VlmMediaEventArgs VlmMediaEvent;
+            [FieldOffset(8)] public VlmMediaEventArgs VlmMediaEvent;
 
             #endregion VLM media
 
             #region Extra MediaPlayer
 
-            [FieldOffset(8)]
-            public MediaPlayerMediaChangedArgs MediaPlayerMediaChanged;
+            [FieldOffset(8)] public MediaPlayerMediaChangedArgs MediaPlayerMediaChanged;
 
             #endregion Extra MediaPlayer
         }

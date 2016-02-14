@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VideoDisplayContext.cs
-//Version: 20160109
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VideoDisplayContext.cs
+// Version: 20160214
 
 using System;
 using System.Diagnostics;
@@ -11,25 +11,25 @@ using System.Windows.Media;
 namespace xZune.Vlc.Wpf
 {
     /// <summary>
-    /// Context used to render video data.
+    ///     Context used to render video data.
     /// </summary>
     internal class VideoDisplayContext : IDisposable
     {
         #region --- Fields ---
 
-        private bool _disposed = false;
+        private bool _disposed;
 
         #endregion --- Fields ---
 
         #region --- Initialization ---
 
         public VideoDisplayContext(uint width, uint height, ChromaType chroma)
-            : this((int)width, (int)height, chroma)
+            : this((int) width, (int) height, chroma)
         {
         }
 
         public VideoDisplayContext(double width, double height, ChromaType chroma)
-            : this((int)width, (int)height, chroma)
+            : this((int) width, (int) height, chroma)
         {
         }
 
@@ -38,16 +38,21 @@ namespace xZune.Vlc.Wpf
             ChromaType = chroma;
             PixelFormat = chroma.GetPixelFormat();
             IsAspectRatioChecked = false;
-            Size = width * height * PixelFormat.BitsPerPixel / 8;
+            Size = width*height*PixelFormat.BitsPerPixel/8;
             DisplayWidth = Width = width;
             DisplayHeight = Height = height;
-            Stride = width * PixelFormat.BitsPerPixel / 8;
+            Stride = width*PixelFormat.BitsPerPixel/8;
             FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
-            MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint)Size);
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
-                Image = (InteropBitmap)Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
-            }));
+            MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint) Size);
+            Application.Current.Dispatcher.Invoke(
+                new Action(
+                    () =>
+                    {
+                        Image =
+                            (InteropBitmap)
+                                Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat,
+                                    Stride, 0);
+                    }));
         }
 
         #endregion --- Initialization ---
@@ -97,10 +102,7 @@ namespace xZune.Vlc.Wpf
         {
             if (Application.Current != null)
             {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    Image.Invalidate();
-                }));
+                Application.Current.Dispatcher.Invoke(new Action(() => { Image.Invalidate(); }));
             }
         }
 
@@ -108,21 +110,22 @@ namespace xZune.Vlc.Wpf
         {
             if (!IsAspectRatioChecked)
             {
-                var sar = 1.0 * track.SarNum / track.SarDen;
+                var sar = 1.0*track.SarNum/track.SarDen;
 
                 if (track.SarNum == 0 || track.SarDen == 0) return;
 
-                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen));
+                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height,
+                    track.SarNum, track.SarDen));
 
                 if (sar > 1)
                 {
-                    DisplayWidth = sar * track.Width;
+                    DisplayWidth = sar*track.Width;
                     DisplayHeight = track.Height;
                 }
                 else
                 {
                     DisplayWidth = track.Width;
-                    DisplayHeight = track.Height / sar;
+                    DisplayHeight = track.Height/sar;
                 }
             }
         }

@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: TrackDescription.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: TrackDescription.cs
+// Version: 20160214
 
 using System;
 using System.Collections;
@@ -10,23 +10,26 @@ using System.Runtime.InteropServices;
 namespace xZune.Vlc
 {
     /// <summary>
-    /// A warpper for <see cref="Interop.MediaPlayer.TrackDescription"/> struct.
+    ///     A warpper for <see cref="Interop.MediaPlayer.TrackDescription" /> struct.
     /// </summary>
     public class TrackDescription
     {
+        private IntPtr _pointer;
+
+        internal Interop.MediaPlayer.TrackDescription Struct;
+
         internal TrackDescription(IntPtr pointer)
         {
             _pointer = pointer;
             if (pointer != IntPtr.Zero)
             {
-                _struct = (Interop.MediaPlayer.TrackDescription)Marshal.PtrToStructure(pointer, typeof(Interop.MediaPlayer.TrackDescription));
-                Name = InteropHelper.PtrToString(_struct.Name);
-                Id = _struct.Id;
+                Struct =
+                    (Interop.MediaPlayer.TrackDescription)
+                        Marshal.PtrToStructure(pointer, typeof (Interop.MediaPlayer.TrackDescription));
+                Name = InteropHelper.PtrToString(Struct.Name);
+                Id = Struct.Id;
             }
         }
-
-        internal Interop.MediaPlayer.TrackDescription _struct;
-        internal IntPtr _pointer;
 
         public String Name { get; private set; }
 
@@ -34,12 +37,15 @@ namespace xZune.Vlc
     }
 
     /// <summary>
-    /// A list warpper for <see cref="Interop.MediaPlayer.TrackDescription"/> linklist struct.
+    ///     A list warpper for <see cref="Interop.MediaPlayer.TrackDescription" /> linklist struct.
     /// </summary>
     public class TrackDescriptionList : IDisposable, IEnumerable<TrackDescription>, IEnumerable
     {
+        private List<TrackDescription> _list;
+        private IntPtr _pointer;
+
         /// <summary>
-        /// Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.TrackDescription"/>.
+        ///     Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.TrackDescription" />.
         /// </summary>
         /// <param name="pointer"></param>
         public TrackDescriptionList(IntPtr pointer)
@@ -49,24 +55,11 @@ namespace xZune.Vlc
 
             while (pointer != IntPtr.Zero)
             {
-                var TrackDescription = new TrackDescription(pointer);
-                _list.Add(TrackDescription);
+                var trackDescription = new TrackDescription(pointer);
+                _list.Add(trackDescription);
 
-                pointer = TrackDescription._struct.Next;
+                pointer = trackDescription.Struct.Next;
             }
-        }
-
-        private List<TrackDescription> _list;
-        private IntPtr _pointer;
-
-        public IEnumerator<TrackDescription> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public int Count
@@ -86,6 +79,16 @@ namespace xZune.Vlc
             LibVlcManager.ReleaseTrackDescriptionList(_pointer);
             _pointer = IntPtr.Zero;
             _list.Clear();
+        }
+
+        public IEnumerator<TrackDescription> GetEnumerator()
+        {
+            return _list.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

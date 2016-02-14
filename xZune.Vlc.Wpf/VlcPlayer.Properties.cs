@@ -1,11 +1,11 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcPlayer.Properties.cs
-//Version: 20160213
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcPlayer.Properties.cs
+// Version: 20160214
 
 using System;
 using System.Windows.Threading;
+using xZune.Vlc.Interop.Media;
 using xZune.Vlc.Interop.MediaPlayer;
-using MediaState = xZune.Vlc.Interop.Media.MediaState;
 
 namespace xZune.Vlc.Wpf
 {
@@ -14,7 +14,7 @@ namespace xZune.Vlc.Wpf
         #region Position
 
         /// <summary>
-        /// Get or set progress of media, between 0 and 1.
+        ///     Get or set progress of media, between 0 and 1.
         /// </summary>
         public float Position
         {
@@ -31,7 +31,7 @@ namespace xZune.Vlc.Wpf
         #region Time
 
         /// <summary>
-        /// Get or set current time progress of media.
+        ///     Get or set current time progress of media.
         /// </summary>
         public TimeSpan Time
         {
@@ -48,7 +48,7 @@ namespace xZune.Vlc.Wpf
         #region FPS
 
         /// <summary>
-        /// Get FPS of media.
+        ///     Get FPS of media.
         /// </summary>
         public float FPS
         {
@@ -60,7 +60,7 @@ namespace xZune.Vlc.Wpf
         #region IsMute
 
         /// <summary>
-        /// Get or set state of mute.
+        ///     Get or set state of mute.
         /// </summary>
         public bool IsMute
         {
@@ -83,38 +83,10 @@ namespace xZune.Vlc.Wpf
 
         #endregion IsMute
 
-        #region Volume
-
-        private int _volume = 100;
-
-        /// <summary>
-        /// Get or set volume of media.
-        /// </summary>
-        public int Volume
-        {
-            get { return _volume; }
-            set
-            {
-                if (_volume == value || VlcMediaPlayer == null) return;
-                VlcMediaPlayer.Volume = _volume = value;
-                
-                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    OnPropertyChanged(() => Volume);
-                    if (VolumeChanged != null)
-                    {
-                        VolumeChanged(this, new EventArgs());
-                    }
-                }));
-            }
-        }
-
-        #endregion Volume
-
         #region AudioOutputChannel
 
         /// <summary>
-        /// Get or set output channel of audio.
+        ///     Get or set output channel of audio.
         /// </summary>
         public AudioOutputChannel AudioOutputChannel
         {
@@ -131,7 +103,7 @@ namespace xZune.Vlc.Wpf
         #region AudioTrackCount
 
         /// <summary>
-        /// Get track count of audio.
+        ///     Get track count of audio.
         /// </summary>
         public int AudioTrackCount
         {
@@ -143,11 +115,11 @@ namespace xZune.Vlc.Wpf
         #region AudioTrack
 
         /// <summary>
-        /// Get or set track index of audio.
+        ///     Get or set track index of audio.
         /// </summary>
         public int AudioTrack
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrack, - 1); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrack, -1); } //note: assuming a 0-based index
             set
             {
                 if (AudioTrack == value || VlcMediaPlayer == null) return;
@@ -160,7 +132,7 @@ namespace xZune.Vlc.Wpf
         #region AudioTrackDescription
 
         /// <summary>
-        /// Get description of audio track.
+        ///     Get description of audio track.
         /// </summary>
         public TrackDescriptionList AudioTrackDescription
         {
@@ -172,7 +144,7 @@ namespace xZune.Vlc.Wpf
         #region Rate
 
         /// <summary>
-        /// Get or set rate of media.
+        ///     Get or set rate of media.
         /// </summary>
         public float Rate
         {
@@ -189,7 +161,7 @@ namespace xZune.Vlc.Wpf
         #region Title
 
         /// <summary>
-        /// Get or set title index of media.
+        ///     Get or set title index of media.
         /// </summary>
         public int Title
         {
@@ -206,7 +178,7 @@ namespace xZune.Vlc.Wpf
         #region TitleCount
 
         /// <summary>
-        /// Get title count of media.
+        ///     Get title count of media.
         /// </summary>
         public int TitleCount
         {
@@ -218,7 +190,7 @@ namespace xZune.Vlc.Wpf
         #region Chapter
 
         /// <summary>
-        /// Get or set chapter index of media.
+        ///     Get or set chapter index of media.
         /// </summary>
         public int Chapter
         {
@@ -235,7 +207,7 @@ namespace xZune.Vlc.Wpf
         #region ChapterCount
 
         /// <summary>
-        /// Get chapter count of media.
+        ///     Get chapter count of media.
         /// </summary>
         public int ChapterCount
         {
@@ -247,7 +219,7 @@ namespace xZune.Vlc.Wpf
         #region IsSeekable
 
         /// <summary>
-        /// Checks if media is seekable.
+        ///     Checks if media is seekable.
         /// </summary>
         public bool IsSeekable
         {
@@ -259,7 +231,7 @@ namespace xZune.Vlc.Wpf
         #region State
 
         /// <summary>
-        /// Get state of media.
+        ///     Get state of media.
         /// </summary>
         public MediaState State
         {
@@ -271,7 +243,7 @@ namespace xZune.Vlc.Wpf
         #region Length
 
         /// <summary>
-        /// Get length of media.
+        ///     Get length of media.
         /// </summary>
         public TimeSpan Length
         {
@@ -283,17 +255,52 @@ namespace xZune.Vlc.Wpf
         #region VlcMediaPlayer
 
         /// <summary>
-        /// Get internal VlcMediaPlayer, it is best not to use this, unless you need to customize advanced features.
+        ///     Get internal VlcMediaPlayer, it is best not to use this, unless you need to customize advanced features.
         /// </summary>
         public VlcMediaPlayer VlcMediaPlayer { get; private set; }
 
         #endregion VlcMediaPlayer
 
+        #region CreateMode
+
+        public PlayerCreateMode CreateMode { get; set; }
+
+        #endregion CreateMode
+
+        #region Volume
+
+        private int _volume = 100;
+
+        /// <summary>
+        ///     Get or set volume of media.
+        /// </summary>
+        public int Volume
+        {
+            get { return _volume; }
+            set
+            {
+                if (_volume == value || VlcMediaPlayer == null) return;
+                VlcMediaPlayer.Volume = _volume = value;
+
+                Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    OnPropertyChanged(() => Volume);
+                    if (VolumeChanged != null)
+                    {
+                        VolumeChanged(this, new EventArgs());
+                    }
+                }));
+            }
+        }
+
+        #endregion Volume
+
         #region AudioEqualizer
+
         private AudioEqualizer _audioEqualizer;
 
         /// <summary>
-        /// Get or set audio equalizer.
+        ///     Get or set audio equalizer.
         /// </summary>
         public AudioEqualizer AudioEqualizer
         {
@@ -318,13 +325,6 @@ namespace xZune.Vlc.Wpf
             VlcMediaPlayer.SetEqualizer(_audioEqualizer);
         }
 
-        #endregion
-
-        #region CreateMode
-
-        public PlayerCreateMode CreateMode { get; set; } 
-
-        #endregion
-
+        #endregion AudioEqualizer
     }
 }

@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcPlayer.Helper.cs
-//Version: 20160109
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcPlayer.Helper.cs
+// Version: 20160214
 
 using System;
 using System.Windows;
@@ -19,12 +19,9 @@ namespace xZune.Vlc.Wpf
 
             AspectRatio aspectRatio = AspectRatio.Default;
 
-            Dispatcher.Invoke(new Action(() =>
-            {
-                aspectRatio = AspectRatio;
-            }));
+            Dispatcher.Invoke(new Action(() => { aspectRatio = AspectRatio; }));
 
-            Size scale = new Size(_context.DisplayWidth / _context.Width, _context.DisplayHeight / _context.Height);
+            Size scale = new Size(_context.DisplayWidth/_context.Width, _context.DisplayHeight/_context.Height);
 
             switch (aspectRatio)
             {
@@ -32,10 +29,12 @@ namespace xZune.Vlc.Wpf
                     return scale;
 
                 case AspectRatio._16_9:
-                    return new Size(1.0 * _context.DisplayHeight / 9 * 16 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
+                    return new Size(1.0*_context.DisplayHeight/9*16/_context.Width,
+                        1.0*_context.DisplayHeight/_context.Height);
 
                 case AspectRatio._4_3:
-                    return new Size(1.0 * _context.DisplayHeight / 3 * 4 / _context.Width, 1.0 * _context.DisplayHeight / _context.Height);
+                    return new Size(1.0*_context.DisplayHeight/3*4/_context.Width,
+                        1.0*_context.DisplayHeight/_context.Height);
             }
             return new Size(1.0, 1.0);
         }
@@ -48,230 +47,69 @@ namespace xZune.Vlc.Wpf
         {
             if (_context == null)
             {
-                return (int)x;
+                return (int) x;
             }
-            double width = _context.Width * ScaleTransform.ScaleX,
-                height = _context.Height * ScaleTransform.ScaleY;
+            double width = _context.Width*ScaleTransform.ScaleX,
+                height = _context.Height*ScaleTransform.ScaleY;
             var px = 0;
             double scale, scaleX, scaleY;
-            switch (this.Stretch)
+            switch (Stretch)
             {
                 case Stretch.None:
-                    switch (this.HorizontalContentAlignment)
+                    switch (HorizontalContentAlignment)
                     {
                         case HorizontalAlignment.Left:
-                            px = (int)x;
+                            px = (int) x;
                             break;
 
                         case HorizontalAlignment.Center:
-                            px = (int)(x - ((this.ActualWidth - width) / 2));
+                            px = (int) (x - ((ActualWidth - width)/2));
                             break;
 
                         case HorizontalAlignment.Right:
-                            px = (int)(x - (this.ActualWidth - width));
+                            px = (int) (x - (ActualWidth - width));
                             break;
 
                         case HorizontalAlignment.Stretch:
-                            if (this.ActualWidth > width)
+                            if (ActualWidth > width)
                             {
-                                px = (int)(x - ((this.ActualWidth - width) / 2));
+                                px = (int) (x - ((ActualWidth - width)/2));
                             }
                             else
                             {
-                                px = (int)x;
+                                px = (int) x;
                             }
                             break;
                     }
                     break;
 
                 case Stretch.Fill:
-                    switch (this.StretchDirection)
+                    switch (StretchDirection)
                     {
                         case StretchDirection.UpOnly:
-                            if (this.ActualWidth > width)
+                            if (ActualWidth > width)
                             {
-                                px = (int)(x / this.ActualWidth * width);
+                                px = (int) (x/ActualWidth*width);
                             }
                             break;
 
                         case StretchDirection.DownOnly:
-                            if (this.ActualWidth < width)
+                            if (ActualWidth < width)
                             {
-                                px = (int)(x / this.ActualWidth * width);
+                                px = (int) (x/ActualWidth*width);
                             }
                             break;
 
                         case StretchDirection.Both:
-                            px = (int)(x / this.ActualWidth * width);
+                            px = (int) (x/ActualWidth*width);
                             break;
                     }
                     break;
 
                 case Stretch.Uniform:
-                    scaleX = this.ActualWidth / width;
-                    scaleY = this.ActualHeight / height;
+                    scaleX = ActualWidth/width;
+                    scaleY = ActualHeight/height;
                     scale = Math.Min(scaleX, scaleY);
-
-                    switch (this.StretchDirection)
-                    {
-                        case StretchDirection.UpOnly:
-                            if (scale > 1)
-                            {
-                                if (scaleX == scale)
-                                {
-                                    px = (int)(x / scale);
-                                }
-                                else
-                                {
-                                    switch (this.HorizontalContentAlignment)
-                                    {
-                                        case HorizontalAlignment.Left:
-                                            px = (int)(x / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - width * scale)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Stretch:
-                                            px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                switch (this.HorizontalContentAlignment)
-                                {
-                                    case HorizontalAlignment.Left:
-                                        px = (int)x;
-                                        break;
-
-                                    case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        break;
-
-                                    case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - width));
-                                        break;
-
-                                    case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > width)
-                                        {
-                                            px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        }
-                                        else
-                                        {
-                                            px = (int)x;
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-
-                        case StretchDirection.DownOnly:
-                            if (scale < 1)
-                            {
-                                if (scaleX == scale)
-                                {
-                                    px = (int)(x / scale);
-                                }
-                                else
-                                {
-                                    switch (this.HorizontalContentAlignment)
-                                    {
-                                        case HorizontalAlignment.Left:
-                                            px = (int)(x / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - width * scale)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Stretch:
-                                            px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                switch (this.HorizontalContentAlignment)
-                                {
-                                    case HorizontalAlignment.Left:
-                                        px = (int)x;
-                                        break;
-
-                                    case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        break;
-
-                                    case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - width));
-                                        break;
-
-                                    case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > width)
-                                        {
-                                            px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        }
-                                        else
-                                        {
-                                            px = (int)x;
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-
-                        case StretchDirection.Both:
-                            if (scaleX == scale)
-                            {
-                                px = (int)(x / scale);
-                            }
-                            else
-                            {
-                                switch (this.HorizontalContentAlignment)
-                                {
-                                    case HorizontalAlignment.Left:
-                                        px = (int)(x / scale);
-                                        break;
-
-                                    case HorizontalAlignment.Center:
-                                        px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                        break;
-
-                                    case HorizontalAlignment.Right:
-                                        px = (int)((x - (this.ActualWidth - width * scale)) / scale);
-                                        break;
-
-                                    case HorizontalAlignment.Stretch:
-                                        px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                        break;
-                                }
-                            }
-                            break;
-                    }
-                    break;
-
-                case Stretch.UniformToFill:
-                    scaleX = ActualWidth / width;
-                    scaleY = ActualHeight / height;
-                    scale = Math.Max(scaleX, scaleY);
 
                     switch (StretchDirection)
                     {
@@ -280,88 +118,29 @@ namespace xZune.Vlc.Wpf
                             {
                                 if (scaleX == scale)
                                 {
-                                    px = (int)(x / scale);
-                                }
-                                else
-                                {
-                                    switch (this.HorizontalContentAlignment)
-                                    {
-                                        case HorizontalAlignment.Left:
-                                            px = (int)(x / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Center:
-                                            px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Right:
-                                            px = (int)((x - (this.ActualWidth - width * scale)) / scale);
-                                            break;
-
-                                        case HorizontalAlignment.Stretch:
-                                            px = (int)(x / scale);
-                                            break;
-
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                switch (this.HorizontalContentAlignment)
-                                {
-                                    case HorizontalAlignment.Left:
-                                        px = (int)x;
-                                        break;
-
-                                    case HorizontalAlignment.Center:
-                                        px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        break;
-
-                                    case HorizontalAlignment.Right:
-                                        px = (int)(x - (this.ActualWidth - width));
-                                        break;
-
-                                    case HorizontalAlignment.Stretch:
-                                        if (this.ActualWidth > width)
-                                        {
-                                            px = (int)(x - ((this.ActualWidth - width) / 2));
-                                        }
-                                        else
-                                        {
-                                            px = (int)x;
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-
-                        case StretchDirection.DownOnly:
-                            if (scale < 1)
-                            {
-                                if (scaleX == scale)
-                                {
-                                    px = (int)(x / scale);
+                                    px = (int) (x/scale);
                                 }
                                 else
                                 {
                                     switch (HorizontalContentAlignment)
                                     {
                                         case HorizontalAlignment.Left:
-                                            px = (int)(x / scale);
+                                            px = (int) (x/scale);
                                             break;
 
                                         case HorizontalAlignment.Center:
-                                            px = (int)((x - ((ActualWidth - width * scale) / 2)) / scale);
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
                                             break;
 
                                         case HorizontalAlignment.Right:
-                                            px = (int)((x - (ActualWidth - width * scale)) / scale);
+                                            px = (int) ((x - (ActualWidth - width*scale))/scale);
                                             break;
 
                                         case HorizontalAlignment.Stretch:
-                                            px = (int)(x / scale);
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                            break;
+
+                                        default:
                                             break;
                                     }
                                 }
@@ -371,25 +150,87 @@ namespace xZune.Vlc.Wpf
                                 switch (HorizontalContentAlignment)
                                 {
                                     case HorizontalAlignment.Left:
-                                        px = (int)x;
+                                        px = (int) x;
                                         break;
 
                                     case HorizontalAlignment.Center:
-                                        px = (int)(x - ((ActualWidth - width) / 2));
+                                        px = (int) (x - ((ActualWidth - width)/2));
                                         break;
 
                                     case HorizontalAlignment.Right:
-                                        px = (int)(x - (ActualWidth - width));
+                                        px = (int) (x - (ActualWidth - width));
                                         break;
 
                                     case HorizontalAlignment.Stretch:
                                         if (ActualWidth > width)
                                         {
-                                            px = (int)(x - ((ActualWidth - width) / 2));
+                                            px = (int) (x - ((ActualWidth - width)/2));
                                         }
                                         else
                                         {
-                                            px = (int)x;
+                                            px = (int) x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+
+                        case StretchDirection.DownOnly:
+                            if (scale < 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int) (x/scale);
+                                }
+                                else
+                                {
+                                    switch (HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int) (x/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Center:
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Right:
+                                            px = (int) ((x - (ActualWidth - width*scale))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int) x;
+                                        break;
+
+                                    case HorizontalAlignment.Center:
+                                        px = (int) (x - ((ActualWidth - width)/2));
+                                        break;
+
+                                    case HorizontalAlignment.Right:
+                                        px = (int) (x - (ActualWidth - width));
+                                        break;
+
+                                    case HorizontalAlignment.Stretch:
+                                        if (ActualWidth > width)
+                                        {
+                                            px = (int) (x - ((ActualWidth - width)/2));
+                                        }
+                                        else
+                                        {
+                                            px = (int) x;
                                         }
                                         break;
                                 }
@@ -399,26 +240,184 @@ namespace xZune.Vlc.Wpf
                         case StretchDirection.Both:
                             if (scaleX == scale)
                             {
-                                px = (int)(x / scale);
+                                px = (int) (x/scale);
                             }
                             else
                             {
-                                switch (this.HorizontalContentAlignment)
+                                switch (HorizontalContentAlignment)
                                 {
                                     case HorizontalAlignment.Left:
-                                        px = (int)(x / scale);
+                                        px = (int) (x/scale);
                                         break;
 
                                     case HorizontalAlignment.Center:
-                                        px = (int)((x - ((this.ActualWidth - width * scale) / 2)) / scale);
+                                        px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
                                         break;
 
                                     case HorizontalAlignment.Right:
-                                        px = (int)((x - (this.ActualWidth - width * scale)) / scale);
+                                        px = (int) ((x - (ActualWidth - width*scale))/scale);
                                         break;
 
                                     case HorizontalAlignment.Stretch:
-                                        px = (int)(x / scale);
+                                        px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+
+                case Stretch.UniformToFill:
+                    scaleX = ActualWidth/width;
+                    scaleY = ActualHeight/height;
+                    scale = Math.Max(scaleX, scaleY);
+
+                    switch (StretchDirection)
+                    {
+                        case StretchDirection.UpOnly:
+                            if (scale > 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int) (x/scale);
+                                }
+                                else
+                                {
+                                    switch (HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int) (x/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Center:
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Right:
+                                            px = (int) ((x - (ActualWidth - width*scale))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int) (x/scale);
+                                            break;
+
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int) x;
+                                        break;
+
+                                    case HorizontalAlignment.Center:
+                                        px = (int) (x - ((ActualWidth - width)/2));
+                                        break;
+
+                                    case HorizontalAlignment.Right:
+                                        px = (int) (x - (ActualWidth - width));
+                                        break;
+
+                                    case HorizontalAlignment.Stretch:
+                                        if (ActualWidth > width)
+                                        {
+                                            px = (int) (x - ((ActualWidth - width)/2));
+                                        }
+                                        else
+                                        {
+                                            px = (int) x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+
+                        case StretchDirection.DownOnly:
+                            if (scale < 1)
+                            {
+                                if (scaleX == scale)
+                                {
+                                    px = (int) (x/scale);
+                                }
+                                else
+                                {
+                                    switch (HorizontalContentAlignment)
+                                    {
+                                        case HorizontalAlignment.Left:
+                                            px = (int) (x/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Center:
+                                            px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Right:
+                                            px = (int) ((x - (ActualWidth - width*scale))/scale);
+                                            break;
+
+                                        case HorizontalAlignment.Stretch:
+                                            px = (int) (x/scale);
+                                            break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                switch (HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int) x;
+                                        break;
+
+                                    case HorizontalAlignment.Center:
+                                        px = (int) (x - ((ActualWidth - width)/2));
+                                        break;
+
+                                    case HorizontalAlignment.Right:
+                                        px = (int) (x - (ActualWidth - width));
+                                        break;
+
+                                    case HorizontalAlignment.Stretch:
+                                        if (ActualWidth > width)
+                                        {
+                                            px = (int) (x - ((ActualWidth - width)/2));
+                                        }
+                                        else
+                                        {
+                                            px = (int) x;
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+
+                        case StretchDirection.Both:
+                            if (scaleX == scale)
+                            {
+                                px = (int) (x/scale);
+                            }
+                            else
+                            {
+                                switch (HorizontalContentAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        px = (int) (x/scale);
+                                        break;
+
+                                    case HorizontalAlignment.Center:
+                                        px = (int) ((x - ((ActualWidth - width*scale)/2))/scale);
+                                        break;
+
+                                    case HorizontalAlignment.Right:
+                                        px = (int) ((x - (ActualWidth - width*scale))/scale);
+                                        break;
+
+                                    case HorizontalAlignment.Stretch:
+                                        px = (int) (x/scale);
                                         break;
 
                                     default:
@@ -434,95 +433,95 @@ namespace xZune.Vlc.Wpf
 
         private int GetVideoPositionY(double y)
         {
-            double width = _context.Width * ScaleTransform.ScaleX,
-                height = _context.Height * ScaleTransform.ScaleY;
+            double width = _context.Width*ScaleTransform.ScaleX,
+                height = _context.Height*ScaleTransform.ScaleY;
             int py = 0;
             double scale, scaleX, scaleY;
-            switch (this.Stretch)
+            switch (Stretch)
             {
                 case Stretch.None:
-                    switch (this.VerticalContentAlignment)
+                    switch (VerticalContentAlignment)
                     {
                         case VerticalAlignment.Top:
-                            py = (int)y;
+                            py = (int) y;
                             break;
 
                         case VerticalAlignment.Center:
-                            py = (int)(y - ((this.ActualHeight - height) / 2));
+                            py = (int) (y - ((ActualHeight - height)/2));
                             break;
 
                         case VerticalAlignment.Bottom:
-                            py = (int)(y - (this.ActualHeight - height));
+                            py = (int) (y - (ActualHeight - height));
                             break;
 
                         case VerticalAlignment.Stretch:
-                            if (this.ActualHeight > height)
+                            if (ActualHeight > height)
                             {
-                                py = (int)(y - ((this.ActualHeight - height) / 2));
+                                py = (int) (y - ((ActualHeight - height)/2));
                             }
                             else
                             {
-                                py = (int)y;
+                                py = (int) y;
                             }
                             break;
                     }
                     break;
 
                 case Stretch.Fill:
-                    switch (this.StretchDirection)
+                    switch (StretchDirection)
                     {
                         case StretchDirection.UpOnly:
-                            if (this.ActualHeight > height)
+                            if (ActualHeight > height)
                             {
-                                py = (int)(y / this.ActualHeight * height);
+                                py = (int) (y/ActualHeight*height);
                             }
                             break;
 
                         case StretchDirection.DownOnly:
-                            if (this.ActualHeight < height)
+                            if (ActualHeight < height)
                             {
-                                py = (int)(y / this.ActualHeight * height);
+                                py = (int) (y/ActualHeight*height);
                             }
                             break;
 
                         case StretchDirection.Both:
-                            py = (int)(y / this.ActualHeight * height);
+                            py = (int) (y/ActualHeight*height);
                             break;
                     }
                     break;
 
                 case Stretch.Uniform:
-                    scaleX = this.ActualWidth / width;
-                    scaleY = this.ActualHeight / height;
+                    scaleX = ActualWidth/width;
+                    scaleY = ActualHeight/height;
                     scale = Math.Min(scaleX, scaleY);
 
-                    switch (this.StretchDirection)
+                    switch (StretchDirection)
                     {
                         case StretchDirection.UpOnly:
                             if (scale > 1)
                             {
                                 if (scaleY == scale)
                                 {
-                                    py = (int)(y / scale);
+                                    py = (int) (y/scale);
                                 }
                                 else
                                 {
-                                    switch (this.VerticalContentAlignment)
+                                    switch (VerticalContentAlignment)
                                     {
                                         case VerticalAlignment.Top:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                            py = (int) ((y - (ActualHeight - height*scale))/scale);
                                             break;
 
                                         case VerticalAlignment.Stretch:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         default:
@@ -532,28 +531,28 @@ namespace xZune.Vlc.Wpf
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)y;
+                                        py = (int) y;
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - height) / 2));
+                                        py = (int) (y - ((ActualHeight - height)/2));
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - height));
+                                        py = (int) (y - (ActualHeight - height));
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > height)
+                                        if (ActualHeight > height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - height) / 2));
+                                            py = (int) (y - ((ActualHeight - height)/2));
                                         }
                                         else
                                         {
-                                            py = (int)y;
+                                            py = (int) y;
                                         }
                                         break;
                                 }
@@ -565,26 +564,26 @@ namespace xZune.Vlc.Wpf
                             {
                                 if (scaleY == scale)
                                 {
-                                    py = (int)(y / scale);
+                                    py = (int) (y/scale);
                                 }
                                 else
                                 {
-                                    switch (this.VerticalContentAlignment)
+                                    switch (VerticalContentAlignment)
                                     {
                                         case VerticalAlignment.Top:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                            py = (int) ((y - (ActualHeight - height*scale))/scale);
                                             break;
 
                                         case VerticalAlignment.Stretch:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         default:
@@ -594,28 +593,28 @@ namespace xZune.Vlc.Wpf
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)y;
+                                        py = (int) y;
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - height) / 2));
+                                        py = (int) (y - ((ActualHeight - height)/2));
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - height));
+                                        py = (int) (y - (ActualHeight - height));
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > height)
+                                        if (ActualHeight > height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - height) / 2));
+                                            py = (int) (y - ((ActualHeight - height)/2));
                                         }
                                         else
                                         {
-                                            py = (int)y;
+                                            py = (int) y;
                                         }
                                         break;
                                 }
@@ -625,26 +624,26 @@ namespace xZune.Vlc.Wpf
                         case StretchDirection.Both:
                             if (scaleY == scale)
                             {
-                                py = (int)(y / scale);
+                                py = (int) (y/scale);
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)(y / scale);
+                                        py = (int) (y/scale);
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                        py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                        py = (int) ((y - (ActualHeight - height*scale))/scale);
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                        py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                         break;
 
                                     default:
@@ -656,37 +655,37 @@ namespace xZune.Vlc.Wpf
                     break;
 
                 case Stretch.UniformToFill:
-                    scaleX = this.ActualWidth / width;
-                    scaleY = this.ActualHeight / height;
+                    scaleX = ActualWidth/width;
+                    scaleY = ActualHeight/height;
                     scale = Math.Max(scaleX, scaleY);
 
-                    switch (this.StretchDirection)
+                    switch (StretchDirection)
                     {
                         case StretchDirection.UpOnly:
                             if (scale > 1)
                             {
                                 if (scaleY == scale)
                                 {
-                                    py = (int)(y / scale);
+                                    py = (int) (y/scale);
                                 }
                                 else
                                 {
-                                    switch (this.VerticalContentAlignment)
+                                    switch (VerticalContentAlignment)
                                     {
                                         case VerticalAlignment.Top:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                            py = (int) ((y - (ActualHeight - height*scale))/scale);
                                             break;
 
                                         case VerticalAlignment.Stretch:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         default:
@@ -696,28 +695,28 @@ namespace xZune.Vlc.Wpf
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)y;
+                                        py = (int) y;
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - height) / 2));
+                                        py = (int) (y - ((ActualHeight - height)/2));
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - height));
+                                        py = (int) (y - (ActualHeight - height));
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > height)
+                                        if (ActualHeight > height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - height) / 2));
+                                            py = (int) (y - ((ActualHeight - height)/2));
                                         }
                                         else
                                         {
-                                            py = (int)y;
+                                            py = (int) y;
                                         }
                                         break;
                                 }
@@ -729,26 +728,26 @@ namespace xZune.Vlc.Wpf
                             {
                                 if (scaleY == scale)
                                 {
-                                    py = (int)(y / scale);
+                                    py = (int) (y/scale);
                                 }
                                 else
                                 {
-                                    switch (this.VerticalContentAlignment)
+                                    switch (VerticalContentAlignment)
                                     {
                                         case VerticalAlignment.Top:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         case VerticalAlignment.Center:
-                                            py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                            py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                             break;
 
                                         case VerticalAlignment.Bottom:
-                                            py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                            py = (int) ((y - (ActualHeight - height*scale))/scale);
                                             break;
 
                                         case VerticalAlignment.Stretch:
-                                            py = (int)(y / scale);
+                                            py = (int) (y/scale);
                                             break;
 
                                         default:
@@ -758,28 +757,28 @@ namespace xZune.Vlc.Wpf
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)y;
+                                        py = (int) y;
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)(y - ((this.ActualHeight - height) / 2));
+                                        py = (int) (y - ((ActualHeight - height)/2));
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)(y - (this.ActualHeight - height));
+                                        py = (int) (y - (ActualHeight - height));
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        if (this.ActualHeight > height)
+                                        if (ActualHeight > height)
                                         {
-                                            py = (int)(y - ((this.ActualHeight - height) / 2));
+                                            py = (int) (y - ((ActualHeight - height)/2));
                                         }
                                         else
                                         {
-                                            py = (int)y;
+                                            py = (int) y;
                                         }
                                         break;
                                 }
@@ -789,26 +788,26 @@ namespace xZune.Vlc.Wpf
                         case StretchDirection.Both:
                             if (scaleY == scale)
                             {
-                                py = (int)(y / scale);
+                                py = (int) (y/scale);
                             }
                             else
                             {
-                                switch (this.VerticalContentAlignment)
+                                switch (VerticalContentAlignment)
                                 {
                                     case VerticalAlignment.Top:
-                                        py = (int)(y / scale);
+                                        py = (int) (y/scale);
                                         break;
 
                                     case VerticalAlignment.Center:
-                                        py = (int)((y - ((this.ActualHeight - height * scale) / 2)) / scale);
+                                        py = (int) ((y - ((ActualHeight - height*scale)/2))/scale);
                                         break;
 
                                     case VerticalAlignment.Bottom:
-                                        py = (int)((y - (this.ActualHeight - height * scale)) / scale);
+                                        py = (int) ((y - (ActualHeight - height*scale))/scale);
                                         break;
 
                                     case VerticalAlignment.Stretch:
-                                        py = (int)(y / scale);
+                                        py = (int) (y/scale);
                                         break;
 
                                     default:

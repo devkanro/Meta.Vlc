@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: SnapshotContext.cs
-//Version: 20160109
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: SnapshotContext.cs
+// Version: 20160214
 
 using System;
 using System.IO;
@@ -43,7 +43,7 @@ namespace xZune.Vlc.Wpf
             {
                 Name = String.Format("{0}-{1}-{2}",
                     GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
-                    (int)(player.Time.TotalMilliseconds), _count++);
+                    (int) (player.Time.TotalMilliseconds), _count++);
             }));
             return Name;
         }

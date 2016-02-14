@@ -1,6 +1,6 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: VlcPlayer.Events.cs
-//Version: 20160109
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: VlcPlayer.Events.cs
+// Version: 20160214
 
 using System;
 using System.Diagnostics;
@@ -17,39 +17,99 @@ namespace xZune.Vlc.Wpf
     public partial class VlcPlayer
     {
         /// <summary>
-        /// <see cref="VlcPlayer.Position"/>
+        ///     <see cref="VlcPlayer.Position" />
         /// </summary>
         public event EventHandler PositionChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.Time"/>
+        ///     <see cref="VlcPlayer.Time" />
         /// </summary>
         public event EventHandler TimeChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.IsMute"/>
+        ///     <see cref="VlcPlayer.IsMute" />
         /// </summary>
         public event EventHandler IsMuteChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.IsSeekableChanged"/>
+        ///     <see cref="VlcPlayer.IsSeekableChanged" />
         /// </summary>
         public event EventHandler IsSeekableChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.Volume"/>
+        ///     <see cref="VlcPlayer.Volume" />
         /// </summary>
         public event EventHandler VolumeChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.LengthChanged"/>
+        ///     <see cref="VlcPlayer.LengthChanged" />
         /// </summary>
         public event EventHandler LengthChanged;
 
         /// <summary>
-        /// <see cref="VlcPlayer.State"/>
+        ///     <see cref="VlcPlayer.State" />
         /// </summary>
         public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+                VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X),
+                    GetVideoPositionY(e.GetPosition(this).Y));
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+                switch (e.ChangedButton)
+                {
+                    case MouseButton.Left:
+                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Left);
+                        break;
+
+                    case MouseButton.Right:
+                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Right);
+                        break;
+
+                    case MouseButton.Middle:
+                    case MouseButton.XButton1:
+                    case MouseButton.XButton2:
+                    default:
+                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Other);
+                        break;
+                }
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+                switch (e.ChangedButton)
+                {
+                    case MouseButton.Left:
+                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Left);
+                        break;
+
+                    case MouseButton.Right:
+                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Right);
+                        break;
+
+                    case MouseButton.Middle:
+                    case MouseButton.XButton1:
+                    case MouseButton.XButton2:
+                    default:
+                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Other);
+                        break;
+                }
+        }
 
         #region VlcMediaPlayer event handlers
 
@@ -176,10 +236,8 @@ namespace xZune.Vlc.Wpf
                         }
                     }
 
-                    Dispatcher.Invoke(new Action(() =>
-                    {
-                        ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
-                    }));
+                    Dispatcher.Invoke(
+                        new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
                 }
             }
             return planes = _context.MapView;
@@ -187,7 +245,6 @@ namespace xZune.Vlc.Wpf
 
         private void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
         {
-            return;
         }
 
         private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
@@ -196,7 +253,7 @@ namespace xZune.Vlc.Wpf
             if (_snapshotContext == null) return;
 
             _snapshotContext.GetName(this);
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 switch (_snapshotContext.Format)
                 {
@@ -249,23 +306,20 @@ namespace xZune.Vlc.Wpf
             {
                 _context = new VideoDisplayContext(width, height, ChromaType.RV32);
             }
-            chroma = (uint)_context.ChromaType;
-            width = (uint)_context.Width;
-            height = (uint)_context.Height;
-            pitches = (uint)_context.Stride;
-            lines = (uint)_context.Height;
-            Dispatcher.Invoke(new Action(() =>
-            {
-                VideoSource = _context.Image;
-            }));
-            return (uint)_context.Size;
+            chroma = (uint) _context.ChromaType;
+            width = (uint) _context.Width;
+            height = (uint) _context.Height;
+            pitches = (uint) _context.Stride;
+            lines = (uint) _context.Height;
+            Dispatcher.Invoke(new Action(() => { VideoSource = _context.Image; }));
+            return (uint) _context.Size;
         }
 
         private void VideoCleanupCallback(IntPtr opaque)
         {
         }
 
-        #endregion
+        #endregion Video callbacks
 
         #region Audio callbacks
 
@@ -281,7 +335,6 @@ namespace xZune.Vlc.Wpf
 
         //private void AudioFormatCleanupCallback(IntPtr opaque)
         //{
-
         //}
 
         //private void AudioPlayCallback(IntPtr opaque, IntPtr sample, uint count, Int64 pts)
@@ -291,87 +344,26 @@ namespace xZune.Vlc.Wpf
 
         //private void AudioPauseCallback(IntPtr opaque,  Int64 pts)
         //{
-
         //}
 
         //private void AudioResumeCallback(IntPtr opaque, Int64 pts)
         //{
-
         //}
 
         //private void AudioFlushCallback(IntPtr opaque, Int64 pts)
         //{
-
         //}
 
         //private void AudioDrainCallback(IntPtr opaque, Int64 pts)
         //{
-
         //}
 
         //private void AudioSetVolumeCallback(IntPtr opaque, float volume, bool mute)
         //{
-
         //}
 
-        #endregion
+        #endregion Audio callbacks
 
         #endregion Callbacks
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            base.OnMouseMove(e);
-
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
-                VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X), GetVideoPositionY(e.GetPosition(this).Y));
-        }
-
-        protected override void OnMouseUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseUp(e);
-
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
-                switch (e.ChangedButton)
-                {
-                    case MouseButton.Left:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Left);
-                        break;
-
-                    case MouseButton.Right:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Right);
-                        break;
-
-                    case MouseButton.Middle:
-                    case MouseButton.XButton1:
-                    case MouseButton.XButton2:
-                    default:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Other);
-                        break;
-                }
-        }
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing && (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
-                switch (e.ChangedButton)
-                {
-                    case MouseButton.Left:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Left);
-                        break;
-
-                    case MouseButton.Right:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Right);
-                        break;
-
-                    case MouseButton.Middle:
-                    case MouseButton.XButton1:
-                    case MouseButton.XButton2:
-                    default:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Other);
-                        break;
-                }
-        }
     }
 }

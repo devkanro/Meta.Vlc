@@ -1,10 +1,14 @@
-﻿using System;
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: LibVlc.Time.cs
+// Version: 20160214
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace xZune.Vlc.Interop.Time
 {
     /// <summary>
-    /// 获取由 LibVlc 定义的当前时间
+    ///     获取由 LibVlc 定义的当前时间
     /// </summary>
     /// <returns>返回由 LibVlc 定义的当前时间</returns>
     [LibVlcFunction("libvlc_clock")]
@@ -12,7 +16,7 @@ namespace xZune.Vlc.Interop.Time
     public delegate Int64 Clock();
 
     /// <summary>
-    /// 获取与提供的时间戳之间的延迟
+    ///     获取与提供的时间戳之间的延迟
     /// </summary>
     /// <param name="timestamp">时间戳</param>
     /// <returns>返回与提供的时间戳之间的延迟</returns>

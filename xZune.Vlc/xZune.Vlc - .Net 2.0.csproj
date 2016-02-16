@@ -90,6 +90,7 @@
     <Compile Include="Interop\LibVlc.VLM.cs" />
     <Compile Include="Interop\LibVlcFunction.cs" />
     <Compile Include="Interop\LibVlcFunctionAttribute.cs" />
+    <Compile Include="Interop\LibVlcVersion.cs" />
     <Compile Include="IVlcObject.cs" />
     <Compile Include="MediaTrack.cs" />
     <Compile Include="ModuleDescription.cs" />

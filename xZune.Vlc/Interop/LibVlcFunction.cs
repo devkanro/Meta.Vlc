@@ -48,8 +48,6 @@ namespace xZune.Vlc.Interop
             if (LibVlcManager.LibVlcVersion == null ||
                 LibVlcManager.LibVlcVersion.IsFunctionAvailable(FunctionInfomation))
             {
-                IsEnable = true;
-
                 IntPtr procAddress;
                 try
                 {
@@ -63,6 +61,7 @@ namespace xZune.Vlc.Interop
 
                 var del = Marshal.GetDelegateForFunctionPointer(procAddress, typeof (T));
                 _functionDelegate = (T) Convert.ChangeType(del, typeof (T));
+                IsEnable = true;
             }
         }
 

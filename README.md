@@ -271,10 +271,10 @@ A simple Twitch client that uses Vlc and Livestream to watch twitch streams.
 **xZune 媒体套件：**   
 _**xZune Media Suit:**_  
  
-**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**  
+**[xZune.Bass](https://github.com/higankanshi/xZune.Bass)**  
 xZune.Bass 是 [Bass](http://www.un4seen.com/bass.html) 库的 .NET 封装实现，用于多种格式的音频播放与解码。  
 xZune.Bass is a Bass library wrapper for .NET, used to play/decode mutil format audio.   
 
-**[xZune.Bass](https://github.com/higankanshi/xZune.Bass)**  
+**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**  
 Zune 风格的音频可视化控件。  
 *Zune style audio visualizer.*    

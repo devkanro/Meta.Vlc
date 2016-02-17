@@ -28,7 +28,11 @@ PM> Install-Package xZune.Vlc.Lib
 >   
 >_xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf._   
 >_LibVlc Version:_   
->_2.2.0-xZune Weatherwax_   
+>_2.2.0-xZune Weatherwax_  
+
+## Api Documentation 
+
+See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.html).
 
 ## Build Status
 

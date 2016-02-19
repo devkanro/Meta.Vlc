@@ -6,6 +6,8 @@ xZune.Vlc 是一个 LibVlc 封装库的 .NET 实现,封装了大部分的 LibVlc
 
 _xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue._  
 
+[![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/xzune-vlc/branch/master) [![Join the chat at https://gitter.im/higankanshi/xZune.Vlc](https://badges.gitter.im/higankanshi/xZune.Vlc.svg)](https://gitter.im/higankanshi/xZune.Vlc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+
 ## NuGet Packages
 
 Install [xZune.Vlc](https://www.nuget.org/packages/xZune.Vlc/)
@@ -33,12 +35,6 @@ PM> Install-Package xZune.Vlc.Lib
 ## Api Documentation 
 
 See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.html).
-
-## Build Status
-
-Branch(分支) | Status(状态) | Description(描述)
---- | --- | ---
-master | [![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/xzune-vlc/branch/master) | xZune.Vlc
 
 ## .Net Support
 .NET Version | xZune.Vlc | xZune.Vlc.Wpf | xZune.Vlc.Wpf.Sample

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>xZune.Vlc.Wpf</id>
-        <version>16.01.17</version>
+        <version>16.02.19</version>
         <title>xZune.Vlc.Wpf</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -13,17 +13,17 @@
         <developmentDependency>true</developmentDependency>
         <description>xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.</description>
         <releaseNotes />
-        <copyright>Copyright 2015</copyright>
+        <copyright>Copyright (2015 - 2016) HIGAN.</copyright>
         <tags>vlc libvlc xZune media video</tags>
         <dependencies>
             <group targetFramework=".NETFramework3.5">
-                <dependency id="xZune.Vlc" version="16.01.17" />
+                <dependency id="xZune.Vlc" version="16.02.19" />
             </group>
             <group targetFramework=".NETFramework4.0">
-                <dependency id="xZune.Vlc" version="16.01.17" />
+                <dependency id="xZune.Vlc" version="16.02.19" />
             </group>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="xZune.Vlc" version="16.01.17" />
+                <dependency id="xZune.Vlc" version="16.02.19" />
             </group>
         </dependencies>
     </metadata>

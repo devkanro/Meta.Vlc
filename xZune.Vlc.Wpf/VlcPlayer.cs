@@ -61,6 +61,7 @@ namespace xZune.Vlc.Wpf
         private VideoDisplayContext _context;
         private int _checkCount;
         private bool _isDVD;
+        private bool _isStopping;
 
         //Dispose//
         private bool _disposed;
@@ -403,8 +404,10 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Stop()
         {
+            _isStopping = true;
             VlcMediaPlayer.Stop();
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { VideoSource = null; }));
+            _isStopping = false;
         }
 
         /// <summary>
@@ -564,6 +567,8 @@ namespace xZune.Vlc.Wpf
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged<T>(Expression<Func<T>> expr)
         {
+            if (_isStopping) return;
+
             if (PropertyChanged != null)
             {
                 var bodyExpr = expr.Body as MemberExpression;

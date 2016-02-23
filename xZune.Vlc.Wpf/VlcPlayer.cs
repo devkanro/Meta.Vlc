@@ -215,7 +215,7 @@ namespace xZune.Vlc.Wpf
         /// <param name="disposing"></param>
         protected void Dispose(bool disposing)
         {
-            if (_disposed || disposing)
+            if (_disposed || _disposing)
             {
                 return;
             }

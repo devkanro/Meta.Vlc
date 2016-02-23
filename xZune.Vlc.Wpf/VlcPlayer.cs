@@ -65,6 +65,7 @@ namespace xZune.Vlc.Wpf
 
         //Dispose//
         private bool _disposed;
+        private bool _disposing;
 
         #endregion --- Fields ---
 
@@ -214,10 +215,12 @@ namespace xZune.Vlc.Wpf
         /// <param name="disposing"></param>
         protected void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (_disposed || disposing)
             {
                 return;
             }
+
+            _disposing = true;
 
             BeginStop(() =>
             {
@@ -245,6 +248,7 @@ namespace xZune.Vlc.Wpf
                 //_audioSetVolumeCallbackHandle.Free();
 
                 _disposed = true;
+                _disposing = false;
             });
         }
 
@@ -567,6 +571,7 @@ namespace xZune.Vlc.Wpf
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged<T>(Expression<Func<T>> expr)
         {
+            if (_disposing) return;
             if (_isStopping) return;
 
             if (PropertyChanged != null)

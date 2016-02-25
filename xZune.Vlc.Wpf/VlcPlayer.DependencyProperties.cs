@@ -95,7 +95,18 @@ namespace xZune.Vlc.Wpf
         }
 
         public static readonly DependencyProperty VideoSourceProperty =
-            DependencyProperty.Register("VideoSource", typeof (InteropBitmap), typeof (VlcPlayer), null);
+            DependencyProperty.Register("VideoSource", typeof (InteropBitmap), typeof (VlcPlayer), new PropertyMetadata(null, OnVideoSourceChanged));
+
+        private static void OnVideoSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+
+        {
+            if ((dependencyObject as VlcPlayer).VideoSourceChanged != null)
+            {
+                (dependencyObject as VlcPlayer).VideoSourceChanged.Invoke(dependencyObject, new VideoSourceChangedEventArgs(dependencyPropertyChangedEventArgs.NewValue as ImageSource));
+            }
+        }
+
+        public event EventHandler<VideoSourceChangedEventArgs> VideoSourceChanged;
 
         #endregion VideoSource
 
@@ -141,5 +152,15 @@ namespace xZune.Vlc.Wpf
         }
 
         #endregion EndBehavior
+    }
+
+    public class VideoSourceChangedEventArgs : EventArgs
+    {
+        public VideoSourceChangedEventArgs(ImageSource _newVideoSource)
+        {
+            NewVideoSource = _newVideoSource;
+        }
+
+        public ImageSource NewVideoSource { get; private set; }
     }
 }

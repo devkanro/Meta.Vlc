@@ -115,7 +115,7 @@ namespace xZune.Vlc.Wpf
 
         private void VlcMediaPlayerPositionChanged(object sender, EventArgs e)
         {
-            if (_disposing) return;
+            if (_disposing || _isStopping) return;
 
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {
@@ -129,7 +129,7 @@ namespace xZune.Vlc.Wpf
 
         private void VlcMediaPlayerTimeChanged(object sender, EventArgs e)
         {
-            if (_disposing) return;
+            if (_disposing || _isStopping) return;
 
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {
@@ -143,7 +143,7 @@ namespace xZune.Vlc.Wpf
 
         private void VlcMediaPlayerSeekableChanged(object sender, EventArgs e)
         {
-            if (_disposing) return;
+            if (_disposing || _isStopping) return;
 
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {
@@ -157,7 +157,7 @@ namespace xZune.Vlc.Wpf
 
         private void VlcMediaPlayerStateChanged(object sender, EventArgs e)
         {
-            if (_disposing) return;
+            if (_disposing || _isStopping) return;
 
             Debug.WriteLine(String.Format("StateChanged : {0}", State));
 
@@ -194,7 +194,7 @@ namespace xZune.Vlc.Wpf
 
         private void VlcMediaPlayerLengthChanged(object sender, EventArgs e)
         {
-            if (_disposing) return;
+            if (_disposing || _isStopping) return;
 
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
             {

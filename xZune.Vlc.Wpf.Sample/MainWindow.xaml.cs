@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 
 namespace xZune.Vlc.Wpf.Sample
 {
@@ -35,8 +36,9 @@ namespace xZune.Vlc.Wpf.Sample
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            base.OnClosing(e);
             Player.Dispose();
+            ApiManager.ReleaseAll();
+            base.OnClosing(e);
         }
 
         #endregion --- Cleanup ---
@@ -50,6 +52,17 @@ namespace xZune.Vlc.Wpf.Sample
             Uri uri;
             if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
             */
+
+            var openfiles = new OpenFileDialog();
+            if (openfiles.ShowDialog() == true)
+            {
+                Player.BeginStop(() =>
+                {
+                    Player.LoadMedia(openfiles.FileName);
+                    Player.Play();
+                });
+            }
+            return;
 
             Player.BeginStop(() =>
             {
@@ -102,7 +115,7 @@ namespace xZune.Vlc.Wpf.Sample
             var value = (float)(e.GetPosition(ProgressBar).X / ProgressBar.ActualWidth);
             ProgressBar.Value = value;
         }
-
+        
         #endregion --- Events ---
 
     }

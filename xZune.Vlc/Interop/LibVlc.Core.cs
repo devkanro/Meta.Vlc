@@ -470,6 +470,7 @@ namespace xZune.Vlc.Interop.Core
             VlmMediaInstanceStatusError
         }
 
+#if AnyCPU || X86
         [StructLayout(LayoutKind.Explicit)]
         public struct LibVlcEventArgs
         {
@@ -553,6 +554,91 @@ namespace xZune.Vlc.Interop.Core
 
             #endregion Extra MediaPlayer
         }
+#else
+                [StructLayout(LayoutKind.Explicit)]
+        public struct LibVlcEventArgs
+        {
+            [FieldOffset(0)] public EventTypes Type;
+
+            [FieldOffset(8)] public IntPtr ObjectHandle;
+
+        #region media descriptor
+
+            [FieldOffset(16)] public MediaMetaChangedArgs MediaMetaChanged;
+
+            [FieldOffset(16)] public MediaSubitemAddedArgs MediaSubitemAdded;
+
+            [FieldOffset(16)] public MediaDurationChangedArgs MediaDurationChanged;
+
+            [FieldOffset(16)] public MediaParsedChangedArgs MediaParsedChanged;
+
+            [FieldOffset(16)] public MediaFreedArgs MediaFreed;
+
+            [FieldOffset(16)] public MediaStateChangedArgs MediaStateChanged;
+
+        #endregion media descriptor
+
+        #region media instance
+
+            [FieldOffset(16)] public MediaPlayerBufferingArgs MediaPlayerBuffering;
+
+            [FieldOffset(16)] public MediaPlayerPositionChangedArgs MediaPlayerPositionChanged;
+
+            [FieldOffset(16)] public MediaPlayerTimeChangedArgs MediaPlayerTimeChanged;
+
+            [FieldOffset(16)] public MediaPlayerTitleChangedArgs MediaPlayerTitleChanged;
+
+            [FieldOffset(16)] public MediaPlayerSeekableChangedArgs MediaPlayerSeekableChanged;
+
+            [FieldOffset(16)] public MediaPlayerPausableChangedArgs MediaPlayerPausableChanged;
+
+            [FieldOffset(16)] public MediaPlayerVideoOutChangedArgs MediaPlayerVideoOutChanged;
+
+        #endregion media instance
+
+        #region media list
+
+            [FieldOffset(16)] public MediaListItemAddedArgs MediaListItemAdded;
+
+            [FieldOffset(16)] public MediaListWillAddItemArgs MediaListWillAddItem;
+
+            [FieldOffset(16)] public MediaListItemDeletedArgs MediaListItemDeleted;
+
+            [FieldOffset(16)] public MediaListWillDeleteItemArgs MediaListWillDeleteItem;
+
+        #endregion media list
+
+        #region media list player
+
+            [FieldOffset(16)] public MediaListPlayerNextItemSetArgs MediaListPlayerNextItemSet;
+
+        #endregion media list player
+
+        #region snapshot taken
+
+            [FieldOffset(16)] public MediaPlayerSnapshotTakenArgs MediaPlayerSnapshotTaken;
+
+        #endregion snapshot taken
+
+        #region Length changed
+
+            [FieldOffset(16)] public MediaPlayerLengthChangedArgs MediaPlayerLengthChanged;
+
+        #endregion Length changed
+
+        #region VLM media
+
+            [FieldOffset(16)] public VlmMediaEventArgs VlmMediaEvent;
+
+        #endregion VLM media
+
+        #region Extra MediaPlayer
+
+            [FieldOffset(16)] public MediaPlayerMediaChangedArgs MediaPlayerMediaChanged;
+
+        #endregion Extra MediaPlayer
+        }
+#endif
 
         #region media descriptor
 
@@ -592,9 +678,9 @@ namespace xZune.Vlc.Interop.Core
             public Media.MediaState NewState;
         }
 
-        #endregion media descriptor
+#endregion media descriptor
 
-        #region media instance
+#region media instance
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaPlayerBufferingArgs
@@ -638,9 +724,9 @@ namespace xZune.Vlc.Interop.Core
             public int NewCount;
         }
 
-        #endregion media instance
+#endregion media instance
 
-        #region media list
+#region media list
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaListItemAddedArgs
@@ -670,9 +756,9 @@ namespace xZune.Vlc.Interop.Core
             public int Index;
         }
 
-        #endregion media list
+#endregion media list
 
-        #region media list player
+#region media list player
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaListPlayerNextItemSetArgs
@@ -680,9 +766,9 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr ItemHandle;
         }
 
-        #endregion media list player
+#endregion media list player
 
-        #region snapshot taken
+#region snapshot taken
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaPlayerSnapshotTakenArgs
@@ -690,9 +776,9 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr pszFilename;
         }
 
-        #endregion snapshot taken
+#endregion snapshot taken
 
-        #region Length changed
+#region Length changed
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaPlayerLengthChangedArgs
@@ -700,9 +786,9 @@ namespace xZune.Vlc.Interop.Core
             public long NewLength;
         }
 
-        #endregion Length changed
+#endregion Length changed
 
-        #region VLM media
+#region VLM media
 
         [StructLayout(LayoutKind.Sequential)]
         public struct VlmMediaEventArgs
@@ -711,9 +797,9 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr pszInstanceName;
         }
 
-        #endregion VLM media
+#endregion VLM media
 
-        #region Extra MediaPlayer
+#region Extra MediaPlayer
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MediaPlayerMediaChangedArgs
@@ -721,6 +807,6 @@ namespace xZune.Vlc.Interop.Core
             public IntPtr NewMediaHandle;
         }
 
-        #endregion Extra MediaPlayer
+#endregion Extra MediaPlayer
     }
 }

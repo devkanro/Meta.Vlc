@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Debug\.NET 4.5\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet45;AnyCPU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Release\.NET 4.5\</OutputPath>
-    <DefineConstants>TRACE;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DotNet45;AnyCPU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -36,7 +36,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\x64\Debug\.Net 4.5\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet45;X64</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\x64\Release\.NET 4.5\</OutputPath>
-    <DefineConstants>TRACE;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DotNet45;X64</DefineConstants>
     <DocumentationFile>..\x64\Release\.NET 4.5\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -55,7 +55,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\x86\Debug\.Net 4.5\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet45;X86</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -63,7 +63,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\x86\Release\.NET 4.5\</OutputPath>
-    <DefineConstants>TRACE;DotNet45</DefineConstants>
+    <DefineConstants>TRACE;DotNet45;X86</DefineConstants>
     <DocumentationFile>..\x86\Release\.NET 4.5\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

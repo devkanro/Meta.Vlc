@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -60,8 +61,9 @@ namespace xZune.Vlc.Wpf
 
         private VideoDisplayContext _context;
         private int _checkCount;
-        private bool _isDVD;
+        private bool _isDVD = false;
         private bool _isStopping;
+        private VlcMedia _oldMedia = null;
 
         //Dispose//
         private bool _disposed;
@@ -160,14 +162,10 @@ namespace xZune.Vlc.Wpf
             {
                 VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
                 VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
-                VlcMediaPlayer.Playing += VlcMediaPlayerStateChanged;
-                VlcMediaPlayer.Paused += VlcMediaPlayerStateChanged;
-                VlcMediaPlayer.Stoped += VlcMediaPlayerStateChanged;
-                VlcMediaPlayer.Opening += VlcMediaPlayerStateChanged;
-                VlcMediaPlayer.Buffering += VlcMediaPlayerStateChanged;
-                VlcMediaPlayer.EndReached += VlcMediaPlayerStateChanged;
+                VlcMediaPlayer.EndReached += VlcMediaPlayerEndReached;
                 VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
                 VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
+                VlcMediaPlayer.MediaChanged += VlcMediaPlayerMediaChanged;
 
                 _lockCallback = VideoLockCallback;
                 _unlockCallback = VideoUnlockCallback;
@@ -403,19 +401,24 @@ namespace xZune.Vlc.Wpf
 
         #region Stop
 
+        private void StopInternal()
+        {
+            _isStopping = true;
+            VlcMediaPlayer.Stop();
+            _isStopping = false;
+        }
+
         /// <summary>
         ///     Stop media, this method can't be called on UI thread, you must async call it.
         /// </summary>
         public void Stop()
         {
-            _isStopping = true;
-            VlcMediaPlayer.Stop();
+            StopInternal();
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { VideoSource = null; }));
-            _isStopping = false;
         }
 
         /// <summary>
-        ///     Easy aync call stop method.
+        ///     Easy async call stop method.
         /// </summary>
         /// <param name="callback"></param>
         public void BeginStop(Action callback = null)

@@ -28,6 +28,11 @@ namespace xZune.Vlc.Wpf
             return value == null ? defaultValue : selector(value);
         }
 
+        public static T DefaultValueWhenTrue<T>(this T value, bool boolean, T defaultValue = default(T))
+        {
+            return boolean ? defaultValue : value;
+        }
+
         /// <summary>
         ///     Combine path to src path.
         /// </summary>

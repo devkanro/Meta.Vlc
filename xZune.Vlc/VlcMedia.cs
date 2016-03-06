@@ -487,7 +487,7 @@ namespace xZune.Vlc
 
         public VlcMediaPlayer CreateMediaPlayer()
         {
-            return VlcMediaPlayer.CreatFormMedia(this);
+            return VlcMediaPlayer.CreateFormMedia(this);
         }
 
         protected void Dispose(bool disposing)

@@ -5,6 +5,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core;
 using xZune.Vlc.Interop.Core.Events;

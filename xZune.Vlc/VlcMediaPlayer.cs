@@ -6,7 +6,10 @@ using System;
 using System.Runtime.InteropServices;
 using xZune.Vlc.Interop;
 using xZune.Vlc.Interop.Core.Events;
+using xZune.Vlc.Interop.Media;
 using xZune.Vlc.Interop.MediaPlayer;
+using GetEventManager = xZune.Vlc.Interop.MediaPlayer.GetEventManager;
+using GetState = xZune.Vlc.Interop.MediaPlayer.GetState;
 
 namespace xZune.Vlc
 {
@@ -221,7 +224,7 @@ namespace xZune.Vlc
             return new VlcMediaPlayer(vlc, _createMediaPlayerFunction.Delegate(vlc.InstancePointer));
         }
 
-        public static VlcMediaPlayer CreatFormMedia(VlcMedia media)
+        public static VlcMediaPlayer CreateFormMedia(VlcMedia media)
         {
             return new VlcMediaPlayer(media, _createMediaPlayerFromMediaFunction.Delegate(media.InstancePointer));
         }
@@ -324,31 +327,31 @@ namespace xZune.Vlc
         {
             if (Playing != null)
             {
-                Playing(this, new EventArgs());
+                Playing(this, new ObjectEventArgs<MediaState>(MediaState.Playing));
             }
         }
 
-        public event EventHandler Playing;
+        public event EventHandler<ObjectEventArgs<MediaState>> Playing;
 
         private void OnPaused(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Paused != null)
             {
-                Paused(this, new EventArgs());
+                Paused(this, new ObjectEventArgs<MediaState>(MediaState.Paused));
             }
         }
 
-        public event EventHandler Paused;
+        public event EventHandler<ObjectEventArgs<MediaState>> Paused;
 
         private void OnOpening(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (Opening != null)
             {
-                Opening(this, new EventArgs());
+                Opening(this, new ObjectEventArgs<MediaState>(MediaState.Opening));
             }
         }
 
-        public event EventHandler Opening;
+        public event EventHandler<ObjectEventArgs<MediaState>> Opening;
 
         private void OnBuffering(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
@@ -364,11 +367,11 @@ namespace xZune.Vlc
         {
             if (Stoped != null)
             {
-                Stoped(this, new EventArgs());
+                Stoped(this, new ObjectEventArgs<MediaState>(MediaState.Stopped));
             }
         }
 
-        public event EventHandler Stoped;
+        public event EventHandler<ObjectEventArgs<MediaState>> Stoped;
 
         private void OnForward(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
@@ -394,19 +397,18 @@ namespace xZune.Vlc
         {
             if (EndReached != null)
             {
-                EndReached(this, new EventArgs());
+                EndReached(this, new ObjectEventArgs<MediaState>(MediaState.Ended));
             }
         }
 
-        public event EventHandler EndReached;
+        public event EventHandler<ObjectEventArgs<MediaState>> EndReached;
 
         private void OnMediaChanged(ref LibVlcEventArgs eventArgs, IntPtr userData)
         {
             if (MediaChanged != null)
             {
                 MediaChanged(this,
-                    new MediaPlayerMediaChangedEventArgs(
-                        HandleManager.GetVlcObject(eventArgs.MediaPlayerMediaChanged.NewMediaHandle) as VlcMedia));
+                    new MediaPlayerMediaChangedEventArgs(Media));
             }
         }
 

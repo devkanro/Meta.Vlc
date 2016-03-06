@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Debug\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet20;AnyCPU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Release\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DotNet20;AnyCPU</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Release\.NET 2.0\xZune.Vlc.XML</DocumentationFile>
@@ -34,7 +34,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\x64\Debug\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet20;X64</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -42,7 +42,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>..\x64\Release\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DotNet20;X64</DefineConstants>
     <DocumentationFile>..\x64\Release\.NET 2.0\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -53,7 +53,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\x86\Debug\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DotNet20;X86</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -61,7 +61,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\x86\Release\.NET 2.0\</OutputPath>
-    <DefineConstants>TRACE;DotNet20</DefineConstants>
+    <DefineConstants>TRACE;DotNet20;X86</DefineConstants>
     <DocumentationFile>..\x86\Release\.NET 2.0\xZune.Vlc.XML</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

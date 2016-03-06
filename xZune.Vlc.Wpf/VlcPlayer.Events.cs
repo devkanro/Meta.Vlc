@@ -55,8 +55,8 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseMove(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune"))
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X),
                     GetVideoPositionY(e.GetPosition(this).Y));
         }
@@ -65,8 +65,8 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseUp(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune"))
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:
@@ -90,8 +90,8 @@ namespace xZune.Vlc.Wpf
         {
             base.OnMouseDown(e);
 
-            if ((VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "xZune") && _isDVD)
+            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
+                (LibVlcManager.LibVlcVersion.DevString == "xZune"))
                 switch (e.ChangedButton)
                 {
                     case MouseButton.Left:
@@ -154,44 +154,35 @@ namespace xZune.Vlc.Wpf
                 }
             }));
         }
-
-        private void VlcMediaPlayerStateChanged(object sender, EventArgs e)
+        
+        private void VlcMediaPlayerEndReached(object sender, ObjectEventArgs<MediaState> e)
         {
             if (_disposing || _isStopping) return;
 
-            Debug.WriteLine(String.Format("StateChanged : {0}", State));
-
-            if (StateChanged != null)
-                StateChanged(this, new ObjectEventArgs<MediaState>(State));
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                switch (State)
+                switch (EndBehavior)
                 {
-                    case MediaState.Ended:
-                        switch (EndBehavior)
+                    case EndBehavior.Nothing:
+
+                        break;
+
+                    case EndBehavior.Stop:
+                        Stop();
+                        break;
+
+                    case EndBehavior.Repeat:
+                        Action repeatAction = () =>
                         {
-                            case EndBehavior.Nothing:
-
-                                break;
-
-                            case EndBehavior.Stop:
-                                Stop();
-                                break;
-
-                            case EndBehavior.Repeat:
-                                Action repeatAction = () =>
-                                {
-                                    VlcMediaPlayer.Stop();
-                                    VlcMediaPlayer.Play();
-                                };
-                                repeatAction.EasyInvoke();
-                                break;
-                        }
+                            StopInternal();
+                            VlcMediaPlayer.Play();
+                        };
+                        repeatAction.EasyInvoke();
                         break;
                 }
             }));
         }
-
+        
         private void VlcMediaPlayerLengthChanged(object sender, EventArgs e)
         {
             if (_disposing || _isStopping) return;
@@ -204,6 +195,30 @@ namespace xZune.Vlc.Wpf
                     LengthChanged(this, new EventArgs());
                 }
             }));
+        }
+        
+        private void VlcMediaPlayerMediaChanged(object sender, MediaPlayerMediaChangedEventArgs e)
+        {
+            if (_oldMedia != null)
+            {
+                _oldMedia.StateChanged -= MediaStateChanged;
+            }
+
+            if (e.NewMedia != null)
+            {
+                e.NewMedia.StateChanged += MediaStateChanged;
+                _oldMedia = e.NewMedia;
+            }
+        }
+
+        private void MediaStateChanged(object sender, ObjectEventArgs<Interop.Core.Events.MediaStateChangedArgs> e)
+        {
+            if (_disposing || _isStopping) return;
+            
+            Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
+            
+            if (StateChanged != null)
+                StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
         }
 
         #endregion VlcMediaPlayer event handlers

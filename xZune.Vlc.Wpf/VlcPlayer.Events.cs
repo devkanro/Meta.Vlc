@@ -237,7 +237,7 @@ namespace xZune.Vlc.Wpf
             if (!_context.IsAspectRatioChecked)
             {
                 var tracks = VlcMediaPlayer.Media.GetTracks();
-                var videoMediaTracks = tracks.TakeWhile(t => t is VideoTrack).Select(t => t as VideoTrack).ToList();
+                var videoMediaTracks = tracks.OfType<VideoTrack>().ToList();
                 var videoTrack = videoMediaTracks.FirstOrDefault();
 
                 if (videoTrack != null)

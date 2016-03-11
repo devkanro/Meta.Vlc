@@ -1,6 +1,6 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.cs
-// Version: 20160214
+// Version: 20160312
 
 using System;
 using System.ComponentModel;
@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -61,12 +60,13 @@ namespace xZune.Vlc.Wpf
 
         private VideoDisplayContext _context;
         private int _checkCount;
-        private bool _isDVD = false;
+        private bool _isDVD;
         private bool _isStopping;
-        private VlcMedia _oldMedia = null;
+        private VlcMedia _oldMedia;
 
         //Dispose//
         private bool _disposed;
+
         private bool _disposing;
 
         #endregion --- Fields ---
@@ -313,7 +313,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -363,7 +363,7 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
+            VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();

@@ -1,15 +1,11 @@
-﻿//Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
-//Filename: MainWindow.xaml.cs
-//Version: 20160109
-
-//Note: can find VLC stream URLs for testing at http://www.vlchistory.eu.pn/
-//      and http://dveo.com/downloads/TS-sample-files/San_Diego_Clip.ts
+﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
+// Filename: MainWindow.xaml.cs
+// Version: 20160312
 
 using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 
 namespace xZune.Vlc.Wpf.Sample
 {
@@ -47,26 +43,26 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            String pathString = path.Text;
-            /*
-            Uri uri;
-            if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
-            */
+            //var openfiles = new OpenFileDialog();
+            //if (openfiles.ShowDialog() == true)
+            //{
+            //    Player.BeginStop(() =>
+            //    {
+            //        Player.LoadMedia(openfiles.FileName);
+            //        Player.Play();
+            //    });
+            //}
+            //return;
 
-            var openfiles = new OpenFileDialog();
-            if (openfiles.ShowDialog() == true)
-            {
-                Player.BeginStop(() =>
-                {
-                    Player.LoadMedia(openfiles.FileName);
-                    Player.Play();
-                });
-            }
-            return;
+            String pathString = path.Text;
+
+            Uri uri = null;
+            if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
 
             Player.BeginStop(() =>
             {
-                Player.LoadMedia(pathString); //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
+                Player.LoadMedia(uri);
+                    //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
                 Player.Play();
             });
         }
@@ -91,7 +87,7 @@ namespace xZune.Vlc.Wpf.Sample
             Close(); //closing the main window will also terminate the application
         }
 
-        private void AspectRatio_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void AspectRatio_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch ((sender as ComboBox).SelectedIndex)
             {
@@ -109,14 +105,12 @@ namespace xZune.Vlc.Wpf.Sample
             }
         }
 
-
         private void ProgressBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var value = (float)(e.GetPosition(ProgressBar).X / ProgressBar.ActualWidth);
+            var value = (float) (e.GetPosition(ProgressBar).X/ProgressBar.ActualWidth);
             ProgressBar.Value = value;
         }
-        
-        #endregion --- Events ---
 
+        #endregion --- Events ---
     }
 }

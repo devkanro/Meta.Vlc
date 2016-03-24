@@ -24,13 +24,11 @@ Version: 20151112
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}">
-                        <Image
+                        <local:ThreadSeparatedImage x:Name="Image"
               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-              Source="{TemplateBinding VideoSource}"
               Stretch="{TemplateBinding Stretch}"
-              StretchDirection="{TemplateBinding StretchDirection}"
-              LayoutTransform="{TemplateBinding ScaleTransform}" />
+              StretchDirection="{TemplateBinding StretchDirection}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

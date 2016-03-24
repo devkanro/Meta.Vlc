@@ -1,11 +1,12 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.Events.cs
-// Version: 20160214
+// Version: 20160325
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -154,7 +155,7 @@ namespace xZune.Vlc.Wpf
                 }
             }));
         }
-        
+
         private void VlcMediaPlayerEndReached(object sender, ObjectEventArgs<MediaState> e)
         {
             if (_disposing || _isStopping) return;
@@ -182,7 +183,7 @@ namespace xZune.Vlc.Wpf
                 }
             }));
         }
-        
+
         private void VlcMediaPlayerLengthChanged(object sender, EventArgs e)
         {
             if (_disposing || _isStopping) return;
@@ -196,7 +197,7 @@ namespace xZune.Vlc.Wpf
                 }
             }));
         }
-        
+
         private void VlcMediaPlayerMediaChanged(object sender, MediaPlayerMediaChangedEventArgs e)
         {
             if (_oldMedia != null)
@@ -214,9 +215,9 @@ namespace xZune.Vlc.Wpf
         private void MediaStateChanged(object sender, ObjectEventArgs<Interop.Core.Events.MediaStateChangedArgs> e)
         {
             if (_disposing || _isStopping) return;
-            
-            Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
-            
+
+            Debug.WriteLine("StateChanged : {0}", e.Value.NewState);
+
             if (StateChanged != null)
                 StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
         }
@@ -248,9 +249,8 @@ namespace xZune.Vlc.Wpf
                     if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
                     {
                         _context.IsAspectRatioChecked = true;
-                        Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
-                        Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
-                            _context.DisplayHeight));
+                        Debug.WriteLine("Scale:{0}x{1}", scale.Width, scale.Height);
+                        Debug.WriteLine("Resize Image to {0}x{1}", _context.DisplayWidth, _context.DisplayHeight);
                     }
                     else
                     {
@@ -261,7 +261,7 @@ namespace xZune.Vlc.Wpf
                         }
                     }
 
-                    Dispatcher.Invoke(
+                    ImageDispatcher.BeginInvoke(
                         new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
                 }
             }
@@ -278,65 +278,74 @@ namespace xZune.Vlc.Wpf
             if (_snapshotContext == null) return;
 
             _snapshotContext.GetName(this);
-            Dispatcher.BeginInvoke(new Action(() =>
+
+            switch (_snapshotContext.Format)
             {
-                switch (_snapshotContext.Format)
-                {
-                    case SnapshotFormat.BMP:
-                        var bmpE = new BmpBitmapEncoder();
-                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            bmpE.Save(stream);
-                        }
-                        break;
+                case SnapshotFormat.BMP:
+                    var bmpE = new BmpBitmapEncoder();
+                    bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
+                    using (
+                        Stream stream =
+                            File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                    {
+                        bmpE.Save(stream);
+                    }
+                    break;
 
-                    case SnapshotFormat.JPG:
-                        var jpgE = new JpegBitmapEncoder();
-                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            jpgE.QualityLevel = _snapshotContext.Quality;
-                            jpgE.Save(stream);
-                        }
-                        break;
+                case SnapshotFormat.JPG:
+                    var jpgE = new JpegBitmapEncoder();
+                    jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
+                    using (
+                        Stream stream =
+                            File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                    {
+                        jpgE.QualityLevel = _snapshotContext.Quality;
+                        jpgE.Save(stream);
+                    }
+                    break;
 
-                    case SnapshotFormat.PNG:
-                        var pngE = new PngBitmapEncoder();
-                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            pngE.Save(stream);
-                        }
-                        break;
-                }
-                _snapshotContext = null;
-            }));
+                case SnapshotFormat.PNG:
+                    var pngE = new PngBitmapEncoder();
+                    pngE.Frames.Add(BitmapFrame.Create(VideoSource));
+                    using (
+                        Stream stream =
+                            File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                    {
+                        pngE.Save(stream);
+                    }
+                    break;
+            }
+            _snapshotContext = null;
         }
 
         private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,
             ref uint pitches, ref uint lines)
         {
-            Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
+            Debug.WriteLine("Initialize Video Content : {0}x{1}", width, height);
             if (_context == null)
             {
-                _context = new VideoDisplayContext(width, height, ChromaType.RV32);
+                AutoResetEvent sync = new AutoResetEvent(false);
+
+                uint tmpWidth = width;
+                uint tmpHeight = height;
+
+                ImageDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32);
+                    sync.Set();
+                }));
+
+                sync.WaitOne();
             }
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;
             height = (uint) _context.Height;
             pitches = (uint) _context.Stride;
             lines = (uint) _context.Height;
-            Dispatcher.Invoke(new Action(() => { VideoSource = _context.Image; }));
+            VideoSource = _context.Image;
             return (uint) _context.Size;
         }
 

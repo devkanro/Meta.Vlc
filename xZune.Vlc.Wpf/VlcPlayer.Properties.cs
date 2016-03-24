@@ -1,6 +1,6 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.Properties.cs
-// Version: 20160214
+// Version: 20160325
 
 using System;
 using System.Windows.Threading;
@@ -90,7 +90,13 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public AudioOutputChannel AudioOutputChannel
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioOutputChannel.DefaultValueWhenTrue(_isStopping, AudioOutputChannel.Error), AudioOutputChannel.Error); }
+            get
+            {
+                return
+                    VlcMediaPlayer.DefaultValueWhenNull(
+                        x => x.AudioOutputChannel.DefaultValueWhenTrue(_isStopping, AudioOutputChannel.Error),
+                        AudioOutputChannel.Error);
+            }
             set
             {
                 if (AudioOutputChannel == value || VlcMediaPlayer == null) return;
@@ -107,7 +113,10 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int AudioTrackCount
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackCount.DefaultValueWhenTrue(_isStopping)); }
+            get
+            {
+                return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackCount.DefaultValueWhenTrue(_isStopping));
+            }
         }
 
         #endregion AudioTrackCount
@@ -119,7 +128,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int AudioTrack
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrack.DefaultValueWhenTrue(_isStopping), -1); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrack.DefaultValueWhenTrue(_isStopping), -1); }
+            //note: assuming a 0-based index
             set
             {
                 if (AudioTrack == value || VlcMediaPlayer == null) return;
@@ -136,7 +146,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public TrackDescriptionList AudioTrackDescription
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackDescription.DefaultValueWhenTrue(_isStopping)); }
+            get
+            {
+                return
+                    VlcMediaPlayer.DefaultValueWhenNull(x => x.AudioTrackDescription.DefaultValueWhenTrue(_isStopping));
+            }
         }
 
         #endregion AudioTrackDescription
@@ -165,7 +179,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int Title
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Title.DefaultValueWhenTrue(_isStopping), -1); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Title.DefaultValueWhenTrue(_isStopping), -1); }
+            //note: assuming a 0-based index
             set
             {
                 if (Title == value || VlcMediaPlayer == null) return;
@@ -194,7 +209,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public int Chapter
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Chapter.DefaultValueWhenTrue(_isStopping), -1); } //note: assuming a 0-based index
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Chapter.DefaultValueWhenTrue(_isStopping), -1); }
+            //note: assuming a 0-based index
             set
             {
                 if (Chapter == value || VlcMediaPlayer == null) return;
@@ -223,7 +239,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public bool IsSeekable
         {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.IsSeekable.DefaultValueWhenTrue(_isStopping, true), true); }
+            get
+            {
+                return VlcMediaPlayer.DefaultValueWhenNull(x => x.IsSeekable.DefaultValueWhenTrue(_isStopping, true),
+                    true);
+            }
         }
 
         #endregion IsSeekable
@@ -266,6 +286,19 @@ namespace xZune.Vlc.Wpf
         public PlayerCreateMode CreateMode { get; set; }
 
         #endregion CreateMode
+
+        public Dispatcher ImageDispatcher
+        {
+            get
+            {
+                if (Image != null)
+                {
+                    return Image.ThreadSeparatedDispatcher;
+                }
+
+                return null;
+            }
+        }
 
         #region Volume
 

@@ -1,10 +1,10 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VideoDisplayContext.cs
-// Version: 20160214
+// Version: 20160325
 
 using System;
 using System.Diagnostics;
-using System.Windows;
+using System.Threading;
 using System.Windows.Interop;
 using System.Windows.Media;
 
@@ -18,6 +18,7 @@ namespace xZune.Vlc.Wpf
         #region --- Fields ---
 
         private bool _disposed;
+        private object _imageLock = new object();
 
         #endregion --- Fields ---
 
@@ -44,15 +45,9 @@ namespace xZune.Vlc.Wpf
             Stride = width*PixelFormat.BitsPerPixel/8;
             FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
             MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint) Size);
-            Application.Current.Dispatcher.Invoke(
-                new Action(
-                    () =>
-                    {
-                        Image =
-                            (InteropBitmap)
-                                Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat,
-                                    Stride, 0);
-                    }));
+            Image =
+                (InteropBitmap)
+                    Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
         }
 
         #endregion --- Initialization ---
@@ -100,9 +95,15 @@ namespace xZune.Vlc.Wpf
 
         public void Display()
         {
-            if (Application.Current != null)
+            if (Image != null)
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => { Image.Invalidate(); }));
+                AutoResetEvent sync = new AutoResetEvent(false);
+                Image.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    Image.Invalidate();
+                    sync.Set();
+                }));
+                sync.WaitOne();
             }
         }
 
@@ -112,8 +113,7 @@ namespace xZune.Vlc.Wpf
             {
                 if (track.SarNum == 0 || track.SarDen == 0) return;
 
-                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height,
-                    track.SarNum, track.SarDen));
+                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen));
 
                 var sar = 1.0*track.SarNum/track.SarDen;
                 if (sar > 1)

@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace xZune.Vlc.Wpf
 {
@@ -46,14 +47,22 @@ namespace xZune.Vlc.Wpf
 
         #region ScaleTransform
 
-        internal static readonly DependencyProperty ScaleTransformProperty =
-            DependencyProperty.Register("ScaleTransform", typeof (ScaleTransform), typeof (VlcPlayer),
-                new PropertyMetadata(default(ScaleTransform)));
-
+        internal ScaleTransform _scaleTransform = null;
         internal ScaleTransform ScaleTransform
         {
-            get { return (ScaleTransform) GetValue(ScaleTransformProperty); }
-            set { SetValue(ScaleTransformProperty, value); }
+            get { return _scaleTransform; }
+            set {
+                if (Image != null)
+                {
+                    Image.ScaleTransform = value;
+                }
+
+                if (_scaleTransform != value)
+                {
+                    _scaleTransform = value;
+                    OnPropertyChanged(() => ScaleTransform);
+                }
+            }
         }
 
         #endregion ScaleTransform
@@ -78,31 +87,43 @@ namespace xZune.Vlc.Wpf
             var vlcPlayer = sender as VlcPlayer;
 
             var scale = vlcPlayer.GetScaleTransform();
-            vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
+
+            if (vlcPlayer.ImageDispatcher != null)
+            {
+                vlcPlayer.ImageDispatcher.BeginInvoke(new Action(() =>
+                {
+                    vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
+                }));
+            }
         }
 
         #endregion AspectRatio
 
         #region VideoSource
 
+        public BitmapSource _videoSource = null;
         /// <summary>
         ///     The image data of video, it is a DependencyProperty.
         /// </summary>
-        public InteropBitmap VideoSource
+        public BitmapSource VideoSource
         {
-            get { return (InteropBitmap) GetValue(VideoSourceProperty); }
-            private set { SetValue(VideoSourceProperty, value); }
-        }
-
-        public static readonly DependencyProperty VideoSourceProperty =
-            DependencyProperty.Register("VideoSource", typeof (InteropBitmap), typeof (VlcPlayer), new PropertyMetadata(null, OnVideoSourceChanged));
-
-        private static void OnVideoSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-
-        {
-            if ((dependencyObject as VlcPlayer).VideoSourceChanged != null)
+            get { return _videoSource; }
+            private set
             {
-                (dependencyObject as VlcPlayer).VideoSourceChanged.Invoke(dependencyObject, new VideoSourceChangedEventArgs(dependencyPropertyChangedEventArgs.NewValue as ImageSource));
+                if (Image != null)
+                {
+                    Image.Source = value;
+                }
+
+                if (_videoSource != value)
+                {
+                    _videoSource = value;
+                    OnPropertyChanged(() => VideoSource);
+                    if (VideoSourceChanged != null)
+                    {
+                        VideoSourceChanged(this, new VideoSourceChangedEventArgs(value));
+                    }
+                }
             }
         }
 
@@ -152,6 +173,7 @@ namespace xZune.Vlc.Wpf
         }
 
         #endregion EndBehavior
+        
     }
 
     public class VideoSourceChangedEventArgs : EventArgs

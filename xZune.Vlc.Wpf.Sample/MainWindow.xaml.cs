@@ -4,8 +4,10 @@
 
 using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
 
 namespace xZune.Vlc.Wpf.Sample
 {
@@ -43,16 +45,16 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            //var openfiles = new OpenFileDialog();
-            //if (openfiles.ShowDialog() == true)
-            //{
-            //    Player.BeginStop(() =>
-            //    {
-            //        Player.LoadMedia(openfiles.FileName);
-            //        Player.Play();
-            //    });
-            //}
-            //return;
+            var openfiles = new OpenFileDialog();
+            if (openfiles.ShowDialog() == true)
+            {
+                Player.BeginStop(() =>
+                {
+                    Player.LoadMedia(openfiles.FileName);
+                    Player.Play();
+                });
+            }
+            return;
 
             String pathString = path.Text;
 

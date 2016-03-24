@@ -51,6 +51,18 @@ See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.htm
 
 ## Change Log
 
+### 2016/03/25
+SHA1:5fff42c9f4a8c37b65107e23fdfd85ca9b42bfa4
+
+**01.多线程的图片呈现方式。**  
+_**01.Multi-Thread video display support. .**_  
+现在我们将用于呈现视频的 Image 控件转移到高优先度的线程，降低由于 UI 操作（更新 UI 等）导致 UI 线程卡死从而导致视频卡顿。  
+但是目前最多能接受大约 500ms 的卡顿不会影响到视频播放，长时间的 UI 线程卡死仍然会导致视频卡顿，但是解码与呈现线程已经不和 UI 线程有交互。  
+导致这种情况的原因不明，初步断定为由于文件读写操作与 UI 线程有交互。  
+_Now we move the Image control which used for display video to highest thread, it will reduce stuck when UI thread is busy._  
+_But if UI thread is busy for long time, video still will stuck, but decode thread is not associated with UI thread any more._  
+_No idea about this, but I think the video file IO is  associated with UI thread._  
+
 ### 2016/02/14
 SHA1:185dfe8d8c713c1ff10fadaaf0f97af2ecc3aabc
 

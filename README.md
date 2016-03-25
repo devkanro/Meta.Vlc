@@ -52,16 +52,30 @@ See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.htm
 ## Change Log
 
 ### 2016/03/25
-SHA1:5fff42c9f4a8c37b65107e23fdfd85ca9b42bfa4
 
 **01.多线程的图片呈现方式。**  
 _**01.Multi-Thread video display support. .**_  
+SHA1:5fff42c9f4a8c37b65107e23fdfd85ca9b42bfa4  
 现在我们将用于呈现视频的 Image 控件转移到高优先度的线程，降低由于 UI 操作（更新 UI 等）导致 UI 线程卡死从而导致视频卡顿。  
 但是目前最多能接受大约 500ms 的卡顿不会影响到视频播放，长时间的 UI 线程卡死仍然会导致视频卡顿，但是解码与呈现线程已经不和 UI 线程有交互。  
 导致这种情况的原因不明，初步断定为由于文件读写操作与 UI 线程有交互。  
 _Now we move the Image control which used for display video to highest thread, it will reduce stuck when UI thread is busy._  
 _But if UI thread is busy for long time, video still will stuck, but decode thread is not associated with UI thread any more._  
-_No idea about this, but I think the video file IO is  associated with UI thread._  
+_No idea about this, but I think the video file IO is  associated with UI thread._ 
+
+**02.VlcPlayer 处理 VLC 事件不在主 UI 线程同步处理。**  
+_02.VlcPlayer handle event of VLC no longer block the main UI thread._  
+SHA1:052ed5ec6c16fa43a3c50b8ec594c3176973b97e  
+完善 VLC 线程与 UI 线程之间的交互，现在 VlcPlayer 在处理 VLC 事件时不会在主 UI 线程上同步。  
+解决了当主 UI 线程卡死时，视频将暂停播放的问题，现在当主 UI 线程卡死时，视频仍然能够继续播放不受影响。  
+_To improve the interaction between VLC threads and UI thread, VlcPlayer handle event of LibVlc will not sync invoke in main UI thread._  
+_Solved video will be pause when main UI thread is stuck. Now even the main UI thread is stuck, the display will play go on._  
+
+**03.移除 BeginStop 方法。**  
+_**03.Remove the BeginStop method.**_  
+SHA1:052ed5ec6c16fa43a3c50b8ec594c3176973b97e  
+由于线程交互的完善，Stop 方法不再会阻塞线程导致死锁，因此 BeginStop 方法不再被需要。  
+_Due to the improvement of thread interaction, Stop method will block the thread no longer, BeginStop method are no longer needed._  
 
 ### 2016/02/14
 SHA1:185dfe8d8c713c1ff10fadaaf0f97af2ecc3aabc
@@ -154,43 +168,13 @@ vlcPlayer.Play();                                   //播放媒体        Play t
 **05.停止媒体与释放资源。**     
 _**05.Stop the media and Release the resources.**_  
 
-`vlcPlayer.Stop()`在 UI 线程被调用会导致出现死锁，所以它不能在 UI 线程被调用，你需要将所有和其他一起的操作异步进行。   
-`vlcPlayer.BeginStop()`提供简单的回调模型的异步操作，需要所有结束后的媒体操作都在回调中进行。    
+`vlcPlayer.Stop()`可以用于停止媒体的播放。
+_`vlcPlayer.Stop()` used for stop the Player._  
 
-_If you call `vlcPlayer.Stop()` on UI thread, it will case deadlock, so you should call it and other media operations what be called after stop by async._  
-_`vlcPlayer.BeginStop()` provide a easy way call stop on UI thread, but you should use the callback._  
-__
 ```CSharp
-// 在 .NET 4.5 中使用 Stop
-// Use Stop with .NET 4.5
-
-Task.Run(() => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
-}
+VlcPlayer.Stop();
+VlcPlayer.Play(); // 重载媒体。         Replay media.
 ```
-```CSharp
-// 在 .NET 4.0(及以下) 中使用 Stop
-// Use Stop with .NET 4.0(and lower)
-
-Action stopAction = () => 
-{
-  VlcPlayer.Stop();
-  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
-}
-
-stopAction.EasyInvoke();
-```
-```CSharp
-// 使用 BeginStop
-// Use BeginStop
-
-VlcPlayer.BeginStop(()=>
-{
-  VlcPlayer.Play(); // 或者其他媒体操作。         Or other media operations
-});
-```  
 
 可以在程序结束时调用`vlcPlayer.Dispose()`释放所有资源。   
 _You can call the `vlcPlayer.Dispose()`to release the resource when you exit._  

@@ -173,12 +173,8 @@ namespace xZune.Vlc.Wpf
                         break;
 
                     case EndBehavior.Repeat:
-                        Action repeatAction = () =>
-                        {
-                            StopInternal();
-                            VlcMediaPlayer.Play();
-                        };
-                        repeatAction.EasyInvoke();
+                        StopInternal();
+                        VlcMediaPlayer.Play();
                         break;
                 }
             }));
@@ -261,8 +257,11 @@ namespace xZune.Vlc.Wpf
                         }
                     }
 
-                    ImageDispatcher.BeginInvoke(
-                        new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
+                    if (ImageDispatcher != null)
+                    {
+                        ImageDispatcher.BeginInvoke(
+                            new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
+                    }
                 }
             }
             return planes = _context.MapView;
@@ -330,10 +329,13 @@ namespace xZune.Vlc.Wpf
                 uint tmpWidth = width;
                 uint tmpHeight = height;
 
-                ImageDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                if (ImageDispatcher != null)
                 {
-                    _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32);
-                }));
+                    ImageDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+                    {
+                        _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32);
+                    }));
+                }
             }
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;

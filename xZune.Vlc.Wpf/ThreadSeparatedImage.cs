@@ -14,15 +14,19 @@ namespace xZune.Vlc.Wpf
 {
 	public class ThreadSeparatedImage : FrameworkElement
 	{
-		#region fields
-		private readonly AutoResetEvent _resentEvent;
+	    #region fields
+        private readonly AutoResetEvent _resentEvent;
 		private HostVisual _hostVisual;
 		#endregion
 
 		#region properties
 
-        public Dispatcher ThreadSeparatedDispatcher { get; protected set; }
-        public Image InternalImageControl { get; protected set; }
+	    public Dispatcher ThreadSeparatedDispatcher
+	    {
+            get { return InternalImageControl == null ? null : InternalImageControl.Dispatcher; }
+	    }
+
+	    public Image InternalImageControl { get; protected set; }
 
 	    private ImageSource _source = null;
 
@@ -34,6 +38,9 @@ namespace xZune.Vlc.Wpf
                 if (_source != value)
                 {
                     _source = value;
+
+                    if (InternalImageControl == null) return;
+
                     ThreadSeparatedDispatcher.Invoke(new Action(() =>
                     {
                         InternalImageControl.Source = value;
@@ -96,6 +103,9 @@ namespace xZune.Vlc.Wpf
                 if (_scaleTransform != value)
                 {
                     _scaleTransform = value;
+
+                    if (InternalImageControl == null) return;
+
                     ThreadSeparatedDispatcher.Invoke(new Action(() =>
                     {
                         InternalImageControl.LayoutTransform = value;
@@ -156,8 +166,15 @@ namespace xZune.Vlc.Wpf
 		{
 			_resentEvent = new AutoResetEvent( false );
 
-			Initialized += UiThreadSeparatedBase_Initialized;
+            Initialized += OnInitialized;
+
+            Application.Current.Dispatcher.ShutdownStarted += OnMainDispatcherShutdownStarted;
 		}
+
+        private void OnMainDispatcherShutdownStarted(object sender, EventArgs e)
+        {
+            DestroyThreadSeparatedElement();
+        }
 
         #endregion
 
@@ -223,7 +240,6 @@ namespace xZune.Vlc.Wpf
 
 				_hostVisual = null;
 				InternalImageControl = null;
-                ThreadSeparatedDispatcher = null;
 			}
 		}
 
@@ -241,8 +257,6 @@ namespace xZune.Vlc.Wpf
 
                 CreateImage();
 
-                ThreadSeparatedDispatcher = InternalImageControl.Dispatcher;
-
 				_resentEvent.Set();
 
                 visualTarget.RootVisual = InternalImageControl;
@@ -255,16 +269,17 @@ namespace xZune.Vlc.Wpf
 			}
 		}
 
-		private void UiThreadSeparatedBase_Initialized( object sender, EventArgs e )
+		private void OnInitialized( object sender, EventArgs e )
         {
             CreateThreadSeparatedElement();
         }
 
-		#endregion
 
-		#region overrides
+        #endregion
 
-		protected override int VisualChildrenCount
+        #region overrides
+
+        protected override int VisualChildrenCount
 		{
 			get
 			{

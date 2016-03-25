@@ -22,7 +22,7 @@ namespace xZune.Vlc.Wpf
     /// <summary>
     ///     VLC media player.
     /// </summary>
-    [TemplatePart(Name = "Image", Type = typeof (ThreadSeparatedImage))]
+    [TemplatePart(Name = "Image", Type = typeof(ThreadSeparatedImage))]
     public partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
     {
         #region --- Fields ---
@@ -68,7 +68,7 @@ namespace xZune.Vlc.Wpf
 
         private ThreadSeparatedImage Image
         {
-            get { return (ThreadSeparatedImage) GetTemplateChild("Image"); }
+            get { return (ThreadSeparatedImage)GetTemplateChild("Image"); }
         }
 
         //Dispose//
@@ -82,8 +82,8 @@ namespace xZune.Vlc.Wpf
 
         static VlcPlayer()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof (VlcPlayer),
-                new FrameworkPropertyMetadata(typeof (VlcPlayer)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(VlcPlayer),
+                new FrameworkPropertyMetadata(typeof(VlcPlayer)));
         }
 
         public VlcPlayer()
@@ -120,7 +120,7 @@ namespace xZune.Vlc.Wpf
 
                     var vlcSettings =
                         Assembly.GetEntryAssembly()
-                            .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
+                            .GetCustomAttributes(typeof(VlcSettingsAttribute), false);
 
                     if (vlcSettings.Length > 0)
                     {
@@ -392,7 +392,7 @@ namespace xZune.Vlc.Wpf
                 _context.Dispose();
                 _context = null;
             }
-            
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
@@ -419,12 +419,45 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
+        /// Pause media.
+        /// </summary>
+        public void Pause()
+        {
+            if (VlcMediaPlayer == null) return;
+
+            VlcMediaPlayer.Pause();
+        }
+
+        /// <summary>
+        /// Resume media.
+        /// </summary>
+        public void Resume()
+        {
+            if (VlcMediaPlayer == null) return;
+
+            VlcMediaPlayer.Resume();
+        }
+
+        /// <summary>
         ///     Pause or resume media.
         /// </summary>
         public void PauseOrResume()
         {
-            if (VlcMediaPlayer != null)
-                VlcMediaPlayer.PauseOrResume();
+            if (VlcMediaPlayer == null) return;
+
+            VlcMediaPlayer.PauseOrResume();
+        }
+
+        /// <summary>
+        ///     Replay media.
+        /// </summary>
+        public void Replay()
+        {
+            if (VlcMediaPlayer == null) return;
+
+            StopInternal();
+            VlcMediaPlayer.Play();
+
         }
 
         #endregion Play/Pause
@@ -596,8 +629,11 @@ namespace xZune.Vlc.Wpf
                 var propInfo = bodyExpr.Member as PropertyInfo;
                 var propName = propInfo.Name;
 
-                ImageDispatcher.BeginInvoke(
-                    new Action(() => { PropertyChanged(this, new PropertyChangedEventArgs(propName)); }));
+                if (ImageDispatcher != null)
+                {
+                    ImageDispatcher.BeginInvoke(
+                        new Action(() => { PropertyChanged(this, new PropertyChangedEventArgs(propName)); }));
+                }
             }
         }
 

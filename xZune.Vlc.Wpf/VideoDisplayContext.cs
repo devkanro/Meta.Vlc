@@ -97,13 +97,10 @@ namespace xZune.Vlc.Wpf
         {
             if (Image != null)
             {
-                AutoResetEvent sync = new AutoResetEvent(false);
-                Image.Dispatcher.BeginInvoke(new Action(() =>
+                Image.Dispatcher.Invoke(new Action(() =>
                 {
                     Image.Invalidate();
-                    sync.Set();
                 }));
-                sync.WaitOne();
             }
         }
 

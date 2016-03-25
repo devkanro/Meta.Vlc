@@ -3,6 +3,7 @@
 // Version: 20160214
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using xZune.Vlc.Interop;
@@ -208,6 +209,7 @@ namespace xZune.Vlc
                 _createMediaFromFileDescriptorFunction = new LibVlcFunction<CreateMediaFromFileDescriptor>();
                 _createMediaFromLocationFunction = new LibVlcFunction<CreateMediaFromLocation>();
                 _createMediaFromPathFunction = new LibVlcFunction<CreateMediaFromPath>();
+                
                 _parseMediaFunction = new LibVlcFunction<ParseMedia>();
                 _parseMediaAsyncFunction = new LibVlcFunction<ParseMediaAsync>();
                 _parseMediaWithOptionAsyncFunction = new LibVlcFunction<ParseMediaWithOptionAsync>();

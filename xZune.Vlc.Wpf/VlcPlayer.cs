@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -244,34 +245,33 @@ namespace xZune.Vlc.Wpf
 
             _disposing = true;
 
-            BeginStop(() =>
+            Stop();
+
+            if (VlcMediaPlayer != null)
             {
-                if (VlcMediaPlayer != null)
+                if (VlcMediaPlayer.Media != null)
                 {
-                    if (VlcMediaPlayer.Media != null)
-                    {
-                        VlcMediaPlayer.Media.Dispose();
-                    }
-                    VlcMediaPlayer.Dispose();
+                    VlcMediaPlayer.Media.Dispose();
                 }
+                VlcMediaPlayer.Dispose();
+            }
 
-                _lockCallbackHandle.Free();
-                _unlockCallbackHandle.Free();
-                _displayCallbackHandle.Free();
-                _formatCallbackHandle.Free();
-                _cleanupCallbackHandle.Free();
-                //_audioSetupCallbackHandle.Free();
-                //_audioCleanupCallbackHandle.Free();
-                //_audioPlayCallbackHandle.Free();
-                //_audioPauseCallbackHandle.Free();
-                //_audioResumeCallbackHandle.Free();
-                //_audioFlushCallbackHandle.Free();
-                //_audioDrainCallbackHandle.Free();
-                //_audioSetVolumeCallbackHandle.Free();
+            _lockCallbackHandle.Free();
+            _unlockCallbackHandle.Free();
+            _displayCallbackHandle.Free();
+            _formatCallbackHandle.Free();
+            _cleanupCallbackHandle.Free();
+            //_audioSetupCallbackHandle.Free();
+            //_audioCleanupCallbackHandle.Free();
+            //_audioPlayCallbackHandle.Free();
+            //_audioPauseCallbackHandle.Free();
+            //_audioResumeCallbackHandle.Free();
+            //_audioFlushCallbackHandle.Free();
+            //_audioDrainCallbackHandle.Free();
+            //_audioSetVolumeCallbackHandle.Free();
 
-                _disposed = true;
-                _disposing = false;
-            });
+            _disposed = true;
+            _disposing = false;
         }
 
         /// <summary>
@@ -316,8 +316,10 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.ParseAsync();
+
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
 
@@ -339,6 +341,7 @@ namespace xZune.Vlc.Wpf
 
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.ParseAsync();
+
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
 
@@ -363,9 +366,12 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
+
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
+
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
 
@@ -386,10 +392,11 @@ namespace xZune.Vlc.Wpf
                 _context.Dispose();
                 _context = null;
             }
-
+            
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
+
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
 
@@ -408,7 +415,6 @@ namespace xZune.Vlc.Wpf
             {
                 VideoSource = _context.Image;
             }
-
             VlcMediaPlayer.Play();
         }
 
@@ -433,29 +439,12 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        ///     Stop media, this method can't be called on UI thread, you must async call it.
+        ///     Stop media.
         /// </summary>
         public void Stop()
         {
             StopInternal();
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { VideoSource = null; }));
-        }
-
-        /// <summary>
-        ///     Easy async call stop method.
-        /// </summary>
-        /// <param name="callback"></param>
-        public void BeginStop(Action callback = null)
-        {
-            Action action = () =>
-            {
-                Stop();
-                if (callback != null)
-                {
-                    callback();
-                }
-            };
-            action.EasyInvoke();
         }
 
         #endregion Stop

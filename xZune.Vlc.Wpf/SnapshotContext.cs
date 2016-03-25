@@ -39,12 +39,9 @@ namespace xZune.Vlc.Wpf
 
         public String GetName(VlcPlayer player)
         {
-            player.Dispatcher.Invoke(new Action(() =>
-            {
-                Name = String.Format("{0}-{1}-{2}",
-                    GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
-                    (int) (player.Time.TotalMilliseconds), _count++);
-            }));
+            Name = String.Format("{0}-{1}-{2}",
+                GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
+                (int)(player.Time.TotalMilliseconds), _count++);
             return Name;
         }
 

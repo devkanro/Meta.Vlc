@@ -48,11 +48,9 @@ namespace xZune.Vlc.Wpf.Sample
             var openfiles = new OpenFileDialog();
             if (openfiles.ShowDialog() == true)
             {
-                Player.BeginStop(() =>
-                {
-                    Player.LoadMedia(openfiles.FileName);
-                    Player.Play();
-                });
+                Player.Stop();
+                Player.LoadMedia(openfiles.FileName);
+                Player.Play();
             }
             return;
 
@@ -60,17 +58,16 @@ namespace xZune.Vlc.Wpf.Sample
 
             Uri uri = null;
             if (!Uri.TryCreate(pathString, UriKind.Absolute, out uri)) return;
-
-            Player.BeginStop(() =>
-            {
-                Player.LoadMedia(uri);
-                    //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
-                Player.Play();
-            });
+            
+            Player.Stop();
+            Player.LoadMedia(uri);
+            //if you pass a string instead of a Uri, LoadMedia will see if it is an absolute Uri, else will treat it as a file path
+            Player.Play();
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            Thread.Sleep(10000);
             Player.Play();
         }
 
@@ -81,7 +78,7 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            Player.BeginStop();
+            Player.Stop();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

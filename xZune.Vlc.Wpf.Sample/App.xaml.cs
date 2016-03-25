@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 
 namespace xZune.Vlc.Wpf.Sample
 {
@@ -7,5 +8,21 @@ namespace xZune.Vlc.Wpf.Sample
     /// </summary>
     public partial class App : Application
     {
+        //protected override void OnStartup(StartupEventArgs e)
+        //{
+        //    base.OnStartup(e);
+
+        //    Thread thread = new Thread(() =>
+        //        {
+        //            MainWindow w = new MainWindow();
+
+        //            w.Show();
+        //            w.Closed += (sender2, e2) => w.Dispatcher.InvokeShutdown();
+        //            System.Windows.Threading.Dispatcher.Run();
+        //        });
+
+        //    thread.SetApartmentState(ApartmentState.STA);
+        //    thread.Start();
+        //}
     }
 }

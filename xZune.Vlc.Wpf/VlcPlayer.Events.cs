@@ -55,7 +55,7 @@ namespace xZune.Vlc.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-
+            
             if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
                 (LibVlcManager.LibVlcVersion.DevString == "xZune"))
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X),
@@ -118,7 +118,7 @@ namespace xZune.Vlc.Wpf
         {
             if (_disposing || _isStopping) return;
 
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Position);
                 if (PositionChanged != null)
@@ -132,7 +132,7 @@ namespace xZune.Vlc.Wpf
         {
             if (_disposing || _isStopping) return;
 
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Time);
                 if (TimeChanged != null)
@@ -146,7 +146,7 @@ namespace xZune.Vlc.Wpf
         {
             if (_disposing || _isStopping) return;
 
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => IsSeekable);
                 if (IsSeekableChanged != null)
@@ -188,7 +188,7 @@ namespace xZune.Vlc.Wpf
         {
             if (_disposing || _isStopping) return;
 
-            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Length);
                 if (LengthChanged != null)
@@ -327,18 +327,13 @@ namespace xZune.Vlc.Wpf
             Debug.WriteLine("Initialize Video Content : {0}x{1}", width, height);
             if (_context == null)
             {
-                AutoResetEvent sync = new AutoResetEvent(false);
-
                 uint tmpWidth = width;
                 uint tmpHeight = height;
 
-                ImageDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                ImageDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32);
-                    sync.Set();
                 }));
-
-                sync.WaitOne();
             }
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;

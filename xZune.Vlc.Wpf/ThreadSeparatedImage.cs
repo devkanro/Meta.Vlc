@@ -3,14 +3,45 @@
 // Version: 20160327
 
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace xZune.Vlc.Wpf
 {
     public sealed class ThreadSeparatedImage : ThreadSeparatedControlHost
     {
+        private static Dispatcher _commonDispatcher;
+        public static Dispatcher CommonDispatcher
+        {
+            get
+            {
+                if (_commonDispatcher == null)
+                {
+                    Thread separateThread = new Thread(() =>
+                    {
+                        Dispatcher.Run();
+                    })
+                    {
+                        IsBackground = true
+                    };
+                    separateThread.SetApartmentState(ApartmentState.STA);
+
+                    separateThread.Start();
+
+                    while (Dispatcher.FromThread(separateThread) == null)
+                    {
+                        Thread.Sleep(50);
+                    }
+                    _commonDispatcher = Dispatcher.FromThread(separateThread);
+                }
+
+                return _commonDispatcher;
+            }
+        }
+
         private HorizontalAlignment _horizontalContentAlignment = HorizontalAlignment.Stretch;
 
         private ScaleTransform _scaleTransform;
@@ -133,6 +164,35 @@ namespace xZune.Vlc.Wpf
             InternalImageControl.LayoutTransform = ScaleTransform;
 
             return InternalImageControl;
+        }
+
+        protected override void LoadThreadSeparatedControl()
+        {
+            HostVisual = new HostVisual();
+
+            AddLogicalChild(HostVisual);
+            AddVisualChild(HostVisual);
+
+            CommonDispatcher.Invoke(() =>
+            {
+                TargetElement = CreateThreadSeparatedControl();
+
+                if (TargetElement == null) return;
+
+                VisualTarget = new VisualTargetPresentationSource(HostVisual);
+                VisualTarget.RootVisual = TargetElement;
+
+                Dispatcher.BeginInvoke(new Action(() => { InvalidateMeasure(); }));
+            });
+        }
+
+        protected override void UnloadThreadSeparatedControl()
+        {
+            RemoveLogicalChild(HostVisual);
+            RemoveVisualChild(HostVisual);
+
+            HostVisual = null;
+            TargetElement = null;
         }
     }
 }

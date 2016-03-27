@@ -257,9 +257,9 @@ namespace xZune.Vlc.Wpf
                         }
                     }
 
-                    if (ImageDispatcher != null)
+                    if (DisplayThreadDispatcher != null)
                     {
-                        ImageDispatcher.BeginInvoke(
+                        DisplayThreadDispatcher.BeginInvoke(
                             new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
                     }
                 }
@@ -329,9 +329,9 @@ namespace xZune.Vlc.Wpf
                 uint tmpWidth = width;
                 uint tmpHeight = height;
 
-                if (ImageDispatcher != null)
+                if (DisplayThreadDispatcher != null)
                 {
-                    ImageDispatcher.Invoke(DispatcherPriority.Normal,
+                    DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
                         new Action(() => { _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32); }));
                 }
             }

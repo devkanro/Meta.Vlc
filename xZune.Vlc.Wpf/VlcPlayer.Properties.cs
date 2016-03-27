@@ -288,14 +288,25 @@ namespace xZune.Vlc.Wpf
         public PlayerCreateMode CreateMode { get; set; }
 
         #endregion CreateMode
+        
+        private ThreadSeparatedImage Image
+        {
+            get { return (ThreadSeparatedImage)GetTemplateChild("Image"); }
+        }
 
-        public Dispatcher ImageDispatcher
+        private Dispatcher _customDisplayThreadDispatcher;
+        public Dispatcher DisplayThreadDispatcher
         {
             get
             {
                 if (Image != null)
                 {
                     return Image.SeparateThreadDispatcher;
+                }
+
+                if (_customDisplayThreadDispatcher != null)
+                {
+                    return _customDisplayThreadDispatcher;
                 }
 
                 return null;

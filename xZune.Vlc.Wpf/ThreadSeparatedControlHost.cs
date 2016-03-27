@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -14,9 +13,9 @@ namespace xZune.Vlc.Wpf
 {
     public abstract class ThreadSeparatedControlHost : FrameworkElement
     {
-        public FrameworkElement TargetElement { get; private set; }
-        public HostVisual HostVisual { get; private set; }
-        public VisualTargetPresentationSource VisualTarget { get; private set; }
+        public FrameworkElement TargetElement { get; protected set; }
+        public HostVisual HostVisual { get; protected set; }
+        public VisualTargetPresentationSource VisualTarget { get; protected set; }
 
         public Dispatcher SeparateThreadDispatcher
         {
@@ -63,7 +62,7 @@ namespace xZune.Vlc.Wpf
                 Dispatcher.BeginInvoke(new Action(() => { InvalidateMeasure(); }));
 
                 sync.Set();
-                ObservableCollection<>
+
                 Dispatcher.Run();
 
                 VisualTarget.Dispose();

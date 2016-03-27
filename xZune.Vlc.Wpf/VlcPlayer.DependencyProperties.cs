@@ -64,9 +64,9 @@ namespace xZune.Vlc.Wpf
 
             var scale = vlcPlayer.GetScaleTransform();
 
-            if (vlcPlayer.ImageDispatcher != null)
+            if (vlcPlayer.DisplayThreadDispatcher != null)
             {
-                vlcPlayer.ImageDispatcher.BeginInvoke(
+                vlcPlayer.DisplayThreadDispatcher.BeginInvoke(
                     new Action(() => { vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
             }
         }
@@ -90,7 +90,7 @@ namespace xZune.Vlc.Wpf
                 {
                     var @this = o as VlcPlayer;
 
-                    if (@this.ImageDispatcher != null)
+                    if (@this.DisplayThreadDispatcher != null)
                     {
                         @this.Image.Stretch = (Stretch) args.NewValue;
                     }
@@ -111,7 +111,7 @@ namespace xZune.Vlc.Wpf
                 {
                     var @this = o as VlcPlayer;
 
-                    if (@this.ImageDispatcher != null)
+                    if (@this.DisplayThreadDispatcher != null)
                     {
                         @this.Image.StretchDirection = (StretchDirection) args.NewValue;
                     }

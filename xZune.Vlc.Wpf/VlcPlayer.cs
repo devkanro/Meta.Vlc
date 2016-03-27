@@ -10,7 +10,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 using xZune.Vlc.Interop.MediaPlayer;
 using xZune.Vlc.Wpf.Annotations;
@@ -65,11 +64,6 @@ namespace xZune.Vlc.Wpf
         private bool _isStopping;
         private VlcMedia _oldMedia;
 
-        private ThreadSeparatedImage Image
-        {
-            get { return (ThreadSeparatedImage) GetTemplateChild("Image"); }
-        }
-
         //Dispose//
         private bool _disposed;
 
@@ -85,15 +79,19 @@ namespace xZune.Vlc.Wpf
                 new FrameworkPropertyMetadata(typeof (VlcPlayer)));
         }
 
+        /// <summary>
+        ///     Create a <see cref="VlcPlayer" /> for XAML, you should not use it to create player in your C# code, if you don't
+        ///     want to add it to XAML visual three. use <see cref="VlcPlayer(bool)" /> and <see cref="VlcPlayer(Dispatcher)" /> to
+        ///     instead.
+        /// </summary>
         public VlcPlayer()
         {
-            Loaded += OnLoaded;
             HorizontalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
                 new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
 
-                    if (@this.ImageDispatcher != null)
+                    if (@this.DisplayThreadDispatcher != null)
                     {
                         @this.Image.HorizontalContentAlignment = (HorizontalAlignment) args.NewValue;
                     }
@@ -104,19 +102,48 @@ namespace xZune.Vlc.Wpf
                 {
                     var @this = o as VlcPlayer;
 
-                    if (@this.ImageDispatcher != null)
+                    if (@this.DisplayThreadDispatcher != null)
                     {
                         @this.Image.VerticalContentAlignment = (VerticalAlignment) args.NewValue;
                     }
                 }));
         }
 
-        protected override void OnInitialized(EventArgs e)
+        /// <summary>
+        ///     Create a <see cref="VlcPlayer" /> for C# code, if you want to display video with
+        ///     <see cref="ThreadSeparatedImage" />, please set <see cref="displayWithThreadSeparatedImage" /> to true, player will
+        ///     generate <see cref="VideoSource" /> on thread of it.
+        /// </summary>
+        /// <param name="displayWithThreadSeparatedImage">Do you want to display video with <see cref="ThreadSeparatedImage" />?</param>
+        public VlcPlayer(bool displayWithThreadSeparatedImage) : this()
         {
-            base.OnInitialized(e);
+            if (displayWithThreadSeparatedImage)
+            {
+                _customDisplayThreadDispatcher = ThreadSeparatedImage.CommonDispatcher;
+            }
+            else
+            {
+                _customDisplayThreadDispatcher = Application.Current.Dispatcher;
+            }
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///     Create a <see cref="VlcPlayer" /> for C# code, use player will generate <see cref="VideoSource" /> on specified
+        ///     thread.
+        /// </summary>
+        /// <param name="customDisplayThreadDispatcher">
+        ///     The dispatcher of thread which you want to generate
+        ///     <see cref="VideoSource" /> on.
+        /// </param>
+        public VlcPlayer(Dispatcher customDisplayThreadDispatcher) : this()
+        {
+            if (customDisplayThreadDispatcher == null)
+                customDisplayThreadDispatcher = Application.Current.Dispatcher;
+
+            _customDisplayThreadDispatcher = customDisplayThreadDispatcher;
+        }
+
+        protected override void OnInitialized(EventArgs e)
         {
             var designMode = DesignerProperties.GetIsInDesignMode(this);
 
@@ -131,47 +158,55 @@ namespace xZune.Vlc.Wpf
                         .CombinePath(LibVlcPath);
             }
 
+            if (!designMode)
+            {
+                if (libVlcPath != null)
+                {
+                    Initialize(libVlcPath, libVlcOption);
+                    return;
+                }
+
+                var vlcSettings =
+                    Assembly.GetEntryAssembly()
+                        .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
+
+                if (vlcSettings.Length > 0)
+                {
+                    var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
+
+                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
+                    {
+                        libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
+                            ? vlcSettingsAttribute.LibVlcPath
+                            : Path.GetDirectoryName(
+                                System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
+                                .CombinePath(vlcSettingsAttribute.LibVlcPath);
+                    }
+
+                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
+                        libVlcOption = vlcSettingsAttribute.VlcOption;
+                }
+
+                Initialize(libVlcPath, libVlcOption);
+            }
+
+            if (VisualParent == null)
+            {
+            }
+            else
+            {
+                Loaded += OnLoaded;
+            }
+
+            base.OnInitialized(e);
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
             Image.HorizontalContentAlignment = HorizontalContentAlignment;
             Image.VerticalContentAlignment = VerticalContentAlignment;
             Image.Stretch = Stretch;
             Image.StretchDirection = StretchDirection;
-
-            ImageDispatcher.BeginInvoke(new Action(() =>
-            {
-                ScaleTransform = new ScaleTransform(1, 1);
-
-                if (!designMode)
-                {
-                    if (libVlcPath != null)
-                    {
-                        Initialize(libVlcPath, libVlcOption);
-                        return;
-                    }
-
-                    var vlcSettings =
-                        Assembly.GetEntryAssembly()
-                            .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
-
-                    if (vlcSettings.Length > 0)
-                    {
-                        var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
-
-                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
-                        {
-                            libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
-                                ? vlcSettingsAttribute.LibVlcPath
-                                : Path.GetDirectoryName(
-                                    System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
-                                    .CombinePath(vlcSettingsAttribute.LibVlcPath);
-                        }
-
-                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
-                            libVlcOption = vlcSettingsAttribute.VlcOption;
-                    }
-
-                    Initialize(libVlcPath, libVlcOption);
-                }
-            }));
         }
 
         /// <summary>
@@ -191,71 +226,68 @@ namespace xZune.Vlc.Wpf
         /// <param name="libVlcOption"></param>
         public void Initialize(String libVlcPath, params String[] libVlcOption)
         {
-            ImageDispatcher.BeginInvoke(new Action(() =>
+            if (!ApiManager.IsInitialized)
             {
-                if (!ApiManager.IsInitialized)
-                {
-                    ApiManager.Initialize(libVlcPath, libVlcOption);
-                }
+                ApiManager.Initialize(libVlcPath, libVlcOption);
+            }
 
-                switch (CreateMode)
-                {
-                    case PlayerCreateMode.NewVlcInstance:
-                        var vlc = new Vlc(libVlcOption);
-                        VlcMediaPlayer = vlc.CreateMediaPlayer();
-                        ApiManager.Vlcs.Add(vlc);
-                        break;
+            switch (CreateMode)
+            {
+                case PlayerCreateMode.NewVlcInstance:
+                    var vlc = new Vlc(libVlcOption);
+                    VlcMediaPlayer = vlc.CreateMediaPlayer();
+                    ApiManager.Vlcs.Add(vlc);
+                    break;
 
-                    case PlayerCreateMode.Default:
-                    default:
-                        VlcMediaPlayer = ApiManager.DefaultVlc.CreateMediaPlayer();
-                        break;
-                }
+                case PlayerCreateMode.Default:
+                default:
+                    VlcMediaPlayer = ApiManager.DefaultVlc.CreateMediaPlayer();
+                    break;
+            }
 
-                if (VlcMediaPlayer != null)
-                {
-                    VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
-                    VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
-                    VlcMediaPlayer.EndReached += VlcMediaPlayerEndReached;
-                    VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
-                    VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
-                    VlcMediaPlayer.MediaChanged += VlcMediaPlayerMediaChanged;
+            if (VlcMediaPlayer != null)
+            {
+                VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
+                VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
+                VlcMediaPlayer.EndReached += VlcMediaPlayerEndReached;
+                VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
+                VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
+                VlcMediaPlayer.MediaChanged += VlcMediaPlayerMediaChanged;
 
-                    _lockCallback = VideoLockCallback;
-                    _unlockCallback = VideoUnlockCallback;
-                    _displayCallback = VideoDisplayCallback;
-                    _formatCallback = VideoFormatCallback;
-                    _cleanupCallback = VideoCleanupCallback;
-                    //_audioSetupCallback = AudioFormatSetupCallback;
-                    //_audioCleanupCallback = AudioFormatCleanupCallback;
-                    //_audioPlayCallback = AudioPlayCallback;
-                    //_audioPauseCallback = AudioPauseCallback;
-                    //_audioResumeCallback = AudioResumeCallback;
-                    //_audioFlushCallback = AudioFlushCallback;
-                    //_audioDrainCallback = AudioDrainCallback;
-                    //_audioSetVolumeCallback = AudioSetVolumeCallback;
+                _lockCallback = VideoLockCallback;
+                _unlockCallback = VideoUnlockCallback;
+                _displayCallback = VideoDisplayCallback;
+                _formatCallback = VideoFormatCallback;
+                _cleanupCallback = VideoCleanupCallback;
+                //_audioSetupCallback = AudioFormatSetupCallback;
+                //_audioCleanupCallback = AudioFormatCleanupCallback;
+                //_audioPlayCallback = AudioPlayCallback;
+                //_audioPauseCallback = AudioPauseCallback;
+                //_audioResumeCallback = AudioResumeCallback;
+                //_audioFlushCallback = AudioFlushCallback;
+                //_audioDrainCallback = AudioDrainCallback;
+                //_audioSetVolumeCallback = AudioSetVolumeCallback;
 
-                    _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
-                    _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
-                    _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
-                    _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
-                    _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
-                    //_audioSetupCallbackHandle = GCHandle.Alloc(_audioSetupCallback);
-                    //_audioCleanupCallbackHandle = GCHandle.Alloc(_audioCleanupCallback);
-                    //_audioPlayCallbackHandle = GCHandle.Alloc(_audioPlayCallback);
-                    //_audioPauseCallbackHandle = GCHandle.Alloc(_audioPauseCallback);
-                    //_audioResumeCallbackHandle = GCHandle.Alloc(_audioResumeCallback);
-                    //_audioFlushCallbackHandle = GCHandle.Alloc(_audioFlushCallback);
-                    //_audioDrainCallbackHandle = GCHandle.Alloc(_audioDrainCallback);
-                    //_audioSetVolumeCallbackHandle = GCHandle.Alloc(_audioSetVolumeCallback);
+                _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
+                _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
+                _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
+                _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
+                _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
+                //_audioSetupCallbackHandle = GCHandle.Alloc(_audioSetupCallback);
+                //_audioCleanupCallbackHandle = GCHandle.Alloc(_audioCleanupCallback);
+                //_audioPlayCallbackHandle = GCHandle.Alloc(_audioPlayCallback);
+                //_audioPauseCallbackHandle = GCHandle.Alloc(_audioPauseCallback);
+                //_audioResumeCallbackHandle = GCHandle.Alloc(_audioResumeCallback);
+                //_audioFlushCallbackHandle = GCHandle.Alloc(_audioFlushCallback);
+                //_audioDrainCallbackHandle = GCHandle.Alloc(_audioDrainCallback);
+                //_audioSetVolumeCallbackHandle = GCHandle.Alloc(_audioSetVolumeCallback);
 
-                    VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
-                    VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);
-                    //VlcMediaPlayer.SetAudioCallback(_audioPlayCallback, _audioPauseCallback, _audioResumeCallback, _audioFlushCallback, _audioDrainCallback);
-                    //VlcMediaPlayer.SetAudioFormatCallback(_audioSetupCallback, _audioCleanupCallback);
-                    //VlcMediaPlayer.SetAudioVolumeCallback(_audioSetVolumeCallback);
-                }
-            }));
+                VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
+                VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);
+                //VlcMediaPlayer.SetAudioCallback(_audioPlayCallback, _audioPauseCallback, _audioResumeCallback, _audioFlushCallback, _audioDrainCallback);
+                //VlcMediaPlayer.SetAudioFormatCallback(_audioSetupCallback, _audioCleanupCallback);
+                //VlcMediaPlayer.SetAudioVolumeCallback(_audioSetVolumeCallback);
+            }
         }
 
         #endregion --- Initialization ---
@@ -655,9 +687,9 @@ namespace xZune.Vlc.Wpf
                 var propInfo = bodyExpr.Member as PropertyInfo;
                 var propName = propInfo.Name;
 
-                if (ImageDispatcher != null)
+                if (DisplayThreadDispatcher != null)
                 {
-                    ImageDispatcher.BeginInvoke(
+                    DisplayThreadDispatcher.BeginInvoke(
                         new Action(() => { PropertyChanged(this, new PropertyChangedEventArgs(propName)); }));
                 }
             }

@@ -173,7 +173,7 @@ namespace xZune.Vlc.Wpf
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
 
-            CommonDispatcher.Invoke(() =>
+            CommonDispatcher.Invoke(new Action(() =>
             {
                 TargetElement = CreateThreadSeparatedControl();
 
@@ -183,7 +183,7 @@ namespace xZune.Vlc.Wpf
                 VisualTarget.RootVisual = TargetElement;
 
                 Dispatcher.BeginInvoke(new Action(() => { InvalidateMeasure(); }));
-            });
+            }));
         }
 
         protected override void UnloadThreadSeparatedControl()

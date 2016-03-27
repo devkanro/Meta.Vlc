@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: Themes/Generic.xaml
-Version: 20151112
+Version: 20160327
 -->
 
 <ResourceDictionary
@@ -24,11 +24,7 @@ Version: 20151112
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}">
-                        <local:ThreadSeparatedImage x:Name="Image"
-              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-              Stretch="{TemplateBinding Stretch}"
-              StretchDirection="{TemplateBinding StretchDirection}"/>
+                        <local:ThreadSeparatedImage x:Name="Image" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

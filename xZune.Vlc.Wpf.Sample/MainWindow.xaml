@@ -23,7 +23,7 @@ Version: 20160109
 
     <Grid x:Name="LayoutParent">
 
-        <wpf:VlcPlayer x:Name="Player" EndBehavior="Repeat"/>
+        <wpf:VlcPlayer x:Name="Player" EndBehavior="Repeat" HorizontalContentAlignment="Left"/>
         <!-- can comment this if adding the player dynamically -->
 
         <StackPanel Opacity="0.8">

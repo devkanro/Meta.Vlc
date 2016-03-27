@@ -102,8 +102,10 @@
     </Compile>
     <Compile Include="SnapshotContext.cs" />
     <Compile Include="SnapshotFormat.cs" />
+    <Compile Include="ThreadSeparatedControlHost.cs" />
     <Compile Include="ThreadSeparatedImage.cs" />
     <Compile Include="VideoDisplayContext.cs" />
+    <Compile Include="VisualTargetPresentationSource.cs" />
     <Compile Include="VlcPlayer.cs" />
     <Compile Include="VlcPlayer.DependencyProperties.cs" />
     <Compile Include="VlcPlayer.Events.cs" />

@@ -1,13 +1,11 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.DependencyProperties.cs
-// Version: 20160214
+// Version: 20160327
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace xZune.Vlc.Wpf
 {
@@ -45,28 +43,6 @@ namespace xZune.Vlc.Wpf
 
         #endregion VlcOption
 
-        #region ScaleTransform
-
-        internal ScaleTransform _scaleTransform = null;
-        internal ScaleTransform ScaleTransform
-        {
-            get { return _scaleTransform; }
-            set {
-                if (Image != null)
-                {
-                    Image.ScaleTransform = value;
-                }
-
-                if (_scaleTransform != value)
-                {
-                    _scaleTransform = value;
-                    OnPropertyChanged(() => ScaleTransform);
-                }
-            }
-        }
-
-        #endregion ScaleTransform
-
         #region AspectRatio
 
         public static readonly DependencyProperty PropertyTypeProperty =
@@ -90,46 +66,12 @@ namespace xZune.Vlc.Wpf
 
             if (vlcPlayer.ImageDispatcher != null)
             {
-                vlcPlayer.ImageDispatcher.BeginInvoke(new Action(() =>
-                {
-                    vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height);
-                }));
+                vlcPlayer.ImageDispatcher.BeginInvoke(
+                    new Action(() => { vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
             }
         }
 
         #endregion AspectRatio
-
-        #region VideoSource
-
-        public BitmapSource _videoSource = null;
-        /// <summary>
-        ///     The image data of video, it is a DependencyProperty.
-        /// </summary>
-        public BitmapSource VideoSource
-        {
-            get { return _videoSource; }
-            private set
-            {
-                if (Image != null)
-                {
-                    Image.Source = value;
-                }
-
-                if (_videoSource != value)
-                {
-                    _videoSource = value;
-                    OnPropertyChanged(() => VideoSource);
-                    if (VideoSourceChanged != null)
-                    {
-                        VideoSourceChanged(this, new VideoSourceChangedEventArgs(value));
-                    }
-                }
-            }
-        }
-
-        public event EventHandler<VideoSourceChangedEventArgs> VideoSourceChanged;
-
-        #endregion VideoSource
 
         #region Stretch
 
@@ -144,7 +86,15 @@ namespace xZune.Vlc.Wpf
 
         public static readonly DependencyProperty StretchProperty =
             DependencyProperty.Register("Stretch", typeof (Stretch), typeof (VlcPlayer),
-                new PropertyMetadata(Stretch.Uniform));
+                new PropertyMetadata(Stretch.Uniform, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.ImageDispatcher != null)
+                    {
+                        @this.Image.Stretch = (Stretch) args.NewValue;
+                    }
+                }));
 
         /// <summary>
         ///     The stretch direction of video.
@@ -157,7 +107,15 @@ namespace xZune.Vlc.Wpf
 
         public static readonly DependencyProperty StretchDirectionProperty =
             DependencyProperty.Register("StretchDirection", typeof (StretchDirection), typeof (VlcPlayer),
-                new PropertyMetadata(StretchDirection.Both));
+                new PropertyMetadata(StretchDirection.Both, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.ImageDispatcher != null)
+                    {
+                        @this.Image.StretchDirection = (StretchDirection) args.NewValue;
+                    }
+                }));
 
         #endregion Stretch
 
@@ -173,7 +131,6 @@ namespace xZune.Vlc.Wpf
         }
 
         #endregion EndBehavior
-        
     }
 
     public class VideoSourceChangedEventArgs : EventArgs

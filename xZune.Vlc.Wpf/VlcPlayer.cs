@@ -1,6 +1,6 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.cs
-// Version: 20160325
+// Version: 20160327
 
 using System;
 using System.ComponentModel;
@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -22,7 +21,7 @@ namespace xZune.Vlc.Wpf
     /// <summary>
     ///     VLC media player.
     /// </summary>
-    [TemplatePart(Name = "Image", Type = typeof(ThreadSeparatedImage))]
+    [TemplatePart(Name = "Image", Type = typeof (ThreadSeparatedImage))]
     public partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
     {
         #region --- Fields ---
@@ -68,7 +67,7 @@ namespace xZune.Vlc.Wpf
 
         private ThreadSeparatedImage Image
         {
-            get { return (ThreadSeparatedImage)GetTemplateChild("Image"); }
+            get { return (ThreadSeparatedImage) GetTemplateChild("Image"); }
         }
 
         //Dispose//
@@ -82,13 +81,39 @@ namespace xZune.Vlc.Wpf
 
         static VlcPlayer()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(VlcPlayer),
-                new FrameworkPropertyMetadata(typeof(VlcPlayer)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof (VlcPlayer),
+                new FrameworkPropertyMetadata(typeof (VlcPlayer)));
         }
 
         public VlcPlayer()
         {
             Loaded += OnLoaded;
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
+                new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.ImageDispatcher != null)
+                    {
+                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment) args.NewValue;
+                    }
+                }));
+
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
+                new FrameworkPropertyMetadata(VerticalAlignment.Stretch, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.ImageDispatcher != null)
+                    {
+                        @this.Image.VerticalContentAlignment = (VerticalAlignment) args.NewValue;
+                    }
+                }));
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -106,6 +131,11 @@ namespace xZune.Vlc.Wpf
                         .CombinePath(LibVlcPath);
             }
 
+            Image.HorizontalContentAlignment = HorizontalContentAlignment;
+            Image.VerticalContentAlignment = VerticalContentAlignment;
+            Image.Stretch = Stretch;
+            Image.StretchDirection = StretchDirection;
+
             ImageDispatcher.BeginInvoke(new Action(() =>
             {
                 ScaleTransform = new ScaleTransform(1, 1);
@@ -120,7 +150,7 @@ namespace xZune.Vlc.Wpf
 
                     var vlcSettings =
                         Assembly.GetEntryAssembly()
-                            .GetCustomAttributes(typeof(VlcSettingsAttribute), false);
+                            .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
 
                     if (vlcSettings.Length > 0)
                     {
@@ -316,7 +346,6 @@ namespace xZune.Vlc.Wpf
                 _context = null;
             }
 
-
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.ParseAsync();
 
@@ -365,8 +394,6 @@ namespace xZune.Vlc.Wpf
                 _context.Dispose();
                 _context = null;
             }
-
-
 
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
@@ -419,7 +446,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Pause media.
+        ///     Pause media.
         /// </summary>
         public void Pause()
         {
@@ -429,7 +456,7 @@ namespace xZune.Vlc.Wpf
         }
 
         /// <summary>
-        /// Resume media.
+        ///     Resume media.
         /// </summary>
         public void Resume()
         {
@@ -457,7 +484,6 @@ namespace xZune.Vlc.Wpf
 
             StopInternal();
             VlcMediaPlayer.Play();
-
         }
 
         #endregion Play/Pause

@@ -1,12 +1,11 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.Events.cs
-// Version: 20160325
+// Version: 20160327
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -55,7 +54,7 @@ namespace xZune.Vlc.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-            
+
             if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
                 (LibVlcManager.LibVlcVersion.DevString == "xZune"))
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X),
@@ -212,7 +211,7 @@ namespace xZune.Vlc.Wpf
         {
             if (_disposing || _isStopping) return;
 
-            Debug.WriteLine("StateChanged : {0}", e.Value.NewState);
+            Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
 
             if (StateChanged != null)
                 StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
@@ -245,8 +244,9 @@ namespace xZune.Vlc.Wpf
                     if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
                     {
                         _context.IsAspectRatioChecked = true;
-                        Debug.WriteLine("Scale:{0}x{1}", scale.Width, scale.Height);
-                        Debug.WriteLine("Resize Image to {0}x{1}", _context.DisplayWidth, _context.DisplayHeight);
+                        Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
+                        Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
+                            _context.DisplayHeight));
                     }
                     else
                     {
@@ -323,7 +323,7 @@ namespace xZune.Vlc.Wpf
         private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,
             ref uint pitches, ref uint lines)
         {
-            Debug.WriteLine("Initialize Video Content : {0}x{1}", width, height);
+            Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
             if (_context == null)
             {
                 uint tmpWidth = width;
@@ -331,10 +331,8 @@ namespace xZune.Vlc.Wpf
 
                 if (ImageDispatcher != null)
                 {
-                    ImageDispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
-                    {
-                        _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32);
-                    }));
+                    ImageDispatcher.Invoke(DispatcherPriority.Normal,
+                        new Action(() => { _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32); }));
                 }
             }
             chroma = (uint) _context.ChromaType;

@@ -88,6 +88,7 @@
     <Compile Include="EndBehavior.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ThreadSeparatedControlHost.cs" />
     <Compile Include="ThreadSeparatedImage.cs" />
     <Compile Include="VideoDisplayContext.cs" />
     <Compile Include="SnapshotFormat.cs" />
@@ -106,6 +107,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="VisualTargetPresentationSource.cs" />
     <Compile Include="VlcPlayer.cs" />
     <Compile Include="VlcPlayer.DependencyProperties.cs" />
     <Compile Include="VlcPlayer.Events.cs" />

@@ -3,6 +3,8 @@
 // Version: 20160325
 
 using System;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using xZune.Vlc.Interop.Media;
 using xZune.Vlc.Interop.MediaPlayer;
@@ -293,7 +295,7 @@ namespace xZune.Vlc.Wpf
             {
                 if (Image != null)
                 {
-                    return Image.ThreadSeparatedDispatcher;
+                    return Image.SeparateThreadDispatcher;
                 }
 
                 return null;
@@ -359,5 +361,62 @@ namespace xZune.Vlc.Wpf
         }
 
         #endregion AudioEqualizer
+
+        #region VideoSource
+
+        public BitmapSource _videoSource = null;
+
+        /// <summary>
+        ///     The image data of video, it is created on other thread, you can't use it in main thread.
+        /// </summary>
+        public BitmapSource VideoSource
+        {
+            get { return _videoSource; }
+            private set
+            {
+                if (Image != null)
+                {
+                    Image.Source = value;
+                }
+
+                if (_videoSource != value)
+                {
+                    _videoSource = value;
+                    OnPropertyChanged(() => VideoSource);
+                    if (VideoSourceChanged != null)
+                    {
+                        VideoSourceChanged(this, new VideoSourceChangedEventArgs(value));
+                    }
+                }
+            }
+        }
+
+        public event EventHandler<VideoSourceChangedEventArgs> VideoSourceChanged;
+
+        #endregion VideoSource
+
+        #region ScaleTransform
+
+        internal ScaleTransform _scaleTransform = null;
+
+        internal ScaleTransform ScaleTransform
+        {
+            get { return _scaleTransform; }
+            set
+            {
+                if (Image != null)
+                {
+                    Image.ScaleTransform = value;
+                }
+
+                if (_scaleTransform != value)
+                {
+                    _scaleTransform = value;
+                    OnPropertyChanged(() => ScaleTransform);
+                }
+            }
+        }
+
+        #endregion ScaleTransform
     }
 }

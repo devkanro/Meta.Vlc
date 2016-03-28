@@ -51,6 +51,17 @@ See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.htm
 
 ## Change Log
 
+### 2016/03/28
+SHA1:72b6e0fa70d34c64b700e9bdeda8f9ca61731b9f  
+
+**01.可为其他控件生成 VideoSource。**  
+_**01.VideoSource can be used in other control.**_  
+由于呈现线程的改变，VideoSource 将属于呈现线程，而非默认 UI 线程，因此 VideoSource 不在能被默认 UI 线程的元素使用，但是我们为在其他控件使用 VideoSource 准备其他方案。
+_Due the change of display thread, VideoSource will belong to display thread, not the default UI thread. So VideoSource can't be used by UI element of default UI thread, but we provide another way to use VideoSource for other control._  
+
+查看 [Use VlcPlayer with other controls](https://github.com/higankanshi/xZune.Vlc/wiki/Use-VlcPlayer-with-other-controls) 来获取如何在其他控件中使用 VideoSource 的教程。  
+_See [Use VlcPlayer with other controls](https://github.com/higankanshi/xZune.Vlc/wiki/Use-VlcPlayer-with-other-controls) to get more information about use VlcPlayer with other conttols._
+
 ### 2016/03/25
 
 **01.多线程的图片呈现方式。**  

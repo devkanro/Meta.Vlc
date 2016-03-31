@@ -28,6 +28,7 @@ namespace xZune.Vlc.Wpf
                         IsBackground = true
                     };
                     separateThread.SetApartmentState(ApartmentState.STA);
+                    separateThread.Priority = ThreadPriority.Highest;
 
                     separateThread.Start();
 
@@ -71,7 +72,7 @@ namespace xZune.Vlc.Wpf
                 }
             }
         }
-
+        
         public Stretch Stretch
         {
             get { return _stretch; }

@@ -69,6 +69,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>higan.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
@@ -109,6 +115,7 @@
     <Compile Include="Win32Api.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="higan.pfx" />
     <None Include="Interop\xZune.Vlc.Interop.cd" />
     <None Include="xZune.Vlc.cd" />
   </ItemGroup>

@@ -3,6 +3,7 @@
 // Version: 20160327
 
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,7 +44,7 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        private HorizontalAlignment _horizontalContentAlignment = HorizontalAlignment.Stretch;
+        private HorizontalAlignment _horizontalContentAlignment = default(HorizontalAlignment);
 
         private ScaleTransform _scaleTransform;
 
@@ -53,7 +54,7 @@ namespace xZune.Vlc.Wpf
 
         private StretchDirection _stretchDirection = StretchDirection.Both;
 
-        private VerticalAlignment _verticalContentAlignment = VerticalAlignment.Stretch;
+        private VerticalAlignment _verticalContentAlignment = default(VerticalAlignment);
 
         public Image InternalImageControl { get; private set; }
 
@@ -174,9 +175,12 @@ namespace xZune.Vlc.Wpf
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
 
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             CommonDispatcher.Invoke(new Action(() =>
             {
-                TargetElement = CreateThreadSeparatedControl();
+                   TargetElement = CreateThreadSeparatedControl();
 
                 if (TargetElement == null) return;
 

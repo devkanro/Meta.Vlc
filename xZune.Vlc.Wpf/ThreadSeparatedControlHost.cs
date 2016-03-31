@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -49,6 +50,9 @@ namespace xZune.Vlc.Wpf
 
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
+            
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
 
             var thread = new Thread(() =>
             {
@@ -105,10 +109,9 @@ namespace xZune.Vlc.Wpf
 
             if (TargetElement != null)
             {
-                TargetElement.Dispatcher.Invoke(DispatcherPriority.Background,
+                TargetElement.Dispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() => TargetElement.Measure(constraint)));
-                uiSize.Width = TargetElement.ActualWidth;
-                uiSize.Height = TargetElement.ActualHeight;
+                uiSize = TargetElement.DesiredSize;
             }
 
             return uiSize;
@@ -118,7 +121,7 @@ namespace xZune.Vlc.Wpf
         {
             if (TargetElement != null)
             {
-                TargetElement.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                TargetElement.Dispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() => TargetElement.Arrange(new Rect(finalSize))));
             }
 

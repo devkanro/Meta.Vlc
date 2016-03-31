@@ -77,6 +77,28 @@ namespace xZune.Vlc.Wpf
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof (VlcPlayer),
                 new FrameworkPropertyMetadata(typeof (VlcPlayer)));
+            
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof(VlcPlayer),
+                new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.DisplayThreadDispatcher != null)
+                    {
+                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment)args.NewValue;
+                    }
+                }));
+
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof(VlcPlayer),
+                new FrameworkPropertyMetadata(VerticalAlignment.Stretch, (o, args) =>
+                {
+                    var @this = o as VlcPlayer;
+
+                    if (@this.DisplayThreadDispatcher != null)
+                    {
+                        @this.Image.VerticalContentAlignment = (VerticalAlignment)args.NewValue;
+                    }
+                }));
         }
 
         /// <summary>
@@ -86,27 +108,6 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public VlcPlayer()
         {
-            HorizontalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
-                new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, (o, args) =>
-                {
-                    var @this = o as VlcPlayer;
-
-                    if (@this.DisplayThreadDispatcher != null)
-                    {
-                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment) args.NewValue;
-                    }
-                }));
-
-            VerticalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
-                new FrameworkPropertyMetadata(VerticalAlignment.Stretch, (o, args) =>
-                {
-                    var @this = o as VlcPlayer;
-
-                    if (@this.DisplayThreadDispatcher != null)
-                    {
-                        @this.Image.VerticalContentAlignment = (VerticalAlignment) args.NewValue;
-                    }
-                }));
         }
 
         /// <summary>

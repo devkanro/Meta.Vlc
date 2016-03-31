@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
@@ -49,6 +50,9 @@ namespace xZune.Vlc.Wpf
 
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
+            
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
 
             var thread = new Thread(() =>
             {

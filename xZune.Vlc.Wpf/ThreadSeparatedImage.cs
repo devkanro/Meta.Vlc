@@ -3,6 +3,7 @@
 // Version: 20160327
 
 using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -174,9 +175,12 @@ namespace xZune.Vlc.Wpf
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
 
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             CommonDispatcher.Invoke(new Action(() =>
             {
-                TargetElement = CreateThreadSeparatedControl();
+                   TargetElement = CreateThreadSeparatedControl();
 
                 if (TargetElement == null) return;
 

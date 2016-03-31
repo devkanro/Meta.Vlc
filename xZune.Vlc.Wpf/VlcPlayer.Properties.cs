@@ -308,7 +308,6 @@ namespace xZune.Vlc.Wpf
                 {
                     return _customDisplayThreadDispatcher;
                 }
-
                 return null;
             }
         }

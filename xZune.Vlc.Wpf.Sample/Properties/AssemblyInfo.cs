@@ -27,5 +27,5 @@ using xZune.Vlc;
     ResourceDictionaryLocation.None,
     ResourceDictionaryLocation.SourceAssembly
     )]
-[assembly: AssemblyVersion("15.10.25.0")]
-[assembly: AssemblyFileVersion("15.10.25.0")]
+[assembly: AssemblyVersion("16.03.28.0")]
+[assembly: AssemblyFileVersion("16.03.28.0")]

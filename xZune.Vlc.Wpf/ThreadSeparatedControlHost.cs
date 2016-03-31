@@ -105,10 +105,9 @@ namespace xZune.Vlc.Wpf
 
             if (TargetElement != null)
             {
-                TargetElement.Dispatcher.Invoke(DispatcherPriority.Background,
+                TargetElement.Dispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() => TargetElement.Measure(constraint)));
-                uiSize.Width = TargetElement.ActualWidth;
-                uiSize.Height = TargetElement.ActualHeight;
+                uiSize = TargetElement.DesiredSize;
             }
 
             return uiSize;
@@ -118,7 +117,7 @@ namespace xZune.Vlc.Wpf
         {
             if (TargetElement != null)
             {
-                TargetElement.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                TargetElement.Dispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() => TargetElement.Arrange(new Rect(finalSize))));
             }
 

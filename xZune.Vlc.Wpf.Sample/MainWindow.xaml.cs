@@ -45,12 +45,13 @@ namespace xZune.Vlc.Wpf.Sample
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            var cdg =
-                @"C:\Users\higan\Downloads\test\test test.cdg";
-            Player.Stop();
-            Player.LoadMediaWithOptions(@"C:\Users\higan\Downloads\test\test test.mp3",
-                string.Format(":sub-file={0}", cdg));
-            Player.Play();
+            var openfiles = new OpenFileDialog();
+            if (openfiles.ShowDialog() == true)
+            {
+                Player.Stop();
+                Player.LoadMedia(openfiles.FileName);
+                Player.Play();
+            }
             return;
 
             String pathString = path.Text;

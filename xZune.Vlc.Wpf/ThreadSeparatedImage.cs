@@ -43,7 +43,7 @@ namespace xZune.Vlc.Wpf
             }
         }
 
-        private HorizontalAlignment _horizontalContentAlignment = HorizontalAlignment.Stretch;
+        private HorizontalAlignment _horizontalContentAlignment = default(HorizontalAlignment);
 
         private ScaleTransform _scaleTransform;
 
@@ -53,7 +53,7 @@ namespace xZune.Vlc.Wpf
 
         private StretchDirection _stretchDirection = StretchDirection.Both;
 
-        private VerticalAlignment _verticalContentAlignment = VerticalAlignment.Stretch;
+        private VerticalAlignment _verticalContentAlignment = default(VerticalAlignment);
 
         public Image InternalImageControl { get; private set; }
 

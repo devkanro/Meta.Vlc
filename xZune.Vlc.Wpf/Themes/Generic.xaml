@@ -1,7 +1,7 @@
 ﻿<!--
 Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 Filename: Themes/Generic.xaml
-Version: 20160327
+Version: 20160404
 -->
 
 <ResourceDictionary
@@ -10,7 +10,7 @@ Version: 20160327
   xmlns:local="clr-namespace:xZune.Vlc.Wpf">
 
     <Style TargetType="{x:Type local:VlcPlayer}">
-
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Stretch" Value="Uniform" />
         <Setter Property="StretchDirection" Value="Both" />
 

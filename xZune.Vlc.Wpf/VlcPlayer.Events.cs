@@ -1,6 +1,6 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: VlcPlayer.Events.cs
-// Version: 20160327
+// Version: 20160404
 
 using System;
 using System.Diagnostics;
@@ -213,8 +213,11 @@ namespace xZune.Vlc.Wpf
 
             Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
 
-            if (StateChanged != null)
-                StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+             {
+                 if (StateChanged != null)
+                     StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
+             }));
         }
 
         #endregion VlcMediaPlayer event handlers

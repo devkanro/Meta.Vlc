@@ -1,6 +1,6 @@
 ﻿// Project: xZune.Vlc (https://github.com/higankanshi/xZune.Vlc)
 // Filename: MainWindow.xaml.cs
-// Version: 20160312
+// Version: 20160404
 
 using System;
 using System.ComponentModel;

@@ -24,7 +24,7 @@ Version: 20160404
             Background="{TemplateBinding Background}"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}">
-                        <local:ThreadSeparatedImage x:Name="Image" />
+                        <local:ThreadSeparatedImage x:Name="Image"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

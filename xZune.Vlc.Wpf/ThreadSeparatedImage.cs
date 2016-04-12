@@ -178,7 +178,7 @@ namespace xZune.Vlc.Wpf
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
-            CommonDispatcher.Invoke(new Action(() =>
+            CommonDispatcher.BeginInvoke(new Action(() =>
             {
                    TargetElement = CreateThreadSeparatedControl();
 

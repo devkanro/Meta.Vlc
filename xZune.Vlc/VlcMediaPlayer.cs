@@ -98,6 +98,15 @@ namespace xZune.Vlc
         private static LibVlcFunction<SetAudioOutput> _setAudioOutputFunction;
         private static LibVlcFunction<SetAudioDevice> _setAudioDeviceFunction;
         private static LibVlcFunction<GetAudioDevice> _getAudioDeviceFunction;
+
+        private static LibVlcFunction<GetSubtitle> _getSubtitleFunction;
+        private static LibVlcFunction<GetSubtitleCount> _getSubtitleCountFunction;
+        private static LibVlcFunction<GetSubtitleDescription> _getSubtitleDescriptionFunction;
+        private static LibVlcFunction<SetSubtitle> _setSubtitleFunction;
+        private static LibVlcFunction<SetSubtitleFile> _setSubtitleFileFunction;
+        private static LibVlcFunction<GetSubtitleDelay> _getSubtitleDelayFunction;
+        private static LibVlcFunction<SetSubtitleDelay> _setSubtitleDelayFunction;
+
         private readonly LibVlcEventCallBack _onBackward;
         private readonly LibVlcEventCallBack _onBuffering;
         private readonly LibVlcEventCallBack _onEncounteredError;
@@ -317,6 +326,14 @@ namespace xZune.Vlc
                 _setAudioOutputFunction = new LibVlcFunction<SetAudioOutput>();
                 _setAudioDeviceFunction = new LibVlcFunction<SetAudioDevice>();
                 _getAudioDeviceFunction = new LibVlcFunction<GetAudioDevice>();
+                _getSubtitleFunction = new LibVlcFunction<GetSubtitle>();
+                _getSubtitleCountFunction = new LibVlcFunction<GetSubtitleCount>();
+                _getSubtitleDescriptionFunction = new LibVlcFunction<GetSubtitleDescription>();
+                _setSubtitleFunction = new LibVlcFunction<SetSubtitle>();
+                _setSubtitleFileFunction = new LibVlcFunction<SetSubtitleFile>();
+                _getSubtitleDelayFunction = new LibVlcFunction<GetSubtitleDelay>();
+                _setSubtitleDelayFunction = new LibVlcFunction<SetSubtitleDelay>();
+
                 IsLibLoaded = true;
             }
         }
@@ -564,7 +581,7 @@ namespace xZune.Vlc
             get
             {
                 var ms = _getLengthFunction.Delegate(InstancePointer);
-                return ms != -1 ? new TimeSpan(ms*10000) : TimeSpan.Zero;
+                return ms != -1 ? new TimeSpan(ms * 10000) : TimeSpan.Zero;
             }
         }
 
@@ -576,9 +593,9 @@ namespace xZune.Vlc
             get
             {
                 var ms = _getTimeFunction.Delegate(InstancePointer);
-                return ms != -1 ? new TimeSpan(ms*10000) : TimeSpan.Zero;
+                return ms != -1 ? new TimeSpan(ms * 10000) : TimeSpan.Zero;
             }
-            set { _setTimeFunction.Delegate(InstancePointer, (Int64) value.TotalMilliseconds); }
+            set { _setTimeFunction.Delegate(InstancePointer, (Int64)value.TotalMilliseconds); }
         }
 
         /// <summary>
@@ -782,6 +799,23 @@ namespace xZune.Vlc
             }
         }
 
+        public int Subtitle
+        {
+            get { return _getSubtitleFunction.Delegate.Invoke(InstancePointer); }
+            set { _setSubtitleFunction.Delegate.Invoke(InstancePointer, value); }
+        }
+
+        public long SubtitleDelay
+        {
+            get { return _getSubtitleDelayFunction.Delegate.Invoke(InstancePointer); }
+            set { _setSubtitleDelayFunction.Delegate.Invoke(InstancePointer,value); }
+        }
+
+        public TrackDescription SubtitleDescription
+        {
+            get { return new TrackDescription(_getSubtitleDescriptionFunction.Delegate(InstancePointer)); }
+        }
+
         #endregion 属性 Media
 
         #region 方法
@@ -820,6 +854,14 @@ namespace xZune.Vlc
         public void SetAudioVolumeCallback(AudioSetVolumeCallback volumeCallback)
         {
             _setAudioVolumeCallbackFunction.Delegate(InstancePointer, volumeCallback);
+        }
+
+        public bool SetSubtitleFile(String path)
+        {
+            var pathHandle = InteropHelper.StringToPtr(path);
+            var result = _setSubtitleFileFunction.Delegate(InstancePointer, pathHandle.AddrOfPinnedObject());
+            pathHandle.Free();
+            return result != 0;
         }
 
         /// <summary>
@@ -872,7 +914,7 @@ namespace xZune.Vlc
         public void SetAudioFormat(String format, uint rate, uint channels)
         {
             var fmt =
-                BitConverter.ToUInt32(new[] {(byte) format[0], (byte) format[1], (byte) format[2], (byte) format[3]}, 0);
+                BitConverter.ToUInt32(new[] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
             _setAudioFormatFunction.Delegate(InstancePointer, fmt, rate, channels);
         }
 

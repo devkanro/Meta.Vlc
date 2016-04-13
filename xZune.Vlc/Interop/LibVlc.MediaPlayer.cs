@@ -612,4 +612,32 @@ namespace xZune.Vlc.Interop.MediaPlayer
     [LibVlcFunction("libvlc_track_description_list_release")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void ReleaseTrackDescription(IntPtr track);
+
+    [LibVlcFunction("libvlc_video_get_spu")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int GetSubtitle(IntPtr mediaPlayer);
+    
+    [LibVlcFunction("libvlc_video_get_spu_count")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int GetSubtitleCount(IntPtr mediaPlayer);
+
+    [LibVlcFunction("libvlc_video_get_spu_description")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate IntPtr GetSubtitleDescription(IntPtr mediaPlayer);
+
+    [LibVlcFunction("libvlc_video_set_spu")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int SetSubtitle(IntPtr mediaPlayer, int sub);
+
+    [LibVlcFunction("libvlc_video_set_subtitle_file")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int SetSubtitleFile(IntPtr mediaPlayer, IntPtr subtiltieFile);
+
+    [LibVlcFunction("libvlc_video_get_spu_delay", "2.0.0")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate long GetSubtitleDelay(IntPtr mediaPlayer);
+
+    [LibVlcFunction("libvlc_video_set_spu_delay", "2.0.0")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int SetSubtitleDelay(IntPtr mediaPlayer,long delay);
 }

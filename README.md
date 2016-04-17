@@ -51,6 +51,37 @@ See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.htm
 
 ## Change Log
 
+### 2016/04/17  
+SHA1:3a4d2cc7ca1a1c1026047a07494641d4c8b38e3d  
+
+**01.添加 Video Adjust 系列 API。**  
+_**01.Add adjust APIs for video.**_  
+在 VlcMediaPlayer 中使用下列过滤器相关的 API 来为播放器提供过滤器。  
+_Use those video adjust APIs in VlcMediaPlayer to control adjust._  
+```
+Property              VlcMediaPlayer.IsAdjustEnable          get/set   bool
+Property              VlcMediaPlayer.Contrast                get/set   float
+Property              VlcMediaPlayer.Brightness              get/set   float
+Property              VlcMediaPlayer.Hue                     get/set   float  
+Property              VlcMediaPlayer.Saturation              get/set   float  
+Property              VlcMediaPlayer.Gamma                   get/set   float  
+```
+
+### 2016/04/13  
+SHA1:7ffd3eb8616a6a364591809890688bda84b36501  
+
+**01.添加 Subtitle 系列 API。**  
+_**01.Add subtitle APIs.**_  
+在 VlcMediaPlayer 中使用下列字幕相关的 API 来控制播放器的字幕行为。  
+_Use those subtitle APIs in VlcMediaPlayer to control subtitle._  
+```
+Property              VlcMediaPlayer.Subtitle                  get/set   int
+Property              VlcMediaPlayer.SubtitleDelay             get/set   long
+Property              VlcMediaPlayer.SubtitleCount             get       int
+Property              VlcMediaPlayer.SubtitleDescription       get       TrackDescription
+Method                VlcMediaPlayer.SetSubtitleFile(String)             bool
+```
+
 ### 2016/03/28
 SHA1:72b6e0fa70d34c64b700e9bdeda8f9ca61731b9f  
 
@@ -75,7 +106,7 @@ _But if UI thread is busy for long time, video still will stuck, but decode thre
 _No idea about this, but I think the video file IO is  associated with UI thread._ 
 
 **02.VlcPlayer 处理 VLC 事件不在主 UI 线程同步处理。**  
-_02.VlcPlayer handle event of VLC no longer block the main UI thread._  
+_**02.VlcPlayer handle event of VLC no longer block the main UI thread.**_  
 SHA1:052ed5ec6c16fa43a3c50b8ec594c3176973b97e  
 完善 VLC 线程与 UI 线程之间的交互，现在 VlcPlayer 在处理 VLC 事件时不会在主 UI 线程上同步。  
 解决了当主 UI 线程卡死时，视频将暂停播放的问题，现在当主 UI 线程卡死时，视频仍然能够继续播放不受影响。  

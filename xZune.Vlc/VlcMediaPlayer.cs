@@ -813,6 +813,10 @@ namespace xZune.Vlc
             get { return _getSubtitleFunction.Delegate.Invoke(InstancePointer); }
             set { _setSubtitleFunction.Delegate.Invoke(InstancePointer, value); }
         }
+        public int SubtitleCount
+        {
+            get { return _getSubtitleCountFunction.Delegate.Invoke(InstancePointer); }
+        }
 
         public long SubtitleDelay
         {

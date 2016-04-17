@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>xZune.Vlc.Wpf</id>
-        <version>16.04.04</version>
+        <version>16.04.17</version>
         <title>xZune.Vlc.Wpf</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -17,13 +17,13 @@
         <tags>vlc libvlc xZune media video</tags>
         <dependencies>
             <group targetFramework=".NETFramework3.5">
-                <dependency id="xZune.Vlc" version="16.03.31" />
+                <dependency id="xZune.Vlc" version="16.04.17" />
             </group>
             <group targetFramework=".NETFramework4.0">
-                <dependency id="xZune.Vlc" version="16.03.31" />
+                <dependency id="xZune.Vlc" version="16.04.17" />
             </group>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="xZune.Vlc" version="16.03.31" />
+                <dependency id="xZune.Vlc" version="16.04.17" />
             </group>
         </dependencies>
     </metadata>

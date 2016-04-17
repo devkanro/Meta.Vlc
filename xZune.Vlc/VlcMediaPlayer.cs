@@ -107,6 +107,11 @@ namespace xZune.Vlc
         private static LibVlcFunction<GetSubtitleDelay> _getSubtitleDelayFunction;
         private static LibVlcFunction<SetSubtitleDelay> _setSubtitleDelayFunction;
 
+        private static LibVlcFunction<GetVideoAdjustInt> _getVideoAdjustIntFunction;
+        private static LibVlcFunction<GetVideoAdjustFloat> _getVideoAdjustFloatFunction;
+        private static LibVlcFunction<SetVideoAdjustInt> _setVideoAdjustIntFunction;
+        private static LibVlcFunction<SetVideoAdjustFloat> _setVideoAdjustFloatFunction;
+
         private readonly LibVlcEventCallBack _onBackward;
         private readonly LibVlcEventCallBack _onBuffering;
         private readonly LibVlcEventCallBack _onEncounteredError;
@@ -333,6 +338,10 @@ namespace xZune.Vlc
                 _setSubtitleFileFunction = new LibVlcFunction<SetSubtitleFile>();
                 _getSubtitleDelayFunction = new LibVlcFunction<GetSubtitleDelay>();
                 _setSubtitleDelayFunction = new LibVlcFunction<SetSubtitleDelay>();
+                _getVideoAdjustIntFunction = new LibVlcFunction<GetVideoAdjustInt>();
+                _setVideoAdjustIntFunction = new LibVlcFunction<SetVideoAdjustInt>();
+                _getVideoAdjustFloatFunction = new LibVlcFunction<GetVideoAdjustFloat>();
+                _setVideoAdjustFloatFunction = new LibVlcFunction<SetVideoAdjustFloat>();
 
                 IsLibLoaded = true;
             }
@@ -808,12 +817,44 @@ namespace xZune.Vlc
         public long SubtitleDelay
         {
             get { return _getSubtitleDelayFunction.Delegate.Invoke(InstancePointer); }
-            set { _setSubtitleDelayFunction.Delegate.Invoke(InstancePointer,value); }
+            set { _setSubtitleDelayFunction.Delegate.Invoke(InstancePointer, value); }
         }
 
         public TrackDescription SubtitleDescription
         {
             get { return new TrackDescription(_getSubtitleDescriptionFunction.Delegate(InstancePointer)); }
+        }
+
+        public bool IsAdjustEnable
+        {
+            get { return _getVideoAdjustIntFunction.Delegate(InstancePointer, VideoAdjust.Enable) != 0; }
+            set { _setVideoAdjustIntFunction.Delegate(InstancePointer, VideoAdjust.Enable, value ? 1 : 0); }
+        }
+
+        public float Contrast
+        {
+            get { return _getVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Contrast); }
+            set { _setVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Contrast, value); }
+        }
+        public float Brightness
+        {
+            get { return _getVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Brightness); }
+            set { _setVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Brightness, value); }
+        }
+        public float Hue
+        {
+            get { return _getVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Hue); }
+            set { _setVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Hue, value); }
+        }
+        public float Saturation
+        {
+            get { return _getVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Saturation); }
+            set { _setVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Saturation, value); }
+        }
+        public float Gamma
+        {
+            get { return _getVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Gamma); }
+            set { _setVideoAdjustFloatFunction.Delegate(InstancePointer, VideoAdjust.Gamma, value); }
         }
 
         #endregion 属性 Media

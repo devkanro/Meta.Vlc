@@ -176,6 +176,47 @@ namespace xZune.Vlc.Interop.MediaPlayer
     public delegate IntPtr GetVideoTrackDescription(IntPtr mediaPlayer);
 
     /// <summary>
+    /// Get integer adjust option. 
+    /// </summary>
+    /// <param name="mediaPlayer">media player </param>
+    /// <param name="adjust">adjust option to get, values of <see cref="VideoAdjust"/></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_video_get_adjust_int")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int GetVideoAdjustInt(IntPtr mediaPlayer, VideoAdjust adjust);
+
+    /// <summary>
+    /// Get float adjust option. 
+    /// </summary>
+    /// <param name="mediaPlayer">media player </param>
+    /// <param name="adjust">adjust option to get, values of <see cref="VideoAdjust"/></param>
+    /// <returns></returns>
+    [LibVlcFunction("libvlc_video_get_adjust_float")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate float GetVideoAdjustFloat(IntPtr mediaPlayer, VideoAdjust adjust);
+
+    /// <summary>
+    /// Set adjust option as integer. Options that take a different type value are ignored. Passing libvlc_adjust_enable as option value has the side effect of starting (arg !0) or stopping (arg 0) the adjust filter.
+    /// </summary>
+    /// <param name="mediaPlayer">media player </param>
+    /// <param name="adjust">adjust option to set, values of <see cref="VideoAdjust"/></param>
+    /// <param name="value">adjust option value </param>
+    [LibVlcFunction("libvlc_video_set_adjust_int")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void SetVideoAdjustInt(IntPtr mediaPlayer, VideoAdjust adjust, int value);
+
+    /// <summary>
+    /// Set adjust option as float. Options that take a different type value are ignored.
+    /// </summary>
+    /// <param name="mediaPlayer">media player </param>
+    /// <param name="adjust">adjust option to set, values of <see cref="VideoAdjust"/></param>
+    /// <param name="value">adjust option value </param>
+    [LibVlcFunction("libvlc_video_set_adjust_float", "1.1.1")]
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void SetVideoAdjustFloat(IntPtr mediaPlayer, VideoAdjust adjust, float value);
+    
+
+    /// <summary>
     ///     A enum of mouse button.
     /// </summary>
     public enum MouseButton
@@ -194,5 +235,15 @@ namespace xZune.Vlc.Interop.MediaPlayer
         ///     Other buttons of mouse, it is not commonly used.
         /// </summary>
         Other
+    }
+    
+    public enum VideoAdjust
+    {
+        Enable,
+        Contrast,
+        Brightness,
+        Hue,
+        Saturation,
+        Gamma
     }
 }

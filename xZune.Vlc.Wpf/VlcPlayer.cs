@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -77,26 +78,26 @@ namespace xZune.Vlc.Wpf
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof (VlcPlayer),
                 new FrameworkPropertyMetadata(typeof (VlcPlayer)));
-            
-            HorizontalContentAlignmentProperty.OverrideMetadata(typeof(VlcPlayer),
+
+            HorizontalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
                 new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
 
                     if (@this.DisplayThreadDispatcher != null)
                     {
-                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment)args.NewValue;
+                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment) args.NewValue;
                     }
                 }));
 
-            VerticalContentAlignmentProperty.OverrideMetadata(typeof(VlcPlayer),
+            VerticalContentAlignmentProperty.OverrideMetadata(typeof (VlcPlayer),
                 new FrameworkPropertyMetadata(VerticalAlignment.Stretch, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
 
                     if (@this.DisplayThreadDispatcher != null)
                     {
-                        @this.Image.VerticalContentAlignment = (VerticalAlignment)args.NewValue;
+                        @this.Image.VerticalContentAlignment = (VerticalAlignment) args.NewValue;
                     }
                 }));
         }
@@ -148,14 +149,14 @@ namespace xZune.Vlc.Wpf
         {
             var designMode = DesignerProperties.GetIsInDesignMode(this);
 
-            String libVlcPath = null;
-            String[] libVlcOption = VlcOption;
+            string libVlcPath = null;
+            var libVlcOption = VlcOption;
 
             if (LibVlcPath != null)
             {
                 libVlcPath = Path.IsPathRooted(LibVlcPath)
                     ? LibVlcPath
-                    : Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
+                    : Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
                         .CombinePath(LibVlcPath);
             }
 
@@ -163,32 +164,40 @@ namespace xZune.Vlc.Wpf
             {
                 if (libVlcPath != null)
                 {
-                    Initialize(libVlcPath, libVlcOption);
-                    return;
-                }
-
-                var vlcSettings =
-                    Assembly.GetEntryAssembly()
-                        .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
-
-                if (vlcSettings.Length > 0)
-                {
-                    var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
-
-                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
+                    if (libVlcOption == null)
                     {
-                        libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
-                            ? vlcSettingsAttribute.LibVlcPath
-                            : Path.GetDirectoryName(
-                                System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName)
-                                .CombinePath(vlcSettingsAttribute.LibVlcPath);
+                        Initialize(libVlcPath);
+                    }
+                    else
+                    {
+                        Initialize(libVlcPath, libVlcOption);
+                    }
+                }
+                else
+                {
+                    var vlcSettings =
+                        Assembly.GetEntryAssembly()
+                            .GetCustomAttributes(typeof (VlcSettingsAttribute), false);
+
+                    if (vlcSettings.Length > 0)
+                    {
+                        var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
+
+                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
+                        {
+                            libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
+                                ? vlcSettingsAttribute.LibVlcPath
+                                : Path.GetDirectoryName(
+                                    Process.GetCurrentProcess().MainModule.FileName)
+                                    .CombinePath(vlcSettingsAttribute.LibVlcPath);
+                        }
+
+                        if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
+                            libVlcOption = vlcSettingsAttribute.VlcOption;
                     }
 
-                    if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
-                        libVlcOption = vlcSettingsAttribute.VlcOption;
+                    Initialize(libVlcPath, libVlcOption);
                 }
-
-                Initialize(libVlcPath, libVlcOption);
             }
 
             if (VisualParent == null)
@@ -214,7 +223,7 @@ namespace xZune.Vlc.Wpf
         ///     Initialize VLC player with path of LibVlc.
         /// </summary>
         /// <param name="libVlcPath"></param>
-        public void Initialize(String libVlcPath)
+        public void Initialize(string libVlcPath)
         {
             Initialize(libVlcPath, "-I", "dummy", "--ignore-config", "--no-video-title", "--file-logging",
                 "--logfile=log.txt", "--verbose=2", "--no-sub-autodetect-file");
@@ -225,7 +234,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         /// <param name="libVlcPath"></param>
         /// <param name="libVlcOption"></param>
-        public void Initialize(String libVlcPath, params String[] libVlcOption)
+        public void Initialize(string libVlcPath, params string[] libVlcOption)
         {
             if (!ApiManager.IsInitialized)
             {
@@ -356,7 +365,7 @@ namespace xZune.Vlc.Wpf
         ///     Load a media by file path.
         /// </summary>
         /// <param name="path"></param>
-        public void LoadMedia(String path)
+        public void LoadMedia(string path)
         {
             Uri uri;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
@@ -366,7 +375,7 @@ namespace xZune.Vlc.Wpf
             }
 
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
-                throw new FileNotFoundException(String.Format("Not found: {0}", path), path);
+                throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
 
             if (VlcMediaPlayer == null) return;
 
@@ -412,10 +421,10 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         /// <param name="path"></param>
         /// <param name="options"></param>
-        public void LoadMediaWithOptions(String path, params String[] options)
+        public void LoadMediaWithOptions(string path, params string[] options)
         {
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
-                throw new FileNotFoundException(String.Format("Not found: {0}", path), path);
+                throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
 
             if (VlcMediaPlayer == null) return;
 
@@ -440,7 +449,7 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="options"></param>
-        public void LoadMediaWithOptions(Uri uri, params String[] options)
+        public void LoadMediaWithOptions(Uri uri, params string[] options)
         {
             if (VlcMediaPlayer == null) return;
 
@@ -545,7 +554,7 @@ namespace xZune.Vlc.Wpf
         ///     Add options to media.
         /// </summary>
         /// <param name="option"></param>
-        public void AddOption(params String[] option)
+        public void AddOption(params string[] option)
         {
             if ((VlcMediaPlayer != null) && VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.AddOption(option);
@@ -585,7 +594,7 @@ namespace xZune.Vlc.Wpf
         /// <param name="path"></param>
         /// <param name="format"></param>
         /// <param name="quality"></param>
-        public void TakeSnapshot(String path, SnapshotFormat format, int quality)
+        public void TakeSnapshot(string path, SnapshotFormat format, int quality)
         {
             if (VlcMediaPlayer != null)
                 switch (VlcMediaPlayer.State)
@@ -648,7 +657,7 @@ namespace xZune.Vlc.Wpf
         /// <summary>
         ///     Get the current audio output device identifier.
         /// </summary>
-        public String GetAudioDevice()
+        public string GetAudioDevice()
         {
             return VlcMediaPlayer.GetAudioDevice();
         }

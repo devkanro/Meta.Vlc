@@ -283,6 +283,15 @@ namespace xZune.Vlc.Wpf
 
         #endregion VlcMediaPlayer
 
+        #region Vlc
+
+        /// <summary>
+        ///     Get internal Vlc.
+        /// </summary>
+        public Vlc Vlc { get; private set; }
+
+        #endregion Vlc
+
         #region CreateMode
 
         public PlayerCreateMode CreateMode { get; set; }

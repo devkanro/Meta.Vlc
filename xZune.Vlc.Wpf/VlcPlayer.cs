@@ -241,19 +241,114 @@ namespace xZune.Vlc.Wpf
                 ApiManager.Initialize(libVlcPath, libVlcOption);
             }
 
+            if (VlcMediaPlayer != null)
+            {
+                throw new InvalidOperationException("VlcPlayer is been initialized.");
+            }
+
             switch (CreateMode)
             {
                 case PlayerCreateMode.NewVlcInstance:
-                    var vlc = new Vlc(libVlcOption);
-                    VlcMediaPlayer = vlc.CreateMediaPlayer();
-                    ApiManager.Vlcs.Add(vlc);
+                    Vlc = new Vlc(libVlcOption);
+                    ApiManager.Vlcs.Add(Vlc);
                     break;
 
                 case PlayerCreateMode.Default:
                 default:
-                    VlcMediaPlayer = ApiManager.DefaultVlc.CreateMediaPlayer();
+                    Vlc = ApiManager.DefaultVlc;
                     break;
             }
+
+            VlcMediaPlayer player = Vlc.CreateMediaPlayer();
+
+            _lockCallback = VideoLockCallback;
+            _unlockCallback = VideoUnlockCallback;
+            _displayCallback = VideoDisplayCallback;
+            _formatCallback = VideoFormatCallback;
+            _cleanupCallback = VideoCleanupCallback;
+            //_audioSetupCallback = AudioFormatSetupCallback;
+            //_audioCleanupCallback = AudioFormatCleanupCallback;
+            //_audioPlayCallback = AudioPlayCallback;
+            //_audioPauseCallback = AudioPauseCallback;
+            //_audioResumeCallback = AudioResumeCallback;
+            //_audioFlushCallback = AudioFlushCallback;
+            //_audioDrainCallback = AudioDrainCallback;
+            //_audioSetVolumeCallback = AudioSetVolumeCallback;
+
+            _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
+            _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
+            _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
+            _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
+            _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
+            //_audioSetupCallbackHandle = GCHandle.Alloc(_audioSetupCallback);
+            //_audioCleanupCallbackHandle = GCHandle.Alloc(_audioCleanupCallback);
+            //_audioPlayCallbackHandle = GCHandle.Alloc(_audioPlayCallback);
+            //_audioPauseCallbackHandle = GCHandle.Alloc(_audioPauseCallback);
+            //_audioResumeCallbackHandle = GCHandle.Alloc(_audioResumeCallback);
+            //_audioFlushCallbackHandle = GCHandle.Alloc(_audioFlushCallback);
+            //_audioDrainCallbackHandle = GCHandle.Alloc(_audioDrainCallback);
+            //_audioSetVolumeCallbackHandle = GCHandle.Alloc(_audioSetVolumeCallback);
+
+            if (player == null)
+            {
+                throw new Exception("Vlc media player initialize fail.");
+            }
+
+            AttachPlayer(player);
+        }
+
+        public void RebuildPlayer()
+        {
+            if (VlcMediaPlayer == null)
+            {
+                throw new InvalidOperationException("VlcPlayer is not initialize.");
+            }
+            Stop();
+
+            var newPlayer = Vlc.CreateMediaPlayer();
+            
+            newPlayer.AudioOutputChannel = VlcMediaPlayer.AudioOutputChannel;
+            newPlayer.Brightness = VlcMediaPlayer.Brightness;
+            newPlayer.Chapter = VlcMediaPlayer.Chapter;
+            newPlayer.Contrast = VlcMediaPlayer.Contrast;
+            newPlayer.Gamma = VlcMediaPlayer.Gamma;
+            newPlayer.Hue = VlcMediaPlayer.Hue;
+            //newPlayer.IsAdjustEnable = VlcMediaPlayer.IsAdjustEnable;
+            newPlayer.IsMute = VlcMediaPlayer.IsMute;
+            newPlayer.Rate = VlcMediaPlayer.Rate;
+            newPlayer.Saturation = VlcMediaPlayer.Saturation;
+            newPlayer.Scale = VlcMediaPlayer.Scale;
+            newPlayer.Subtitle = VlcMediaPlayer.Subtitle;
+            newPlayer.SubtitleDelay = VlcMediaPlayer.SubtitleDelay;
+            newPlayer.Volume = VlcMediaPlayer.Volume;
+
+            if (AudioEqualizer != null)
+                newPlayer.SetEqualizer(AudioEqualizer);
+
+            AttachPlayer(newPlayer);
+        }
+
+        private void AttachPlayer(VlcMediaPlayer mediaPlayer)
+        {
+            if (VlcMediaPlayer != null)
+            {
+                VlcMediaPlayer.PositionChanged -= VlcMediaPlayerPositionChanged;
+                VlcMediaPlayer.TimeChanged -= VlcMediaPlayerTimeChanged;
+                VlcMediaPlayer.EndReached -= VlcMediaPlayerEndReached;
+                VlcMediaPlayer.SeekableChanged -= VlcMediaPlayerSeekableChanged;
+                VlcMediaPlayer.LengthChanged -= VlcMediaPlayerLengthChanged;
+                VlcMediaPlayer.MediaChanged -= VlcMediaPlayerMediaChanged;
+
+                VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
+                VlcMediaPlayer.SetVideoFormatCallback(null, null);
+                //VlcMediaPlayer.SetAudioCallback(null, null, null, null, null);
+                //VlcMediaPlayer.SetAudioFormatCallback(null, null);
+                //VlcMediaPlayer.SetAudioVolumeCallback(null);
+
+                VlcMediaPlayer.Dispose();
+            }
+
+            VlcMediaPlayer = mediaPlayer;
 
             if (VlcMediaPlayer != null)
             {
@@ -263,34 +358,6 @@ namespace xZune.Vlc.Wpf
                 VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
                 VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
                 VlcMediaPlayer.MediaChanged += VlcMediaPlayerMediaChanged;
-
-                _lockCallback = VideoLockCallback;
-                _unlockCallback = VideoUnlockCallback;
-                _displayCallback = VideoDisplayCallback;
-                _formatCallback = VideoFormatCallback;
-                _cleanupCallback = VideoCleanupCallback;
-                //_audioSetupCallback = AudioFormatSetupCallback;
-                //_audioCleanupCallback = AudioFormatCleanupCallback;
-                //_audioPlayCallback = AudioPlayCallback;
-                //_audioPauseCallback = AudioPauseCallback;
-                //_audioResumeCallback = AudioResumeCallback;
-                //_audioFlushCallback = AudioFlushCallback;
-                //_audioDrainCallback = AudioDrainCallback;
-                //_audioSetVolumeCallback = AudioSetVolumeCallback;
-
-                _lockCallbackHandle = GCHandle.Alloc(_lockCallback);
-                _unlockCallbackHandle = GCHandle.Alloc(_unlockCallback);
-                _displayCallbackHandle = GCHandle.Alloc(_displayCallback);
-                _formatCallbackHandle = GCHandle.Alloc(_formatCallback);
-                _cleanupCallbackHandle = GCHandle.Alloc(_cleanupCallback);
-                //_audioSetupCallbackHandle = GCHandle.Alloc(_audioSetupCallback);
-                //_audioCleanupCallbackHandle = GCHandle.Alloc(_audioCleanupCallback);
-                //_audioPlayCallbackHandle = GCHandle.Alloc(_audioPlayCallback);
-                //_audioPauseCallbackHandle = GCHandle.Alloc(_audioPauseCallback);
-                //_audioResumeCallbackHandle = GCHandle.Alloc(_audioResumeCallback);
-                //_audioFlushCallbackHandle = GCHandle.Alloc(_audioFlushCallback);
-                //_audioDrainCallbackHandle = GCHandle.Alloc(_audioDrainCallback);
-                //_audioSetVolumeCallbackHandle = GCHandle.Alloc(_audioSetVolumeCallback);
 
                 VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);

@@ -332,11 +332,13 @@ namespace xZune.Vlc.Wpf
                 uint tmpWidth = width;
                 uint tmpHeight = height;
 
-                if (DisplayThreadDispatcher != null)
+                if (DisplayThreadDispatcher == null)
                 {
-                    DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
-                        new Action(() => { _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32); }));
+                    throw new InvalidOperationException("VlcPlayer not be ready, if you want to use VlcPlay no in XAML, please read this Wiki: \"https://github.com/higankanshi/xZune.Vlc/wiki/Use-VlcPlayer-with-other-controls\".");
                 }
+
+                DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
+                    new Action(() => { _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32); }));
             }
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;

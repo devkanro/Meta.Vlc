@@ -434,6 +434,9 @@ namespace xZune.Vlc.Wpf
         /// <param name="path"></param>
         public void LoadMedia(string path)
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             Uri uri;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
@@ -443,8 +446,6 @@ namespace xZune.Vlc.Wpf
 
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
                 throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
-
-            if (VlcMediaPlayer == null) return;
 
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
@@ -467,7 +468,8 @@ namespace xZune.Vlc.Wpf
         /// <param name="uri"></param>
         public void LoadMedia(Uri uri)
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
 
@@ -490,11 +492,12 @@ namespace xZune.Vlc.Wpf
         /// <param name="options"></param>
         public void LoadMediaWithOptions(string path, params string[] options)
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
                 throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
-
-            if (VlcMediaPlayer == null) return;
-
+            
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
 
@@ -518,7 +521,8 @@ namespace xZune.Vlc.Wpf
         /// <param name="options"></param>
         public void LoadMediaWithOptions(Uri uri, params string[] options)
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
@@ -545,7 +549,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Play()
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             if (_context != null)
             {
@@ -559,7 +564,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Pause()
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             VlcMediaPlayer.Pause();
         }
@@ -569,7 +575,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Resume()
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             VlcMediaPlayer.Resume();
         }
@@ -579,7 +586,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void PauseOrResume()
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             VlcMediaPlayer.PauseOrResume();
         }
@@ -589,7 +597,8 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Replay()
         {
-            if (VlcMediaPlayer == null) return;
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
 
             StopInternal();
             VlcMediaPlayer.Play();
@@ -611,8 +620,10 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void Stop()
         {
-            StopInternal();
+            if (VlcMediaPlayer == null) throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { VideoSource = null; }));
+            StopInternal();
         }
 
         #endregion Stop
@@ -623,7 +634,12 @@ namespace xZune.Vlc.Wpf
         /// <param name="option"></param>
         public void AddOption(params string[] option)
         {
-            if ((VlcMediaPlayer != null) && VlcMediaPlayer.Media != null)
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+            
+            if(VlcMediaPlayer.Media == null)
+                throw new InvalidOperationException("No media be loaded.");
+
                 VlcMediaPlayer.Media.AddOption(option);
         }
 
@@ -632,8 +648,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void NextFrame()
         {
-            if (VlcMediaPlayer != null)
-                VlcMediaPlayer.NextFrame();
+
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
+            VlcMediaPlayer.NextFrame();
         }
 
         /// <summary>
@@ -642,8 +661,11 @@ namespace xZune.Vlc.Wpf
         /// <param name="mode"></param>
         public void Navigate(NavigateMode mode)
         {
-            if (VlcMediaPlayer != null)
-                VlcMediaPlayer.Navigate(mode);
+
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
+            VlcMediaPlayer.Navigate(mode);
         }
 
         /// <summary>
@@ -651,8 +673,11 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void ToggleMute()
         {
-            if (VlcMediaPlayer != null)
-                VlcMediaPlayer.ToggleMute();
+
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
+            VlcMediaPlayer.ToggleMute();
         }
 
         /// <summary>
@@ -663,8 +688,11 @@ namespace xZune.Vlc.Wpf
         /// <param name="quality"></param>
         public void TakeSnapshot(string path, SnapshotFormat format, int quality)
         {
-            if (VlcMediaPlayer != null)
-                switch (VlcMediaPlayer.State)
+
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
+            switch (VlcMediaPlayer.State)
                 {
                     case MediaState.NothingSpecial:
                     case MediaState.Opening:
@@ -687,6 +715,9 @@ namespace xZune.Vlc.Wpf
         /// <returns></returns>
         public AudioDeviceList EnumAudioDeviceList()
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+            
             return VlcMediaPlayer.EnumAudioDeviceList();
         }
 
@@ -697,6 +728,9 @@ namespace xZune.Vlc.Wpf
         /// <returns></returns>
         public AudioDeviceList GetAudioDeviceList(AudioOutput audioOutput)
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             return VlcMediaPlayer.GetAudioDeviceList(audioOutput);
         }
 
@@ -706,6 +740,9 @@ namespace xZune.Vlc.Wpf
         /// <returns></returns>
         public AudioOutputList GetAudioOutputList()
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             return VlcMediaPlayer.GetAudioOutputList();
         }
 
@@ -718,6 +755,9 @@ namespace xZune.Vlc.Wpf
         /// <returns></returns>
         public bool SetAudioOutput(AudioOutput audioOutput)
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             return VlcMediaPlayer.SetAudioOutput(audioOutput);
         }
 
@@ -726,6 +766,9 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public string GetAudioDevice()
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             return VlcMediaPlayer.GetAudioDevice();
         }
 
@@ -743,6 +786,9 @@ namespace xZune.Vlc.Wpf
         /// </summary>
         public void SetAudioDevice(AudioOutput audioOutput, AudioDevice audioDevice)
         {
+            if (VlcMediaPlayer == null)
+                throw new InvalidOperationException("VlcMediaPlayer doesn't have initialize.");
+
             VlcMediaPlayer.SetAudioDevice(audioOutput, audioDevice);
         }
 

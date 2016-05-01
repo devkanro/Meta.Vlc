@@ -51,6 +51,20 @@ See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html)
 
 ## Change Log
 
+### 2016/05/01
+SHA1:90c45ed791b96e9da65b926cc9738cbd4840988e
+
+**01.更改项目代号 xZune 为 Meta。**  
+_**01.Change the code name to "Meta".**_  
+项目代号与更命名控件的变更，仅需要全局替换 "xZune" 为 "Meta"，即可兼容此次变更。  
+_Project code name and root name space have been changed, you can replace "xZune" to "Meta" to compatible this commit._  
+
+旧版本 Nuget 包仍然被提供，在这里查看旧版本 Nuget 包：  
+_Old version Nuget package still be provided, check those:_
+[xZune.Vlc](https://www.nuget.org/packages/xZune.Vlc/)  
+[xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)  
+[xZune.Vlc.Lib](https://www.nuget.org/packages/xZune.Vlc.Lib/)  
+
 ### 2016/04/17  
 SHA1:3a4d2cc7ca1a1c1026047a07494641d4c8b38e3d  
 

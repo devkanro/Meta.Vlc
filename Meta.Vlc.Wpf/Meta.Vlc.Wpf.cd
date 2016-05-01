@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Meta.Vlc.Wpf.ApiManager" Collapsed="true">
+    <Position X="1" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAAAQAACAAAAAAACAgAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>ApiManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Wpf.Extension" Collapsed="true">
+    <Position X="2.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAGAABAAAAAAAABAAAAQAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Wpf.SnapshotContext" Collapsed="true">
+    <Position X="4.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAJAAAAAAAQAAAgAAAAAAACQAAAABAA=</HashCode>
+      <FileName>SnapshotContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Wpf.VideoDisplayContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgABAAARCAEgAAAAAAAAUAAAACgARAAAQAAEAAAAAA=</HashCode>
+      <FileName>VideoDisplayContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.Wpf.VlcPlayer" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8Q0ADAgBUCg1jUAiK0AU6mNZtBEBg4CgqwJzBJKD4SI=</HashCode>
+      <FileName>VlcPlayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Enum Name="Meta.Vlc.Wpf.AspectRatio" Collapsed="true">
+    <Position X="1" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAABAAABAAAAAA=</HashCode>
+      <FileName>AspectRatio.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Wpf.ChromaType" Collapsed="true">
+    <Position X="2.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAABAIAAAAAAAAAAAAAAF1AAAAAIAEA=</HashCode>
+      <FileName>ChromaType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Wpf.EndBehavior" Collapsed="true">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAIAIAAAAAAAA=</HashCode>
+      <FileName>EndBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Wpf.SnapshotFormat" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAEAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SnapshotFormat.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Wpf.PlayerCreateMode" Collapsed="true">
+    <Position X="1" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,43 +1,43 @@
-# xZune.Vlc
+# Meta.Vlc
 
 ## Introduction 
 
-xZune.Vlc 是一个 LibVlc 封装库的 .NET 实现,封装了大部分的 LibVlc 的功能,该项目主要是为了寻求一个在 WPF 上使用 Vlc 的完美的解决方案,xZune.Vlc 提供一个原生的 WPF 播放控件(xZune.Vlc.Wpf),该控件采用 InteropBitmap 与共享内存进行播放视频,是一个原生的 WPF 控件,不存在 HwndHost 的空域问题.  
+Meta.Vlc 是一个 LibVlc 封装库的 .NET 实现,封装了大部分的 LibVlc 的功能,该项目主要是为了寻求一个在 WPF 上使用 Vlc 的完美的解决方案,Meta.Vlc 提供一个原生的 WPF 播放控件(Meta.Vlc.Wpf),该控件采用 InteropBitmap 与共享内存进行播放视频,是一个原生的 WPF 控件,不存在 HwndHost 的空域问题.  
 
-_xZune.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. xZune.Vlc provides an native WPF control(xZune.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue._  
+_Meta.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. Meta.Vlc provides an native WPF control(Meta.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue._  
 
-[![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/xzune-vlc/branch/master) [![Join the chat at https://gitter.im/higankanshi/xZune.Vlc](https://badges.gitter.im/higankanshi/xZune.Vlc.svg)](https://gitter.im/higankanshi/xZune.Vlc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+[![Build Status](https://ci.appveyor.com/api/projects/status/q76jlj04n40h2ygg/branch/master?svg=true)](https://ci.appveyor.com/project/higankanshi/Meta-vlc/branch/master) [![Join the chat at https://gitter.im/higankanshi/Meta.Vlc](https://badges.gitter.im/higankanshi/Meta.Vlc.svg)](https://gitter.im/higankanshi/Meta.Vlc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
 ## NuGet Packages
 
-Install [xZune.Vlc](https://www.nuget.org/packages/xZune.Vlc/)
+Install [Meta.Vlc](https://www.nuget.org/packages/Meta.Vlc/)
 ```Powershell
-PM> Install-Package xZune.Vlc 
+PM> Install-Package Meta.Vlc 
 ```
 
-Install [xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)
+Install [Meta.Vlc.Wpf](https://www.nuget.org/packages/Meta.Vlc.Wpf/)
 ```Powershell
-PM> Install-Package xZune.Vlc.Wpf 
+PM> Install-Package Meta.Vlc.Wpf 
 ```
 
-Install [xZune.Vlc.Lib](https://www.nuget.org/packages/xZune.Vlc.Lib/)
+Install [Meta.Vlc.Lib](https://www.nuget.org/packages/Meta.Vlc.Lib/)
 ```Powershell
-PM> Install-Package xZune.Vlc.Lib
+PM> Install-Package Meta.Vlc.Lib
 ```
->xZune.Vlc.Lib 包含所有 LibVlc 的文件，你可以在 xZune.Vlc 与 xZune.Vlc.Wpf 中使用这些 Dll。  
+>Meta.Vlc.Lib 包含所有 LibVlc 的文件，你可以在 Meta.Vlc 与 Meta.Vlc.Wpf 中使用这些 Dll。  
 >LibVlc 的版本：  
->2.2.0-xZune Weatherwax  
+>2.2.0-Meta Weatherwax  
 >   
->_xZune.Vlc.Lib include all files of LibVlc. You can use this dlls for xZune.Vlc and xZune.Vlc.Wpf._   
+>_Meta.Vlc.Lib include all files of LibVlc. You can use this dlls for Meta.Vlc and Meta.Vlc.Wpf._   
 >_LibVlc Version:_   
->_2.2.0-xZune Weatherwax_  
+>_2.2.0-Meta Weatherwax_  
 
 ## Api Documentation 
 
-See the api documentation of [xZune.Vlc](http://higan.me/xZune.Vlc/api/index.html).
+See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html).
 
 ## .Net Support
-.NET Version | xZune.Vlc | xZune.Vlc.Wpf | xZune.Vlc.Wpf.Sample
+.NET Version | Meta.Vlc | Meta.Vlc.Wpf | Meta.Vlc.Wpf.Sample
 ------------ | ------------- | ------------- | -------------
 .NET 2.0 | :o: | :x: | :x:
 .NET 3.0 | :o: | :x: | :x:
@@ -90,8 +90,8 @@ _**01.VideoSource can be used in other control.**_
 由于呈现线程的改变，VideoSource 将属于呈现线程，而非默认 UI 线程，因此 VideoSource 不在能被默认 UI 线程的元素使用，但是我们为在其他控件使用 VideoSource 准备其他方案。
 _Due the change of display thread, VideoSource will belong to display thread, not the default UI thread. So VideoSource can't be used by UI element of default UI thread, but we provide another way to use VideoSource for other control._  
 
-查看 [Use VlcPlayer with other controls](https://github.com/higankanshi/xZune.Vlc/wiki/Use-VlcPlayer-with-other-controls) 来获取如何在其他控件中使用 VideoSource 的教程。  
-_See [Use VlcPlayer with other controls](https://github.com/higankanshi/xZune.Vlc/wiki/Use-VlcPlayer-with-other-controls) to get more information about use VlcPlayer with other conttols._
+查看 [Use VlcPlayer with other controls](https://github.com/higankanshi/Meta.Vlc/wiki/Use-VlcPlayer-with-other-controls) 来获取如何在其他控件中使用 VideoSource 的教程。  
+_See [Use VlcPlayer with other controls](https://github.com/higankanshi/Meta.Vlc/wiki/Use-VlcPlayer-with-other-controls) to get more information about use VlcPlayer with other conttols._
 
 ### 2016/03/25
 
@@ -144,11 +144,11 @@ _New `LibVlcManager` class to manage initialization of LibVlc._
 _**03.Add more English comment.**_
 
 > **注意(_Note_):**  
-> 本次更改更倾向于底层代码优化与清理，如果你主要使用 xZune.Vlc 而不是 xZune.Vlc.Wpf，你可能需要做比较多的更改来兼容这次变更。  
-> 如果你只是使用 xZune.Vlc.Wpf 只是部分涉及到 `TrackDescription` 结构，`MediaTrack` 结构，或是其他结构的 API 有小部分变更。   
+> 本次更改更倾向于底层代码优化与清理，如果你主要使用 Meta.Vlc 而不是 Meta.Vlc.Wpf，你可能需要做比较多的更改来兼容这次变更。  
+> 如果你只是使用 Meta.Vlc.Wpf 只是部分涉及到 `TrackDescription` 结构，`MediaTrack` 结构，或是其他结构的 API 有小部分变更。   
 >  
-> _This commit is only changed and clear up some lowest layer code, if you using xZune.Vlc not xZune.Vlc.Wpf, maybe you should changed many code to compatible this commit._  
-> _If you using xZune.Vlc.Wpf, only some APIs about `TrackDescription` struct, `MediaTrack` struct or other struct have changed._
+> _This commit is only changed and clear up some lowest layer code, if you using Meta.Vlc not Meta.Vlc.Wpf, maybe you should changed many code to compatible this commit._  
+> _If you using Meta.Vlc.Wpf, only some APIs about `TrackDescription` struct, `MediaTrack` struct or other struct have changed._
 
 ### 2016/02/13
 SHA1:b5b6a020e041a0d9e9b1e911debdd606b4911971
@@ -165,14 +165,14 @@ _You can set create VlcMediaPlayer with default VLC instance or create a new VLC
 
 ## Quick Start
 
-在您的项目中快速使用 xZune.Vlc：  
-_Quick start xZune.Vlc in your project:_  
+在您的项目中快速使用 Meta.Vlc：  
+_Quick start Meta.Vlc in your project:_  
 
-**01.在项目中添加对 xZune.Vlc 的程序集的引用。**    
-_**01.Add the references of xZune.Vlc to your project.**_  
+**01.在项目中添加对 Meta.Vlc 的程序集的引用。**    
+_**01.Add the references of Meta.Vlc to your project.**_  
 ```
-xZune.Vlc.dll
-xZune.Vlc.Wpf.dll
+Meta.Vlc.dll
+Meta.Vlc.Wpf.dll
 ```
 
 **02.在项目的属性中设置 LibVlc 库的目录。**  
@@ -190,12 +190,12 @@ _Add a VlcSettingsAttribute in `$(Your Project)\Properties\AssemblyInfo.cs`._
 ```
 >参考:  
 >_See:_  
->https://github.com/higankanshi/xZune.Vlc/blob/master/xZune.Vlc.Wpf.Sample/Properties/AssemblyInfo.cs
+>https://github.com/higankanshi/Meta.Vlc/blob/master/Meta.Vlc.Wpf.Sample/Properties/AssemblyInfo.cs
 
 **03.在 Xaml 中加入 VlcPlayer 控件。**   
 _**03.Add the VlcPlayer Control in your Xaml**_  
 ```XAML
-<wpf:VlcPlayer xmlns:wpf="clr-namespace:xZune.Vlc.Wpf;assembly=xZune.Vlc.Wpf" x:Name="vlcPlayer"/>
+<wpf:VlcPlayer xmlns:wpf="clr-namespace:Meta.Vlc.Wpf;assembly=Meta.Vlc.Wpf" x:Name="vlcPlayer"/>
 ```
 
 **04.载入媒体并播放。**    
@@ -252,11 +252,11 @@ ae[9] = -9.6f;
 Player.AudioEqualizer = ae;
 ```
 >**注意(_Note_)：**  
-> `xZune.Vlc.VlcMediaPlayer` 不会引用均衡器实例，仅会复制其值，但是 AudioEqualizer 提供了属性变更通知，你可以使用其属性变更事件来重新设置均衡器。   
-> `xZune.Vlc.Wpf.VlcPlayer` 会引用均衡器实例，并且监听了当前均衡器的属性变更事件，当当前均衡器有变更会自动的为 VlcMediaPlayer 重新设置均衡器。  
+> `Meta.Vlc.VlcMediaPlayer` 不会引用均衡器实例，仅会复制其值，但是 AudioEqualizer 提供了属性变更通知，你可以使用其属性变更事件来重新设置均衡器。   
+> `Meta.Vlc.Wpf.VlcPlayer` 会引用均衡器实例，并且监听了当前均衡器的属性变更事件，当当前均衡器有变更会自动的为 VlcMediaPlayer 重新设置均衡器。  
 >   
-> The `xZune.Vlc.VlcMediaPlayer` **will not** keep a reference to the supplied equalizer so you need set it again after you changed some value of `AudioEqualizer`, we provide PropertyChanged event for `AudioEqualizer` you can use this to reset equalizer.   
-> The `xZune.Vlc.Wpf.VlcPlayer` **will** keep a reference to the supplied equalizer, when you changed some value of `AudioEqualizer`, it will auto reset equalizer for `VlcMediaPlayer`.  
+> The `Meta.Vlc.VlcMediaPlayer` **will not** keep a reference to the supplied equalizer so you need set it again after you changed some value of `AudioEqualizer`, we provide PropertyChanged event for `AudioEqualizer` you can use this to reset equalizer.   
+> The `Meta.Vlc.Wpf.VlcPlayer` **will** keep a reference to the supplied equalizer, when you changed some value of `AudioEqualizer`, it will auto reset equalizer for `VlcMediaPlayer`.  
 
   
 **07.循环播放视频。**    
@@ -273,15 +273,15 @@ _**07.loop the media.**_
 
 **08.特殊的 VLC 功能。**   
 _**08.Some other extension for VLC.**_   
-xZune.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-xZune) 32bit 版本。如果您需要在更低或者更高的 VLC 版本上使用 xZune.Vlc，您可能需要自己编译 VLC for xZune.Vlc，以保证 xZune.Vlc 拓展功能可用。  
-*xZune.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-xZune) 32bit version now.But you want to use xZune.Vlc with later or lower version,you could need compile VLC for xZune.Vlc by yourself,to ensure that the expansions are available.*  
+Meta.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-Meta) 32bit 版本。如果您需要在更低或者更高的 VLC 版本上使用 Meta.Vlc，您可能需要自己编译 VLC for Meta.Vlc，以保证 Meta.Vlc 拓展功能可用。  
+*Meta.Vlc has used some "Expansions" for VLC, we are providing LibVlc(2.2.0-Meta) 32bit version now.But you want to use Meta.Vlc with later or lower version,you could need compile VLC for Meta.Vlc by yourself,to ensure that the expansions are available.*  
 
-查看 [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) 来获取编译 xZune 专用的 VLC 教程。   
-*See [Compile VLC for xZune.Vlc](https://github.com/higankanshi/xZune.Vlc/wiki/Compile-VLC-for-xZune.Vlc) to get some infomation about compile VLC for xZune.*   
+查看 [Compile VLC for Meta.Vlc](https://github.com/higankanshi/Meta.Vlc/wiki/Compile-VLC-for-Meta.Vlc) 来获取编译 Meta 专用的 VLC 教程。   
+*See [Compile VLC for Meta.Vlc](https://github.com/higankanshi/Meta.Vlc/wiki/Compile-VLC-for-Meta.Vlc) to get some infomation about compile VLC for Meta.*   
 
 ## Other Project  
-**已经在使用 xZune.Vlc 的项目：**  
-_**Already in use xZune.Vlc:**_  
+**已经在使用 Meta.Vlc 的项目：**  
+_**Already in use Meta.Vlc:**_  
 
 **[FoscamController](http://foscamcontroller.codeplex.com/)**    
 This is a Library and Demo WPF program for controlling MJPEG and HD models of Foscam IP PTZ (Pan-Tilt-Zoom) Cameras and displaying MJPEG and H.264/RTSP video.   
@@ -302,13 +302,13 @@ A simple, yet effective video player.
 A simple Twitch client that uses Vlc and Livestream to watch twitch streams. 
 
 
-**xZune 媒体套件：**   
-_**xZune Media Suit:**_  
+**Meta 媒体套件：**   
+_**Meta Media Suit:**_  
  
-**[xZune.Bass](https://github.com/higankanshi/xZune.Bass)**  
-xZune.Bass 是 [Bass](http://www.un4seen.com/bass.html) 库的 .NET 封装实现，用于多种格式的音频播放与解码。  
-xZune.Bass is a Bass library wrapper for .NET, used to play/decode mutil format audio.   
+**[Meta.Bass](https://github.com/higankanshi/Meta.Bass)**  
+Meta.Bass 是 [Bass](http://www.un4seen.com/bass.html) 库的 .NET 封装实现，用于多种格式的音频播放与解码。  
+Meta.Bass is a Bass library wrapper for .NET, used to play/decode mutil format audio.   
 
-**[xZune.Visualizer](https://github.com/higankanshi/xZune.Visualizer)**  
+**[Meta.Visualizer](https://github.com/higankanshi/Meta.Visualizer)**  
 Zune 风格的音频可视化控件。  
 *Zune style audio visualizer.*    

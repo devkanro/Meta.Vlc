@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>Meta.Vlc.Wpf</id>
+        <version>16.04.17</version>
+        <title>Meta.Vlc.Wpf</title>
+        <authors>higan</authors>
+        <owners>higan</owners>
+        <licenseUrl>https://github.com/higankanshi/Meta.Vlc/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/higankanshi/Meta.Vlc</projectUrl>
+        <iconUrl>http://images1.videolan.org/images/largeVLC.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <developmentDependency>true</developmentDependency>
+        <description>Meta.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. Meta.Vlc provides an native WPF control(Meta.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.</description>
+        <releaseNotes />
+        <copyright>Copyright (2015 - 2016) HIGAN.</copyright>
+        <tags>vlc libvlc Meta media video</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework3.5">
+                <dependency id="Meta.Vlc" version="16.04.17" />
+            </group>
+            <group targetFramework=".NETFramework4.0">
+                <dependency id="Meta.Vlc" version="16.04.17" />
+            </group>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Meta.Vlc" version="16.04.17" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\x64\Release\.NET 3.5\zh-CHS\mscorlib.resources.dll" target="lib\net35\x64\zh-CHS\mscorlib.resources.dll" />
+        <file src="..\x64\Release\.NET 3.5\big5.nlp" target="lib\net35\x64\big5.nlp" />
+        <file src="..\x64\Release\.NET 3.5\bopomofo.nlp" target="lib\net35\x64\bopomofo.nlp" />
+        <file src="..\x64\Release\.NET 3.5\ksc.nlp" target="lib\net35\x64\ksc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\mscorlib.dll" target="lib\net35\x64\mscorlib.dll" />
+        <file src="..\x64\Release\.NET 3.5\normidna.nlp" target="lib\net35\x64\normidna.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfc.nlp" target="lib\net35\x64\normnfc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfd.nlp" target="lib\net35\x64\normnfd.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfkc.nlp" target="lib\net35\x64\normnfkc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\normnfkd.nlp" target="lib\net35\x64\normnfkd.nlp" />
+        <file src="..\x64\Release\.NET 3.5\prc.nlp" target="lib\net35\x64\prc.nlp" />
+        <file src="..\x64\Release\.NET 3.5\prcp.nlp" target="lib\net35\x64\prcp.nlp" />
+        <file src="..\x64\Release\.NET 3.5\sortkey.nlp" target="lib\net35\x64\sortkey.nlp" />
+        <file src="..\x64\Release\.NET 3.5\sorttbls.nlp" target="lib\net35\x64\sorttbls.nlp" />
+        <file src="..\x64\Release\.NET 3.5\xjis.nlp" target="lib\net35\x64\xjis.nlp" />
+        <file src="..\x64\Release\.NET 3.5\Meta.Vlc.Wpf.dll" target="lib\net35\x64\Meta.Vlc.Wpf.dll" />
+        <file src="..\x64\Release\.NET 3.5\Meta.Vlc.Wpf.XML" target="lib\net35\x64\Meta.Vlc.Wpf.XML" />
+        <file src="..\x86\Release\.NET 3.5\Meta.Vlc.Wpf.dll" target="lib\net35\x86\Meta.Vlc.Wpf.dll" />
+        <file src="..\x86\Release\.NET 3.5\Meta.Vlc.Wpf.XML" target="lib\net35\x86\Meta.Vlc.Wpf.XML" />
+        <file src="..\x64\Release\.NET 4.0\Meta.Vlc.Wpf.dll" target="lib\net40\x64\Meta.Vlc.Wpf.dll" />
+        <file src="..\x64\Release\.NET 4.0\Meta.Vlc.Wpf.XML" target="lib\net40\x64\Meta.Vlc.Wpf.XML" />
+        <file src="..\x86\Release\.NET 4.0\Meta.Vlc.Wpf.dll" target="lib\net40\x86\Meta.Vlc.Wpf.dll" />
+        <file src="..\x86\Release\.NET 4.0\Meta.Vlc.Wpf.XML" target="lib\net40\x86\Meta.Vlc.Wpf.XML" />
+        <file src="..\x64\Release\.NET 4.5\Meta.Vlc.Wpf.dll" target="lib\net45\x64\Meta.Vlc.Wpf.dll" />
+        <file src="..\x64\Release\.NET 4.5\Meta.Vlc.Wpf.XML" target="lib\net45\x64\Meta.Vlc.Wpf.XML" />
+        <file src="..\x86\Release\.NET 4.5\Meta.Vlc.Wpf.dll" target="lib\net45\x86\Meta.Vlc.Wpf.dll" />
+        <file src="..\x86\Release\.NET 4.5\Meta.Vlc.Wpf.XML" target="lib\net45\x86\Meta.Vlc.Wpf.XML" />
+    </files>
+</package>

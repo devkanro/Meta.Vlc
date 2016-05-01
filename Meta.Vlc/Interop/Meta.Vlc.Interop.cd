@@ -1,0 +1,1586 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Meta.Vlc.Interop.LibVlcFunction&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIEAAAAAAAAAAAAEAAABAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlcFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Interop.LibVlcVersion" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAgAAAAAAAAAAAAIAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlcFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Interop.LibVlcFunctionAttribute" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACACAACAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlcFunctionAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Meta.Vlc.Interop.Core.ModuleDescription" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAEIAAAAAAAAAAQAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.LibVlcEventArgs" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAACACAAQAAARCsAAAEIAAAAAAEAqAAAQgAAAAAIBA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaMetaChangedArgs" Collapsed="true">
+    <Position X="19.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaSubitemAddedArgs" Collapsed="true">
+    <Position X="19.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaDurationChangedArgs" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaParsedChangedArgs" Collapsed="true">
+    <Position X="21.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaFreedArgs" Collapsed="true">
+    <Position X="9.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaStateChangedArgs" Collapsed="true">
+    <Position X="16.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerBufferingArgs" Collapsed="true">
+    <Position X="23.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerPositionChangedArgs" Collapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerTimeChangedArgs" Collapsed="true">
+    <Position X="11" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerTitleChangedArgs" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerSeekableChangedArgs" Collapsed="true">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerPausableChangedArgs" Collapsed="true">
+    <Position X="4" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerVideoOutChangedArgs" Collapsed="true">
+    <Position X="14.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaListItemAddedArgs" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaListWillAddItemArgs" Collapsed="true">
+    <Position X="16.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaListItemDeletedArgs" Collapsed="true">
+    <Position X="12.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaListWillDeleteItemArgs" Collapsed="true">
+    <Position X="18" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaListPlayerNextItemSetArgs" Collapsed="true">
+    <Position X="14.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerSnapshotTakenArgs" Collapsed="true">
+    <Position X="9.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerLengthChangedArgs" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.VlmMediaEventArgs" Collapsed="true">
+    <Position X="9.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Core.Events.MediaPlayerMediaChangedArgs" Collapsed="true">
+    <Position X="2.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.MediaStats" Collapsed="true">
+    <Position X="18" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAIAIAQAACAAAACAUAACgAECAAAAQAAAgAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.MediaTrackInfo" Collapsed="true">
+    <Position X="23.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAQAAAAAAAAAAAAAAAAAAAAABCRAAAAAAAAQ=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.AudioTrack" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.VideoTrack" Collapsed="true">
+    <Position X="7.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAEABAAAIAAAQAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.SubtitleTrack" Collapsed="true">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.Media.MediaTrack" Collapsed="true">
+    <Position X="21.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACUAgAAAAAAAQAAAAAAAAAAABARAAAAAAAgA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.MediaPlayer.AudioDevice" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.MediaPlayer.AudioOutput" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.MediaPlayer.TrackDescription" Collapsed="true">
+    <Position X="5.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Meta.Vlc.Interop.MediaPlayer.Rectangle" Collapsed="true">
+    <Position X="2.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAACACAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Meta.Vlc.Interop.Core.Events.EventTypes" Collapsed="true">
+    <Position X="2.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAASOiYACghARi9AEBEAgAAAAAEAqBABAgAABgAIBA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.Media.TrackType" Collapsed="true">
+    <Position X="16.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAACAAIAAg=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.Media.MediaState" Collapsed="true">
+    <Position X="7.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiCAAAAAIAAQEAAAAAAAAIAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.Media.MediaOption" Collapsed="true">
+    <Position X="4" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.Media.MediaParseFlag" Collapsed="true">
+    <Position X="5.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAACAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.Media.MetaDataType" Collapsed="true">
+    <Position X="9.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAABABCQAghEAACAIAIAAAApAAAAEBDAAACgBIAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.MediaPlayer.AudioOutputChannel" Collapsed="true">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAQAAAAAAAAAAAAAAAAAACACAAQAAAgA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.MediaPlayer.VideoMarqueeOption" Collapsed="true">
+    <Position X="18" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAABAgAAgAAAACAAAAAAAAAIAAAAAiAAAYAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.MediaPlayer.NavigateMode" Collapsed="true">
+    <Position X="12.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAABAAAAAAAAAAAAAAAAACACAAAAAAAI=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.MediaPlayer.Position" Collapsed="true">
+    <Position X="14.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAIAAAAABAAAAAQAAAAAAAIAAAACACgAAAIAEA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.Interop.MediaPlayer.MouseButton" Collapsed="true">
+    <Position X="11" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Meta.Vlc.Interop.Core.AddInterface" Collapsed="true">
+    <Position X="0.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.GetAudioFilterList" Collapsed="true">
+    <Position X="11" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Free" Collapsed="true">
+    <Position X="4" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.GetChangeset" Collapsed="true">
+    <Position X="19.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.GetCompiler" Collapsed="true">
+    <Position X="2.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.GetVersion" Collapsed="true">
+    <Position X="23.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.ReleaseLibVlcModuleDescription" Collapsed="true">
+    <Position X="11" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.NewInstance" Collapsed="true">
+    <Position X="7.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.ReleaseInstance" Collapsed="true">
+    <Position X="9.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.RetainInstance" Collapsed="true">
+    <Position X="19.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.SetAppId" Collapsed="true">
+    <Position X="5.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.SetExitHandler" Collapsed="true">
+    <Position X="5.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.ExitHandler" Collapsed="true">
+    <Position X="2.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.SetUserAgent" Collapsed="true">
+    <Position X="11" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.GetVideoFilterList" Collapsed="true">
+    <Position X="0.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Wait" Collapsed="true">
+    <Position X="16.25" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Error.ErrorMessage" Collapsed="true">
+    <Position X="21.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Error.CleanError" Collapsed="true">
+    <Position X="21.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Events.EventAttach" Collapsed="true">
+    <Position X="23.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Events.EventDetach" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Events.GetTypeName" Collapsed="true">
+    <Position X="19.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Core.Events.LibVlcEventCallBack" Collapsed="true">
+    <Position X="19.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Core.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.MediaAddOption" Collapsed="true">
+    <Position X="21.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.MediaAddOptionFlag" Collapsed="true">
+    <Position X="23.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.MediaDuplicate" Collapsed="true">
+    <Position X="0.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetEventManager" Collapsed="true">
+    <Position X="18" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetCodecDescription" Collapsed="true">
+    <Position X="0.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetDuration" Collapsed="true">
+    <Position X="5.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetMeta" Collapsed="true">
+    <Position X="12.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetMrl" Collapsed="true">
+    <Position X="14.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetState" Collapsed="true">
+    <Position X="2.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetStats" Collapsed="true">
+    <Position X="5.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetTracksInfo" Collapsed="true">
+    <Position X="18" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetUserData" Collapsed="true">
+    <Position X="21.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.IsParsed" Collapsed="true">
+    <Position X="14.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.CreateMediaAsNewNode" Collapsed="true">
+    <Position X="4" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.CreateMediaFromFileDescriptor" Collapsed="true">
+    <Position X="5.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.CreateMediaFromLocation" Collapsed="true">
+    <Position X="7.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.CreateMediaFromPath" Collapsed="true">
+    <Position X="9.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.ParseMedia" Collapsed="true">
+    <Position X="14.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.ParseMediaAsync" Collapsed="true">
+    <Position X="16.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.ParseMediaWithOptionAsync" Collapsed="true">
+    <Position X="18" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.ReleaseMedia" Collapsed="true">
+    <Position X="12.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.RetainMedia" Collapsed="true">
+    <Position X="21.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.SaveMeta" Collapsed="true">
+    <Position X="2.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.SetMeta" Collapsed="true">
+    <Position X="16.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.SetUserData" Collapsed="true">
+    <Position X="12.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetSubitems" Collapsed="true">
+    <Position X="7.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.GetTracks" Collapsed="true">
+    <Position X="16.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Media.ReleaseTracks" Collapsed="true">
+    <Position X="18" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Media.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ToggleMute" Collapsed="true">
+    <Position X="5.75" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetMute" Collapsed="true">
+    <Position X="16.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetMute" Collapsed="true">
+    <Position X="21.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVolume" Collapsed="true">
+    <Position X="11" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVolume" Collapsed="true">
+    <Position X="0.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetOutputChannel" Collapsed="true">
+    <Position X="18" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetOutputChannel" Collapsed="true">
+    <Position X="23.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioTrackCount" Collapsed="true">
+    <Position X="16.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioTrack" Collapsed="true">
+    <Position X="14.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioTrack" Collapsed="true">
+    <Position X="18" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioTrackDescription" Collapsed="true">
+    <Position X="18" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerPresetCount" Collapsed="true">
+    <Position X="14.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerPresetName" Collapsed="true">
+    <Position X="16.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerBandCount" Collapsed="true">
+    <Position X="9.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerBandFrequency" Collapsed="true">
+    <Position X="11" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CreateEqualizer" Collapsed="true">
+    <Position X="0.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CreateEqualizerFromPreset" Collapsed="true">
+    <Position X="2.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ReleaseEqualizer" Collapsed="true">
+    <Position X="5.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetEqualizerPreamp" Collapsed="true">
+    <Position X="4" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerPreamp" Collapsed="true">
+    <Position X="12.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetEqualizerAmplification" Collapsed="true">
+    <Position X="2.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEqualizerAmplification" Collapsed="true">
+    <Position X="7.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetEqualizer" Collapsed="true">
+    <Position X="0.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.EnumAudioDeviceList" Collapsed="true">
+    <Position X="19.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ReleaseAudioDeviceList" Collapsed="true">
+    <Position X="2.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioDeviceList" Collapsed="true">
+    <Position X="9.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioOutputList" Collapsed="true">
+    <Position X="12.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ReleaseAudioOutputList" Collapsed="true">
+    <Position X="4" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioOutput" Collapsed="true">
+    <Position X="16.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioDevice" Collapsed="true">
+    <Position X="11" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAudioDevice" Collapsed="true">
+    <Position X="7.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Audio.Output.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.VideoLockCallback" Collapsed="true">
+    <Position X="12.75" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.VideoUnlockCallback" Collapsed="true">
+    <Position X="14.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.VideoDisplayCallback" Collapsed="true">
+    <Position X="9.25" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.VideoFormatCallback" Collapsed="true">
+    <Position X="11" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.VideoCleanupCallback" Collapsed="true">
+    <Position X="7.5" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioPlayCallback" Collapsed="true">
+    <Position X="11" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioPauseCallback" Collapsed="true">
+    <Position X="9.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioResumeCallback" Collapsed="true">
+    <Position X="12.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioFlushCallback" Collapsed="true">
+    <Position X="7.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioDrainCallback" Collapsed="true">
+    <Position X="5.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioSetupCallback" Collapsed="true">
+    <Position X="14.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioCleanupCallback" Collapsed="true">
+    <Position X="4" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.AudioSetVolumeCallback" Collapsed="true">
+    <Position X="16.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CreateMediaPlayer" Collapsed="true">
+    <Position X="11" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CreateMediaPlayerFromMedia" Collapsed="true">
+    <Position X="12.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ReleaseMediaPlayer" Collapsed="true">
+    <Position X="14.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.RetainMediaPlayer" Collapsed="true">
+    <Position X="23.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetMedia" Collapsed="true">
+    <Position X="9.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetMedia" Collapsed="true">
+    <Position X="2.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetEventManager" Collapsed="true">
+    <Position X="19.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.IsPlaying" Collapsed="true">
+    <Position X="16.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.Play" Collapsed="true">
+    <Position X="21.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetPause" Collapsed="true">
+    <Position X="0.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetPosition" Collapsed="true">
+    <Position X="2.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.Stop" Collapsed="true">
+    <Position X="2.25" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVideoCallback" Collapsed="true">
+    <Position X="14.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAABAAAAAAAAAEAAAAAAAAAgA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVideoFormat" Collapsed="true">
+    <Position X="16.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVideoFormatCallback" Collapsed="true">
+    <Position X="18" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetHwnd" Collapsed="true">
+    <Position X="7.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetHwnd" Collapsed="true">
+    <Position X="23.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioCallback" Collapsed="true">
+    <Position X="9.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAgAgAAAAAAAAAAAAgAAAEAAAAAAAAEAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioFormat" Collapsed="true">
+    <Position X="12.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioFormatCallback" Collapsed="true">
+    <Position X="14.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAudioVolumeCallback" Collapsed="true">
+    <Position X="19.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetLength" Collapsed="true">
+    <Position X="0.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetTime" Collapsed="true">
+    <Position X="9.25" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetTime" Collapsed="true">
+    <Position X="7.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetPosition" Collapsed="true">
+    <Position X="19.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetChapter" Collapsed="true">
+    <Position X="21.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetChapter" Collapsed="true">
+    <Position X="21.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetChapterCount" Collapsed="true">
+    <Position X="23.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CanPlay" Collapsed="true">
+    <Position X="19.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetTitleChapterCount" Collapsed="true">
+    <Position X="12.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetTitle" Collapsed="true">
+    <Position X="9.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetTitle" Collapsed="true">
+    <Position X="11" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetTitleCount" Collapsed="true">
+    <Position X="14.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.PreviousChapter" Collapsed="true">
+    <Position X="0.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.NextChapter" Collapsed="true">
+    <Position X="11" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetRate" Collapsed="true">
+    <Position X="21.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetRate" Collapsed="true">
+    <Position X="4" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetState" Collapsed="true">
+    <Position X="4" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetFps" Collapsed="true">
+    <Position X="21.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.HasVout" Collapsed="true">
+    <Position X="12.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.IsSeekable" Collapsed="true">
+    <Position X="18" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.CanPause" Collapsed="true">
+    <Position X="18" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.NextFrame" Collapsed="true">
+    <Position X="12.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.Navigate" Collapsed="true">
+    <Position X="4" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVideoTitleDisplay" Collapsed="true">
+    <Position X="19.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.ReleaseTrackDescription" Collapsed="true">
+    <Position X="16.25" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetCursor" Collapsed="true">
+    <Position X="4" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAEAAAAAgAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetCursor" Collapsed="true">
+    <Position X="23.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAEAAAAAgAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetMouseDown" Collapsed="true">
+    <Position X="18" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAIAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetMouseUp" Collapsed="true">
+    <Position X="19.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAIAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetSize" Collapsed="true">
+    <Position X="0.5" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetScale" Collapsed="true">
+    <Position X="23.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetScale" Collapsed="true">
+    <Position X="5.75" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetAspectRatio" Collapsed="true">
+    <Position X="5.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetAspectRatio" Collapsed="true">
+    <Position X="7.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVideoWidth" Collapsed="true">
+    <Position X="9.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVideoHeight" Collapsed="true">
+    <Position X="2.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVideoTrackCount" Collapsed="true">
+    <Position X="5.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVideoTrack" Collapsed="true">
+    <Position X="4" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.SetVideoTrack" Collapsed="true">
+    <Position X="21.5" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.MediaPlayer.GetVideoTrackDescription" Collapsed="true">
+    <Position X="7.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.MediaPlayer.Video.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Time.Clock" Collapsed="true">
+    <Position X="23.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Time.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.Time.Delay" Collapsed="true">
+    <Position X="14.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.Time.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.ReleaseVlmInstance" Collapsed="true">
+    <Position X="7.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.NewBroadCastInput" Collapsed="true">
+    <Position X="5.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAABAAAAAAAAAAAAAEAAQAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.NewVodInput" Collapsed="true">
+    <Position X="9.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAACAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.DelBoroadcastOrOvd" Collapsed="true">
+    <Position X="16.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.MediaSwitch" Collapsed="true">
+    <Position X="2.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.SetMediaOutput" Collapsed="true">
+    <Position X="14.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.SetMediaInput" Collapsed="true">
+    <Position X="11" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.AddMediaInput" Collapsed="true">
+    <Position X="2.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.SetMediaLoop" Collapsed="true">
+    <Position X="12.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.SetVodMuxer" Collapsed="true">
+    <Position X="23.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.EditMediaParas" Collapsed="true">
+    <Position X="18" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAABAAAAAAAAAAAAAEAAQAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.PlayNamedBroadcast" Collapsed="true">
+    <Position X="23.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.StopNamedBroadcast" Collapsed="true">
+    <Position X="4" Y="18" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.PauseNamedBroadcast" Collapsed="true">
+    <Position X="19.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.SeekInNamedBroadcast" Collapsed="true">
+    <Position X="4" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.ReturnJsonMessage" Collapsed="true">
+    <Position X="0.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.GetMediaPosition" Collapsed="true">
+    <Position X="9.25" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.GetMediaTime" Collapsed="true">
+    <Position X="11" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.GetMediaLength" Collapsed="true">
+    <Position X="7.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.GetMediaBackRate" Collapsed="true">
+    <Position X="4" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Meta.Vlc.Interop.VLM.GetMediaEventManager" Collapsed="true">
+    <Position X="5.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\LibVlc.VLM.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Meta.Vlc.AudioDevice" Collapsed="true">
+    <Position X="12.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAgAAAAAAAAAAACAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>AudioDevice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.AudioDeviceList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAACAAAAAQAACAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>AudioDevice.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.AudioEqualizer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAoABCAUgBAAqIgEAAABgQAIAAAEAAIQEAAAIAA=</HashCode>
+      <FileName>AudioEqualizer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.AudioOutput" Collapsed="true">
+    <Position X="17.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAQAACAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>AudioOutput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.AudioOutputList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAACAAAAAQAACAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>AudioOutput.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.LibVlcException" Collapsed="true">
+    <Position X="5.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.NoLibVlcFunctionAttributeException" Collapsed="true">
+    <Position X="10" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.FunctionNotFoundException" Collapsed="true">
+    <Position X="1" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.FunctionNotAvailableException" Collapsed="true">
+    <Position X="3.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.VersionStringParseException" Collapsed="true">
+    <Position X="5.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.LibVlcLoadLibraryException" Collapsed="true">
+    <Position X="7.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.HandleManager" Collapsed="true">
+    <Position X="12.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>HandleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.InteropHelper" Collapsed="true">
+    <Position X="14.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>InteropHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.LibVlcManager" Collapsed="true">
+    <Position X="16" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AADQERiAEAAUABAAIGACAAAAAQIkAAAAAAiAAAAAIAI=</HashCode>
+      <FileName>LibVlcManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.MediaTrack" Collapsed="true">
+    <Position X="4.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAACUAgAQAAAIAQAAAAAAAAAAABARAAAAAAAgA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.AudioTrack" Collapsed="true">
+    <Position X="1" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.VideoTrack" Collapsed="true">
+    <Position X="3.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAEABAAAIQAAQAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.SubtitleTrack" Collapsed="true">
+    <Position X="5.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.UnkownTrack" Collapsed="true">
+    <Position X="7.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.MediaTrackList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAACAAAAAQAAAAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>MediaTrack.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.ModuleDescription" Collapsed="true">
+    <Position X="14.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEIAAAAAAAAAAQAACAAAIAAAAgAAAAAAAA=</HashCode>
+      <FileName>ModuleDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.ModuleDescriptionList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAACAAAAAQAACAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>ModuleDescription.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.TrackDescription" Collapsed="true">
+    <Position X="19.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAACAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>TrackDescription.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.TrackDescriptionList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAACAAAAAQAACAAAAAEQAAAAAAAAAA=</HashCode>
+      <FileName>TrackDescription.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.Vlc" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KUkAcPnMMy9UAiHbCcLFTB5kKrRFoA5QHygovTJBgBA=</HashCode>
+      <FileName>Vlc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Meta.Vlc.VlcError" Collapsed="true">
+    <Position X="16" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAEIAAAAAQAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQA=</HashCode>
+      <FileName>VlcError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.VlcEventManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEEgAACAQAAIAAIBIAAAAAIAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>VlcEventManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.VlcMedia" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DBlgWH9UBPGeQGlYJJVmDQABIBgwoCBIQASAFAAKCCI=</HashCode>
+      <FileName>VlcMedia.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.ObjectEventArgs&lt;T&gt;" Collapsed="true">
+    <Position X="17.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>VlcMedia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.VlcMediaPlayer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Yz4vm7ek1LSd23eqO+rV9TtfnH8p62E+uzJ7vI2f8ec=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Meta.Vlc.MediaPlayerBufferingEventArgs" Collapsed="true">
+    <Position X="17.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.MediaPlayerMediaChangedEventArgs" Collapsed="true">
+    <Position X="19.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcMediaPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.VlcSettingsAttribute" Collapsed="true">
+    <Position X="14.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VlcSettingsAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Meta.Vlc.Win32Api" Collapsed="true">
+    <Position X="16" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAQAAAQCAEAAACCAAAAQAAQAAIAAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Meta.Vlc.Size" Collapsed="true">
+    <Position X="12.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAgAAAAEAAAAAAAIAAAAAAAAAAAiA=</HashCode>
+      <FileName>Size.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Meta.Vlc.IVlcObject" Collapsed="true">
+    <Position X="0.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>IVlcObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Meta.Vlc.IVlcObjectWithEvent" Collapsed="true">
+    <Position X="0.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IVlcObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Meta.Vlc.PresetAudioEqualizerType" Collapsed="true">
+    <Position X="16" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkAAAAgAAAAAAAAAAEAQEAEAAAKAAAAAEAgAAAKJCQg=</HashCode>
+      <FileName>PresetAudioEqualizerType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.PageAccess" Collapsed="true">
+    <Position X="14.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAIAAIABQgAAAAEAAAAAAAAgAAAAAIAAAggAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Meta.Vlc.FileMapAccess" Collapsed="true">
+    <Position X="12.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAgAiAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Win32Api.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -98,7 +98,10 @@ namespace Meta.Vlc.Wpf
             {
                 Image.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    Image.Invalidate();
+                    if (Image != null)
+                    {
+                        Image.Invalidate();
+                    }
                 }));
             }
         }

@@ -277,50 +277,53 @@ namespace Meta.Vlc.Wpf
         private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
             _context.Display();
-            if (_snapshotContext == null) return;
 
-            _snapshotContext.GetName(this);
-
-            switch (_snapshotContext.Format)
+            DisplayThreadDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                case SnapshotFormat.BMP:
-                    var bmpE = new BmpBitmapEncoder();
-                    bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                    using (
-                        Stream stream =
-                            File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                    {
-                        bmpE.Save(stream);
-                    }
-                    break;
+                if (_snapshotContext == null) return;
+                _snapshotContext.GetName(this);
 
-                case SnapshotFormat.JPG:
-                    var jpgE = new JpegBitmapEncoder();
-                    jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                    using (
-                        Stream stream =
-                            File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                    {
-                        jpgE.QualityLevel = _snapshotContext.Quality;
-                        jpgE.Save(stream);
-                    }
-                    break;
+                switch (_snapshotContext.Format)
+                {
+                    case SnapshotFormat.BMP:
+                        var bmpE = new BmpBitmapEncoder();
+                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
+                            )
+                        {
+                            bmpE.Save(stream);
+                        }
+                        break;
 
-                case SnapshotFormat.PNG:
-                    var pngE = new PngBitmapEncoder();
-                    pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                    using (
-                        Stream stream =
-                            File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                    {
-                        pngE.Save(stream);
-                    }
-                    break;
-            }
-            _snapshotContext = null;
+                    case SnapshotFormat.JPG:
+                        var jpgE = new JpegBitmapEncoder();
+                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
+                            )
+                        {
+                            jpgE.QualityLevel = _snapshotContext.Quality;
+                            jpgE.Save(stream);
+                        }
+                        break;
+
+                    case SnapshotFormat.PNG:
+                        var pngE = new PngBitmapEncoder();
+                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
+                            )
+                        {
+                            pngE.Save(stream);
+                        }
+                        break;
+                }
+                _snapshotContext = null;
+            }));
         }
 
         private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,

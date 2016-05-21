@@ -804,17 +804,23 @@ namespace Meta.Vlc.Wpf
             if (_disposing) return;
             if (_isStopping) return;
 
-            if (PropertyChanged != null)
-            {
-                var bodyExpr = expr.Body as MemberExpression;
-                var propInfo = bodyExpr.Member as PropertyInfo;
-                var propName = propInfo.Name;
+            var bodyExpr = expr.Body as MemberExpression;
+            var propInfo = bodyExpr.Member as PropertyInfo;
+            var propName = propInfo.Name;
 
-                if (DisplayThreadDispatcher != null)
-                {
-                    DisplayThreadDispatcher.BeginInvoke(
-                        new Action(() => { PropertyChanged(this, new PropertyChangedEventArgs(propName)); }));
-                }
+            var displayThreadDispatcher = DisplayThreadDispatcher;
+            if (displayThreadDispatcher != null)
+            {
+                displayThreadDispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        if (_disposing) return;
+                        if (_isStopping) return;
+
+                        var onPropertyChanged = PropertyChanged;
+                        if (onPropertyChanged != null)
+                            onPropertyChanged(this, new PropertyChangedEventArgs(propName));
+                    }));
             }
         }
 

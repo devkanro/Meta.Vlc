@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcPlayer.Events.cs
-// Version: 20160404
+// Version: 20160708
 
 using System;
 using System.Diagnostics;
@@ -50,6 +50,8 @@ namespace Meta.Vlc.Wpf
         ///     <see cref="VlcPlayer.State" />
         /// </summary>
         public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
+        
+        public event EventHandler<VideoFormatChangingEventArgs> VideoFormatChanging;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -330,19 +332,25 @@ namespace Meta.Vlc.Wpf
             ref uint pitches, ref uint lines)
         {
             Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
+
+            var videoFormatChangingArgs = new VideoFormatChangingEventArgs(width, height, ChromaType.RV32);
+            
             if (_context == null)
             {
-                uint tmpWidth = width;
-                uint tmpHeight = height;
-
                 if (DisplayThreadDispatcher == null)
                 {
                     throw new InvalidOperationException("VlcPlayer not be ready, if you want to use VlcPlay no in XAML, please read this Wiki: \"https://github.com/higankanshi/Meta.Vlc/wiki/Use-VlcPlayer-with-other-controls\".");
                 }
 
+                if (VideoFormatChanging != null)
+                {
+                    VideoFormatChanging(this, videoFormatChangingArgs);
+                }
+
                 DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
-                    new Action(() => { _context = new VideoDisplayContext(tmpWidth, tmpHeight, ChromaType.RV32); }));
+                    new Action(() => { _context = new VideoDisplayContext(videoFormatChangingArgs.Width, videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType); }));
             }
+
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;
             height = (uint) _context.Height;
@@ -402,5 +410,30 @@ namespace Meta.Vlc.Wpf
         #endregion Audio callbacks
 
         #endregion Callbacks
+    }
+
+    public class VideoFormatChangingEventArgs : EventArgs
+    {
+        internal VideoFormatChangingEventArgs(uint width, uint height, ChromaType chromaType)
+        {
+            Width = width;
+            Height = height;
+            ChromaType = chromaType;
+        }
+
+        /// <summary>
+        /// Width of video.
+        /// </summary>
+        public uint Width { get; set; }
+
+        /// <summary>
+        /// Height of video.
+        /// </summary>
+        public uint Height { get; set; }
+
+        /// <summary>
+        /// Video chroma type.
+        /// </summary>
+        public ChromaType ChromaType { get; set; }
     }
 }

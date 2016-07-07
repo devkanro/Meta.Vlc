@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VideoDisplayContext.cs
-// Version: 20160325
+// Version: 20160708
 
 using System;
 using System.Diagnostics;
@@ -59,10 +59,12 @@ namespace Meta.Vlc.Wpf
             Size = 0;
             PixelFormat = PixelFormats.Default;
             Stride = 0;
+            var generation = GC.GetGeneration(Image);
             Image = null;
             Win32Api.UnmapViewOfFile(MapView);
             Win32Api.CloseHandle(FileMapping);
             FileMapping = MapView = IntPtr.Zero;
+            GC.Collect(generation);
             _disposed = true;
         }
 

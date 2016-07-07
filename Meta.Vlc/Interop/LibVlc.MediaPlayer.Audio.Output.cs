@@ -4,6 +4,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.Core;
 
 namespace Meta.Vlc.Interop.MediaPlayer
 {

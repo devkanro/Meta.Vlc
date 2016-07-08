@@ -51,6 +51,14 @@ See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html)
 
 ## Change Log
 
+### 2016/07/08
+SHA1:5a882479bfe31345e95f5bb64a1debd858ad7758
+
+**01.添加 VideoFormatChanging 事件。**
+_**01.Add VideoFormatChanging event.**_  
+通过处理 `VideoFormatChanging` 事件来变更视频内容的解码大小与颜色格式。  
+_You can handle `VideoFormatChanging` event to set decode size and format of video._
+
 ### 2016/05/01
 SHA1:90c45ed791b96e9da65b926cc9738cbd4840988e
 
@@ -60,7 +68,7 @@ _**01.Change the code name to "Meta".**_
 _Project code name and root name space have been changed, you can replace "xZune" to "Meta" to compatible this commit._  
 
 旧版本 Nuget 包仍然被提供，在这里查看旧版本 Nuget 包：  
-_Old version Nuget package still be provided, check those:_
+_Old version Nuget package still be provided, check those:_  
 [xZune.Vlc](https://www.nuget.org/packages/xZune.Vlc/)  
 [xZune.Vlc.Wpf](https://www.nuget.org/packages/xZune.Vlc.Wpf/)  
 [xZune.Vlc.Lib](https://www.nuget.org/packages/xZune.Vlc.Lib/)  

@@ -54,7 +54,7 @@ See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html)
 ### 2016/07/08
 SHA1:5a882479bfe31345e95f5bb64a1debd858ad7758
 
-**01.添加 VideoFormatChanging 事件。**
+**01.添加 VideoFormatChanging 事件。**  
 _**01.Add VideoFormatChanging event.**_  
 通过处理 `VideoFormatChanging` 事件来变更视频内容的解码大小与颜色格式。  
 _You can handle `VideoFormatChanging` event to set decode size and format of video._

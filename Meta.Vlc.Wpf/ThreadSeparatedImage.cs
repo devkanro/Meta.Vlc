@@ -69,7 +69,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(new Action(() => { InternalImageControl.Source = value; }));
+                    CommonDispatcher.Invoke(new Action(() => { InternalImageControl.Source = value; }));
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(new Action(() => { InternalImageControl.Stretch = value; }));
+                    CommonDispatcher.Invoke(new Action(() => { InternalImageControl.Stretch = value; }));
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(new Action(() => { InternalImageControl.StretchDirection = value; }));
+                    CommonDispatcher.Invoke(new Action(() => { InternalImageControl.StretchDirection = value; }));
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(new Action(() => { InternalImageControl.LayoutTransform = value; }));
+                    CommonDispatcher.Invoke(new Action(() => { InternalImageControl.LayoutTransform = value; }));
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(
+                    CommonDispatcher.Invoke(
                         new Action(() => { InternalImageControl.HorizontalAlignment = value; }));
                 }
             }
@@ -150,7 +150,7 @@ namespace Meta.Vlc.Wpf
 
                     if (InternalImageControl == null) return;
 
-                    SeparateThreadDispatcher.Invoke(new Action(() => { InternalImageControl.VerticalAlignment = value; }));
+                    CommonDispatcher.Invoke(new Action(() => { InternalImageControl.VerticalAlignment = value; }));
                 }
             }
         }
@@ -180,7 +180,10 @@ namespace Meta.Vlc.Wpf
 
             CommonDispatcher.BeginInvoke(new Action(() =>
             {
-                   TargetElement = CreateThreadSeparatedControl();
+                if (TargetElement == null)
+                {
+                    TargetElement = CreateThreadSeparatedControl();
+                }
 
                 if (TargetElement == null) return;
 
@@ -195,7 +198,7 @@ namespace Meta.Vlc.Wpf
         {
             RemoveLogicalChild(HostVisual);
             RemoveVisualChild(HostVisual);
-
+            
             HostVisual = null;
             TargetElement = null;
         }

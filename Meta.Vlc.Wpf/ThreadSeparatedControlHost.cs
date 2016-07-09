@@ -50,7 +50,7 @@ namespace Meta.Vlc.Wpf
 
             AddLogicalChild(HostVisual);
             AddVisualChild(HostVisual);
-            
+
             if (DesignerProperties.GetIsInDesignMode(this))
                 return;
 
@@ -96,8 +96,7 @@ namespace Meta.Vlc.Wpf
 
         protected override void OnInitialized(EventArgs e)
         {
-            LoadThreadSeparatedControl();
-
+            Loaded += (sender, args) => { LoadThreadSeparatedControl(); };
             Unloaded += (sender, args) => { UnloadThreadSeparatedControl(); };
 
             base.OnInitialized(e);

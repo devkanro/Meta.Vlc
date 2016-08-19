@@ -824,9 +824,9 @@ namespace Meta.Vlc
             set { _setSubtitleDelayFunction.Delegate.Invoke(InstancePointer, value); }
         }
 
-        public TrackDescription SubtitleDescription
+        public TrackDescriptionList SubtitleDescription
         {
-            get { return new TrackDescription(_getSubtitleDescriptionFunction.Delegate(InstancePointer)); }
+            get { return new TrackDescriptionList(_getSubtitleDescriptionFunction.Delegate(InstancePointer)); }
         }
 
         public bool IsAdjustEnable

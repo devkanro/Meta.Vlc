@@ -200,23 +200,16 @@ namespace Meta.Vlc.Wpf
                 }
             }
 
-            if (VisualParent == null)
-            {
-            }
-            else
-            {
-                Loaded += OnLoaded;
-            }
-
             base.OnInitialized(e);
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        public override void OnApplyTemplate()
         {
             Image.HorizontalContentAlignment = HorizontalContentAlignment;
             Image.VerticalContentAlignment = VerticalContentAlignment;
             Image.Stretch = Stretch;
             Image.StretchDirection = StretchDirection;
+            base.OnApplyTemplate();
         }
 
         /// <summary>

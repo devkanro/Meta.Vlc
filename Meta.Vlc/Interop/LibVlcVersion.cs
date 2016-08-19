@@ -94,12 +94,12 @@ namespace Meta.Vlc.Interop
 
             if (functionInfo.MinVersion != null)
             {
-                result = functionInfo.MinVersion < Version;
+                result = functionInfo.MinVersion <= Version;
             }
 
             if (functionInfo.MaxVersion != null)
             {
-                result = result && Version < functionInfo.MaxVersion;
+                result = result && Version <= functionInfo.MaxVersion;
             }
 
             if (functionInfo.Dev != null)

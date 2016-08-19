@@ -278,6 +278,8 @@ namespace Meta.Vlc.Wpf
 
         private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
+            if (_context == null || DisplayThreadDispatcher == null) { return; }
+
             _context.Display();
 
             DisplayThreadDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>

@@ -109,6 +109,14 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public VlcPlayer()
         {
+            this.AddHandler(ThreadSeparatedControlHost.ThreadSeparatedControlLoadedEvent, new RoutedEventHandler(
+                (s, a) =>
+                {
+                    if (ThreadSeparatedImageLoaded != null)
+                    {
+                        ThreadSeparatedImageLoaded(this, new EventArgs());
+                    }
+                }));
         }
 
         /// <summary>

@@ -46,6 +46,8 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public event EventHandler LengthChanged;
 
+        public event EventHandler ThreadSeparatedImageLoaded;
+
         /// <summary>
         ///     <see cref="VlcPlayer.State" />
         /// </summary>

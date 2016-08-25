@@ -12,6 +12,11 @@ using System.Windows.Threading;
 
 namespace Meta.Vlc.Wpf
 {
+    class ThreadSeparatedControlLoadedRoutedEventArgs : RoutedEventArgs
+    {
+        public ThreadSeparatedControlLoadedRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) { }
+    }
+    
     public abstract class ThreadSeparatedControlHost : FrameworkElement
     {
         public FrameworkElement TargetElement { get; protected set; }
@@ -96,7 +101,11 @@ namespace Meta.Vlc.Wpf
 
         protected override void OnInitialized(EventArgs e)
         {
-            Loaded += (sender, args) => { LoadThreadSeparatedControl(); };
+            Loaded += (sender, args) =>
+            {
+                LoadThreadSeparatedControl();
+                this.RaiseEvent(new ThreadSeparatedControlLoadedRoutedEventArgs(ThreadSeparatedControlLoadedEvent, this));
+            };
             Unloaded += (sender, args) => { UnloadThreadSeparatedControl(); };
 
             base.OnInitialized(e);
@@ -135,6 +144,15 @@ namespace Meta.Vlc.Wpf
             }
 
             throw new IndexOutOfRangeException("index");
+        }
+
+        public static readonly RoutedEvent ThreadSeparatedControlLoadedEvent =
+            EventManager.RegisterRoutedEvent("ThreadSeparatedControlLoaded", RoutingStrategy.Bubble, typeof(EventHandler<ThreadSeparatedControlLoadedRoutedEventArgs>), typeof(ThreadSeparatedControlHost));
+
+        public event RoutedEventHandler ThreadSeparatedControlLoaded
+        {
+            add { this.AddHandler(ThreadSeparatedControlLoadedEvent, value); }
+            remove { this.RemoveHandler(ThreadSeparatedControlLoadedEvent, value); }
         }
     }
 }

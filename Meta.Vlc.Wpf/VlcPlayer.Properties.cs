@@ -317,7 +317,8 @@ namespace Meta.Vlc.Wpf
                 {
                     return _customDisplayThreadDispatcher;
                 }
-                return null;
+                
+                return ThreadSeparatedImage.CommonDispatcher;
             }
         }
 

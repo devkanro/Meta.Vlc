@@ -463,13 +463,7 @@ namespace Meta.Vlc.Wpf
 
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
-
-            if (_context != null)
-            {
-                _context.Dispose();
-                _context = null;
-            }
-
+            
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.ParseAsync();
 
@@ -485,13 +479,7 @@ namespace Meta.Vlc.Wpf
             ThrowIfNotInitialize();
 
             if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
-
-            if (_context != null)
-            {
-                _context.Dispose();
-                _context = null;
-            }
-
+            
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.ParseAsync();
 
@@ -512,13 +500,7 @@ namespace Meta.Vlc.Wpf
 
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
-
-            if (_context != null)
-            {
-                _context.Dispose();
-                _context = null;
-            }
-
+            
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();
@@ -537,13 +519,7 @@ namespace Meta.Vlc.Wpf
 
             if (VlcMediaPlayer.Media != null)
                 VlcMediaPlayer.Media.Dispose();
-
-            if (_context != null)
-            {
-                _context.Dispose();
-                _context = null;
-            }
-
+            
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToHttpEncodeString());
             VlcMediaPlayer.Media.AddOption(options);
             VlcMediaPlayer.Media.ParseAsync();

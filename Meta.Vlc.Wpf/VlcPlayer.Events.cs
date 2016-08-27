@@ -230,13 +230,8 @@ namespace Meta.Vlc.Wpf
 
         #region Video callbacks
 
-        private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
+        private void CheckAspectRatio()
         {
-            if (VlcMediaPlayer.Volume != Volume)
-            {
-                VlcMediaPlayer.Volume = Volume;
-            }
-
             if (!_context.IsAspectRatioChecked)
             {
                 var tracks = VlcMediaPlayer.Media.GetTracks();
@@ -271,6 +266,28 @@ namespace Meta.Vlc.Wpf
                     }
                 }
             }
+        }
+
+
+        private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
+        {
+            if (_context == null)
+            {
+                throw new NullReferenceException("Video context is null");
+            }
+
+            if (VlcMediaPlayer.Volume != Volume)
+            {
+                VlcMediaPlayer.Volume = Volume;
+            }
+
+            if (VideoSource == null)
+            {
+                VideoSource = _context.Image;
+            }
+
+            CheckAspectRatio();
+
             return planes = _context.MapView;
         }
 
@@ -338,29 +355,35 @@ namespace Meta.Vlc.Wpf
             Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
 
             var videoFormatChangingArgs = new VideoFormatChangingEventArgs(width, height, ChromaType.RV32);
-            
-            if (_context == null)
+
+            if (VideoFormatChanging != null)
+            {
+                VideoFormatChanging(this, videoFormatChangingArgs);
+            }
+
+            if (_context == null || videoFormatChangingArgs.Width != _context.Width || videoFormatChangingArgs.Height != _context.Height)
             {
                 if (DisplayThreadDispatcher == null)
                 {
-                    throw new InvalidOperationException("VlcPlayer not be ready, if you want to use VlcPlay no in XAML, please read this Wiki: \"https://github.com/higankanshi/Meta.Vlc/wiki/Use-VlcPlayer-with-other-controls\".");
+                    throw new NullReferenceException(String.Format("Image = {0}, Image.SeparateThreadDispatcher = {1}, ThreadSeparatedImage.CommonDispatcher = {2}", Image, Image.SeparateThreadDispatcher, ThreadSeparatedImage.CommonDispatcher));
                 }
-
-                if (VideoFormatChanging != null)
-                {
-                    VideoFormatChanging(this, videoFormatChangingArgs);
-                }
-
                 DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
-                    new Action(() => { _context = new VideoDisplayContext(videoFormatChangingArgs.Width, videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType); }));
+                    new Action(() =>
+                    {
+                        if (_context != null)
+                        {
+                            _context.Dispose();
+                        }
+                        _context = new VideoDisplayContext(videoFormatChangingArgs.Width, videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType);
+                    }));
             }
-
+            
+            _context.IsAspectRatioChecked = false;
             chroma = (uint) _context.ChromaType;
             width = (uint) _context.Width;
             height = (uint) _context.Height;
             pitches = (uint) _context.Stride;
             lines = (uint) _context.Height;
-            VideoSource = _context.Image;
             return (uint) _context.Size;
         }
 

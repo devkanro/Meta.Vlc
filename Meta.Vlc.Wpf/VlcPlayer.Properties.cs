@@ -308,17 +308,19 @@ namespace Meta.Vlc.Wpf
         {
             get
             {
-                if (Image != null)
+                Dispatcher result = _customDisplayThreadDispatcher;
+
+                if (result == null && Image!= null)
                 {
-                    return Image.SeparateThreadDispatcher;
+                    result = Image.SeparateThreadDispatcher;
                 }
 
-                if (_customDisplayThreadDispatcher != null)
+                if (result == null)
                 {
-                    return _customDisplayThreadDispatcher;
+                    return ThreadSeparatedImage.CommonDispatcher;
                 }
-                
-                return ThreadSeparatedImage.CommonDispatcher;
+
+                return null;
             }
         }
 

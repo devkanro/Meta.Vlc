@@ -90,7 +90,7 @@ namespace Meta.Vlc.Wpf
                 {
                     var @this = o as VlcPlayer;
 
-                    if (@this.DisplayThreadDispatcher != null)
+                    if (@this.Image != null)
                     {
                         @this.Image.Stretch = (Stretch) args.NewValue;
                     }

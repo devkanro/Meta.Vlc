@@ -320,7 +320,7 @@ namespace Meta.Vlc.Wpf
                     return ThreadSeparatedImage.CommonDispatcher;
                 }
 
-                return null;
+                return result;
             }
         }
 

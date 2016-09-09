@@ -52,7 +52,7 @@ namespace Meta.Vlc.Wpf
         ///     <see cref="VlcPlayer.State" />
         /// </summary>
         public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
-        
+
         public event EventHandler<VideoFormatChangingEventArgs> VideoFormatChanging;
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -218,10 +218,10 @@ namespace Meta.Vlc.Wpf
             Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
 
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-             {
-                 if (StateChanged != null)
-                     StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
-             }));
+            {
+                if (StateChanged != null)
+                    StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
+            }));
         }
 
         #endregion VlcMediaPlayer event handlers
@@ -268,6 +268,56 @@ namespace Meta.Vlc.Wpf
             }
         }
 
+        private void TakeSnapshot()
+        {
+            DisplayThreadDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (_snapshotContext == null) return;
+                _snapshotContext.GetName(this);
+
+                switch (_snapshotContext.Format)
+                {
+                    case SnapshotFormat.BMP:
+                        var bmpE = new BmpBitmapEncoder();
+                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                        {
+                            bmpE.Save(stream);
+                        }
+                        break;
+
+                    case SnapshotFormat.JPG:
+                        var jpgE = new JpegBitmapEncoder();
+                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                        {
+                            jpgE.QualityLevel = _snapshotContext.Quality;
+                            jpgE.Save(stream);
+                        }
+                        break;
+
+                    case SnapshotFormat.PNG:
+                        var pngE = new PngBitmapEncoder();
+                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
+                        using (
+                            Stream stream =
+                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
+                        )
+                        {
+                            pngE.Save(stream);
+                        }
+                        break;
+                }
+                _snapshotContext = null;
+            }));
+        }
+
 
         private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
@@ -286,7 +336,14 @@ namespace Meta.Vlc.Wpf
                 VideoSource = _context.Image;
             }
 
-            CheckAspectRatio();
+            try
+            {
+                CheckAspectRatio();
+            }
+            catch
+            {
+                // ignored
+            }
 
             return planes = _context.MapView;
         }
@@ -297,56 +354,21 @@ namespace Meta.Vlc.Wpf
 
         private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
         {
-            if (_context == null || DisplayThreadDispatcher == null) { return; }
+            if (_context == null || DisplayThreadDispatcher == null)
+            {
+                return;
+            }
 
             _context.Display();
 
-            DisplayThreadDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            try
             {
-                if (_snapshotContext == null) return;
-                _snapshotContext.GetName(this);
-
-                switch (_snapshotContext.Format)
-                {
-                    case SnapshotFormat.BMP:
-                        var bmpE = new BmpBitmapEncoder();
-                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            bmpE.Save(stream);
-                        }
-                        break;
-
-                    case SnapshotFormat.JPG:
-                        var jpgE = new JpegBitmapEncoder();
-                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            jpgE.QualityLevel = _snapshotContext.Quality;
-                            jpgE.Save(stream);
-                        }
-                        break;
-
-                    case SnapshotFormat.PNG:
-                        var pngE = new PngBitmapEncoder();
-                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
-                            )
-                        {
-                            pngE.Save(stream);
-                        }
-                        break;
-                }
-                _snapshotContext = null;
-            }));
+                TakeSnapshot();
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,

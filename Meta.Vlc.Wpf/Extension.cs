@@ -122,41 +122,5 @@ namespace Meta.Vlc.Wpf
         {
             action.BeginInvoke(ar => { action.EndInvoke(ar); }, null);
         }
-
-        /// <summary>
-        ///     Get the HTTP encoded string of a Uri.
-        /// </summary>
-        /// <param name="uri"></param>
-        /// <returns>The encoded string.</returns>
-        public static String ToHttpEncodeString(this Uri uri)
-        {
-            String uriString = uri.ToString();
-            StringBuilder resultBuilder = new StringBuilder(512);
-
-            if (String.IsNullOrEmpty(uriString))
-            {
-                return uriString;
-            }
-
-            foreach (var ch in uriString)
-            {
-                switch (ch)
-                {
-                    case ' ':
-                        resultBuilder.Append("%20");
-                        break;
-
-                    case '%':
-                        resultBuilder.Append("%25");
-                        break;
-
-                    default:
-                        resultBuilder.Append(ch);
-                        break;
-                }
-            }
-
-            return resultBuilder.ToString();
-        }
     }
 }

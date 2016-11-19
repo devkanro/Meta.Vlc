@@ -552,7 +552,14 @@ namespace Meta.Vlc
                     ? null
                     : HandleManager.GetVlcObject(_getMediaFunction.Delegate(InstancePointer)) as VlcMedia;
             }
-            set { _setMediaFunction.Delegate(InstancePointer, value == null ? IntPtr.Zero : value.InstancePointer); }
+            set
+            {
+                _setMediaFunction.Delegate(InstancePointer, IntPtr.Zero);
+                if (value != null)
+                {
+                    _setMediaFunction.Delegate(InstancePointer, value.InstancePointer);
+                }
+            }
         }
 
         /// <summary>

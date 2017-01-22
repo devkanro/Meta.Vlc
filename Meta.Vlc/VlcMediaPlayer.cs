@@ -4,6 +4,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Meta.Vlc.Interop;
 using Meta.Vlc.Interop.Core.Events;
 using Meta.Vlc.Interop.Media;
@@ -965,9 +966,7 @@ namespace Meta.Vlc
         /// <param name="channels">通道数</param>
         public void SetAudioFormat(String format, uint rate, uint channels)
         {
-            var fmt =
-                BitConverter.ToUInt32(new[] { (byte)format[0], (byte)format[1], (byte)format[2], (byte)format[3] }, 0);
-            _setAudioFormatFunction.Delegate(InstancePointer, fmt, rate, channels);
+            _setAudioFormatFunction.Delegate(InstancePointer, Encoding.UTF8.GetBytes(format), rate, channels);
         }
 
         public int GetTitleChapterCount(int title)

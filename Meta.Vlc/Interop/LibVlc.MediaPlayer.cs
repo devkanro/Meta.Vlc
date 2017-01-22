@@ -371,7 +371,7 @@ namespace Meta.Vlc.Interop.MediaPlayer
     /// <param name="channels">通道数</param>
     [LibVlcFunction("libvlc_audio_set_format", "2.0.0")]
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SetAudioFormat(IntPtr mediaPlayer, uint format, uint rate, uint channels);
+    public delegate void SetAudioFormat(IntPtr mediaPlayer, [MarshalAs(UnmanagedType.LPArray)] byte[] format, uint rate, uint channels);
 
     /// <summary>
     ///     设置 Audio 的格式回调

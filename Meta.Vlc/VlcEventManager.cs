@@ -56,7 +56,8 @@ namespace Meta.Vlc
         public void Dispose()
         {
             HandleManager.Remove(this);
-            LibVlcManager.Free(InstancePointer);
+            // We should not free libvlc_event_manager instances as their life cycles are
+            // managed by their parent libvlc_media_player or libvlc_media instances.
             InstancePointer = IntPtr.Zero;
         }
 

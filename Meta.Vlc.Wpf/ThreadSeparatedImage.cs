@@ -168,6 +168,8 @@ namespace Meta.Vlc.Wpf
             return InternalImageControl;
         }
 
+        object _lock = new object();
+
         protected override void LoadThreadSeparatedControl()
         {
             HostVisual = new HostVisual();
@@ -180,27 +182,35 @@ namespace Meta.Vlc.Wpf
 
             CommonDispatcher.BeginInvoke(new Action(() =>
             {
-                if (TargetElement == null)
+                lock (_lock)
                 {
-                    TargetElement = CreateThreadSeparatedControl();
+                    if (HostVisual == null)
+                        return; // can happen if control was loaded then immediately unloaded
+
+                    if (TargetElement == null)
+                    {
+                        TargetElement = CreateThreadSeparatedControl();
+                    }
+
+                    if (TargetElement == null) return;
+
+                    VisualTarget = new VisualTargetPresentationSource(HostVisual);
+                    VisualTarget.RootVisual = TargetElement;
                 }
-
-                if (TargetElement == null) return;
-
-                VisualTarget = new VisualTargetPresentationSource(HostVisual);
-                VisualTarget.RootVisual = TargetElement;
-
                 Dispatcher.BeginInvoke(new Action(() => { InvalidateMeasure(); }));
             }));
         }
 
         protected override void UnloadThreadSeparatedControl()
         {
-            RemoveLogicalChild(HostVisual);
-            RemoveVisualChild(HostVisual);
-            
-            HostVisual = null;
-            TargetElement = null;
+            lock (_lock)
+            {
+                RemoveLogicalChild(HostVisual);
+                RemoveVisualChild(HostVisual);
+
+                HostVisual = null;
+                TargetElement = null;
+            }
         }
     }
 }

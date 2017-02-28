@@ -124,8 +124,21 @@ namespace Meta.Vlc
         /// </summary>
         public MediaState State
         {
-            get { return _getStateFunction.Delegate(InstancePointer); }
+            get
+            {
+                if (InstancePointer == IntPtr.Zero)
+                    return MediaState.NothingSpecial;
+
+                var state = _getStateFunction.Delegate(InstancePointer);
+                if (state == MediaState.Error)
+                {
+                    Error = VlcError.GetErrorMessage();
+                }
+                return state;
+            }
         }
+
+        public string Error { get; private set; }
 
         /// <summary>
         ///     获取媒体当前统计
@@ -276,10 +289,8 @@ namespace Meta.Vlc
 
         private void OnStateChanged(ref LibVlcEventArgs arg, IntPtr userData)
         {
-            if (StateChanged != null)
-            {
-                StateChanged(this, new ObjectEventArgs<MediaStateChangedArgs>(arg.MediaStateChanged));
-            }
+            var actualState = State;
+            StateChanged?.Invoke(this, new ObjectEventArgs<MediaStateChangedArgs>(new MediaStateChangedArgs {NewState = actualState }));
         }
 
         public event EventHandler<ObjectEventArgs<MediaStateChangedArgs>> StateChanged;
@@ -500,6 +511,14 @@ namespace Meta.Vlc
             }
 
             HandleManager.Remove(this);
+
+            EventManager.Detach(EventTypes.MediaMetaChanged, _onMetaChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaSubItemAdded, _onSubItemAdded, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaDurationChanged, _onDurationChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaParsedChanged, _onParsedChanged, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaFreed, _onFreed, IntPtr.Zero);
+            EventManager.Detach(EventTypes.MediaStateChanged, _onStateChanged, IntPtr.Zero);
+
             EventManager.Dispose();
             _onMetaChangedHandle.Free();
             _onSubItemAddedHandle.Free();

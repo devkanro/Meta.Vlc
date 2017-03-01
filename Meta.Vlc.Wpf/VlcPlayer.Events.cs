@@ -272,53 +272,14 @@ namespace Meta.Vlc.Wpf
         {
             DisplayThreadDispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {
-                if (_snapshotContext == null) return;
-                _snapshotContext.GetName(this);
-
-                switch (_snapshotContext.Format)
+                if (_snapshotContext != null)
                 {
-                    case SnapshotFormat.BMP:
-                        var bmpE = new BmpBitmapEncoder();
-                        bmpE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.bmp", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                        {
-                            bmpE.Save(stream);
-                        }
-                        break;
-
-                    case SnapshotFormat.JPG:
-                        var jpgE = new JpegBitmapEncoder();
-                        jpgE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.jpg", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                        {
-                            jpgE.QualityLevel = _snapshotContext.Quality;
-                            jpgE.Save(stream);
-                        }
-                        break;
-
-                    case SnapshotFormat.PNG:
-                        var pngE = new PngBitmapEncoder();
-                        pngE.Frames.Add(BitmapFrame.Create(VideoSource));
-                        using (
-                            Stream stream =
-                                File.Create(String.Format("{0}\\{1}.png", _snapshotContext.Path, _snapshotContext.Name))
-                        )
-                        {
-                            pngE.Save(stream);
-                        }
-                        break;
+                    _snapshotContext.Save(this, this.VideoSource);
+                    _snapshotContext = null;
                 }
-                _snapshotContext = null;
             }));
         }
-
-
+        
         private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
         {
             if (_context == null)

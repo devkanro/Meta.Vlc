@@ -659,7 +659,7 @@ namespace Meta.Vlc.Wpf
         /// <param name="path"></param>
         /// <param name="format"></param>
         /// <param name="quality"></param>
-        public void TakeSnapshot(string path, SnapshotFormat format, int quality)
+        public void TakeSnapshot(string path, SnapshotFormat format, int quality = 100)
         {
             ThrowIfNotInitialize();
 
@@ -676,6 +676,32 @@ namespace Meta.Vlc.Wpf
                 case MediaState.Playing:
                 case MediaState.Paused:
                     _snapshotContext = new SnapshotContext(path, format, quality);
+                    break;
+            }
+        }
+
+        /// <summary>
+        ///     Take a snapshot.
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="quality"></param>
+        public void TakeSnapshot(string file, int quality = 100)
+        {
+            ThrowIfNotInitialize();
+
+            switch (VlcMediaPlayer.State)
+            {
+                case MediaState.NothingSpecial:
+                case MediaState.Opening:
+                case MediaState.Buffering:
+                case MediaState.Stopped:
+                case MediaState.Ended:
+                case MediaState.Error:
+                    break;
+
+                case MediaState.Playing:
+                case MediaState.Paused:
+                    _snapshotContext = new SnapshotContext(file, quality);
                     break;
             }
         }

@@ -89,7 +89,8 @@ namespace Meta.Vlc.Wpf
                 new PropertyMetadata(Stretch.Uniform, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
-
+                    if (@this == null)
+                        return;
                     if (@this.Image != null)
                     {
                         @this.Image.Stretch = (Stretch) args.NewValue;
@@ -110,8 +111,10 @@ namespace Meta.Vlc.Wpf
                 new PropertyMetadata(StretchDirection.Both, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
+                    if (@this == null)
+                        return;
 
-                    if (@this.DisplayThreadDispatcher != null)
+                    if (@this.Image != null)
                     {
                         @this.Image.StretchDirection = (StretchDirection) args.NewValue;
                     }

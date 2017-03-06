@@ -358,6 +358,7 @@ namespace Meta.Vlc.Wpf
                             _context.Dispose();
                         }
                         _context = new VideoDisplayContext(videoFormatChangingArgs.Width, videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType);
+						VideoSource = null;
                     }));
             }
             

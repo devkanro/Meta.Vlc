@@ -14,11 +14,15 @@ Install [Meta.Vlc](https://www.nuget.org/packages/Meta.Vlc/)
 ```Powershell
 PM> Install-Package Meta.Vlc 
 ```
+> For **net45** and above, full x86 and x64 support is available. Meta.Vlc will add
+> conditional references to handled x86, x64, and AnyCpu.
 
 Install [Meta.Vlc.Wpf](https://www.nuget.org/packages/Meta.Vlc.Wpf/)
 ```Powershell
 PM> Install-Package Meta.Vlc.Wpf 
 ```
+> For **net45** and above, full x86 and x64 support is available. Meta.Vlc.Wpf will add
+> conditional references to handled x86, x64, and AnyCpu.
 
 Install [Meta.Vlc.Lib](https://www.nuget.org/packages/Meta.Vlc.Lib/)
 ```Powershell
@@ -28,9 +32,10 @@ PM> Install-Package Meta.Vlc.Lib
 >LibVlc 的版本：  
 >2.2.0-Meta Weatherwax  
 >   
->_Meta.Vlc.Lib include all files of LibVlc. You can use this dlls for Meta.Vlc and Meta.Vlc.Wpf._   
+>_Meta.Vlc.Lib includes all files of LibVlc. You can use these dlls for Meta.Vlc and Meta.Vlc.Wpf._   
 >_LibVlc Version:_   
 >_2.2.0-Meta Weatherwax_  
+
 
 ## Api Documentation 
 
@@ -48,6 +53,14 @@ See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html)
 >:o: :兼容/Compatible     
 >:x: :不兼容/Incompatible       
 >:interrobang: :部分功能可能不可用/Some functions may not be available  
+
+## Packaging NuGet
+To generate package files there are a couple of important steps. 
+
+* In `Meta.Vlc\tools\net45\` and `Meta.Vlc.Wpf\tools\net45` for each script, 
+the `$allowedReferences` **must** have the `Version` match what the current dll's has set.
+* Everything else is normal, build the package using `nuget pack Meta.Vlc.nuspec`,
+`nuget pack Meta.Vlc.Wpf.nuspec` and `nuget pack Meta.Vlc.Lib.nuspec`
 
 ## Change Log
 

@@ -17,7 +17,7 @@
         <tags>vlc libvlc Meta media video</tags>
     </metadata>
     <files>
-        <file src="..\x64\Release\.NET 2.0\zh-CHS\mscorlib.resources.dll" target="lib\net20\x64\zh-CHS\mscorlib.resources.dll" />
+        <!--<file src="..\x64\Release\.NET 2.0\zh-CHS\mscorlib.resources.dll" target="lib\net20\x64\zh-CHS\mscorlib.resources.dll" />-->
         <file src="..\x64\Release\.NET 2.0\big5.nlp" target="lib\net20\x64\big5.nlp" />
         <file src="..\x64\Release\.NET 2.0\bopomofo.nlp" target="lib\net20\x64\bopomofo.nlp" />
         <file src="..\x64\Release\.NET 2.0\ksc.nlp" target="lib\net20\x64\ksc.nlp" />
@@ -36,7 +36,7 @@
         <file src="..\x64\Release\.NET 2.0\Meta.Vlc.XML" target="lib\net20\x64\Meta.Vlc.XML" />
         <file src="..\x86\Release\.NET 2.0\Meta.Vlc.dll" target="lib\net20\x86\Meta.Vlc.dll" />
         <file src="..\x86\Release\.NET 2.0\Meta.Vlc.XML" target="lib\net20\x86\Meta.Vlc.XML" />
-        <file src="..\x64\Release\.NET 3.0\zh-CHS\mscorlib.resources.dll" target="lib\net30\x64\zh-CHS\mscorlib.resources.dll" />
+        <!--<file src="..\x64\Release\.NET 3.0\zh-CHS\mscorlib.resources.dll" target="lib\net30\x64\zh-CHS\mscorlib.resources.dll" />-->
         <file src="..\x64\Release\.NET 3.0\big5.nlp" target="lib\net30\x64\big5.nlp" />
         <file src="..\x64\Release\.NET 3.0\bopomofo.nlp" target="lib\net30\x64\bopomofo.nlp" />
         <file src="..\x64\Release\.NET 3.0\ksc.nlp" target="lib\net30\x64\ksc.nlp" />
@@ -55,7 +55,7 @@
         <file src="..\x64\Release\.NET 3.0\Meta.Vlc.XML" target="lib\net30\x64\Meta.Vlc.XML" />
         <file src="..\x86\Release\.NET 3.0\Meta.Vlc.dll" target="lib\net30\x86\Meta.Vlc.dll" />
         <file src="..\x86\Release\.NET 3.0\Meta.Vlc.XML" target="lib\net30\x86\Meta.Vlc.XML" />
-        <file src="..\x64\Release\.NET 3.5\zh-CHS\mscorlib.resources.dll" target="lib\net35\x64\zh-CHS\mscorlib.resources.dll" />
+        <!--<file src="..\x64\Release\.NET 3.5\zh-CHS\mscorlib.resources.dll" target="lib\net35\x64\zh-CHS\mscorlib.resources.dll" />-->
         <file src="..\x64\Release\.NET 3.5\big5.nlp" target="lib\net35\x64\big5.nlp" />
         <file src="..\x64\Release\.NET 3.5\bopomofo.nlp" target="lib\net35\x64\bopomofo.nlp" />
         <file src="..\x64\Release\.NET 3.5\ksc.nlp" target="lib\net35\x64\ksc.nlp" />
@@ -82,5 +82,8 @@
         <file src="..\x64\Release\.NET 4.5\Meta.Vlc.XML" target="lib\net45\x64\Meta.Vlc.XML" />
         <file src="..\x86\Release\.NET 4.5\Meta.Vlc.dll" target="lib\net45\x86\Meta.Vlc.dll" />
         <file src="..\x86\Release\.NET 4.5\Meta.Vlc.XML" target="lib\net45\x86\Meta.Vlc.XML" />
+        
+        <file src="..\Meta.Vlc\tools\net45\Install.ps1" target="tools\net45"/>
+        <file src="..\Meta.Vlc\tools\net45\Uninstall.ps1" target="tools\net45"/>
     </files>
 </package>

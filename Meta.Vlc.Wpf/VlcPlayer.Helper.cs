@@ -25,10 +25,10 @@ namespace Meta.Vlc.Wpf
                     return new Size(_context.DisplayWidth / _context.DisplayHeight * _context.Height / _context.Width, 1.0);
 
                 case AspectRatio._16_9:
-                    return new Size(1.0 * 16 / 9  * _context.Height, 1.0);
+                    return new Size(1.0 * 16 / 9 * _context.Height / _context.Width, 1.0);
 
                 case AspectRatio._4_3:
-                    return new Size(1.0 * 4 / 3 * _context.Height, 1.0);
+                    return new Size(1.0 * 4 / 3 * _context.Height / _context.Width, 1.0);
             }
             return new Size(1.0, 1.0);
         }

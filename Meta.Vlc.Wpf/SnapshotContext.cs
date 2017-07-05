@@ -31,14 +31,14 @@ namespace Meta.Vlc.Wpf
             Name = System.IO.Path.GetFileName(path);
             switch (System.IO.Path.GetExtension(path).ToLower())
             {
-                case "bmp":
+                case ".bmp":
                     Format = SnapshotFormat.BMP;
                     break;
-                case "png":
+                case ".png":
                     Format = SnapshotFormat.PNG;
                     break;
-                case "jpg":
-                case "jpeg":
+                case ".jpg":
+                case ".jpeg":
                     Format = SnapshotFormat.JPG;
                     break;
                 default:

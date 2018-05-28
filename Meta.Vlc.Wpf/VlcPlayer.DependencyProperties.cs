@@ -3,6 +3,7 @@
 // Version: 20160327
 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -32,14 +33,14 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     The options of LibVlc, it is a DependencyProperty.
         /// </summary>
-        public String[] VlcOption
+        public IList<String> VlcOption
         {
-            get { return (String[]) GetValue(VlcOptionProperty); }
+            get { return (IList<String>) GetValue(VlcOptionProperty); }
             set { SetValue(VlcOptionProperty, value); }
         }
 
         public static readonly DependencyProperty VlcOptionProperty =
-            DependencyProperty.Register("VlcOption", typeof (String[]), typeof (VlcPlayer), null);
+            DependencyProperty.Register("VlcOption", typeof (IList<String>), typeof (VlcPlayer), new PropertyMetadata(new List<string>()));
 
         #endregion VlcOption
 

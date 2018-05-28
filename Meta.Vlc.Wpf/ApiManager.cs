@@ -3,6 +3,7 @@
 // Version: 20160214
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Meta.Vlc.Wpf
@@ -45,7 +46,7 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     The options when initialize LibVlc.
         /// </summary>
-        public static String[] VlcOption { get; private set; }
+        public static IList<String> VlcOption { get; private set; }
 
         /// <summary>
         ///     The list of VLC.
@@ -61,7 +62,7 @@ namespace Meta.Vlc.Wpf
             {
                 if (_defaultVlc == null)
                 {
-                    Vlcs.Add(_defaultVlc = new Vlc(VlcOption));
+                    Vlcs.Add(_defaultVlc = new Vlc(VlcOption.ToArray()));
                 }
 
                 return _defaultVlc;

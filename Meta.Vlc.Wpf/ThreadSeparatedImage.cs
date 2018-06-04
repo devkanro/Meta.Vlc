@@ -15,31 +15,34 @@ namespace Meta.Vlc.Wpf
     public sealed class ThreadSeparatedImage : ThreadSeparatedControlHost
     {
         private static Dispatcher _commonDispatcher;
+        private static object _staticLock = new object();
         public static Dispatcher CommonDispatcher
         {
             get
             {
-                if (_commonDispatcher == null)
+                lock (_staticLock)
                 {
-                    Thread separateThread = new Thread(() =>
+                    if (_commonDispatcher == null)
                     {
-                        Dispatcher.Run();
-                    })
-                    {
-                        IsBackground = true
-                    };
-                    separateThread.SetApartmentState(ApartmentState.STA);
-                    separateThread.Priority = ThreadPriority.Highest;
+                        Thread separateThread = new Thread(() =>
+                        {
+                            Dispatcher.Run();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        separateThread.SetApartmentState(ApartmentState.STA);
+                        separateThread.Priority = ThreadPriority.Highest;
 
-                    separateThread.Start();
+                        separateThread.Start();
 
-                    while (Dispatcher.FromThread(separateThread) == null)
-                    {
-                        Thread.Sleep(50);
+                        while (Dispatcher.FromThread(separateThread) == null)
+                        {
+                            Thread.Sleep(50);
+                        }
+                        _commonDispatcher = Dispatcher.FromThread(separateThread);
                     }
-                    _commonDispatcher = Dispatcher.FromThread(separateThread);
                 }
-
                 return _commonDispatcher;
             }
         }

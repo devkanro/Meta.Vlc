@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -178,7 +179,7 @@ namespace Meta.Vlc.Wpf
                     }
                     else
                     {
-                        Initialize(libVlcPath, libVlcOption);
+                        Initialize(libVlcPath, libVlcOption.ToArray());
                     }
                 }
                 else
@@ -204,7 +205,7 @@ namespace Meta.Vlc.Wpf
                             libVlcOption = vlcSettingsAttribute.VlcOption;
                     }
 
-                    Initialize(libVlcPath, libVlcOption);
+                    Initialize(libVlcPath, libVlcOption.ToArray());
                 }
             }
 

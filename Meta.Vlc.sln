@@ -27,13 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meta.Vlc.Wpf.Sample - .Net 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meta.Vlc.Wpf.Sample - .Net 4.0", "Meta.Vlc.WPF.Sample\Meta.Vlc.Wpf.Sample - .Net 4.0.csproj", "{F945C93E-61B8-4144-9C12-D01D7C4E6F8E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagrams", "Diagrams", "{E9EFA3F7-D91B-4CFC-85F3-AD2297A6F7BA}"
-	ProjectSection(SolutionItems) = preProject
-		Meta.Vlc\Meta.Vlc.cd = Meta.Vlc\Meta.Vlc.cd
-		Meta.Vlc\Interop\Meta.Vlc.Interop.cd = Meta.Vlc\Interop\Meta.Vlc.Interop.cd
-		Meta.Vlc.WPF\Meta.Vlc.Wpf.cd = Meta.Vlc.WPF\Meta.Vlc.Wpf.cd
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{CD9F68BC-0A2D-4EF3-8642-B584832FEF97}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet\Meta.Vlc.Lib.nuspec = NuGet\Meta.Vlc.Lib.nuspec

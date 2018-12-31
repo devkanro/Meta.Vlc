@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>Meta.Vlc.Wpf</id>
-        <version>16.04.17</version>
+        <version>18.12.31</version>
         <title>Meta.Vlc.Wpf</title>
         <authors>higan</authors>
         <owners>higan</owners>
@@ -13,17 +13,17 @@
         <developmentDependency>true</developmentDependency>
         <description>Meta.Vlc is an LibVlc solution for .NET, it has encapsulated most of functionalities of LibVlc. This project aims to find a perfect solution for using Vlc on WPF. Meta.Vlc provides an native WPF control(Meta.Vlc.Wpf), this control achieves video playback by utilizing InteropBitmap and shared memory. Since it’s a native WPF control, it doesn't suffer from HwndHost’s airspace issue.</description>
         <releaseNotes />
-        <copyright>Copyright (2015 - 2016) HIGAN.</copyright>
+        <copyright>Copyright (2015 - 2019) HIGAN.</copyright>
         <tags>vlc libvlc Meta media video</tags>
         <dependencies>
             <group targetFramework=".NETFramework3.5">
-                <dependency id="Meta.Vlc" version="16.04.17" />
+                <dependency id="Meta.Vlc" version="18.12.31" />
             </group>
             <group targetFramework=".NETFramework4.0">
-                <dependency id="Meta.Vlc" version="16.04.17" />
+                <dependency id="Meta.Vlc" version="18.12.31" />
             </group>
             <group targetFramework=".NETFramework4.5">
-                <dependency id="Meta.Vlc" version="16.04.17" />
+                <dependency id="Meta.Vlc" version="18.12.31" />
             </group>
         </dependencies>
     </metadata>

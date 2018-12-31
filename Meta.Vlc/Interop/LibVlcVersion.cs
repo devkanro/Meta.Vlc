@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: LibVlcVersion.cs
-// Version: 20160216
+// Version: 20181231
 
 using System;
 using System.Text.RegularExpressions;
@@ -12,7 +12,7 @@ namespace Meta.Vlc.Interop
     /// </summary>
     public class LibVlcVersion
     {
-        private static String[] matchExpressions =
+        private static readonly string[] matchExpressions =
         {
             @"^([0-9.]*)-([\S]*)(?: ([\S]*))?",
             @"^([0-9.]*) ([^(]*)(?:\(([\S]*)\))?"
@@ -27,7 +27,7 @@ namespace Meta.Vlc.Interop
         ///     At least one component of version represents a number greater than
         ///     <see cref="Int32.MaxValue" />.
         /// </exception>
-        public LibVlcVersion(String versionString)
+        public LibVlcVersion(string versionString)
         {
             Match match = null;
 
@@ -42,10 +42,7 @@ namespace Meta.Vlc.Interop
                 }
             }
 
-            if (match == null)
-            {
-                throw new VersionStringParseException(versionString);
-            }
+            if (match == null) throw new VersionStringParseException(versionString);
 
             switch (match.Groups.Count)
             {
@@ -57,10 +54,7 @@ namespace Meta.Vlc.Interop
                 case 4:
                     Version = new Version(match.Groups[1].Value);
                     DevString = match.Groups[2].Value.Trim();
-                    if (match.Groups[3].Success)
-                    {
-                        CodeName = match.Groups[3].Value;
-                    }
+                    if (match.Groups[3].Success) CodeName = match.Groups[3].Value;
                     break;
 
                 default:
@@ -71,17 +65,17 @@ namespace Meta.Vlc.Interop
         /// <summary>
         ///     Version of LibVlc.
         /// </summary>
-        public Version Version { get; private set; }
+        public Version Version { get; }
 
         /// <summary>
         ///     DevString of LibVlc.
         /// </summary>
-        public String DevString { get; private set; }
+        public string DevString { get; }
 
         /// <summary>
         ///     Code name of LibVlc.
         /// </summary>
-        public String CodeName { get; private set; }
+        public string CodeName { get; }
 
         /// <summary>
         ///     Check a function is available for this version.
@@ -92,20 +86,11 @@ namespace Meta.Vlc.Interop
         {
             var result = true;
 
-            if (functionInfo.MinVersion != null)
-            {
-                result = functionInfo.MinVersion <= Version;
-            }
+            if (functionInfo.MinVersion != null) result = functionInfo.MinVersion <= Version;
 
-            if (functionInfo.MaxVersion != null)
-            {
-                result = result && Version <= functionInfo.MaxVersion;
-            }
+            if (functionInfo.MaxVersion != null) result = result && Version <= functionInfo.MaxVersion;
 
-            if (functionInfo.Dev != null)
-            {
-                result = result && DevString == functionInfo.Dev;
-            }
+            if (functionInfo.Dev != null) result = result && DevString == functionInfo.Dev;
 
             return result;
         }

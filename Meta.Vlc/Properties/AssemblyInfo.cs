@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: AssemblyInfo.cs
-// Version: 20160214
+// Version: 20181231
 
 using System.Reflection;
 using System.Runtime.InteropServices;

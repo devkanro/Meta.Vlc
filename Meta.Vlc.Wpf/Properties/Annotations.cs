@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: Annotations.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 
@@ -103,7 +103,7 @@ namespace Meta.Vlc.Wpf.Annotations
             FormatParameterName = formatParameterName;
         }
 
-        public string FormatParameterName { get; private set; }
+        public string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -118,8 +118,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; private set; }
+        [NotNull] public string Name { get; }
     }
 
     /// <summary>
@@ -131,7 +130,7 @@ namespace Meta.Vlc.Wpf.Annotations
     ///     <code>
     /// public void Foo(string param) {
     ///   if (param == null)
-    ///     throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
+    /// throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
     /// }
     /// </code>
     /// </example>
@@ -167,18 +166,18 @@ namespace Meta.Vlc.Wpf.Annotations
     /// </remarks>
     /// <example>
     ///     <code>
-    ///  public class Foo : INotifyPropertyChanged {
-    ///    public event PropertyChangedEventHandler PropertyChanged;
-    ///    [NotifyPropertyChangedInvocator]
-    ///    protected virtual void NotifyChanged(string propertyName) { ... }
-    ///
-    ///    private string _name;
-    ///    public string Name {
-    ///      get { return _name; }
-    ///      set { _name = value; NotifyChanged("LastName"); /* Warning */ }
-    ///    }
-    ///  }
-    ///  </code>
+    ///   public class Foo : INotifyPropertyChanged {
+    ///     public event PropertyChangedEventHandler PropertyChanged;
+    ///     [NotifyPropertyChangedInvocator]
+    ///     protected virtual void NotifyChanged(string propertyName) { ... }
+    /// 
+    ///     private string _name;
+    ///     public string Name {
+    ///   get { return _name; }
+    ///   set { _name = value; NotifyChanged("LastName"); /* Warning */ }
+    ///     }
+    ///   }
+    ///   </code>
     ///     Examples of generated notifications:
     ///     <list>
     ///         <item>
@@ -207,7 +206,7 @@ namespace Meta.Vlc.Wpf.Annotations
             ParameterName = parameterName;
         }
 
-        public string ParameterName { get; private set; }
+        public string ParameterName { get; }
     }
 
     /// <summary>
@@ -279,8 +278,8 @@ namespace Meta.Vlc.Wpf.Annotations
             ForceFullStates = forceFullStates;
         }
 
-        public string Contract { get; private set; }
-        public bool ForceFullStates { get; private set; }
+        public string Contract { get; }
+        public bool ForceFullStates { get; }
     }
 
     /// <summary>
@@ -306,7 +305,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Required = required;
         }
 
-        public bool Required { get; private set; }
+        public bool Required { get; }
     }
 
     /// <summary>
@@ -321,11 +320,11 @@ namespace Meta.Vlc.Wpf.Annotations
     /// class NoEquality { }
     /// class UsesNoEquality {
     ///   public void Test() {
-    ///     var ca1 = new NoEquality();
-    ///     var ca2 = new NoEquality();
-    ///     if (ca1 != null) { // OK
-    ///       bool condition = ca1 == ca2; // Warning
-    ///     }
+    /// var ca1 = new NoEquality();
+    /// var ca2 = new NoEquality();
+    /// if (ca1 != null) { // OK
+    ///   bool condition = ca1 == ca2; // Warning
+    /// }
     ///   }
     /// }
     /// </code>
@@ -348,7 +347,7 @@ namespace Meta.Vlc.Wpf.Annotations
     /// </code>
     /// </example>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    [BaseTypeRequired(typeof (Attribute))]
+    [BaseTypeRequired(typeof(Attribute))]
     public sealed class BaseTypeRequiredAttribute : Attribute
     {
         public BaseTypeRequiredAttribute([NotNull] Type baseType)
@@ -356,8 +355,7 @@ namespace Meta.Vlc.Wpf.Annotations
             BaseType = baseType;
         }
 
-        [NotNull]
-        public Type BaseType { get; private set; }
+        [NotNull] public Type BaseType { get; }
     }
 
     /// <summary>
@@ -388,8 +386,8 @@ namespace Meta.Vlc.Wpf.Annotations
             TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     /// <summary>
@@ -420,11 +418,9 @@ namespace Meta.Vlc.Wpf.Annotations
             TargetFlags = targetFlags;
         }
 
-        [UsedImplicitly]
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseKindFlags UseKindFlags { get; }
 
-        [UsedImplicitly]
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        [UsedImplicitly] public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     [Flags]
@@ -481,7 +477,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Comment = comment;
         }
 
-        public string Comment { get; private set; }
+        public string Comment { get; }
     }
 
     /// <summary>
@@ -528,7 +524,7 @@ namespace Meta.Vlc.Wpf.Annotations
             BasePath = basePath;
         }
 
-        public string BasePath { get; private set; }
+        public string BasePath { get; }
     }
 
     /// <summary>
@@ -549,7 +545,7 @@ namespace Meta.Vlc.Wpf.Annotations
     /// [SourceTemplate]
     /// public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; xs) {
     ///   foreach (var x in xs) {
-    ///      //$ $END$
+    ///  //$ $END$
     ///   }
     /// }
     /// </code>
@@ -574,7 +570,7 @@ namespace Meta.Vlc.Wpf.Annotations
     /// [SourceTemplate, Macro(Target = "item", Expression = "suggestVariableName()")]
     /// public static void forEach&lt;T&gt;(this IEnumerable&lt;T&gt; collection) {
     ///   foreach (var item in collection) {
-    ///     //$ $END$
+    /// //$ $END$
     ///   }
     /// }
     /// </code>
@@ -622,7 +618,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -633,7 +629,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -644,7 +640,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -655,7 +651,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -666,7 +662,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -677,7 +673,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Format = format;
         }
 
-        public string Format { get; private set; }
+        public string Format { get; }
     }
 
     /// <summary>
@@ -698,7 +694,7 @@ namespace Meta.Vlc.Wpf.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -718,7 +714,7 @@ namespace Meta.Vlc.Wpf.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -739,7 +735,7 @@ namespace Meta.Vlc.Wpf.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        public string AnonymousProperty { get; private set; }
+        public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -850,7 +846,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Name = name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
@@ -861,8 +857,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Name = name;
         }
 
-        [NotNull]
-        public string Name { get; private set; }
+        [NotNull] public string Name { get; }
     }
 
     /// <summary>
@@ -887,7 +882,7 @@ namespace Meta.Vlc.Wpf.Annotations
             CollectionAccessType = collectionAccessType;
         }
 
-        public CollectionAccessType CollectionAccessType { get; private set; }
+        public CollectionAccessType CollectionAccessType { get; }
     }
 
     [Flags]
@@ -929,7 +924,7 @@ namespace Meta.Vlc.Wpf.Annotations
             ConditionType = conditionType;
         }
 
-        public AssertionConditionType ConditionType { get; private set; }
+        public AssertionConditionType ConditionType { get; }
     }
 
     /// <summary>
@@ -1019,8 +1014,8 @@ namespace Meta.Vlc.Wpf.Annotations
             ControlType = controlType;
         }
 
-        public string TagName { get; private set; }
-        public Type ControlType { get; private set; }
+        public string TagName { get; }
+        public Type ControlType { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -1046,7 +1041,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Attribute = attribute;
         }
 
-        public string Attribute { get; private set; }
+        public string Attribute { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -1057,7 +1052,7 @@ namespace Meta.Vlc.Wpf.Annotations
             CreateConstructorReferences = createConstructorReferences;
         }
 
-        public bool CreateConstructorReferences { get; private set; }
+        public bool CreateConstructorReferences { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1068,7 +1063,7 @@ namespace Meta.Vlc.Wpf.Annotations
             Name = name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1080,8 +1075,8 @@ namespace Meta.Vlc.Wpf.Annotations
             FieldName = fieldName;
         }
 
-        public string Type { get; private set; }
-        public string FieldName { get; private set; }
+        public string Type { get; }
+        public string FieldName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Method)]

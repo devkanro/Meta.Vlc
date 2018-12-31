@@ -1,97 +1,85 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcEventManager.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
-using Meta.Vlc.Interop;
-using Meta.Vlc.Interop.Core.Events;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.Core.Event;
 
 namespace Meta.Vlc
 {
     /// <summary>
     ///     A manager of LibVlc event system.
     /// </summary>
-    public class VlcEventManager : IVlcObject
+    public unsafe class VlcEventManager : IVlcObject
     {
-        private static LibVlcFunction<EventAttach> _eventAttachFunction;
-        private static LibVlcFunction<EventDetach> _eventDetachFunction;
-        private static LibVlcFunction<GetTypeName> _getTypeNameFunction;
-
-        static VlcEventManager()
-        {
-            IsLibLoaded = false;
-        }
+        private readonly HashSet<EventType> _attachedEvents = new HashSet<EventType>();
+        private readonly libvlc_callback_t _onVlcEventFired;
+        private GCHandle _onVlcEventFiredHandle;
 
         /// <summary>
         ///     Create a event manager with parent Vlc object and pointer of event manager.
         /// </summary>
         /// <param name="parentVlcObject"></param>
         /// <param name="pointer"></param>
-        public VlcEventManager(IVlcObject parentVlcObject, IntPtr pointer)
+        public VlcEventManager(IVlcObject parentVlcObject, void* pointer)
         {
             VlcInstance = parentVlcObject.VlcInstance;
             InstancePointer = pointer;
-            HandleManager.Add(this);
-        }
+            VlcObjectManager.Add(this);
 
-        /// <summary>
-        ///     LibVlc event module loaded or not.
-        /// </summary>
-        public static bool IsLibLoaded { get; private set; }
+            _onVlcEventFired = OnVlcEventFired;
+            _onVlcEventFiredHandle = GCHandle.Alloc(_onVlcEventFired);
+        }
 
         /// <summary>
         ///     Pointer of this event manager.
         /// </summary>
-        public IntPtr InstancePointer { get; private set; }
+        public void* InstancePointer { get; }
 
         /// <summary>
         ///     A relation <see cref="Vlc" /> of this object.
         /// </summary>
-        public Vlc VlcInstance { get; private set; }
+        public Vlc VlcInstance { get; }
 
-        /// <summary>
-        ///     Release this event manager.
-        /// </summary>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public void Dispose()
         {
-            HandleManager.Remove(this);
-            // We should not free libvlc_event_manager instances as their life cycles are
-            // managed by their parent libvlc_media_player or libvlc_media instances.
-            InstancePointer = IntPtr.Zero;
-        }
-
-        internal static void LoadLibVlc()
-        {
-            if (!IsLibLoaded)
-            {
-                _eventAttachFunction = new LibVlcFunction<EventAttach>();
-                _eventDetachFunction = new LibVlcFunction<EventDetach>();
-                _getTypeNameFunction = new LibVlcFunction<GetTypeName>();
-                IsLibLoaded = true;
-            }
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         ///     Attach a event with a callback.
         /// </summary>
         /// <param name="type">event type</param>
-        /// <param name="callback">callback which will be called when event case</param>
-        /// <param name="userData">some custom data</param>
-        public void Attach(EventTypes type, LibVlcEventCallBack callback, IntPtr userData)
+        public void Attach(EventType type)
         {
-            _eventAttachFunction.Delegate(InstancePointer, type, callback, userData);
+            if (_attachedEvents.Contains(type)) return;
+
+            _attachedEvents.Add(type);
+            LibVlcManager.GetFunctionDelegate<libvlc_event_attach>()
+                .Invoke(InstancePointer, (libvlc_event_e) type, _onVlcEventFired, null);
         }
 
         /// <summary>
         ///     Deattach a event with a callback.
         /// </summary>
         /// <param name="type">event type</param>
-        /// <param name="callback">callback which will be called when event case</param>
-        /// <param name="userData">some custom data</param>
-        public void Detach(EventTypes type, LibVlcEventCallBack callback, IntPtr userData)
+        public void Detach(EventType type)
         {
-            _eventDetachFunction.Delegate(InstancePointer, type, callback, userData);
+            if (!_attachedEvents.Contains(type)) return;
+
+            _attachedEvents.Remove(type);
+            LibVlcManager.GetFunctionDelegate<libvlc_event_detach>()
+                .Invoke(InstancePointer, (libvlc_event_e) type, _onVlcEventFired, null);
+        }
+
+        public event EventHandler<VlcEventArgs> VlcEventFired;
+
+        private void OnVlcEventFired(libvlc_event_t* p_event, void* data)
+        {
+            VlcEventFired?.Invoke(this, new VlcEventArgs((EventType) p_event->type, p_event));
         }
 
         /// <summary>
@@ -99,9 +87,34 @@ namespace Meta.Vlc
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static String GetEventTypeName(EventTypes type)
+        public static string GetEventTypeName(EventType type)
         {
-            return InteropHelper.PtrToString(_getTypeNameFunction.Delegate(type));
+            return InteropHelper.PtrToString(LibVlcManager.GetFunctionDelegate<libvlc_event_type_name>()
+                .Invoke((libvlc_event_e) type));
         }
+
+        private void ReleaseUnmanagedResources()
+        {
+            foreach (var eventType in new List<EventType>(_attachedEvents)) Detach(eventType);
+            _onVlcEventFiredHandle.Free();
+        }
+
+        ~VlcEventManager()
+        {
+            ReleaseUnmanagedResources();
+        }
+    }
+
+    public unsafe class VlcEventArgs : EventArgs
+    {
+        internal VlcEventArgs(EventType type, libvlc_event_t* eventArgs)
+        {
+            EventArgs = eventArgs;
+            Type = type;
+        }
+
+        public libvlc_event_t* EventArgs { get; }
+
+        public EventType Type { get; }
     }
 }

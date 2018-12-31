@@ -39,6 +39,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Meta.Vlc.Wpf.Sample.App</StartupObject>
@@ -144,10 +147,6 @@
     <ProjectReference Include="..\Meta.Vlc.WPF\Meta.Vlc.Wpf - .Net 3.5.csproj">
       <Project>{f4026089-4dbe-4c6e-b3fd-9153a5925feb}</Project>
       <Name>Meta.Vlc.Wpf - .Net 3.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meta.Vlc\Meta.Vlc - .Net 3.5.csproj">
-      <Project>{6f34ca47-d818-42b2-9c41-2fadeb7024cf}</Project>
-      <Name>Meta.Vlc - .Net 3.5</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,24 +1,29 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: AudioEqualizer.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Meta.Vlc.Interop;
-using Meta.Vlc.Interop.MediaPlayer;
+using Meta.Vlc.Interop.MediaPlayer.Audio;
 
 namespace Meta.Vlc
 {
     /// <summary>
     ///     Audio equalizer of VLC player.
     /// </summary>
-    public class AudioEqualizer : IVlcObject, IEnumerable<float>, INotifyPropertyChanged
+    public unsafe class AudioEqualizer : IUnmanagedObject, IEnumerable<float>, INotifyPropertyChanged
     {
+        #region --- Fields ---
+
+        private bool _disposed;
+
+        #endregion --- Fields ---
+
         private class AudioEqualizerEnumerator : IEnumerator<float>
         {
-            private AudioEqualizer _audioEqualizer;
+            private readonly AudioEqualizer _audioEqualizer;
             private int _index = -1;
 
             public AudioEqualizerEnumerator(AudioEqualizer equalizer)
@@ -37,6 +42,7 @@ namespace Meta.Vlc
                     _index++;
                     return true;
                 }
+
                 return false;
             }
 
@@ -45,38 +51,10 @@ namespace Meta.Vlc
                 _index = -1;
             }
 
-            public float Current
-            {
-                get { return _audioEqualizer[(uint) _index]; }
-            }
+            public float Current => _audioEqualizer[(uint) _index];
 
-            object IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object IEnumerator.Current => Current;
         }
-
-        #region --- Fields ---
-
-        private bool _disposed;
-
-        #region LibVlcFunctions
-
-        private static LibVlcFunction<CreateEqualizer> _createEqualizerFunction;
-        private static LibVlcFunction<CreateEqualizerFromPreset> _createEqualizerFromPresetFunction;
-        private static LibVlcFunction<ReleaseEqualizer> _releaseEqualizerFunction;
-        private static LibVlcFunction<GetEqualizerPresetCount> _getEqualizerPresetCountFunction;
-        private static LibVlcFunction<GetEqualizerPresetName> _getEqualizerPresetNameFunction;
-        private static LibVlcFunction<GetEqualizerBandCount> _getEqualizerBandCountFunction;
-        private static LibVlcFunction<GetEqualizerBandFrequency> _getEqualizerBandFrequencyFunction;
-        private static LibVlcFunction<SetEqualizerPreamp> _setEqualizerPreampFunction;
-        private static LibVlcFunction<GetEqualizerPreamp> _getEqualizerPreampFunction;
-        private static LibVlcFunction<SetEqualizerAmplification> _setEqualizerAmplificationFunction;
-        private static LibVlcFunction<GetEqualizerAmplification> _getEqualizerAmplificationFunction;
-
-        #endregion LibVlcFunctions
-
-        #endregion --- Fields ---
 
         #region --- Initialization ---
 
@@ -85,8 +63,7 @@ namespace Meta.Vlc
         /// </summary>
         public AudioEqualizer()
         {
-            InstancePointer = _createEqualizerFunction.Delegate();
-            HandleManager.Add(this);
+            InstancePointer = LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_new>().Invoke();
         }
 
         /// <summary>
@@ -103,8 +80,7 @@ namespace Meta.Vlc
         /// <param name="index"></param>
         public AudioEqualizer(uint index)
         {
-            InstancePointer = _createEqualizerFromPresetFunction.Delegate(index);
-            HandleManager.Add(this);
+            InstancePointer = LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_new_from_preset>().Invoke(index);
         }
 
         #endregion --- Initialization ---
@@ -116,11 +92,8 @@ namespace Meta.Vlc
             if (_disposed)
                 return;
 
-            HandleManager.Remove(this);
-
-            _releaseEqualizerFunction.Delegate(InstancePointer);
-
-            InstancePointer = IntPtr.Zero;
+            LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_release>().Invoke(InstancePointer);
+            InstancePointer = null;
 
             _disposed = true;
         }
@@ -142,39 +115,27 @@ namespace Meta.Vlc
         /// <summary>
         ///     Get the number of equalizer presets.
         /// </summary>
-        public static uint PresetEqualizerCount
-        {
-            get { return _getEqualizerPresetCountFunction.Delegate(); }
-        }
+        public static uint PresetEqualizerCount =>
+            LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_preset_count>().Invoke();
 
         /// <summary>
         ///     Get the number of distinct frequency bands for an equalizer.
         /// </summary>
-        public static uint EqualizerBandCount
-        {
-            get { return _getEqualizerBandCountFunction.Delegate(); }
-        }
+        public static uint EqualizerBandCount =>
+            LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_band_count>().Invoke();
 
-        public IntPtr InstancePointer { get; private set; }
-
-        /// <summary>
-        ///     Aways return <see cref="null" />.
-        /// </summary>
-        public Vlc VlcInstance
-        {
-            get { return null; }
-        }
+        public void* InstancePointer { get; private set; }
 
         /// <summary>
         ///     Get or set the current pre-amplification value from an equalizer.
         /// </summary>
         public float Preamp
         {
-            get { return _getEqualizerPreampFunction.Delegate(InstancePointer); }
+            get => LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_preamp>().Invoke(InstancePointer);
             set
             {
-                OnPropertyChanged("Preamp");
-                _setEqualizerPreampFunction.Delegate(InstancePointer, value);
+                OnPropertyChanged(nameof(Preamp));
+                LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_set_preamp>().Invoke(InstancePointer, value);
             }
         }
 
@@ -188,20 +149,19 @@ namespace Meta.Vlc
             get
             {
                 if (band >= EqualizerBandCount)
-                {
                     throw new IndexOutOfRangeException("Band index should less than AudioEqualizer.EqualizerBandCount");
-                }
-                return _getEqualizerAmplificationFunction.Delegate(InstancePointer, band);
+
+                return LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_amp_at_index>()
+                    .Invoke(InstancePointer, band);
             }
             set
             {
                 if (band >= EqualizerBandCount)
-                {
                     throw new IndexOutOfRangeException("Band index should less than AudioEqualizer.EqualizerBandCount");
-                }
 
                 OnPropertyChanged(null);
-                _setEqualizerAmplificationFunction.Delegate(InstancePointer, value, band);
+                LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_set_amp_at_index>()
+                    .Invoke(InstancePointer, value, band);
             }
         }
 
@@ -209,33 +169,15 @@ namespace Meta.Vlc
 
         #region --- Methods ---
 
-        internal static void LoadLibVlc()
-        {
-            if (IsLibLoaded) return;
-
-            _createEqualizerFunction = new LibVlcFunction<CreateEqualizer>();
-            _createEqualizerFromPresetFunction = new LibVlcFunction<CreateEqualizerFromPreset>();
-            _releaseEqualizerFunction = new LibVlcFunction<ReleaseEqualizer>();
-            _getEqualizerPresetCountFunction = new LibVlcFunction<GetEqualizerPresetCount>();
-            _getEqualizerPresetNameFunction = new LibVlcFunction<GetEqualizerPresetName>();
-            _getEqualizerBandCountFunction = new LibVlcFunction<GetEqualizerBandCount>();
-            _getEqualizerBandFrequencyFunction = new LibVlcFunction<GetEqualizerBandFrequency>();
-            _setEqualizerPreampFunction = new LibVlcFunction<SetEqualizerPreamp>();
-            _getEqualizerPreampFunction = new LibVlcFunction<GetEqualizerPreamp>();
-            _setEqualizerAmplificationFunction = new LibVlcFunction<SetEqualizerAmplification>();
-            _getEqualizerAmplificationFunction = new LibVlcFunction<GetEqualizerAmplification>();
-
-            IsLibLoaded = true;
-        }
-
         /// <summary>
         ///     Get the name of a particular equalizer preset.
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static String GetPresetEqualizerName(uint index)
+        public static string GetPresetEqualizerName(uint index)
         {
-            return InteropHelper.PtrToString(_getEqualizerPresetNameFunction.Delegate(index));
+            return InteropHelper.PtrToString(LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_preset_name>()
+                .Invoke(index));
         }
 
         /// <summary>
@@ -245,7 +187,7 @@ namespace Meta.Vlc
         /// <returns></returns>
         public static float GetEqualizerBandFrequency(uint index)
         {
-            return _getEqualizerBandFrequencyFunction.Delegate(index);
+            return LibVlcManager.GetFunctionDelegate<libvlc_audio_equalizer_get_band_frequency>().Invoke(index);
         }
 
         public IEnumerator<float> GetEnumerator()
@@ -262,12 +204,9 @@ namespace Meta.Vlc
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(String propertyName)
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion --- NotifyPropertyChanged ---

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: LibVlcFunctionAttribute.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 
@@ -63,21 +63,21 @@ namespace Meta.Vlc.Interop
         /// <summary>
         ///     获取一个值,表示函数在 LibVlc 中的名称
         /// </summary>
-        public string FunctionName { get; private set; }
+        public string FunctionName { get; }
 
         /// <summary>
         ///     获取一个值,表示支持该函数的最小 LibVlc 版本
         /// </summary>
-        public Version MinVersion { get; private set; }
+        public Version MinVersion { get; }
 
         /// <summary>
         ///     获取一个值,表示支持该函数的最大 LibVlc 版本
         /// </summary>
-        public Version MaxVersion { get; private set; }
+        public Version MaxVersion { get; }
 
         /// <summary>
         ///     获取一个值,表示特定的开发版本
         /// </summary>
-        public String Dev { get; private set; }
+        public string Dev { get; }
     }
 }

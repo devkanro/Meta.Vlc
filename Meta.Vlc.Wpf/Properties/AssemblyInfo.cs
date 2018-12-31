@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: AssemblyInfo.cs
-// Version: 20160214
+// Version: 20181231
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -41,7 +41,7 @@ using System.Windows;
     ResourceDictionaryLocation.SourceAssembly //常规资源词典所处位置
     //(在页面、应用程序或任何主题特定资源词典中
     // 未找到某个资源的情况下使用)
-    )]
+)]
 
 // 程序集的版本信息由下面四个值组成:
 //

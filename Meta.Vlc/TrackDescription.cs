@@ -1,94 +1,52 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: TrackDescription.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.MediaPlayer;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     A warpper for <see cref="Interop.MediaPlayer.TrackDescription" /> struct.
+    ///     A wrapper for <see cref="libvlc_track_description_t" /> struct.
     /// </summary>
-    public class TrackDescription
+    public unsafe class TrackDescription
     {
-        private IntPtr _pointer;
-
-        internal Interop.MediaPlayer.TrackDescription Struct;
-
-        internal TrackDescription(IntPtr pointer)
+        internal TrackDescription(libvlc_track_description_t* pointer)
         {
-            _pointer = pointer;
-            if (pointer != IntPtr.Zero)
-            {
-                Struct =
-                    (Interop.MediaPlayer.TrackDescription)
-                        Marshal.PtrToStructure(pointer, typeof (Interop.MediaPlayer.TrackDescription));
-                Name = InteropHelper.PtrToString(Struct.Name);
-                Id = Struct.Id;
-            }
+            if (pointer == null) return;
+            Name = InteropHelper.PtrToString(pointer->psz_name);
+            Id = pointer->i_id;
         }
 
-        public String Name { get; private set; }
+        public string Name { get; }
 
-        public int Id { get; private set; }
+        public int Id { get; }
     }
 
     /// <summary>
-    ///     A list warpper for <see cref="Interop.MediaPlayer.TrackDescription" /> linklist struct.
+    ///     A list wrapper for <see cref="libvlc_track_description_t" /> linked list struct.
     /// </summary>
-    public class TrackDescriptionList : IDisposable, IEnumerable<TrackDescription>, IEnumerable
+    public unsafe class TrackDescriptionList : VlcUnmanagedLinkedList<TrackDescription>
     {
-        private List<TrackDescription> _list;
-        private IntPtr _pointer;
-
-        /// <summary>
-        ///     Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.TrackDescription" />.
-        /// </summary>
-        /// <param name="pointer"></param>
-        public TrackDescriptionList(IntPtr pointer)
+        public TrackDescriptionList(void* pointer) : base(pointer)
         {
-            _list = new List<TrackDescription>();
-            _pointer = pointer;
-
-            while (pointer != IntPtr.Zero)
-            {
-                var trackDescription = new TrackDescription(pointer);
-                _list.Add(trackDescription);
-
-                pointer = trackDescription.Struct.Next;
-            }
         }
 
-        public int Count
+        protected override TrackDescription CreateItem(void* data)
         {
-            get { return _list.Count; }
+            return new TrackDescription((libvlc_track_description_t*) data);
         }
 
-        public TrackDescription this[int index]
+        protected override void* NextItem(void* data)
         {
-            get { return _list[index]; }
+            return ((libvlc_track_description_t*) data)->p_next;
         }
 
-        public void Dispose()
+        protected override void Release(void* data)
         {
-            if (_pointer == IntPtr.Zero) return;
-
-            LibVlcManager.ReleaseTrackDescriptionList(_pointer);
-            _pointer = IntPtr.Zero;
-            _list.Clear();
-        }
-
-        public IEnumerator<TrackDescription> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            LibVlcManager.GetFunctionDelegate<libvlc_track_description_list_release>()
+                .Invoke((libvlc_track_description_t*) data);
         }
     }
 }

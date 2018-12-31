@@ -1,8 +1,9 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcPlayer.cs
-// Version: 20160327
+// Version: 20181231
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -15,7 +16,6 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using Meta.Vlc.Interop.MediaPlayer;
 using Meta.Vlc.Wpf.Annotations;
-using MediaState = Meta.Vlc.Interop.Media.MediaState;
 
 namespace Meta.Vlc.Wpf
 {
@@ -23,17 +23,18 @@ namespace Meta.Vlc.Wpf
     ///     VLC media player.
     /// </summary>
     [TemplatePart(Name = "Image", Type = typeof(ThreadSeparatedImage))]
-    public partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
+    public unsafe partial class VlcPlayer : Control, IDisposable, INotifyPropertyChanged
     {
         #region --- Fields ---
 
         //TODO: maybe make all fields private or protected (for descendant classes to access)?
 
-        private VideoLockCallback _lockCallback;
-        private VideoUnlockCallback _unlockCallback;
-        private VideoDisplayCallback _displayCallback;
-        private VideoFormatCallback _formatCallback;
-        private VideoCleanupCallback _cleanupCallback;
+        private libvlc_video_lock_cb _lockCallback;
+        private libvlc_video_unlock_cb _unlockCallback;
+        private libvlc_video_display_cb _displayCallback;
+        private libvlc_video_format_cb _formatCallback;
+
+        private libvlc_video_cleanup_cb _cleanupCallback;
         //private AudioPlayCallback _audioPlayCallback;
         //private AudioPauseCallback _audioPauseCallback;
         //private AudioResumeCallback _audioResumeCallback;
@@ -47,6 +48,7 @@ namespace Meta.Vlc.Wpf
         private GCHandle _unlockCallbackHandle;
         private GCHandle _displayCallbackHandle;
         private GCHandle _formatCallbackHandle;
+
         private GCHandle _cleanupCallbackHandle;
         //private GCHandle _audioPlayCallbackHandle;
         //private GCHandle _audioPauseCallbackHandle;
@@ -64,7 +66,6 @@ namespace Meta.Vlc.Wpf
         private int _checkCount;
         private bool _isDVD;
         private bool _isStopping;
-        private VlcMedia _oldMedia;
 
         //Dispose//
         private bool _disposed;
@@ -86,9 +87,7 @@ namespace Meta.Vlc.Wpf
                     var @this = o as VlcPlayer;
 
                     if (@this.DisplayThreadDispatcher != null)
-                    {
-                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment)args.NewValue;
-                    }
+                        @this.Image.HorizontalContentAlignment = (HorizontalAlignment) args.NewValue;
                 }));
 
             VerticalContentAlignmentProperty.OverrideMetadata(typeof(VlcPlayer),
@@ -97,9 +96,7 @@ namespace Meta.Vlc.Wpf
                     var @this = o as VlcPlayer;
 
                     if (@this.DisplayThreadDispatcher != null)
-                    {
-                        @this.Image.VerticalContentAlignment = (VerticalAlignment)args.NewValue;
-                    }
+                        @this.Image.VerticalContentAlignment = (VerticalAlignment) args.NewValue;
                 }));
         }
 
@@ -110,14 +107,8 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public VlcPlayer()
         {
-            this.AddHandler(ThreadSeparatedControlHost.ThreadSeparatedControlLoadedEvent, new RoutedEventHandler(
-                (s, a) =>
-                {
-                    if (ThreadSeparatedImageLoaded != null)
-                    {
-                        ThreadSeparatedImageLoaded(this, new EventArgs());
-                    }
-                }));
+            AddHandler(ThreadSeparatedControlHost.ThreadSeparatedControlLoadedEvent, new RoutedEventHandler(
+                (s, a) => { ThreadSeparatedImageLoaded?.Invoke(this, new EventArgs()); }));
         }
 
         /// <summary>
@@ -129,13 +120,9 @@ namespace Meta.Vlc.Wpf
         public VlcPlayer(bool displayWithThreadSeparatedImage) : this()
         {
             if (displayWithThreadSeparatedImage)
-            {
                 _customDisplayThreadDispatcher = ThreadSeparatedImage.CommonDispatcher;
-            }
             else
-            {
                 _customDisplayThreadDispatcher = Application.Current.Dispatcher;
-            }
         }
 
         /// <summary>
@@ -162,25 +149,19 @@ namespace Meta.Vlc.Wpf
             var libVlcOption = VlcOption;
 
             if (LibVlcPath != null)
-            {
                 libVlcPath = Path.IsPathRooted(LibVlcPath)
                     ? LibVlcPath
                     : Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)
                         .CombinePath(LibVlcPath);
-            }
 
             if (!designMode)
             {
                 if (libVlcPath != null)
                 {
                     if (libVlcOption == null)
-                    {
                         Initialize(libVlcPath);
-                    }
                     else
-                    {
                         Initialize(libVlcPath, libVlcOption.ToArray());
-                    }
                 }
                 else
                 {
@@ -193,13 +174,11 @@ namespace Meta.Vlc.Wpf
                         var vlcSettingsAttribute = vlcSettings[0] as VlcSettingsAttribute;
 
                         if (vlcSettingsAttribute != null && vlcSettingsAttribute.LibVlcPath != null)
-                        {
                             libVlcPath = Path.IsPathRooted(vlcSettingsAttribute.LibVlcPath)
                                 ? vlcSettingsAttribute.LibVlcPath
                                 : Path.GetDirectoryName(
-                                    Process.GetCurrentProcess().MainModule.FileName)
+                                        Process.GetCurrentProcess().MainModule.FileName)
                                     .CombinePath(vlcSettingsAttribute.LibVlcPath);
-                        }
 
                         if (vlcSettingsAttribute != null && vlcSettingsAttribute.VlcOption != null)
                             libVlcOption = vlcSettingsAttribute.VlcOption;
@@ -238,15 +217,9 @@ namespace Meta.Vlc.Wpf
         /// <param name="libVlcOption"></param>
         public void Initialize(string libVlcPath, params string[] libVlcOption)
         {
-            if (!ApiManager.IsInitialized)
-            {
-                ApiManager.Initialize(libVlcPath, libVlcOption);
-            }
+            if (!ApiManager.IsInitialized) ApiManager.Initialize(libVlcPath, libVlcOption);
 
-            if (VlcMediaPlayer != null)
-            {
-                throw new InvalidOperationException("VlcPlayer is been initialized.");
-            }
+            if (VlcMediaPlayer != null) throw new InvalidOperationException("VlcPlayer is been initialized.");
 
             switch (CreateMode)
             {
@@ -261,7 +234,7 @@ namespace Meta.Vlc.Wpf
                     break;
             }
 
-            VlcMediaPlayer player = Vlc.CreateMediaPlayer();
+            var player = Vlc.CreateMediaPlayer();
 
             _lockCallback = VideoLockCallback;
             _unlockCallback = VideoUnlockCallback;
@@ -291,10 +264,7 @@ namespace Meta.Vlc.Wpf
             //_audioDrainCallbackHandle = GCHandle.Alloc(_audioDrainCallback);
             //_audioSetVolumeCallbackHandle = GCHandle.Alloc(_audioSetVolumeCallback);
 
-            if (player == null)
-            {
-                throw new Exception("Vlc media player initialize fail.");
-            }
+            if (player == null) throw new Exception("Vlc media player initialize fail.");
 
             AttachPlayer(player);
         }
@@ -332,12 +302,12 @@ namespace Meta.Vlc.Wpf
         {
             if (VlcMediaPlayer != null)
             {
+                VlcMediaPlayer.MediaStateChanged -= VlcMediaPlayerMediaStateChanged;
                 VlcMediaPlayer.PositionChanged -= VlcMediaPlayerPositionChanged;
                 VlcMediaPlayer.TimeChanged -= VlcMediaPlayerTimeChanged;
-                VlcMediaPlayer.EndReached -= VlcMediaPlayerEndReached;
                 VlcMediaPlayer.SeekableChanged -= VlcMediaPlayerSeekableChanged;
                 VlcMediaPlayer.LengthChanged -= VlcMediaPlayerLengthChanged;
-                VlcMediaPlayer.MediaChanged -= VlcMediaPlayerMediaChanged;
+                VlcMediaPlayer.PausableChanged -= VlcMediaPlayerPausableChanged;
 
                 VlcMediaPlayer.SetVideoDecodeCallback(null, null, null, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(null, null);
@@ -352,12 +322,12 @@ namespace Meta.Vlc.Wpf
 
             if (VlcMediaPlayer != null)
             {
+                VlcMediaPlayer.MediaStateChanged += VlcMediaPlayerMediaStateChanged;
                 VlcMediaPlayer.PositionChanged += VlcMediaPlayerPositionChanged;
                 VlcMediaPlayer.TimeChanged += VlcMediaPlayerTimeChanged;
-                VlcMediaPlayer.EndReached += VlcMediaPlayerEndReached;
                 VlcMediaPlayer.SeekableChanged += VlcMediaPlayerSeekableChanged;
                 VlcMediaPlayer.LengthChanged += VlcMediaPlayerLengthChanged;
-                VlcMediaPlayer.MediaChanged += VlcMediaPlayerMediaChanged;
+                VlcMediaPlayer.PausableChanged += VlcMediaPlayerPausableChanged;
 
                 VlcMediaPlayer.SetVideoDecodeCallback(_lockCallback, _unlockCallback, _displayCallback, IntPtr.Zero);
                 VlcMediaPlayer.SetVideoFormatCallback(_formatCallback, _cleanupCallback);
@@ -377,10 +347,7 @@ namespace Meta.Vlc.Wpf
         /// <param name="disposing"></param>
         protected void Dispose(bool disposing)
         {
-            if (_disposed || _disposing)
-            {
-                return;
-            }
+            if (_disposed || _disposing) return;
 
             _disposing = true;
 
@@ -388,11 +355,9 @@ namespace Meta.Vlc.Wpf
 
             if (VlcMediaPlayer != null)
             {
-                if (VlcMediaPlayer.Media != null)
-                {
-                    VlcMediaPlayer.Media.Dispose();
-                }
+                VlcMediaPlayer.Media?.Dispose();
                 VlcMediaPlayer.Dispose();
+                VlcMediaPlayer = null;
             }
 
             _lockCallbackHandle.Free();
@@ -452,21 +417,19 @@ namespace Meta.Vlc.Wpf
         {
             ThrowIfNotInitialize();
 
-            Uri uri;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
+            if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
             {
                 LoadMedia(uri);
                 return;
             }
 
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
-                throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
+                throw new FileNotFoundException($"Not found: {path}", path);
 
-            if (VlcMediaPlayer.Media != null)
-                VlcMediaPlayer.Media.Dispose();
-            
+            VlcMediaPlayer.Media?.Dispose();
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
-            VlcMediaPlayer.Media.ParseAsync();
+            VlcMediaPlayer.Media.ParseWithOption(MediaParseOption.ParseLocal);
 
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -479,10 +442,10 @@ namespace Meta.Vlc.Wpf
         {
             ThrowIfNotInitialize();
 
-            if (VlcMediaPlayer.Media != null) VlcMediaPlayer.Media.Dispose();
-            
+            VlcMediaPlayer.Media?.Dispose();
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
-            VlcMediaPlayer.Media.ParseAsync();
+            VlcMediaPlayer.Media.ParseWithOption(MediaParseOption.ParseLocal | MediaParseOption.ParseNetwork);
 
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -497,14 +460,13 @@ namespace Meta.Vlc.Wpf
             ThrowIfNotInitialize();
 
             if (!(File.Exists(path) || Path.GetFullPath(path).IsDriveRootDirectory()))
-                throw new FileNotFoundException(string.Format("Not found: {0}", path), path);
+                throw new FileNotFoundException($"Not found: {path}", path);
 
-            if (VlcMediaPlayer.Media != null)
-                VlcMediaPlayer.Media.Dispose();
-            
+            VlcMediaPlayer.Media?.Dispose();
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromPath(path);
             VlcMediaPlayer.Media.AddOption(options);
-            VlcMediaPlayer.Media.ParseAsync();
+            VlcMediaPlayer.Media.ParseWithOption(MediaParseOption.ParseLocal);
 
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -518,12 +480,11 @@ namespace Meta.Vlc.Wpf
         {
             ThrowIfNotInitialize();
 
-            if (VlcMediaPlayer.Media != null)
-                VlcMediaPlayer.Media.Dispose();
-            
+            VlcMediaPlayer.Media?.Dispose();
+
             VlcMediaPlayer.Media = VlcMediaPlayer.VlcInstance.CreateMediaFromLocation(uri.ToString());
             VlcMediaPlayer.Media.AddOption(options);
-            VlcMediaPlayer.Media.ParseAsync();
+            VlcMediaPlayer.Media.ParseWithOption(MediaParseOption.ParseLocal | MediaParseOption.ParseNetwork);
 
             _isDVD = VlcMediaPlayer.Media.Mrl.IsDriveRootDirectory();
         }
@@ -539,10 +500,7 @@ namespace Meta.Vlc.Wpf
         {
             ThrowIfNotInitialize();
 
-            if (_context != null)
-            {
-                VideoSource = _context.Image;
-            }
+            if (_context != null) VideoSource = _context.Image;
             VlcMediaPlayer.Play();
         }
 
@@ -711,7 +669,7 @@ namespace Meta.Vlc.Wpf
         ///     Gets a list of potential audio output devices.
         /// </summary>
         /// <returns></returns>
-        public AudioDeviceList EnumAudioDeviceList()
+        public List<AudioDevice> EnumAudioDeviceList()
         {
             ThrowIfNotInitialize();
 
@@ -723,7 +681,7 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         /// <param name="audioOutput"></param>
         /// <returns></returns>
-        public AudioDeviceList GetAudioDeviceList(AudioOutput audioOutput)
+        public List<AudioDevice> GetAudioDeviceList(AudioOutput audioOutput)
         {
             ThrowIfNotInitialize();
 
@@ -734,7 +692,7 @@ namespace Meta.Vlc.Wpf
         ///     Gets the list of available audio output modules.
         /// </summary>
         /// <returns></returns>
-        public AudioOutputList GetAudioOutputList()
+        public List<AudioOutput> GetAudioOutputList()
         {
             ThrowIfNotInitialize();
 
@@ -801,19 +759,15 @@ namespace Meta.Vlc.Wpf
             var propName = propInfo.Name;
 
             var displayThreadDispatcher = DisplayThreadDispatcher;
-            if (displayThreadDispatcher != null)
-            {
-                displayThreadDispatcher.BeginInvoke(
-                    new Action(() =>
-                    {
-                        if (_disposing) return;
-                        if (_isStopping) return;
+            displayThreadDispatcher?.BeginInvoke(
+                new Action(() =>
+                {
+                    if (_disposing) return;
+                    if (_isStopping) return;
 
-                        var onPropertyChanged = PropertyChanged;
-                        if (onPropertyChanged != null)
-                            onPropertyChanged(this, new PropertyChangedEventArgs(propName));
-                    }));
-            }
+                    var onPropertyChanged = PropertyChanged;
+                    onPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+                }));
         }
 
         #endregion --- NotifyPropertyChanged ---

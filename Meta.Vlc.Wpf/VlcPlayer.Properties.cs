@@ -1,18 +1,20 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcPlayer.Properties.cs
-// Version: 20160325
+// Version: 20181231
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Meta.Vlc.Interop.Media;
-using Meta.Vlc.Interop.MediaPlayer;
 
 namespace Meta.Vlc.Wpf
 {
     public partial class VlcPlayer
     {
+        private readonly Dispatcher _customDisplayThreadDispatcher;
+
         #region Position
 
         /// <summary>
@@ -47,18 +49,6 @@ namespace Meta.Vlc.Wpf
 
         #endregion Time
 
-        #region FPS
-
-        /// <summary>
-        ///     Get FPS of media.
-        /// </summary>
-        public float FPS
-        {
-            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.Fps.DefaultValueWhenTrue(_isStopping)); }
-        }
-
-        #endregion FPS
-
         #region IsMute
 
         /// <summary>
@@ -75,10 +65,7 @@ namespace Meta.Vlc.Wpf
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     OnPropertyChanged(() => IsMute);
-                    if (IsMuteChanged != null)
-                    {
-                        IsMuteChanged(this, new EventArgs());
-                    }
+                    if (IsMuteChanged != null) IsMuteChanged(this, new EventArgs());
                 }));
             }
         }
@@ -146,7 +133,7 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     Get description of audio track.
         /// </summary>
-        public TrackDescriptionList AudioTrackDescription
+        public List<TrackDescription> AudioTrackDescription
         {
             get
             {
@@ -262,6 +249,18 @@ namespace Meta.Vlc.Wpf
 
         #endregion State
 
+        #region CanPause
+
+        /// <summary>
+        ///     Can this media player be paused?
+        /// </summary>
+        public bool CanPause
+        {
+            get { return VlcMediaPlayer.DefaultValueWhenNull(x => x.CanPause.DefaultValueWhenTrue(_isStopping)); }
+        }
+
+        #endregion Length
+
         #region Length
 
         /// <summary>
@@ -297,28 +296,18 @@ namespace Meta.Vlc.Wpf
         public PlayerCreateMode CreateMode { get; set; }
 
         #endregion CreateMode
-        
-        private ThreadSeparatedImage Image
-        {
-            get { return (ThreadSeparatedImage)GetTemplateChild("Image"); }
-        }
 
-        private Dispatcher _customDisplayThreadDispatcher;
+        private ThreadSeparatedImage Image => (ThreadSeparatedImage) GetTemplateChild("Image");
+
         public Dispatcher DisplayThreadDispatcher
         {
             get
             {
-                Dispatcher result = _customDisplayThreadDispatcher;
+                var result = _customDisplayThreadDispatcher;
 
-                if (result == null && Image!= null)
-                {
-                    result = Image.SeparateThreadDispatcher;
-                }
+                if (result == null && Image != null) result = Image.SeparateThreadDispatcher;
 
-                if (result == null)
-                {
-                    return ThreadSeparatedImage.CommonDispatcher;
-                }
+                if (result == null) return ThreadSeparatedImage.CommonDispatcher;
 
                 return result;
             }
@@ -333,7 +322,7 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public int Volume
         {
-            get { return _volume; }
+            get => _volume;
             set
             {
                 if (_volume == value || VlcMediaPlayer == null) return;
@@ -342,10 +331,7 @@ namespace Meta.Vlc.Wpf
                 Dispatcher.Invoke(DispatcherPriority.Normal, new Action(() =>
                 {
                     OnPropertyChanged(() => Volume);
-                    if (VolumeChanged != null)
-                    {
-                        VolumeChanged(this, new EventArgs());
-                    }
+                    if (VolumeChanged != null) VolumeChanged(this, new EventArgs());
                 }));
             }
         }
@@ -361,23 +347,17 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public AudioEqualizer AudioEqualizer
         {
-            get { return _audioEqualizer; }
+            get => _audioEqualizer;
             set
             {
-                if (_audioEqualizer != null)
-                {
-                    _audioEqualizer.PropertyChanged -= AudioEqualizer_PropertyChanged;
-                }
-                if (value != null)
-                {
-                    value.PropertyChanged += AudioEqualizer_PropertyChanged;
-                }
+                if (_audioEqualizer != null) _audioEqualizer.PropertyChanged -= AudioEqualizer_PropertyChanged;
+                if (value != null) value.PropertyChanged += AudioEqualizer_PropertyChanged;
                 _audioEqualizer = value;
                 VlcMediaPlayer.SetEqualizer(_audioEqualizer);
             }
         }
 
-        private void AudioEqualizer_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void AudioEqualizer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             VlcMediaPlayer.SetEqualizer(_audioEqualizer);
         }
@@ -386,29 +366,23 @@ namespace Meta.Vlc.Wpf
 
         #region VideoSource
 
-        public BitmapSource _videoSource = null;
+        public BitmapSource _videoSource;
 
         /// <summary>
         ///     The image data of video, it is created on other thread, you can't use it in main thread.
         /// </summary>
         public BitmapSource VideoSource
         {
-            get { return _videoSource; }
+            get => _videoSource;
             private set
             {
-                if (Image != null)
-                {
-                    Image.Source = value;
-                }
+                if (Image != null) Image.Source = value;
 
                 if (_videoSource != value)
                 {
                     _videoSource = value;
                     OnPropertyChanged(() => VideoSource);
-                    if (VideoSourceChanged != null)
-                    {
-                        VideoSourceChanged(this, new VideoSourceChangedEventArgs(value));
-                    }
+                    if (VideoSourceChanged != null) VideoSourceChanged(this, new VideoSourceChangedEventArgs(value));
                 }
             }
         }
@@ -419,17 +393,14 @@ namespace Meta.Vlc.Wpf
 
         #region ScaleTransform
 
-        internal ScaleTransform _scaleTransform = null;
+        internal ScaleTransform _scaleTransform;
 
         internal ScaleTransform ScaleTransform
         {
-            get { return _scaleTransform; }
+            get => _scaleTransform;
             set
             {
-                if (Image != null)
-                {
-                    Image.ScaleTransform = value;
-                }
+                if (Image != null) Image.ScaleTransform = value;
 
                 if (_scaleTransform != value)
                 {

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcPlayer.DependencyProperties.cs
-// Version: 20160327
+// Version: 20181231
 
 using System;
 using System.Collections.Generic;
@@ -17,14 +17,14 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     The path of LibVlc, it is a DependencyProperty.
         /// </summary>
-        public String LibVlcPath
+        public string LibVlcPath
         {
-            get { return (String) GetValue(LibVlcPathProperty); }
-            set { SetValue(LibVlcPathProperty, value); }
+            get => (string) GetValue(LibVlcPathProperty);
+            set => SetValue(LibVlcPathProperty, value);
         }
 
         public static readonly DependencyProperty LibVlcPathProperty =
-            DependencyProperty.Register("LibVlcPath", typeof (String), typeof (VlcPlayer), null);
+            DependencyProperty.Register("LibVlcPath", typeof(string), typeof(VlcPlayer), null);
 
         #endregion LibVlcPath
 
@@ -33,21 +33,22 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     The options of LibVlc, it is a DependencyProperty.
         /// </summary>
-        public IList<String> VlcOption
+        public IList<string> VlcOption
         {
-            get { return (IList<String>) GetValue(VlcOptionProperty); }
-            set { SetValue(VlcOptionProperty, value); }
+            get => (IList<string>) GetValue(VlcOptionProperty);
+            set => SetValue(VlcOptionProperty, value);
         }
 
         public static readonly DependencyProperty VlcOptionProperty =
-            DependencyProperty.Register("VlcOption", typeof (IList<String>), typeof (VlcPlayer), new PropertyMetadata(new List<string>()));
+            DependencyProperty.Register("VlcOption", typeof(IList<string>), typeof(VlcPlayer),
+                new PropertyMetadata(new List<string>()));
 
         #endregion VlcOption
 
         #region AspectRatio
 
         public static readonly DependencyProperty PropertyTypeProperty =
-            DependencyProperty.Register("PropertyType", typeof (AspectRatio), typeof (VlcPlayer),
+            DependencyProperty.Register("PropertyType", typeof(AspectRatio), typeof(VlcPlayer),
                 new PropertyMetadata(AspectRatio.Default, OnAspectRatioChanged));
 
         /// <summary>
@@ -55,8 +56,8 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public AspectRatio AspectRatio
         {
-            get { return (AspectRatio) GetValue(PropertyTypeProperty); }
-            set { SetValue(PropertyTypeProperty, value); }
+            get => (AspectRatio) GetValue(PropertyTypeProperty);
+            set => SetValue(PropertyTypeProperty, value);
         }
 
         private static void OnAspectRatioChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -66,10 +67,8 @@ namespace Meta.Vlc.Wpf
             var scale = vlcPlayer.GetScaleTransform();
 
             if (vlcPlayer.DisplayThreadDispatcher != null)
-            {
                 vlcPlayer.DisplayThreadDispatcher.BeginInvoke(
                     new Action(() => { vlcPlayer.ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
-            }
         }
 
         #endregion AspectRatio
@@ -81,21 +80,18 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public Stretch Stretch
         {
-            get { return (Stretch) GetValue(StretchProperty); }
-            set { SetValue(StretchProperty, value); }
+            get => (Stretch) GetValue(StretchProperty);
+            set => SetValue(StretchProperty, value);
         }
 
         public static readonly DependencyProperty StretchProperty =
-            DependencyProperty.Register("Stretch", typeof (Stretch), typeof (VlcPlayer),
+            DependencyProperty.Register("Stretch", typeof(Stretch), typeof(VlcPlayer),
                 new PropertyMetadata(Stretch.Uniform, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
                     if (@this == null)
                         return;
-                    if (@this.Image != null)
-                    {
-                        @this.Image.Stretch = (Stretch) args.NewValue;
-                    }
+                    if (@this.Image != null) @this.Image.Stretch = (Stretch) args.NewValue;
                 }));
 
         /// <summary>
@@ -103,22 +99,19 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         public StretchDirection StretchDirection
         {
-            get { return (StretchDirection) GetValue(StretchDirectionProperty); }
-            set { SetValue(StretchDirectionProperty, value); }
+            get => (StretchDirection) GetValue(StretchDirectionProperty);
+            set => SetValue(StretchDirectionProperty, value);
         }
 
         public static readonly DependencyProperty StretchDirectionProperty =
-            DependencyProperty.Register("StretchDirection", typeof (StretchDirection), typeof (VlcPlayer),
+            DependencyProperty.Register("StretchDirection", typeof(StretchDirection), typeof(VlcPlayer),
                 new PropertyMetadata(StretchDirection.Both, (o, args) =>
                 {
                     var @this = o as VlcPlayer;
                     if (@this == null)
                         return;
 
-                    if (@this.Image != null)
-                    {
-                        @this.Image.StretchDirection = (StretchDirection) args.NewValue;
-                    }
+                    if (@this.Image != null) @this.Image.StretchDirection = (StretchDirection) args.NewValue;
                 }));
 
         #endregion Stretch
@@ -126,12 +119,12 @@ namespace Meta.Vlc.Wpf
         #region EndBehavior
 
         public static readonly DependencyProperty EndBehaviorProperty = DependencyProperty.Register(
-            "EndBehavior", typeof (EndBehavior), typeof (VlcPlayer), new PropertyMetadata(EndBehavior.Default));
+            "EndBehavior", typeof(EndBehavior), typeof(VlcPlayer), new PropertyMetadata(EndBehavior.Default));
 
         public EndBehavior EndBehavior
         {
-            get { return (EndBehavior) GetValue(EndBehaviorProperty); }
-            set { SetValue(EndBehaviorProperty, value); }
+            get => (EndBehavior) GetValue(EndBehaviorProperty);
+            set => SetValue(EndBehaviorProperty, value);
         }
 
         #endregion EndBehavior
@@ -144,6 +137,6 @@ namespace Meta.Vlc.Wpf
             NewVideoSource = _newVideoSource;
         }
 
-        public ImageSource NewVideoSource { get; private set; }
+        public ImageSource NewVideoSource { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: Size.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 
@@ -14,7 +14,7 @@ namespace Meta.Vlc
     {
         public Size(double width, double height)
             : this()
-            //needed for VS2013 to compile, else complains that "this" is used before all of its fields have been assigned
+        //needed for VS2013 to compile, else complains that "this" is used before all of its fields have been assigned
         {
             Width = width;
             Height = height;
@@ -45,13 +45,13 @@ namespace Meta.Vlc
 
         public bool Equals(Size size)
         {
-            return (size == this);
+            return size == this;
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is Size)
-                return (Size) obj == this;
+            if (obj is Size size)
+                return size == this;
             return false;
         }
 

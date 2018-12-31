@@ -1,9 +1,10 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: Win32Api.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Meta.Vlc
@@ -26,17 +27,11 @@ namespace Meta.Vlc
         /// <returns>返回 DLL 模块句柄,如果出错将抛出异常</returns>
         public static IntPtr LoadLibrary(string lpFileName)
         {
-            if (!System.IO.File.Exists(lpFileName))
-            {
-                throw new Exception(String.Format("模块文件不存在:{0}", lpFileName));
-            }
+            if (!File.Exists(lpFileName)) throw new Exception(string.Format("模块文件不存在:{0}", lpFileName));
             var result = LoadLibraryStatic(lpFileName);
             if (result != IntPtr.Zero) return result;
             var error = GetLastError();
-            if (error == 0)
-            {
-                throw new Win32Exception("无法载入指定的模块,未知错误.");
-            }
+            if (error == 0) throw new Win32Exception("无法载入指定的模块,未知错误.");
             throw new Win32Exception(error, "无法载入指定的模块.");
         }
 
@@ -52,16 +47,14 @@ namespace Meta.Vlc
         /// <returns>返回函数地址</returns>
         public static IntPtr GetProcAddress(IntPtr hModule, string lpProcName)
         {
-            IntPtr result = GetProcAddressStatic(hModule, lpProcName);
+            var result = GetProcAddressStatic(hModule, lpProcName);
             if (result == IntPtr.Zero)
             {
-                int error = GetLastError();
-                if (error == 0)
-                {
-                    throw new Win32Exception("无法获取函数地址,未知错误.");
-                }
+                var error = GetLastError();
+                if (error == 0) throw new Win32Exception("无法获取函数地址,未知错误.");
                 throw new Win32Exception(error, "无法获取函数地址.");
             }
+
             return result;
         }
 

@@ -1,94 +1,56 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: AudioDevice.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.MediaPlayer;
+using Meta.Vlc.Interop.MediaPlayer.Audio;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     A warpper for <see cref="Interop.MediaPlayer.AudioDevice" /> struct.
+    ///     A wrapper for <see cref="libvlc_audio_output_device_t" /> struct.
     /// </summary>
-    public class AudioDevice
+    public unsafe class AudioDevice
     {
-        internal IntPtr _pointer;
-
-        internal Interop.MediaPlayer.AudioDevice _struct;
-
-        internal AudioDevice(IntPtr pointer)
+        internal AudioDevice(libvlc_audio_output_device_t* pointer)
         {
-            _pointer = pointer;
-            if (pointer != IntPtr.Zero)
-            {
-                _struct =
-                    (Interop.MediaPlayer.AudioDevice)
-                        Marshal.PtrToStructure(pointer, typeof (Interop.MediaPlayer.AudioDevice));
-                Device = InteropHelper.PtrToString(_struct.Device);
-                Description = InteropHelper.PtrToString(_struct.Description);
-            }
+            if (pointer == null) return;
+
+            Device = InteropHelper.PtrToString(pointer->psz_device);
+            Description = InteropHelper.PtrToString(pointer->psz_description);
         }
 
-        public String Device { get; private set; }
+        public string Device { get; }
 
-        public String Description { get; private set; }
+        public string Description { get; }
     }
 
     /// <summary>
-    ///     A list warpper for <see cref="Interop.MediaPlayer.AudioDevice" /> linklist struct.
+    ///     A list wrapper for <see cref="libvlc_audio_output_device_t" /> linked list struct.
     /// </summary>
-    public class AudioDeviceList : IDisposable, IEnumerable<AudioDevice>, IEnumerable
+    public unsafe class AudioDeviceList : VlcUnmanagedLinkedList<AudioDevice>
     {
-        private List<AudioDevice> _list;
-        private IntPtr _pointer;
-
-        /// <summary>
-        ///     Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.AudioDevice" />.
-        /// </summary>
-        /// <param name="pointer"></param>
-        public AudioDeviceList(IntPtr pointer)
+        public AudioDeviceList(void* pointer) : base(pointer)
         {
-            _list = new List<AudioDevice>();
-            _pointer = pointer;
-
-            while (pointer != IntPtr.Zero)
-            {
-                var AudioDevice = new AudioDevice(pointer);
-                _list.Add(AudioDevice);
-
-                pointer = AudioDevice._struct.Next;
-            }
         }
 
-        public int Count
+        protected override AudioDevice CreateItem(void* data)
         {
-            get { return _list.Count; }
+            return new AudioDevice((libvlc_audio_output_device_t*) data);
         }
 
-        public AudioDevice this[int index]
+        protected override void* NextItem(void* data)
         {
-            get { return _list[index]; }
+            return ((libvlc_audio_output_device_t*) data)->p_next;
         }
 
-        public void Dispose()
+        protected override void Release(void* data)
         {
-            if (_pointer == IntPtr.Zero) return;
-
-            LibVlcManager.ReleaseAudioDeviceList(_pointer);
-            _pointer = IntPtr.Zero;
-            _list.Clear();
-        }
-
-        public IEnumerator<AudioDevice> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            LibVlcManager.GetFunctionDelegate<libvlc_audio_output_device_list_release>()
+                .Invoke((libvlc_audio_output_device_t*) data);
         }
     }
 }

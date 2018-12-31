@@ -1,100 +1,60 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: ModuleDescription.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.Core;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     A warpper for <see cref="Interop.Core.ModuleDescription" /> struct.
+    ///     A wrapper for <see cref="libvlc_module_description_t" /> struct.
     /// </summary>
-    public class ModuleDescription
+    public unsafe class ModuleDescription
     {
-        internal IntPtr _pointer;
-
-        internal Interop.Core.ModuleDescription _struct;
-
-        internal ModuleDescription(IntPtr pointer)
+        internal ModuleDescription(libvlc_module_description_t* pointer)
         {
-            _pointer = pointer;
-            if (pointer != IntPtr.Zero)
-            {
-                _struct =
-                    (Interop.Core.ModuleDescription)
-                        Marshal.PtrToStructure(pointer, typeof (Interop.Core.ModuleDescription));
-                Name = InteropHelper.PtrToString(_struct.Name);
-                ShortName = InteropHelper.PtrToString(_struct.ShortName);
-                LongName = InteropHelper.PtrToString(_struct.LongName);
-                Help = InteropHelper.PtrToString(_struct.Help);
-            }
+            if (pointer == null) return;
+            Name = InteropHelper.PtrToString(pointer->psz_name);
+            ShortName = InteropHelper.PtrToString(pointer->psz_shortname);
+            LongName = InteropHelper.PtrToString(pointer->psz_longname);
+            Help = InteropHelper.PtrToString(pointer->psz_help);
         }
 
-        public String Name { get; private set; }
+        public string Name { get; }
 
-        public String ShortName { get; private set; }
+        public string ShortName { get; }
 
-        public String LongName { get; private set; }
+        public string LongName { get; }
 
-        public String Help { get; private set; }
+        public string Help { get; }
     }
 
     /// <summary>
-    ///     A list warpper for <see cref="Interop.Core.ModuleDescription" /> linklist struct.
+    ///     A list wrapper for <see cref="libvlc_module_description_t" /> linked list struct.
     /// </summary>
-    public class ModuleDescriptionList : IDisposable, IEnumerable<ModuleDescription>, IEnumerable
+    public unsafe class ModuleDescriptionList : VlcUnmanagedLinkedList<ModuleDescription>
     {
-        private List<ModuleDescription> _list;
-        private IntPtr _pointer;
-
-        /// <summary>
-        ///     Create a readonly list by a pointer of <see cref="Interop.Core.ModuleDescription" />.
-        /// </summary>
-        /// <param name="pointer"></param>
-        public ModuleDescriptionList(IntPtr pointer)
+        public ModuleDescriptionList(void* pointer) : base(pointer)
         {
-            _list = new List<ModuleDescription>();
-            _pointer = pointer;
-
-            while (pointer != IntPtr.Zero)
-            {
-                var ModuleDescription = new ModuleDescription(pointer);
-                _list.Add(ModuleDescription);
-
-                pointer = ModuleDescription._struct.Next;
-            }
         }
 
-        public int Count
+        protected override ModuleDescription CreateItem(void* data)
         {
-            get { return _list.Count; }
+            return new ModuleDescription((libvlc_module_description_t*) data);
         }
 
-        public ModuleDescription this[int index]
+        protected override void* NextItem(void* data)
         {
-            get { return _list[index]; }
+            return ((libvlc_module_description_t*) data)->p_next;
         }
 
-        public void Dispose()
+        protected override void Release(void* data)
         {
-            if (_pointer == IntPtr.Zero) return;
-
-            LibVlcManager.ReleaseModuleDescriptionList(_pointer);
-            _pointer = IntPtr.Zero;
-            _list.Clear();
-        }
-
-        public IEnumerator<ModuleDescription> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            LibVlcManager.GetFunctionDelegate<libvlc_module_description_list_release>()
+                .Invoke((libvlc_module_description_t*) data);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: InteropHelper.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Meta.Vlc
     /// <summary>
     ///     Some helper method of interopping with unmanaged dlls.
     /// </summary>
-    public static class InteropHelper
+    public static unsafe class InteropHelper
     {
         /// <summary>
         ///     Convert a pointer of string to manmaged <see cref="String" />.
@@ -22,23 +22,17 @@ namespace Meta.Vlc
         /// <param name="toBeFree">free this pointer when convert over</param>
         /// <param name="encoding">encoding of string</param>
         /// <returns>result string</returns>
-        public static String PtrToString(IntPtr ptr, int count = -1, bool toBeFree = false, Encoding encoding = null)
+        public static string PtrToString(IntPtr ptr, int count = -1, bool toBeFree = false, Encoding encoding = null)
         {
-            if (ptr == IntPtr.Zero)
-            {
-                return null;
-            }
-            if (encoding == null)
-            {
-                encoding = Encoding.UTF8;
-            }
+            if (ptr == IntPtr.Zero) return null;
+            if (encoding == null) encoding = Encoding.UTF8;
 
-            List<byte> buffer = new List<byte>(1024);
+            var buffer = new List<byte>(1024);
 
             if (count == -1)
             {
-                int offset = 0;
-                byte tmp = Marshal.ReadByte(ptr, offset);
+                var offset = 0;
+                var tmp = Marshal.ReadByte(ptr, offset);
                 while (tmp != 0)
                 {
                     buffer.Add(tmp);
@@ -49,19 +43,35 @@ namespace Meta.Vlc
             else
             {
                 byte tmp = 0;
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                 {
                     tmp = Marshal.ReadByte(ptr, i);
                     buffer.Add(tmp);
                 }
             }
 
-            if (toBeFree)
-            {
-                LibVlcManager.Free(ptr);
-            }
+            if (toBeFree) LibVlcManager.Free(ptr.ToPointer());
 
             return encoding.GetString(buffer.ToArray());
+        }
+
+        public static string PtrToString(byte* ptr, Encoding encoding = null)
+        {
+            if (ptr == null) return null;
+            if (encoding == null) encoding = Encoding.UTF8;
+
+            var buffer = new List<byte>(1024);
+            byte lastByte;
+            var offset = 0;
+
+            while ((lastByte = ptr[offset]) != 0x00)
+            {
+                buffer.Add(lastByte);
+                offset++;
+                lastByte = ptr[offset];
+            }
+
+            return encoding.GetString(buffer.ToArray(), 0, offset);
         }
 
         /// <summary>
@@ -70,7 +80,7 @@ namespace Meta.Vlc
         /// </summary>
         /// <param name="str">string you need pinned</param>
         /// <returns>GCHandle of <see cref="String" />, you can call <see cref="GCHandle.AddrOfPinnedObject" /> to get pointer.</returns>
-        public static GCHandle StringToPtr(String str)
+        public static GCHandle StringToPtr(string str)
         {
             var handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(str), GCHandleType.Pinned);
             return handle;
@@ -82,13 +92,10 @@ namespace Meta.Vlc
         /// <param name="ptrs">pointer array</param>
         /// <param name="length">length of pointer array</param>
         /// <returns><see cref="String" /> array</returns>
-        public static String[] PtrsToStringArray(IntPtr[] ptrs, int length)
+        public static string[] PtrsToStringArray(IntPtr[] ptrs, int length)
         {
-            String[] result = new String[length];
-            for (int i = 0; i < length; i++)
-            {
-                result[i] = ptrs[i] == IntPtr.Zero ? null : PtrToString(ptrs[i]);
-            }
+            var result = new string[length];
+            for (var i = 0; i < length; i++) result[i] = ptrs[i] == IntPtr.Zero ? null : PtrToString(ptrs[i]);
             return result;
         }
 
@@ -97,14 +104,11 @@ namespace Meta.Vlc
         /// </summary>
         /// <param name="strings"><see cref="String" /> array</param>
         /// <returns>pointer of <see cref="String" /> array</returns>
-        public static IntPtr StringArrayToPtr(String[] strings)
+        public static IntPtr StringArrayToPtr(string[] strings)
         {
-            IntPtr[] ptrs = new IntPtr[strings.Length];
+            var ptrs = new IntPtr[strings.Length];
 
-            for (int i = 0; i < strings.Length; i++)
-            {
-                ptrs[i] = Marshal.StringToHGlobalAnsi(strings[i]);
-            }
+            for (var i = 0; i < strings.Length; i++) ptrs[i] = Marshal.StringToHGlobalAnsi(strings[i]);
 
             return Marshal.UnsafeAddrOfPinnedArrayElement(ptrs, 0);
         }

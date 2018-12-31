@@ -1,10 +1,9 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: Extension.cs
-// Version: 20160312
+// Version: 20181231
 
 using System;
 using System.IO;
-using System.Text;
 using System.Windows.Media;
 
 namespace Meta.Vlc.Wpf
@@ -24,12 +23,12 @@ namespace Meta.Vlc.Wpf
         /// <param name="defaultValue"></param>
         /// <returns></returns>
         public static TRet DefaultValueWhenNull<T, TRet>(this T value, Func<T, TRet> selector,
-            TRet defaultValue = default(TRet))
+            TRet defaultValue = default)
         {
             return value == null ? defaultValue : selector(value);
         }
 
-        public static T DefaultValueWhenTrue<T>(this T value, bool boolean, T defaultValue = default(T))
+        public static T DefaultValueWhenTrue<T>(this T value, bool boolean, T defaultValue = default)
         {
             return boolean ? defaultValue : value;
         }
@@ -42,7 +41,7 @@ namespace Meta.Vlc.Wpf
         /// <returns></returns>
         public static string CombinePath(this string srcPath, string extPath)
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.Combine(srcPath, extPath));
+            var dir = new DirectoryInfo(Path.Combine(srcPath, extPath));
             return dir.FullName;
         }
 
@@ -53,13 +52,14 @@ namespace Meta.Vlc.Wpf
         /// <returns></returns>
         public static bool IsDriveRootDirectory(this string path)
         {
-            Uri uri = path.ToUri();
+            var uri = path.ToUri();
             if (uri != null && uri.IsFile)
             {
-                DirectoryInfo dir = new DirectoryInfo(uri.LocalPath);
+                var dir = new DirectoryInfo(uri.LocalPath);
 
                 return dir.Root.FullName == dir.FullName;
             }
+
             return false;
         }
 
@@ -83,10 +83,7 @@ namespace Meta.Vlc.Wpf
         public static string FormatPath(this string path)
         {
             path = path.Replace('\\', '/');
-            if (!path.EndsWith("/"))
-            {
-                path += '/';
-            }
+            if (!path.EndsWith("/")) path += '/';
             return path;
         }
 
@@ -110,7 +107,7 @@ namespace Meta.Vlc.Wpf
                     return PixelFormats.Bgra32;
 
                 default:
-                    throw new NotSupportedException(String.Format("Not support pixel format: {0}", chroma));
+                    throw new NotSupportedException($"Not support pixel format: {chroma}");
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: ThreadSeparatedImage.cs
-// Version: 20160327
+// Version: 20181231
 
 using System;
 using System.ComponentModel;
@@ -15,39 +15,11 @@ namespace Meta.Vlc.Wpf
     public sealed class ThreadSeparatedImage : ThreadSeparatedControlHost
     {
         private static Dispatcher _commonDispatcher;
-        private static object _staticLock = new object();
-        public static Dispatcher CommonDispatcher
-        {
-            get
-            {
-                lock (_staticLock)
-                {
-                    if (_commonDispatcher == null)
-                    {
-                        Thread separateThread = new Thread(() =>
-                        {
-                            Dispatcher.Run();
-                        })
-                        {
-                            IsBackground = true
-                        };
-                        separateThread.SetApartmentState(ApartmentState.STA);
-                        separateThread.Priority = ThreadPriority.Highest;
+        private static readonly object _staticLock = new object();
 
-                        separateThread.Start();
+        private HorizontalAlignment _horizontalContentAlignment;
 
-                        while (Dispatcher.FromThread(separateThread) == null)
-                        {
-                            Thread.Sleep(50);
-                        }
-                        _commonDispatcher = Dispatcher.FromThread(separateThread);
-                    }
-                }
-                return _commonDispatcher;
-            }
-        }
-
-        private HorizontalAlignment _horizontalContentAlignment = default(HorizontalAlignment);
+        private readonly object _lock = new object();
 
         private ScaleTransform _scaleTransform;
 
@@ -57,13 +29,39 @@ namespace Meta.Vlc.Wpf
 
         private StretchDirection _stretchDirection = StretchDirection.Both;
 
-        private VerticalAlignment _verticalContentAlignment = default(VerticalAlignment);
+        private VerticalAlignment _verticalContentAlignment;
+
+        public static Dispatcher CommonDispatcher
+        {
+            get
+            {
+                lock (_staticLock)
+                {
+                    if (_commonDispatcher == null)
+                    {
+                        var separateThread = new Thread(() => { Dispatcher.Run(); })
+                        {
+                            IsBackground = true
+                        };
+                        separateThread.SetApartmentState(ApartmentState.STA);
+                        separateThread.Priority = ThreadPriority.Highest;
+
+                        separateThread.Start();
+
+                        while (Dispatcher.FromThread(separateThread) == null) Thread.Sleep(50);
+                        _commonDispatcher = Dispatcher.FromThread(separateThread);
+                    }
+                }
+
+                return _commonDispatcher;
+            }
+        }
 
         public Image InternalImageControl { get; private set; }
 
         public ImageSource Source
         {
-            get { return _source; }
+            get => _source;
             set
             {
                 if (_source != value)
@@ -76,10 +74,10 @@ namespace Meta.Vlc.Wpf
                 }
             }
         }
-        
+
         public Stretch Stretch
         {
-            get { return _stretch; }
+            get => _stretch;
             set
             {
                 if (_stretch != value)
@@ -95,7 +93,7 @@ namespace Meta.Vlc.Wpf
 
         public StretchDirection StretchDirection
         {
-            get { return _stretchDirection; }
+            get => _stretchDirection;
             set
             {
                 if (_stretchDirection != value)
@@ -111,7 +109,7 @@ namespace Meta.Vlc.Wpf
 
         public ScaleTransform ScaleTransform
         {
-            get { return _scaleTransform; }
+            get => _scaleTransform;
             set
             {
                 if (_scaleTransform != value)
@@ -127,7 +125,7 @@ namespace Meta.Vlc.Wpf
 
         public HorizontalAlignment HorizontalContentAlignment
         {
-            get { return _horizontalContentAlignment; }
+            get => _horizontalContentAlignment;
             set
             {
                 if (_horizontalContentAlignment != value)
@@ -144,7 +142,7 @@ namespace Meta.Vlc.Wpf
 
         public VerticalAlignment VerticalContentAlignment
         {
-            get { return _verticalContentAlignment; }
+            get => _verticalContentAlignment;
             set
             {
                 if (_verticalContentAlignment != value)
@@ -171,8 +169,6 @@ namespace Meta.Vlc.Wpf
             return InternalImageControl;
         }
 
-        object _lock = new object();
-
         protected override void LoadThreadSeparatedControl()
         {
             HostVisual = new HostVisual();
@@ -190,16 +186,14 @@ namespace Meta.Vlc.Wpf
                     if (HostVisual == null)
                         return; // can happen if control was loaded then immediately unloaded
 
-                    if (TargetElement == null)
-                    {
-                        TargetElement = CreateThreadSeparatedControl();
-                    }
+                    if (TargetElement == null) TargetElement = CreateThreadSeparatedControl();
 
                     if (TargetElement == null) return;
 
                     VisualTarget = new VisualTargetPresentationSource(HostVisual);
                     VisualTarget.RootVisual = TargetElement;
                 }
+
                 Dispatcher.BeginInvoke(new Action(() => { InvalidateMeasure(); }));
             }));
         }

@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: LibVlcFunction.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.ComponentModel;
@@ -12,9 +12,11 @@ namespace Meta.Vlc.Interop
     ///     A dynamic mapper of LibVlc functions.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class LibVlcFunction<T>
+    public class LibVlcFunction<T> where T : Delegate
     {
         private readonly T _functionDelegate;
+
+        private readonly LibVlcVersion _version;
 
         /// <summary>
         ///     Load a LibVlc function from unmanaged to managed.
@@ -25,42 +27,36 @@ namespace Meta.Vlc.Interop
         ///     of function.
         /// </exception>
         /// <exception cref="FunctionNotFoundException">Can't find function in dll.</exception>
-        public LibVlcFunction()
+        public LibVlcFunction(IntPtr libHandle, LibVlcVersion version)
         {
             IsEnable = false;
+            _version = version;
 
-            object[] attrs = typeof (T).GetCustomAttributes(typeof (LibVlcFunctionAttribute), false);
+            var attrs = typeof(T).GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
 
             foreach (var item in attrs)
-            {
                 if (item is LibVlcFunctionAttribute)
                 {
                     FunctionInfomation = item as LibVlcFunctionAttribute;
                     break;
                 }
-            }
 
-            if (FunctionInfomation == null)
-            {
-                throw new NoLibVlcFunctionAttributeException();
-            }
+            if (FunctionInfomation == null) throw new NoLibVlcFunctionAttributeException();
 
-            if (LibVlcManager.LibVlcVersion == null ||
-                LibVlcManager.LibVlcVersion.IsFunctionAvailable(FunctionInfomation))
+            if (_version == null || _version.IsFunctionAvailable(FunctionInfomation))
             {
                 IntPtr procAddress;
                 try
                 {
-                    procAddress = Win32Api.GetProcAddress(LibVlcManager.LibVlcHandle,
-                        FunctionInfomation.FunctionName.Trim());
+                    procAddress = Win32Api.GetProcAddress(libHandle, FunctionInfomation.FunctionName.Trim());
                 }
                 catch (Win32Exception e)
                 {
-                    throw new FunctionNotFoundException(FunctionInfomation, LibVlcManager.LibVlcVersion, e);
+                    throw new FunctionNotFoundException(FunctionInfomation, _version, e);
                 }
 
-                var del = Marshal.GetDelegateForFunctionPointer(procAddress, typeof (T));
-                _functionDelegate = (T) Convert.ChangeType(del, typeof (T));
+                var del = Marshal.GetDelegateForFunctionPointer(procAddress, typeof(T));
+                _functionDelegate = (T) Convert.ChangeType(del, typeof(T));
                 IsEnable = true;
             }
         }
@@ -68,12 +64,12 @@ namespace Meta.Vlc.Interop
         /// <summary>
         ///     Get this <see cref="LibVlcFunction{T}" /> is available or not.
         /// </summary>
-        public bool IsEnable { get; private set; }
+        public bool IsEnable { get; }
 
         /// <summary>
         ///     Get infomation of this <see cref="LibVlcFunction{T}" />.
         /// </summary>
-        public LibVlcFunctionAttribute FunctionInfomation { get; private set; }
+        public LibVlcFunctionAttribute FunctionInfomation { get; }
 
         /// <summary>
         ///     Get delegate of this <see cref="LibVlcFunction{T}" />, if <see cref="IsEnable" /> is false, this method will throw
@@ -84,10 +80,7 @@ namespace Meta.Vlc.Interop
         {
             get
             {
-                if (!IsEnable)
-                {
-                    throw new FunctionNotAvailableException(FunctionInfomation, LibVlcManager.LibVlcVersion);
-                }
+                if (!IsEnable) throw new FunctionNotAvailableException(FunctionInfomation, _version);
                 return _functionDelegate;
             }
         }

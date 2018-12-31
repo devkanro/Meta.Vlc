@@ -1,21 +1,27 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: IVlcObject.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     A Vlc unmanaged object.
+    ///     A unmanaged object.
     /// </summary>
-    public interface IVlcObject : IDisposable
+    public unsafe interface IUnmanagedObject : IDisposable
     {
         /// <summary>
-        ///     A pointer of this Vlc object.
+        ///     A pointer of this unmanaged object.
         /// </summary>
-        IntPtr InstancePointer { get; }
+        void* InstancePointer { get; }
+    }
 
+    /// <summary>
+    ///     A Vlc unmanaged object.
+    /// </summary>
+    public interface IVlcObject : IUnmanagedObject
+    {
         /// <summary>
         ///     A relation <see cref="Vlc" /> of this object.
         /// </summary>

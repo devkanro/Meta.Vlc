@@ -1,21 +1,25 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: MediaTrack.cs
-// Version: 20160214
+// Version: 20181231
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Meta.Vlc.Interop.Media;
 
 namespace Meta.Vlc
 {
-    /// <summary>
-    ///     A warpper for <see cref="Interop.Media.MediaTrack" /> struct.
-    /// </summary>
-    public abstract class MediaTrack
+    public enum TrackType
     {
-        protected MediaTrack(Interop.Media.MediaTrack mediaTrack)
+        Unknown = libvlc_track_type_t.libvlc_track_unknown,
+        Audio = libvlc_track_type_t.libvlc_track_audio,
+        Video = libvlc_track_type_t.libvlc_track_video,
+        Text = libvlc_track_type_t.libvlc_track_text
+    }
+
+    /// <summary>
+    ///     A wrapper for <see cref="libvlc_media_track_t" /> struct.
+    /// </summary>
+    public abstract unsafe class MediaTrack
+    {
+        protected MediaTrack(libvlc_media_track_t* mediaTrack)
         {
             Initialize(mediaTrack);
         }
@@ -27,57 +31,53 @@ namespace Meta.Vlc
         public int Profile { get; private set; }
         public int Level { get; private set; }
         public uint Bitrate { get; private set; }
-        public String Language { get; private set; }
-        public String Description { get; private set; }
-        protected IntPtr Track { get; private set; }
+        public string Language { get; private set; }
+        public string Description { get; private set; }
 
         /// <summary>
         ///     Create a media track from a pointer, it will distinguish type of media track auto.
         /// </summary>
         /// <param name="pointer">pointer of media track</param>
-        /// <returns>a audio track, video track, subtitle track or unknow track</returns>
-        public static MediaTrack CreateFromPointer(IntPtr pointer)
+        /// <returns>a audio track, video track, subtitle track or unknown track</returns>
+        public static MediaTrack CreateFromPointer(libvlc_media_track_t* pointer)
         {
-            var track = (Interop.Media.MediaTrack) Marshal.PtrToStructure(pointer, typeof (Interop.Media.MediaTrack));
-
-            switch (track.Type)
+            switch ((TrackType) pointer->i_type)
             {
                 case TrackType.Audio:
-                    return new AudioTrack(track);
+                    return new AudioTrack(pointer);
 
                 case TrackType.Video:
-                    return new VideoTrack(track);
+                    return new VideoTrack(pointer);
 
                 case TrackType.Text:
-                    return new SubtitleTrack(track);
+                    return new SubtitleTrack(pointer);
 
-                case TrackType.Unkown:
+                case TrackType.Unknown:
                 default:
-                    return new UnkownTrack(track);
+                    return new UnknownTrack(pointer);
             }
         }
 
-        protected virtual void Initialize(Interop.Media.MediaTrack mediaTrack)
+        protected virtual void Initialize(libvlc_media_track_t* mediaTrack)
         {
-            Codec = mediaTrack.Codec;
-            OriginalFourcc = mediaTrack.OriginalFourcc;
-            Id = mediaTrack.Id;
-            Type = mediaTrack.Type;
-            Profile = mediaTrack.Profile;
-            Level = mediaTrack.Level;
-            Bitrate = mediaTrack.Bitrate;
-            Language = InteropHelper.PtrToString(mediaTrack.Language);
-            Description = InteropHelper.PtrToString(mediaTrack.Description);
-            Track = mediaTrack.Track;
+            Codec = mediaTrack->i_codec;
+            OriginalFourcc = mediaTrack->i_original_fourcc;
+            Id = mediaTrack->i_id;
+            Type = (TrackType) mediaTrack->i_type;
+            Profile = mediaTrack->i_profile;
+            Level = mediaTrack->i_level;
+            Bitrate = mediaTrack->i_bitrate;
+            Language = InteropHelper.PtrToString(mediaTrack->psz_language);
+            Description = InteropHelper.PtrToString(mediaTrack->psz_description);
         }
     }
 
     /// <summary>
-    ///     A warpper for <see cref="Interop.Media.AudioTrack" /> struct.
+    ///     A wrapper for <see cref="libvlc_audio_track_t" /> struct.
     /// </summary>
-    public class AudioTrack : MediaTrack
+    public unsafe class AudioTrack : MediaTrack
     {
-        internal AudioTrack(Interop.Media.MediaTrack mediaTrack) : base(mediaTrack)
+        internal AudioTrack(libvlc_media_track_t* mediaTrack) : base(mediaTrack)
         {
         }
 
@@ -85,23 +85,21 @@ namespace Meta.Vlc
 
         public uint Rate { get; private set; }
 
-        protected override void Initialize(Interop.Media.MediaTrack mediaTrack)
+        protected override void Initialize(libvlc_media_track_t* mediaTrack)
         {
             base.Initialize(mediaTrack);
-
-            var audioTrack = (Interop.Media.AudioTrack) Marshal.PtrToStructure(Track, typeof (Interop.Media.AudioTrack));
-
-            Channels = audioTrack.Channels;
-            Rate = audioTrack.Rate;
+            var audioData = (libvlc_audio_track_t*) mediaTrack->data;
+            Channels = audioData->i_channels;
+            Rate = audioData->i_rate;
         }
     }
 
     /// <summary>
-    ///     A warpper for <see cref="Interop.Media.VideoTrack" /> struct.
+    ///     A wrapper for <see cref="libvlc_video_track_t" /> struct.
     /// </summary>
-    public class VideoTrack : MediaTrack
+    public unsafe class VideoTrack : MediaTrack
     {
-        internal VideoTrack(Interop.Media.MediaTrack mediaTrack) : base(mediaTrack)
+        internal VideoTrack(libvlc_media_track_t* mediaTrack) : base(mediaTrack)
         {
         }
 
@@ -112,106 +110,68 @@ namespace Meta.Vlc
         public uint FrameRateNum { get; private set; }
         public uint FrameRateDen { get; private set; }
 
-        protected override void Initialize(Interop.Media.MediaTrack mediaTrack)
+        protected override void Initialize(libvlc_media_track_t* mediaTrack)
         {
             base.Initialize(mediaTrack);
 
-            var videoTrack = (Interop.Media.VideoTrack) Marshal.PtrToStructure(Track, typeof (Interop.Media.VideoTrack));
-
-            Height = videoTrack.Height;
-            Width = videoTrack.Width;
-            SarNum = videoTrack.SarNum;
-            SarDen = videoTrack.SarDen;
-            FrameRateNum = videoTrack.FrameRateNum;
-            FrameRateDen = videoTrack.FrameRateDen;
+            var videoData = (libvlc_video_track_t*)mediaTrack->data;
+            Height = videoData->i_height;
+            Width = videoData->i_width;
+            SarNum = videoData->i_sar_num;
+            SarDen = videoData->i_sar_den;
+            FrameRateNum = videoData->i_frame_rate_num;
+            FrameRateDen = videoData->i_frame_rate_den;
         }
     }
 
     /// <summary>
-    ///     A warpper for <see cref="Interop.Media.SubtitleTrack" /> struct.
+    ///     A wrapper for <see cref="libvlc_subtitle_track_t" /> struct.
     /// </summary>
-    public class SubtitleTrack : MediaTrack
+    public unsafe class SubtitleTrack : MediaTrack
     {
-        internal SubtitleTrack(Interop.Media.MediaTrack mediaTrack) : base(mediaTrack)
+        internal SubtitleTrack(libvlc_media_track_t* mediaTrack) : base(mediaTrack)
         {
         }
 
-        public String Encoding { get; private set; }
+        public string Encoding { get; private set; }
 
-        protected override void Initialize(Interop.Media.MediaTrack mediaTrack)
+        protected override void Initialize(libvlc_media_track_t* mediaTrack)
         {
             base.Initialize(mediaTrack);
 
-            var subtitleTrack =
-                (Interop.Media.SubtitleTrack) Marshal.PtrToStructure(Track, typeof (Interop.Media.SubtitleTrack));
-
-            Encoding = InteropHelper.PtrToString(subtitleTrack.Encoding);
+            var subtitleData = (libvlc_subtitle_track_t*)mediaTrack->data;
+            Encoding = InteropHelper.PtrToString(subtitleData->psz_encoding);
         }
     }
 
     /// <summary>
-    ///     A warpper for orther media track.
+    ///     A wrapper for other media track.
     /// </summary>
-    public class UnkownTrack : MediaTrack
+    public unsafe class UnknownTrack : MediaTrack
     {
-        internal UnkownTrack(Interop.Media.MediaTrack mediaTrack) : base(mediaTrack)
+        internal UnknownTrack(libvlc_media_track_t* mediaTrack) : base(mediaTrack)
         {
-        }
-
-        public IntPtr TrackPointer
-        {
-            get { return Track; }
         }
     }
 
     /// <summary>
-    ///     A list warpper for <see cref="Interop.Media.MediaTrack" /> struct.
+    ///     A list wrapper for <see cref="libvlc_media_track_t" /> struct.
     /// </summary>
-    public class MediaTrackList : IEnumerable<MediaTrack>, IEnumerable
+    public unsafe class MediaTrackList : VlcUnmanagedList<MediaTrack>
     {
-        private List<MediaTrack> _list;
-
-        /// <summary>
-        ///     Create a list of media track from a pointer of array.
-        /// </summary>
-        /// <param name="pointer">pointer of media track array</param>
-        /// <param name="count">count of media track array</param>
-        public MediaTrackList(IntPtr pointer, uint count)
+        public MediaTrackList(void** pointer, uint count) : base(pointer, count)
         {
-            _list = new List<MediaTrack>();
-
-            if (pointer == IntPtr.Zero) return;
-
-            var tmp = pointer;
-
-            for (var i = 0; i < count; i++)
-            {
-                var p = Marshal.ReadIntPtr(tmp);
-                _list.Add(MediaTrack.CreateFromPointer(p));
-                tmp = (IntPtr) ((Int64) tmp + IntPtr.Size);
-            }
-
-            LibVlcManager.ReleaseTracks(pointer, count);
         }
 
-        public int Count
+        protected override MediaTrack CreateItem(void* data)
         {
-            get { return _list.Count; }
+            return MediaTrack.CreateFromPointer((libvlc_media_track_t*) data);
         }
 
-        public MediaTrack this[int index]
+        protected override void Release(void** data)
         {
-            get { return _list[index]; }
-        }
-
-        public IEnumerator<MediaTrack> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            LibVlcManager.GetFunctionDelegate<libvlc_media_tracks_release>()
+                .Invoke((libvlc_media_track_t**) data, (uint) Count);
         }
     }
 }

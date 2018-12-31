@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: PresetAudioEqualizerType.cs
-// Version: 20160214
+// Version: 20181231
 
 namespace Meta.Vlc
 {

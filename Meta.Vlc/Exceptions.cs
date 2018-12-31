@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: Exceptions.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using Meta.Vlc.Interop;
@@ -69,7 +69,7 @@ namespace Meta.Vlc
         /// <param name="innerException">inner exception</param>
         public FunctionNotFoundException(LibVlcFunctionAttribute functionInfo, LibVlcVersion libvlcVersion,
             Exception innerException)
-            : base(String.Format("Can't find function \"{0}\" in dll.", functionInfo.FunctionName), innerException)
+            : base(string.Format("Can't find function \"{0}\" in dll.", functionInfo.FunctionName), innerException)
         {
             FunctionInfomation = functionInfo;
             LibVlcVersion = libvlcVersion;
@@ -78,12 +78,12 @@ namespace Meta.Vlc
         /// <summary>
         ///     Infomation of function what not found.
         /// </summary>
-        public LibVlcFunctionAttribute FunctionInfomation { get; private set; }
+        public LibVlcFunctionAttribute FunctionInfomation { get; }
 
         /// <summary>
         ///     Versiong infomation of current LibVlc.
         /// </summary>
-        public LibVlcVersion LibVlcVersion { get; private set; }
+        public LibVlcVersion LibVlcVersion { get; }
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ namespace Meta.Vlc
         /// <param name="libvlcVersion">version of LibVlc</param>
         public FunctionNotAvailableException(LibVlcFunctionAttribute functionInfo, LibVlcVersion libvlcVersion)
             : base(
-                String.Format("Function \"{0}\" isn't available on current version LibVlc.", functionInfo.FunctionName))
+                string.Format("Function \"{0}\" isn't available on current version LibVlc.", functionInfo.FunctionName))
         {
             FunctionInfomation = functionInfo;
             LibVlcVersion = libvlcVersion;
@@ -107,12 +107,12 @@ namespace Meta.Vlc
         /// <summary>
         ///     Infomation of function what not found.
         /// </summary>
-        public LibVlcFunctionAttribute FunctionInfomation { get; private set; }
+        public LibVlcFunctionAttribute FunctionInfomation { get; }
 
         /// <summary>
         ///     Versiong infomation of current LibVlc.
         /// </summary>
-        public LibVlcVersion LibVlcVersion { get; private set; }
+        public LibVlcVersion LibVlcVersion { get; }
     }
 
     /// <summary>
@@ -124,9 +124,9 @@ namespace Meta.Vlc
         ///     Create a <see cref="VersionStringParseException" /> with parse failed version string.
         /// </summary>
         /// <param name="versionString"></param>
-        public VersionStringParseException(String versionString)
+        public VersionStringParseException(string versionString)
             : base(
-                String.Format("Can't parse libvlc version string \"{0}\", it must be like \"2.2.0-Meta Weatherwax\".",
+                string.Format("Can't parse libvlc version string \"{0}\", it must be like \"2.2.0-Meta Weatherwax\".",
                     versionString))
         {
             VersionString = versionString;
@@ -135,7 +135,7 @@ namespace Meta.Vlc
         /// <summary>
         ///     Parse failed version string.
         /// </summary>
-        public String VersionString { get; private set; }
+        public string VersionString { get; }
     }
 
     /// <summary>
@@ -177,8 +177,10 @@ namespace Meta.Vlc
         /// <summary>
         ///     Create a <see cref="VlcCreateFailException" /> with some message.
         /// </summary>
-        public VlcCreateFailException(String message)
-            : base("Can't create a Vlc instence, check your Vlc options." + (message == null ? "" : String.Format(" Maybe those message \"{0}\" mean sometion for you.",message)))
+        public VlcCreateFailException(string message)
+            : base("Can't create a Vlc instence, check your Vlc options." + (message == null
+                       ? ""
+                       : string.Format(" Maybe those message \"{0}\" mean sometion for you.", message)))
         {
         }
     }

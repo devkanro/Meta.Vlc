@@ -1,11 +1,11 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: LibVlc.VLM.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Runtime.InteropServices;
 
-namespace Meta.Vlc.Interop.VLM
+namespace Meta.Vlc.Interop
 {
     /// <summary>
     ///     释放给定的 LibVlc 的实例相关的 VLM 实例

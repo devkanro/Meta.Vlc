@@ -1,10 +1,11 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: ApiManager.cs
-// Version: 20160214
+// Version: 20181231
 
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace Meta.Vlc.Wpf
 {
@@ -27,10 +28,7 @@ namespace Meta.Vlc.Wpf
         public static void ReleaseAll()
         {
             if (Vlcs == null) return;
-            foreach (var vlc in Vlcs)
-            {
-                vlc.Dispose();
-            }
+            foreach (var vlc in Vlcs) vlc.Dispose();
             Vlcs.Clear();
         }
 
@@ -41,12 +39,12 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     The path of LibVlc dlls.
         /// </summary>
-        public static String LibVlcPath { get; private set; }
+        public static string LibVlcPath { get; private set; }
 
         /// <summary>
         ///     The options when initialize LibVlc.
         /// </summary>
-        public static IList<String> VlcOption { get; private set; }
+        public static IList<string> VlcOption { get; private set; }
 
         /// <summary>
         ///     The list of VLC.
@@ -60,10 +58,7 @@ namespace Meta.Vlc.Wpf
         {
             get
             {
-                if (_defaultVlc == null)
-                {
-                    Vlcs.Add(_defaultVlc = new Vlc(VlcOption.ToArray()));
-                }
+                if (_defaultVlc == null) Vlcs.Add(_defaultVlc = new Vlc(VlcOption.ToArray()));
 
                 return _defaultVlc;
             }
@@ -82,7 +77,7 @@ namespace Meta.Vlc.Wpf
         {
             IsInitialized = false;
             LibVlcPath =
-                System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) +
+                Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) +
                 @"\LibVlc\";
         }
 
@@ -98,7 +93,7 @@ namespace Meta.Vlc.Wpf
         ///     Initialize the VLC with path of LibVlc.
         /// </summary>
         /// <param name="libVlcPath"></param>
-        public static void Initialize(String libVlcPath)
+        public static void Initialize(string libVlcPath)
         {
             LibVlcPath = libVlcPath;
             Initialize();
@@ -109,7 +104,7 @@ namespace Meta.Vlc.Wpf
         /// </summary>
         /// <param name="libVlcPath"></param>
         /// <param name="vlcOption"></param>
-        public static void Initialize(String libVlcPath, params String[] vlcOption)
+        public static void Initialize(string libVlcPath, params string[] vlcOption)
         {
             LibVlcPath = libVlcPath;
             VlcOption = vlcOption;

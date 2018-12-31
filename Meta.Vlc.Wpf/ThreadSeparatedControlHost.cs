@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: ThreadSeparatedControlHost.cs
-// Version: 20160327
+// Version: 20181231
 
 using System;
 using System.Collections;
@@ -12,35 +12,33 @@ using System.Windows.Threading;
 
 namespace Meta.Vlc.Wpf
 {
-    class ThreadSeparatedControlLoadedRoutedEventArgs : RoutedEventArgs
+    internal class ThreadSeparatedControlLoadedRoutedEventArgs : RoutedEventArgs
     {
-        public ThreadSeparatedControlLoadedRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) { }
+        public ThreadSeparatedControlLoadedRoutedEventArgs(RoutedEvent routedEvent, object source) : base(routedEvent,
+            source)
+        {
+        }
     }
-    
+
     public abstract class ThreadSeparatedControlHost : FrameworkElement
     {
+        public static readonly RoutedEvent ThreadSeparatedControlLoadedEvent =
+            EventManager.RegisterRoutedEvent("ThreadSeparatedControlLoaded", RoutingStrategy.Bubble,
+                typeof(EventHandler<ThreadSeparatedControlLoadedRoutedEventArgs>), typeof(ThreadSeparatedControlHost));
+
         public FrameworkElement TargetElement { get; protected set; }
         public HostVisual HostVisual { get; protected set; }
         public VisualTargetPresentationSource VisualTarget { get; protected set; }
 
-        public Dispatcher SeparateThreadDispatcher
-        {
-            get { return TargetElement == null ? null : TargetElement.Dispatcher; }
-        }
+        public Dispatcher SeparateThreadDispatcher => TargetElement == null ? null : TargetElement.Dispatcher;
 
-        protected override int VisualChildrenCount
-        {
-            get { return HostVisual != null ? 1 : 0; }
-        }
+        protected override int VisualChildrenCount => HostVisual != null ? 1 : 0;
 
         protected override IEnumerator LogicalChildren
         {
             get
             {
-                if (HostVisual != null)
-                {
-                    yield return HostVisual;
-                }
+                if (HostVisual != null) yield return HostVisual;
             }
         }
 
@@ -50,7 +48,7 @@ namespace Meta.Vlc.Wpf
         {
             if (SeparateThreadDispatcher != null) return;
 
-            AutoResetEvent sync = new AutoResetEvent(false);
+            var sync = new AutoResetEvent(false);
             HostVisual = new HostVisual();
 
             AddLogicalChild(HostVisual);
@@ -104,7 +102,7 @@ namespace Meta.Vlc.Wpf
             Loaded += (sender, args) =>
             {
                 LoadThreadSeparatedControl();
-                this.RaiseEvent(new ThreadSeparatedControlLoadedRoutedEventArgs(ThreadSeparatedControlLoadedEvent, this));
+                RaiseEvent(new ThreadSeparatedControlLoadedRoutedEventArgs(ThreadSeparatedControlLoadedEvent, this));
             };
             Unloaded += (sender, args) => { UnloadThreadSeparatedControl(); };
 
@@ -128,31 +126,23 @@ namespace Meta.Vlc.Wpf
         protected override System.Windows.Size ArrangeOverride(System.Windows.Size finalSize)
         {
             if (TargetElement != null)
-            {
                 TargetElement.Dispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() => TargetElement.Arrange(new Rect(finalSize))));
-            }
 
             return finalSize;
         }
 
         protected override Visual GetVisualChild(int index)
         {
-            if (index == 0)
-            {
-                return HostVisual;
-            }
+            if (index == 0) return HostVisual;
 
             throw new IndexOutOfRangeException("index");
         }
 
-        public static readonly RoutedEvent ThreadSeparatedControlLoadedEvent =
-            EventManager.RegisterRoutedEvent("ThreadSeparatedControlLoaded", RoutingStrategy.Bubble, typeof(EventHandler<ThreadSeparatedControlLoadedRoutedEventArgs>), typeof(ThreadSeparatedControlHost));
-
         public event RoutedEventHandler ThreadSeparatedControlLoaded
         {
-            add { this.AddHandler(ThreadSeparatedControlLoadedEvent, value); }
-            remove { this.RemoveHandler(ThreadSeparatedControlLoadedEvent, value); }
+            add => AddHandler(ThreadSeparatedControlLoadedEvent, value);
+            remove => RemoveHandler(ThreadSeparatedControlLoadedEvent, value);
         }
     }
 }

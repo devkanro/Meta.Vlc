@@ -1,14 +1,14 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: LibVlcManager.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using Meta.Vlc.Interop;
 using Meta.Vlc.Interop.Core;
-using Meta.Vlc.Interop.Media;
-using Meta.Vlc.Interop.MediaPlayer;
 
 namespace Meta.Vlc
 {
@@ -16,17 +16,15 @@ namespace Meta.Vlc
     ///     LibVlc dlls manager, load LibVlc and initialize LibVlc to use. Some public method also in this class, like
     ///     <see cref="Free" /> method.
     /// </summary>
-    public static class LibVlcManager
+    public static unsafe class LibVlcManager
     {
-        private static LibVlcFunction<GetVersion> _getVersionFunction;
-        private static LibVlcFunction<GetCompiler> _getCompilerFunction;
-        private static LibVlcFunction<GetChangeset> _getChangesetFunction;
-        private static LibVlcFunction<Free> _freeFunction;
-        private static LibVlcFunction<ReleaseLibVlcModuleDescription> _releaseLibVlcModuleDescriptionFunction;
-        private static LibVlcFunction<ReleaseTrackDescription> _releaseTrackDescriptionFunction;
-        private static LibVlcFunction<ReleaseAudioDeviceList> _releaseAudioDeviceListFunction;
-        private static LibVlcFunction<ReleaseAudioOutputList> _releaseAudioOutputListFunction;
-        private static LibVlcFunction<ReleaseTracks> _releaseTracksFunction;
+        private static LibVlcFunction<libvlc_get_version> _getVersionFunction;
+        private static LibVlcFunction<libvlc_get_compiler> _getCompilerFunction;
+        private static LibVlcFunction<libvlc_get_changeset> _getChangeSetFunction;
+        private static LibVlcFunction<libvlc_free> _freeFunction;
+
+        private static readonly Dictionary<Type, Object> _cache =
+            new Dictionary<Type, Object>();
 
         /// <summary>
         ///     LibVlc loaded or not.
@@ -46,7 +44,7 @@ namespace Meta.Vlc
         /// <summary>
         ///     Directory of LibVlc dlls.
         /// </summary>
-        public static String LibVlcDirectory { get; set; }
+        public static string LibVlcDirectory { get; set; }
 
         /// <summary>
         ///     Version infomation of LibVlc.
@@ -72,16 +70,16 @@ namespace Meta.Vlc
         ///     At least one component of version represents a number greater than
         ///     <see cref="F:System.Int32.MaxValue" />.
         /// </exception>
-        public static void LoadLibVlc(String libVlcDirectory = null)
+        public static void LoadLibVlc(string libVlcDirectory = null)
         {
-            LibVlcDirectory = libVlcDirectory == null ? "" : libVlcDirectory;
-
             if (IsLibLoaded) return;
+
+            LibVlcDirectory = libVlcDirectory == null ? "" : libVlcDirectory;
 
             try
             {
-                FileInfo libcore = new FileInfo(Path.Combine(LibVlcDirectory, "libvlccore.dll"));
-                FileInfo libvlc = new FileInfo(Path.Combine(LibVlcDirectory, "libvlc.dll"));
+                var libcore = new FileInfo(Path.Combine(LibVlcDirectory, "libvlccore.dll"));
+                var libvlc = new FileInfo(Path.Combine(LibVlcDirectory, "libvlc.dll"));
                 LibVlcVCoreHandle = Win32Api.LoadLibrary(libcore.FullName);
                 LibVlcHandle = Win32Api.LoadLibrary(libvlc.FullName);
             }
@@ -90,31 +88,31 @@ namespace Meta.Vlc
                 throw new LibVlcLoadLibraryException(e);
             }
 
-            _getVersionFunction = new LibVlcFunction<GetVersion>();
+            _getVersionFunction = new LibVlcFunction<libvlc_get_version>(LibVlcHandle, null);
+            _getCompilerFunction = new LibVlcFunction<libvlc_get_compiler>(LibVlcHandle, null);
+            _getChangeSetFunction = new LibVlcFunction<libvlc_get_changeset>(LibVlcHandle, null);
+            _freeFunction = new LibVlcFunction<libvlc_free>(LibVlcHandle, null);
+
+
             LibVlcVersion = new LibVlcVersion(GetVersion());
+            var functionArgs = new object[] {LibVlcHandle, LibVlcVersion};
 
-            _getCompilerFunction = new LibVlcFunction<GetCompiler>();
-            _getChangesetFunction = new LibVlcFunction<GetChangeset>();
-            _freeFunction = new LibVlcFunction<Free>();
-            _releaseLibVlcModuleDescriptionFunction = new LibVlcFunction<ReleaseLibVlcModuleDescription>();
-            _releaseAudioOutputListFunction = new LibVlcFunction<ReleaseAudioOutputList>();
-            _releaseAudioDeviceListFunction = new LibVlcFunction<ReleaseAudioDeviceList>();
-            _releaseTrackDescriptionFunction = new LibVlcFunction<ReleaseTrackDescription>();
-            _releaseTracksFunction = new LibVlcFunction<ReleaseTracks>();
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                var attrs = type.GetCustomAttributes(typeof(LibVlcFunctionAttribute), false);
+                if (attrs.Length == 0) continue;
 
-            Vlc.LoadLibVlc();
-            VlcError.LoadLibVlc();
-            VlcEventManager.LoadLibVlc();
-            VlcMedia.LoadLibVlc();
-            VlcMediaPlayer.LoadLibVlc();
-            AudioEqualizer.LoadLibVlc();
+                var functionType = typeof(LibVlcFunction<>).MakeGenericType(type);
+                var function = Activator.CreateInstance(functionType, functionArgs);
+                _cache.Add(type, function);
+            }
         }
 
         /// <summary>
         ///     Get version string of LibVlc.
         /// </summary>
         /// <returns></returns>
-        public static String GetVersion()
+        public static string GetVersion()
         {
             return InteropHelper.PtrToString(_getVersionFunction.Delegate());
         }
@@ -123,7 +121,7 @@ namespace Meta.Vlc
         ///     Get compiler infomation of LibVlc.
         /// </summary>
         /// <returns></returns>
-        public static String GetCompiler()
+        public static string GetCompiler()
         {
             return InteropHelper.PtrToString(_getCompilerFunction.Delegate());
         }
@@ -132,9 +130,9 @@ namespace Meta.Vlc
         ///     Get changeset of LibVlc.
         /// </summary>
         /// <returns></returns>
-        public static String GetChangeset()
+        public static string GetChangeSet()
         {
-            return InteropHelper.PtrToString(_getChangesetFunction.Delegate());
+            return InteropHelper.PtrToString(_getChangeSetFunction.Delegate());
         }
 
         /// <summary>
@@ -142,60 +140,14 @@ namespace Meta.Vlc
         /// </summary>
         /// <param name="pointer">the pointer of object to be released </param>
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void Free(IntPtr pointer)
+        public static void Free(void* pointer)
         {
             _freeFunction.Delegate(pointer);
         }
 
-        /// <summary>
-        ///     Release a list of module descriptions.
-        /// </summary>
-        /// <param name="moduleDescriptionList">the list to be released </param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void ReleaseModuleDescriptionList(IntPtr moduleDescriptionList)
+        public static T GetFunctionDelegate<T>() where T : Delegate
         {
-            _releaseLibVlcModuleDescriptionFunction.Delegate(moduleDescriptionList);
-        }
-
-        /// <summary>
-        ///     Frees the list of available audio output modules.
-        /// </summary>
-        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioOutput" />. </param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void ReleaseAudioOutputList(IntPtr pointer)
-        {
-            _releaseAudioOutputListFunction.Delegate(pointer);
-        }
-
-        /// <summary>
-        ///     Frees a list of available audio output devices.
-        /// </summary>
-        /// <param name="pointer">a pointer of first <see cref="Interop.MediaPlayer.AudioDevice" />. </param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void ReleaseAudioDeviceList(IntPtr pointer)
-        {
-            _releaseAudioDeviceListFunction.Delegate(pointer);
-        }
-
-        /// <summary>
-        ///     Release (free) pointer of <see cref="TrackDescriptionList" />.
-        /// </summary>
-        /// <param name="pointer"></param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void ReleaseTrackDescriptionList(IntPtr pointer)
-        {
-            _releaseTrackDescriptionFunction.Delegate(pointer);
-        }
-
-        /// <summary>
-        ///     Release media descriptor's elementary streams description array.
-        /// </summary>
-        /// <param name="pointer">pointer tracks info array to release </param>
-        /// <param name="count">number of elements in the array </param>
-        /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-        public static void ReleaseTracks(IntPtr pointer, uint count)
-        {
-            _releaseTracksFunction.Delegate(pointer, count);
+            return ((LibVlcFunction<T>)_cache[typeof(T)]).Delegate;
         }
     }
 }

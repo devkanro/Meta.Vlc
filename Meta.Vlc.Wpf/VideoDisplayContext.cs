@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VideoDisplayContext.cs
-// Version: 20160708
+// Version: 20181231
 
 using System;
 using System.Diagnostics;
@@ -38,15 +38,15 @@ namespace Meta.Vlc.Wpf
             ChromaType = chroma;
             PixelFormat = chroma.GetPixelFormat();
             IsAspectRatioChecked = false;
-            Size = width*height*PixelFormat.BitsPerPixel/8;
+            Size = width * height * PixelFormat.BitsPerPixel / 8;
             DisplayWidth = Width = width;
             DisplayHeight = Height = height;
-            Stride = width*PixelFormat.BitsPerPixel/8;
+            Stride = width * PixelFormat.BitsPerPixel / 8;
             FileMapping = Win32Api.CreateFileMapping(new IntPtr(-1), IntPtr.Zero, PageAccess.ReadWrite, 0, Size, null);
             MapView = Win32Api.MapViewOfFile(FileMapping, FileMapAccess.AllAccess, 0, 0, (uint) Size);
             Image =
                 (InteropBitmap)
-                    Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
+                Imaging.CreateBitmapSourceFromMemorySection(FileMapping, Width, Height, PixelFormat, Stride, 0);
         }
 
         #endregion --- Initialization ---
@@ -78,8 +78,8 @@ namespace Meta.Vlc.Wpf
         #region --- Properties ---
 
         public int Size { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
         public double DisplayWidth { get; private set; }
         public double DisplayHeight { get; private set; }
         public int Stride { get; private set; }
@@ -97,15 +97,10 @@ namespace Meta.Vlc.Wpf
         public void Display()
         {
             if (Image != null)
-            {
                 Image.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    if (Image != null)
-                    {
-                        Image.Invalidate();
-                    }
+                    if (Image != null) Image.Invalidate();
                 }));
-            }
         }
 
         public void CheckDisplaySize(VideoTrack track)
@@ -114,18 +109,18 @@ namespace Meta.Vlc.Wpf
             {
                 if (track.SarNum == 0 || track.SarDen == 0) return;
 
-                Debug.WriteLine(String.Format("Video Size:{0}x{1}\r\nSAR:{2}/{3}", track.Width, track.Height, track.SarNum, track.SarDen));
+                Debug.WriteLine($"Video Size:{track.Width}x{track.Height}\r\nSAR:{track.SarNum}/{track.SarDen}");
 
-                var sar = 1.0*track.SarNum/track.SarDen;
+                var sar = 1.0 * track.SarNum / track.SarDen;
                 if (sar > 1)
                 {
-                    DisplayWidth = sar*track.Width;
+                    DisplayWidth = sar * track.Width;
                     DisplayHeight = track.Height;
                 }
                 else
                 {
                     DisplayWidth = track.Width;
-                    DisplayHeight = track.Height/sar;
+                    DisplayHeight = track.Height / sar;
                 }
             }
         }

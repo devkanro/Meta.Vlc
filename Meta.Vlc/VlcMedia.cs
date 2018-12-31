@@ -1,139 +1,68 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcMedia.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
-using Meta.Vlc.Interop;
-using Meta.Vlc.Interop.Core.Events;
+using System.Collections.Generic;
+using Meta.Vlc.Event;
 using Meta.Vlc.Interop.Media;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     The API warpper of LibVlc media.
+    ///     The API wrapper of LibVlc media.
     /// </summary>
-    public class VlcMedia : IVlcObjectWithEvent
+    public unsafe class VlcMedia : IVlcObjectWithEvent
     {
-        private static LibVlcFunction<MediaAddOption> _addOptionFunction;
-        private static LibVlcFunction<MediaAddOptionFlag> _addOptionFlagFunction;
-        private static LibVlcFunction<MediaDuplicate> _duplicateFunction;
-        private static LibVlcFunction<GetEventManager> _getEventManagerFunction;
-        private static LibVlcFunction<GetCodecDescription> _getCodecDescriptionFunction;
-        private static LibVlcFunction<GetDuration> _getDurationFunction;
-        private static LibVlcFunction<GetMeta> _getMetaFunction;
-        private static LibVlcFunction<GetMrl> _getMrlFunction;
-        private static LibVlcFunction<GetState> _getStateFunction;
-        private static LibVlcFunction<GetStats> _getStatsFunction;
-        private static LibVlcFunction<GetTracksInfo> _getTracksInfoFunction;
-        private static LibVlcFunction<GetUserData> _getUserDataFunction;
-        private static LibVlcFunction<IsParsed> _isParsedFunction;
-        private static LibVlcFunction<CreateMediaAsNewNode> _createMediaAsNewNodeFunction;
-        private static LibVlcFunction<CreateMediaFromFileDescriptor> _createMediaFromFileDescriptorFunction;
-        private static LibVlcFunction<CreateMediaFromLocation> _createMediaFromLocationFunction;
-        private static LibVlcFunction<CreateMediaFromPath> _createMediaFromPathFunction;
-        private static LibVlcFunction<ParseMedia> _parseMediaFunction;
-        private static LibVlcFunction<ParseMediaAsync> _parseMediaAsyncFunction;
-        private static LibVlcFunction<ParseMediaWithOptionAsync> _parseMediaWithOptionAsyncFunction;
-        private static LibVlcFunction<ReleaseMedia> _releaseMediaFunction;
-        private static LibVlcFunction<RetainMedia> _retainMediaFunction;
-        private static LibVlcFunction<SaveMeta> _saveMetaFunction;
-        private static LibVlcFunction<SetMeta> _setMetaFunction;
-        private static LibVlcFunction<SetUserData> _setUserDataFunction;
-        private static LibVlcFunction<GetSubitems> _getSubitemsFunction;
-        private static LibVlcFunction<GetTracks> _getTracksFunction;
-        private readonly LibVlcEventCallBack _onDurationChanged;
-        private readonly LibVlcEventCallBack _onFreed;
+        private readonly MediaStats _stats = new MediaStats();
 
-        private readonly LibVlcEventCallBack _onMetaChanged;
-        private readonly LibVlcEventCallBack _onParsedChanged;
-        private readonly LibVlcEventCallBack _onStateChanged;
-        private readonly LibVlcEventCallBack _onSubItemAdded;
-
-        private bool _disposed;
-        private GCHandle _onDurationChangedHandle;
-        private GCHandle _onFreedHandle;
-
-        private GCHandle _onMetaChangedHandle;
-        private GCHandle _onParsedChangedHandle;
-        private GCHandle _onStateChangedHandle;
-        private GCHandle _onSubItemAddedHandle;
-
-        private MediaStats _stats;
-
-        static VlcMedia()
-        {
-            IsLibLoaded = false;
-        }
-
-        private VlcMedia(IVlcObject parentVlcObject, IntPtr pointer)
+        private VlcMedia(IVlcObject parentVlcObject, void* pointer)
         {
             VlcInstance = parentVlcObject.VlcInstance;
             InstancePointer = pointer;
-            EventManager = new VlcEventManager(this, _getEventManagerFunction.Delegate(InstancePointer));
+            VlcObjectManager.Add(this);
 
-            _onMetaChanged = OnMetaChanged;
-            _onSubItemAdded = OnSubItemAdded;
-            _onDurationChanged = OnDurationChanged;
-            _onParsedChanged = OnParsedChanged;
-            _onFreed = OnFreed;
-            _onStateChanged = OnStateChanged;
+            EventManager = new VlcEventManager(this,
+                LibVlcManager.GetFunctionDelegate<libvlc_media_event_manager>().Invoke(InstancePointer));
 
-            _onMetaChangedHandle = GCHandle.Alloc(_onMetaChanged);
-            _onSubItemAddedHandle = GCHandle.Alloc(_onSubItemAdded);
-            _onDurationChangedHandle = GCHandle.Alloc(_onDurationChanged);
-            _onParsedChangedHandle = GCHandle.Alloc(_onParsedChanged);
-            _onFreedHandle = GCHandle.Alloc(_onFreed);
-            _onStateChangedHandle = GCHandle.Alloc(_onStateChanged);
+            EventManager.Attach(EventType.MediaMetaChanged);
+            EventManager.Attach(EventType.MediaSubItemAdded);
+            EventManager.Attach(EventType.MediaDurationChanged);
+            EventManager.Attach(EventType.MediaParsedChanged);
+            EventManager.Attach(EventType.MediaFreed);
+            EventManager.Attach(EventType.MediaStateChanged);
+            EventManager.Attach(EventType.MediaSubItemTreeAdded);
 
-            HandleManager.Add(this);
-
-            EventManager.Attach(EventTypes.MediaMetaChanged, _onMetaChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaSubItemAdded, _onSubItemAdded, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaDurationChanged, _onDurationChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaParsedChanged, _onParsedChanged, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaFreed, _onFreed, IntPtr.Zero);
-            EventManager.Attach(EventTypes.MediaStateChanged, _onStateChanged, IntPtr.Zero);
+            EventManager.VlcEventFired += OnVlcEventFired;
         }
 
         /// <summary>
-        ///     获取一个值,该值指示当前模块是否被载入
+        ///     Get duration of media descriptor object item.
         /// </summary>
-        public static bool IsLibLoaded { get; private set; }
+        public TimeSpan Duration =>
+            new TimeSpan(LibVlcManager.GetFunctionDelegate<libvlc_media_get_duration>().Invoke(InstancePointer) *
+                         10000);
 
         /// <summary>
-        ///     获取媒体的时间长度
+        ///     Get the media resource locator (mrl) from a media descriptor object.
         /// </summary>
-        public TimeSpan Duration
-        {
-            get { return new TimeSpan(_getDurationFunction.Delegate(InstancePointer)*10000); }
-        }
+        public string Mrl =>
+            InteropHelper.PtrToString(LibVlcManager.GetFunctionDelegate<libvlc_media_get_mrl>()
+                .Invoke(InstancePointer));
 
         /// <summary>
-        ///     获取该媒体的媒体资源地址
-        /// </summary>
-        public String Mrl
-        {
-            get { return InteropHelper.PtrToString(_getMrlFunction.Delegate(InstancePointer)); }
-        }
-
-        /// <summary>
-        ///     获取媒体当前状态
+        ///     Get current state of media descriptor object.
         /// </summary>
         public MediaState State
         {
             get
             {
-                if (InstancePointer == IntPtr.Zero)
+                if (InstancePointer == null)
                     return MediaState.NothingSpecial;
 
-                var state = _getStateFunction.Delegate(InstancePointer);
-                if (state == MediaState.Error)
-                {
-                    Error = VlcError.GetErrorMessage();
-                }
+                var state = (MediaState) LibVlcManager.GetFunctionDelegate<libvlc_media_get_state>()
+                    .Invoke(InstancePointer);
+                if (state == MediaState.Error) Error = VlcError.GetErrorMessage();
                 return state;
             }
         }
@@ -141,361 +70,313 @@ namespace Meta.Vlc
         public string Error { get; private set; }
 
         /// <summary>
-        ///     获取媒体当前统计
+        ///     Get the current statistics about the media
         /// </summary>
         public MediaStats Stats
         {
             get
             {
-                if (_getStatsFunction.Delegate(InstancePointer, ref _stats))
+                fixed (libvlc_media_stats_t* pointer = &_stats.Struct)
                 {
-                    return _stats;
+                    if (LibVlcManager.GetFunctionDelegate<libvlc_media_get_stats>().Invoke(InstancePointer, pointer))
+                        return _stats;
                 }
-                throw new Exception("无法获取媒体统计信息");
+
+                throw new Exception("Statistics about the media is unavailable");
             }
         }
 
         /// <summary>
-        ///     获取或设置由用户定义的媒体数据
+        ///     Get media descriptor's user_data. user_data is specialized data
+        ///     accessed by the host application, VLC.framework uses it as a pointer to
+        ///     an native object that references a <see cref="VlcMedia" /> pointer.
         /// </summary>
         public IntPtr UserData
         {
-            get { return _getUserDataFunction.Delegate(InstancePointer); }
+            get => new IntPtr(LibVlcManager.GetFunctionDelegate<libvlc_media_get_user_data>().Invoke(InstancePointer));
 
-            set { _setUserDataFunction.Delegate(InstancePointer, value); }
+            set => LibVlcManager.GetFunctionDelegate<libvlc_media_set_user_data>()
+                .Invoke(InstancePointer, value.ToPointer());
         }
 
-        /// <summary>
-        ///     获取一个值表示该媒体是否已经解析
-        /// </summary>
-        public bool IsParsed
-        {
-            get { return _isParsedFunction.Delegate(InstancePointer); }
-        }
-
-        public IntPtr Subitems
-        {
-            get { return _getSubitemsFunction.Delegate(InstancePointer); }
-        }
+        [Obsolete("Use 'ParsedStatus' instead")]
+        public bool IsParsed =>
+            LibVlcManager.GetFunctionDelegate<libvlc_media_get_parsed_status>().Invoke(InstancePointer) ==
+            libvlc_media_parsed_status_t.libvlc_media_parsed_status_done;
 
         /// <summary>
-        ///     获取 Media 实例指针
+        ///     Get Parsed status for media descriptor object.
         /// </summary>
-        public IntPtr InstancePointer { get; private set; }
-
-        public Vlc VlcInstance { get; private set; }
-
-        public VlcEventManager EventManager { get; private set; }
+        public MediaParsedStatus ParsedStatus => (MediaParsedStatus) LibVlcManager
+            .GetFunctionDelegate<libvlc_media_get_parsed_status>().Invoke(InstancePointer);
 
         /// <summary>
-        ///     释放 VlcMedia 资源
+        ///     Get sub items of media descriptor object. This will increment
+        ///     the reference count of supplied media descriptor object. Use
+        ///     libvlc_media_list_release to decrement the reference counting.
         /// </summary>
+        public IntPtr SubItems =>
+            new IntPtr(LibVlcManager.GetFunctionDelegate<libvlc_media_subitems>().Invoke(InstancePointer));
+
+        public void* InstancePointer { get; private set; }
+
+        public Vlc VlcInstance { get; }
+
+        public VlcEventManager EventManager { get; }
+
         public void Dispose()
         {
-            Dispose(true);
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
+        private void OnVlcEventFired(object sender, VlcEventArgs e)
+        {
+            switch (e.Type)
+            {
+                case EventType.MediaMetaChanged:
+                    MetaChanged?.Invoke(this,
+                        new MediaMetaChangedEventArgs((MediaMetaType) e.EventArgs->media_meta_changed.meta_type));
+                    break;
+                case EventType.MediaSubItemAdded:
+                    SubItemAdded?.Invoke(this,
+                        new MediaSubItemAddedEventArgs(e.EventArgs->media_subitem_added.new_child));
+                    break;
+                case EventType.MediaDurationChanged:
+                    DurationChanged?.Invoke(this,
+                        new MediaDurationChangedEventArgs(e.EventArgs->media_duration_changed.new_duration));
+                    break;
+                case EventType.MediaParsedChanged:
+                    ParsedChanged?.Invoke(this,
+                        new MediaParsedStatusChangedEventArgs(
+                            (MediaParsedStatus) e.EventArgs->media_parsed_changed.new_status));
+                    break;
+                case EventType.MediaFreed:
+                    Freed?.Invoke(this, new MediaFreedEventArgs(e.EventArgs->media_freed.md));
+                    break;
+                case EventType.MediaStateChanged:
+                    StateChanged?.Invoke(this,
+                        new MediaStateChangedEventArgs((MediaState) e.EventArgs->media_state_changed.new_state));
+                    break;
+                case EventType.MediaSubItemTreeAdded:
+                    SubItemTreeAdded?.Invoke(this,
+                        new MediaSubItemAddedEventArgs(e.EventArgs->media_subitemtree_added.md));
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        public event EventHandler<MediaMetaChangedEventArgs> MetaChanged;
+        public event EventHandler<MediaSubItemAddedEventArgs> SubItemAdded;
+        public event EventHandler<MediaDurationChangedEventArgs> DurationChanged;
+        public event EventHandler<MediaParsedStatusChangedEventArgs> ParsedChanged;
+        public event EventHandler<MediaFreedEventArgs> Freed;
+        public event EventHandler<MediaStateChangedEventArgs> StateChanged;
+        public event EventHandler<MediaSubItemAddedEventArgs> SubItemTreeAdded;
+
         /// <summary>
-        ///     载入 LibVlc 的 Media 模块,该方法会在 <see cref="Vlc.LoadLibVlc()" /> 中自动被调用
+        ///     Create a media as an empty node with a given name
         /// </summary>
-        /// <param name="libHandle"></param>
-        /// <param name="libVersion"></param>
-        /// <param name="devString"></param>
-        internal static void LoadLibVlc()
+        public static VlcMedia CreateAsNewNode(Vlc vlc, string name)
         {
-            if (!IsLibLoaded)
+            using (var handle = new StringHandle(name))
             {
-                _addOptionFunction = new LibVlcFunction<MediaAddOption>();
-                _addOptionFlagFunction = new LibVlcFunction<MediaAddOptionFlag>();
-                _duplicateFunction = new LibVlcFunction<MediaDuplicate>();
-                _getEventManagerFunction = new LibVlcFunction<GetEventManager>();
-                _getCodecDescriptionFunction = new LibVlcFunction<GetCodecDescription>();
-                _getDurationFunction = new LibVlcFunction<GetDuration>();
-                _getMetaFunction = new LibVlcFunction<GetMeta>();
-                _getMrlFunction = new LibVlcFunction<GetMrl>();
-                _getStateFunction = new LibVlcFunction<GetState>();
-                _getStatsFunction = new LibVlcFunction<GetStats>();
-                _getTracksInfoFunction = new LibVlcFunction<GetTracksInfo>();
-                _getUserDataFunction = new LibVlcFunction<GetUserData>();
-                _isParsedFunction = new LibVlcFunction<IsParsed>();
-                _createMediaAsNewNodeFunction = new LibVlcFunction<CreateMediaAsNewNode>();
-                _createMediaFromFileDescriptorFunction = new LibVlcFunction<CreateMediaFromFileDescriptor>();
-                _createMediaFromLocationFunction = new LibVlcFunction<CreateMediaFromLocation>();
-                _createMediaFromPathFunction = new LibVlcFunction<CreateMediaFromPath>();
-                
-                _parseMediaFunction = new LibVlcFunction<ParseMedia>();
-                _parseMediaAsyncFunction = new LibVlcFunction<ParseMediaAsync>();
-                _parseMediaWithOptionAsyncFunction = new LibVlcFunction<ParseMediaWithOptionAsync>();
-                _releaseMediaFunction = new LibVlcFunction<ReleaseMedia>();
-                _retainMediaFunction = new LibVlcFunction<RetainMedia>();
-                _saveMetaFunction = new LibVlcFunction<SaveMeta>();
-                _setMetaFunction = new LibVlcFunction<SetMeta>();
-                _setUserDataFunction = new LibVlcFunction<SetUserData>();
-                _getSubitemsFunction = new LibVlcFunction<GetSubitems>();
-                _getTracksFunction = new LibVlcFunction<GetTracks>();
-                IsLibLoaded = true;
+                var pointer = LibVlcManager.GetFunctionDelegate<libvlc_media_new_as_node>()
+                    .Invoke(vlc.InstancePointer, handle.UnsafePointer);
+
+                if (pointer == null) throw new LibVlcException("Fail to create media.");
+
+                return new VlcMedia(vlc, pointer);
             }
         }
-
-        private void OnMetaChanged(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            if (MetaChanged != null)
-            {
-                MetaChanged(this, new ObjectEventArgs<MediaMetaChangedArgs>(arg.MediaMetaChanged));
-            }
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaMetaChangedArgs>> MetaChanged;
-
-        private void OnSubItemAdded(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            if (SubItemAdded != null)
-            {
-                SubItemAdded(this, new ObjectEventArgs<MediaSubitemAddedArgs>(arg.MediaSubitemAdded));
-            }
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaSubitemAddedArgs>> SubItemAdded;
-
-        private void OnDurationChanged(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            if (DurationChanged != null)
-            {
-                DurationChanged(this, new ObjectEventArgs<MediaDurationChangedArgs>(arg.MediaDurationChanged));
-            }
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaDurationChangedArgs>> DurationChanged;
-
-        private void OnParsedChanged(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            if (ParsedChanged != null)
-            {
-                ParsedChanged(this, new ObjectEventArgs<MediaParsedChangedArgs>(arg.MediaParsedChanged));
-            }
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaParsedChangedArgs>> ParsedChanged;
-
-        private void OnFreed(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            if (Freed != null)
-            {
-                Freed(this, new ObjectEventArgs<MediaFreedArgs>(arg.MediaFreed));
-            }
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaFreedArgs>> Freed;
-
-        private void OnStateChanged(ref LibVlcEventArgs arg, IntPtr userData)
-        {
-            var actualState = State;
-            StateChanged?.Invoke(this, new ObjectEventArgs<MediaStateChangedArgs>(new MediaStateChangedArgs {NewState = actualState }));
-        }
-
-        public event EventHandler<ObjectEventArgs<MediaStateChangedArgs>> StateChanged;
 
         /// <summary>
-        ///     通过名称创建一个新的 VlcMedia
+        ///     Create a media with a certain given media resource location,
+        ///     for instance a valid URL.
+        ///     <para />
+        ///     To refer to a local file with this function,
+        ///     the file://... URI syntax <b>must</b> be used (see IETF RFC3986).
+        ///     We recommend using <see cref="CreateFormPath" /> instead when dealing with local files.
         /// </summary>
-        /// <param name="vlc">Vlc 对象</param>
-        /// <param name="name">媒体名称</param>
-        public static VlcMedia CreateAsNewNode(Vlc vlc, String name)
+        public static VlcMedia CreateFormLocation(Vlc vlc, string url)
         {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(name), GCHandleType.Pinned);
-            var madia = new VlcMedia(vlc,
-                _createMediaAsNewNodeFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
-            handle.Free();
-            return madia;
+            using (var handle = new StringHandle(url))
+            {
+                var pointer = LibVlcManager.GetFunctionDelegate<libvlc_media_new_location>()
+                    .Invoke(vlc.InstancePointer, handle.UnsafePointer);
+
+                if (pointer == null) throw new LibVlcException("Fail to create media.");
+
+                return new VlcMedia(vlc, pointer);
+            }
         }
 
         /// <summary>
-        ///     通过给定的文件描述符创建一个新的 VlcMedia
+        ///     Create a media for a certain file path.
         /// </summary>
-        /// <param name="vlc">Vlc 对象</param>
-        /// <param name="fileDescriptor">文件描述符</param>
-        public static VlcMedia CreateFormFileDescriptor(Vlc vlc, int fileDescriptor)
+        public static VlcMedia CreateFormPath(Vlc vlc, string path)
         {
-            return new VlcMedia(vlc,
-                _createMediaFromFileDescriptorFunction.Delegate(vlc.InstancePointer, fileDescriptor));
+            using (var handle = new StringHandle(path))
+            {
+                var pointer = LibVlcManager.GetFunctionDelegate<libvlc_media_new_path>()
+                    .Invoke(vlc.InstancePointer, handle.UnsafePointer);
+
+                if (pointer == null) throw new LibVlcException("Fail to create media.");
+
+                return new VlcMedia(vlc, pointer);
+            }
         }
 
         /// <summary>
-        ///     通过给定的文件 Url 创建一个新的 VlcMedia,该 Url 的格式必须以 "file://" 开头,参见 "RFC3986".
-        /// </summary>
-        /// <param name="vlc">Vlc 对象</param>
-        /// <param name="url">文件 Url</param>
-        public static VlcMedia CreateFormLocation(Vlc vlc, String url)
-        {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(url), GCHandleType.Pinned);
-            var media = new VlcMedia(vlc,
-                _createMediaFromLocationFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
-            handle.Free();
-            return media;
-        }
-
-        /// <summary>
-        ///     通过给定的文件路径创建一个新的 VlcMedia
-        /// </summary>
-        /// <param name="vlc">Vlc 对象</param>
-        /// <param name="path">文件路径</param>
-        public static VlcMedia CreateFormPath(Vlc vlc, String path)
-        {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(path), GCHandleType.Pinned);
-            var media = new VlcMedia(vlc,
-                _createMediaFromPathFunction.Delegate(vlc.InstancePointer, handle.AddrOfPinnedObject()));
-            handle.Free();
-            return media;
-        }
-
-        /// <summary>
-        ///     向一个媒体添加选项,这个选项将会确定媒体播放器将如何读取介质,
+        ///     Add an option to the media.
+        ///     <para />
+        ///     This option will be used to determine how the <see cref="VlcMediaPlayer" /> will
+        ///     read the media. This allows to use VLC's advanced
+        ///     reading/streaming options on a per-media basis.
         /// </summary>
         /// <param name="options"></param>
-        public void AddOption(params String[] options)
+        public void AddOption(params string[] options)
         {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(String.Join(" ", options)), GCHandleType.Pinned);
-            _addOptionFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject());
-            handle.Free();
+            foreach (var option in options)
+                using (var handle = new StringHandle(option))
+                {
+                    LibVlcManager.GetFunctionDelegate<libvlc_media_add_option>()
+                        .Invoke(InstancePointer, handle.UnsafePointer);
+                }
         }
 
         /// <summary>
-        ///     向一个媒体通过可配置的标志添加一个选项,这个选项将会确定媒体播放器将如何读取介质,
+        ///     Add an option to the media with configurable flags.
+        ///     <para />
+        ///     This option will be used to determine how the <see cref="VlcMediaPlayer" /> will
+        ///     read the media. This allows to use VLC's advanced
+        ///     reading/streaming options on a per-media basis.
+        ///     <para />
+        ///     The options are detailed in vlc --long-help, for instance
+        ///     "--sout-all". Note that all options are not usable on medias:
+        ///     specifically, due to architectural issues, video-related options
+        ///     such as text renderer options cannot be set on a single media. They
+        ///     must be set on the whole libvlc instance instead.
         /// </summary>
-        /// <param name="options"></param>
-        /// <param name="flag"></param>
-        public void AddOptionFlag(String options, MediaOption flag)
+        public void AddOption(string option, uint flag)
         {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(options), GCHandleType.Pinned);
-            _addOptionFlagFunction.Delegate(InstancePointer, handle.AddrOfPinnedObject(), flag);
-            handle.Free();
+            using (var handle = new StringHandle(option))
+            {
+                LibVlcManager.GetFunctionDelegate<libvlc_media_add_option_flag>()
+                    .Invoke(InstancePointer, handle.UnsafePointer, flag);
+            }
         }
 
         /// <summary>
-        ///     复制一个媒体对象
+        ///     Duplicate a media descriptor object.
         /// </summary>
-        /// <returns>复制的媒体对象</returns>
         public VlcMedia Duplicate()
         {
-            return new VlcMedia(this, _duplicateFunction.Delegate(InstancePointer));
+            return new VlcMedia(this,
+                LibVlcManager.GetFunctionDelegate<libvlc_media_duplicate>().Invoke(InstancePointer));
         }
 
         /// <summary>
-        ///     获取媒体的基本编码器的说明
+        ///     Get codec description from media elementary stream
         /// </summary>
-        /// <param name="type">由 <see cref="MediaTrack.Type" /> 得来</param>
-        /// <param name="codec">由 <see cref="MediaTrack.Codec" /> 得来</param>
-        /// <returns>返回媒体的基本编码器的说明</returns>
-        public static String GetCodecDescription(TrackType type, int codec)
+        /// <param name="type">
+        ///     <see cref="MediaTrack.Type" />
+        /// </param>
+        /// <param name="codec"><see cref="MediaTrack.OriginalFourcc" /> or <see cref="MediaTrack.Codec" /></param>
+        public static string GetCodecDescription(TrackType type, uint codec)
         {
-            return InteropHelper.PtrToString(_getCodecDescriptionFunction.Delegate(type, codec));
+            return InteropHelper.PtrToString(LibVlcManager.GetFunctionDelegate<libvlc_media_get_codec_description>()
+                .Invoke((libvlc_track_type_t) type, codec));
         }
 
         /// <summary>
-        ///     获取媒体的某个元属性,如果尚未解析元属性,将会返回 NULL.
-        ///     这个方法会自动调用 <see cref="ParseMediaAsync" /> 方法,所以你在之后应该会收到一个 MediaMetaChanged 事件.
-        ///     如果你喜欢同步版本,可以在 GetMeta 之前调用 <see cref="ParseMedia" /> 方法
+        ///     Read the meta of the media.
+        ///     <para />
+        ///     If the media has not yet been parsed this will return NULL.
         /// </summary>
-        /// <param name="type">元属性类型</param>
-        /// <returns>返回媒体的某个元属性</returns>
-        public String GetMeta(MetaDataType type)
+        public string GetMeta(MediaMetaType type)
         {
-            return InteropHelper.PtrToString(_getMetaFunction.Delegate(InstancePointer, type));
+            return InteropHelper.PtrToString(LibVlcManager.GetFunctionDelegate<libvlc_media_get_meta>()
+                .Invoke(InstancePointer, (libvlc_meta_t) type));
         }
 
         /// <summary>
-        ///     获取媒体的基本流的描述,注意,在调用该方法之前你需要首先调用 <see cref="ParseMedia" /> 方法,或者至少播放一次.
-        ///     否则,你将的得到一个空数组
+        ///     Get media descriptor's elementary streams description
+        ///     <para />
+        ///     Note, you need to call <see cref="ParseWithOptionAsync" /> or play the media at least once
+        ///     before calling this function.
+        ///     Not doing this will result in an empty list.
         /// </summary>
-        /// <returns>一个 <see cref="MediaTrackInfo" /> 数组</returns>
-        public MediaTrackInfo[] GetTrackInfo()
+        public List<MediaTrack> GetTrackInfo()
         {
-            IntPtr pointer;
-            var count = _getTracksInfoFunction.Delegate(InstancePointer, out pointer);
-            var result = new MediaTrackInfo[count];
-            var temp = pointer;
+            libvlc_media_track_t** pointer;
+            var count = LibVlcManager.GetFunctionDelegate<libvlc_media_tracks_get>().Invoke(InstancePointer, &pointer);
 
-            for (var i = 0; i < count; i++)
+            using (var list = new MediaTrackList((void**) pointer, count))
             {
-                result[i] = (MediaTrackInfo) Marshal.PtrToStructure(temp, typeof (MediaTrackInfo));
-                temp = (IntPtr) ((int) temp + Marshal.SizeOf(typeof (MediaTrackInfo)));
+                return new List<MediaTrack>(list);
             }
-
-            LibVlcManager.Free(pointer);
-            return result;
         }
 
         /// <summary>
-        ///     解析一个媒体,获取媒体的元数据和轨道信息
+        ///     Parse the media asynchronously with options.
+        ///     <para />
+        ///     This fetches (local or network) art, meta data and/or tracks information.
+        ///     <para />
+        ///     To track when this is over you can listen to <see cref="ParsedChanged" />
+        ///     event. However if this functions returns an error, you will not receive any
+        ///     events.
+        ///     <para />
+        ///     It uses a flag to specify parse options (see <see cref="MediaParseOption" />). All
+        ///     these flags can be combined. By default, media is parsed if it's a local
+        ///     file.
         /// </summary>
-        public void Parse()
+        /// <param name="option">parse options</param>
+        /// <param name="timeout">
+        ///     maximum time allowed to preparse the media. If -1, the
+        ///     default "preparse-timeout" option will be used as a timeout. If 0, it will
+        ///     wait indefinitely. If > 0, the timeout will be used (in milliseconds).
+        /// </param>
+        /// <remarks>Parsing can be aborted with <see cref="StopParse" />.</remarks>
+        public void ParseWithOption(MediaParseOption option, int timeout = 0)
         {
-            _parseMediaFunction.Delegate(InstancePointer);
+            if (LibVlcManager.GetFunctionDelegate<libvlc_media_parse_with_options>()
+                    .Invoke(InstancePointer, (libvlc_media_parse_flag_t) option, timeout) != 0)
+                throw new LibVlcException("Fail to parse media");
         }
 
         /// <summary>
-        ///     异步解析一个媒体,获取媒体的元数据和轨道信息,这是 <see cref="VlcMedia.Parse" /> 的异步版本,
-        ///     解析完成会触发 <see cref="VlcMedia.ParsedChanged" /> 事件,您可以跟踪该事件
+        ///     Stop the parsing of the media
+        ///     <para />
+        ///     When the media parsing is stopped, the <see cref="ParsedChanged" /> event will
+        ///     be sent with the <see cref="MediaParsedStatus.Timeout" /> status.
         /// </summary>
-        public void ParseAsync()
+        public void StopParse()
         {
-            _parseMediaAsyncFunction.Delegate(InstancePointer);
+            LibVlcManager.GetFunctionDelegate<libvlc_media_parse_stop>().Invoke(InstancePointer);
         }
 
         /// <summary>
-        ///     根据提供的标志异步解析一个媒体,获取媒体的元数据和轨道信息,这是 <see cref="VlcMedia.ParseAsync" /> 的高级版本,
-        ///     默认情况下解析一个本地文件,解析完成会触发 <see cref="VlcMedia.ParsedChanged" /> 事件,您可以跟踪该事件
+        ///     Save the meta previously set
         /// </summary>
-        public void ParseWithOptionAsync(MediaParseFlag option)
-        {
-            _parseMediaWithOptionAsyncFunction.Delegate(InstancePointer, option);
-        }
-
-        /// <summary>
-        ///     递增媒体对象的引用计数
-        /// </summary>
-        public void RetainMedia()
-        {
-            _retainMediaFunction.Delegate(InstancePointer);
-        }
-
-        /// <summary>
-        ///     保存当前的元数据到媒体
-        /// </summary>
-        /// <returns>如果操作成功将会返回 True</returns>
+        /// <returns>true if the write operation was successful</returns>
         public bool SaveMeta()
         {
-            return _saveMetaFunction.Delegate(InstancePointer);
+            return LibVlcManager.GetFunctionDelegate<libvlc_media_save_meta>().Invoke(InstancePointer);
         }
 
         /// <summary>
-        ///     设置媒体的元数据
+        ///     Set the meta of the media (this function will not save the meta, call
+        ///     <see cref="SaveMeta" /> in order to save the meta)
         /// </summary>
-        /// <param name="type">元数据类型</param>
-        /// <param name="data">元数据值</param>
-        public void SetMeta(MetaDataType type, String data)
+        public void SetMeta(MediaMetaType type, string data)
         {
-            GCHandle handle = GCHandle.Alloc(Encoding.UTF8.GetBytes(data), GCHandleType.Pinned);
-            _setMetaFunction.Delegate(InstancePointer, type, handle.AddrOfPinnedObject());
-            handle.Free();
-        }
-
-        /*
-        public void GetSubitems()
-        {
-            return GetSubitemsFunction.Delegate(InstancePointer);
-        }
-        */
-
-        /// <summary>
-        ///     获取媒体的基本流的描述,注意,在调用该方法之前你需要首先调用 <see cref="VlcMedia.Parse" /> 方法,或者至少播放一次.
-        ///     否则,你将的得到一个空数组
-        /// </summary>
-        public MediaTrackList GetTracks()
-        {
-            var pointer = IntPtr.Zero;
-            var count = _getTracksFunction.Delegate(InstancePointer, ref pointer);
-            return new MediaTrackList(pointer, count);
+            using (var handle = new StringHandle(data))
+            {
+                LibVlcManager.GetFunctionDelegate<libvlc_media_set_meta>()
+                    .Invoke(InstancePointer, (libvlc_meta_t) type, handle.UnsafePointer);
+            }
         }
 
         public VlcMediaPlayer CreateMediaPlayer()
@@ -503,47 +384,18 @@ namespace Meta.Vlc
             return VlcMediaPlayer.CreateFormMedia(this);
         }
 
-        protected void Dispose(bool disposing)
+        private void ReleaseUnmanagedResources()
         {
-            if (_disposed)
-            {
-                return;
-            }
-
-            HandleManager.Remove(this);
-
-            EventManager.Detach(EventTypes.MediaMetaChanged, _onMetaChanged, IntPtr.Zero);
-            EventManager.Detach(EventTypes.MediaSubItemAdded, _onSubItemAdded, IntPtr.Zero);
-            EventManager.Detach(EventTypes.MediaDurationChanged, _onDurationChanged, IntPtr.Zero);
-            EventManager.Detach(EventTypes.MediaParsedChanged, _onParsedChanged, IntPtr.Zero);
-            EventManager.Detach(EventTypes.MediaFreed, _onFreed, IntPtr.Zero);
-            EventManager.Detach(EventTypes.MediaStateChanged, _onStateChanged, IntPtr.Zero);
-
+            VlcObjectManager.Remove(this);
+            EventManager.VlcEventFired -= OnVlcEventFired;
             EventManager.Dispose();
-            _onMetaChangedHandle.Free();
-            _onSubItemAddedHandle.Free();
-            _onDurationChangedHandle.Free();
-            _onParsedChangedHandle.Free();
-            _onFreedHandle.Free();
-            _onStateChangedHandle.Free();
-            _releaseMediaFunction.Delegate(InstancePointer);
-            InstancePointer = IntPtr.Zero;
-
-            _disposed = true;
+            LibVlcManager.GetFunctionDelegate<libvlc_media_release>().Invoke(InstancePointer);
+            InstancePointer = null;
         }
-    }
 
-    public class ObjectEventArgs<T> : EventArgs
-    {
-        public ObjectEventArgs()
+        ~VlcMedia()
         {
+            ReleaseUnmanagedResources();
         }
-
-        public ObjectEventArgs(T value)
-        {
-            Value = value;
-        }
-
-        public T Value { get; set; }
     }
 }

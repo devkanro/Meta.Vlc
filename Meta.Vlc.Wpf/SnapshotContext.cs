@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: SnapshotContext.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.IO;
@@ -18,14 +18,14 @@ namespace Meta.Vlc.Wpf
 
         #region --- Initialization ---
 
-        public SnapshotContext(String path, SnapshotFormat format, int quality)
+        public SnapshotContext(string path, SnapshotFormat format, int quality)
         {
             Path = path.FormatPath();
             Format = format;
             Quality = quality;
         }
 
-        public SnapshotContext(String path, int quality)
+        public SnapshotContext(string path, int quality)
         {
             Path = System.IO.Path.GetDirectoryName(path).FormatPath();
             Name = System.IO.Path.GetFileName(path);
@@ -44,6 +44,7 @@ namespace Meta.Vlc.Wpf
                 default:
                     throw new ArgumentOutOfRangeException("path", @"Screenshot format must be 'bmp', 'jpg' or 'png'.");
             }
+
             Quality = quality;
         }
 
@@ -51,31 +52,28 @@ namespace Meta.Vlc.Wpf
 
         #region --- Properties ---
 
-        public String Path { get; private set; }
-        public String Name { get; private set; }
-        public SnapshotFormat Format { get; private set; }
-        public int Quality { get; private set; }
+        public string Path { get; }
+        public string Name { get; private set; }
+        public SnapshotFormat Format { get; }
+        public int Quality { get; }
 
         #endregion --- Properties ---
 
         #region --- Methods ---
-        
+
         public void Save(VlcPlayer player, BitmapSource source)
         {
-            if (this.Name == null)
-            {
-                this.GetName(player);
-            }
+            if (Name == null) GetName(player);
 
             BitmapEncoder encoder = null;
-            switch (this.Format)
+            switch (Format)
             {
                 case SnapshotFormat.BMP:
                     encoder = new BmpBitmapEncoder();
                     break;
 
                 case SnapshotFormat.JPG:
-                    encoder = new JpegBitmapEncoder() { QualityLevel = this.Quality };
+                    encoder = new JpegBitmapEncoder {QualityLevel = Quality};
                     break;
 
                 case SnapshotFormat.PNG:
@@ -84,13 +82,13 @@ namespace Meta.Vlc.Wpf
             }
 
             encoder.Frames.Add(BitmapFrame.Create(source));
-            using (Stream stream = File.Create(String.Format("{0}\\{1}", this.Path, this.Name)))
+            using (Stream stream = File.Create($"{Path}\\{Name}"))
             {
                 encoder.Save(stream);
             }
         }
 
-        private static String GetMediaName(String path)
+        private static string GetMediaName(string path)
         {
             if (path.IsDriveRootDirectory())
             {
@@ -100,18 +98,20 @@ namespace Meta.Vlc.Wpf
                         return item.VolumeLabel;
             }
             else
+            {
                 return System.IO.Path.GetFileNameWithoutExtension(path);
+            }
 
             return "Unkown";
         }
 
-        private String GetName(VlcPlayer player)
+        private string GetName(VlcPlayer player)
         {
-            Name = String.Format("{0}-{1}-{2}.{3}",
-                GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", "")),
-                (int)(player.Time.TotalMilliseconds), _count++, Format.ToString().ToLower());
+            Name =
+                $"{GetMediaName(player.VlcMediaPlayer.Media.Mrl.Replace("file:///", ""))}-{(int) player.Time.TotalMilliseconds}-{_count++}.{Format.ToString().ToLower()}";
             return Name;
         }
+
         #endregion --- Methods ---
     }
 }

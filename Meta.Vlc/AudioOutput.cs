@@ -1,94 +1,55 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: AudioOutput.cs
-// Version: 20160214
+// Version: 20181231
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Meta.Vlc.Interop.MediaPlayer;
+using Meta.Vlc.Interop.MediaPlayer.Audio;
 
 namespace Meta.Vlc
 {
     /// <summary>
-    ///     A warpper for <see cref="Interop.MediaPlayer.AudioOutput" /> struct.
+    ///     A wrapper for <see cref="libvlc_audio_output_t" /> struct.
     /// </summary>
-    public class AudioOutput
+    public unsafe class AudioOutput
     {
-        internal IntPtr _pointer;
-
-        internal Interop.MediaPlayer.AudioOutput _struct;
-
-        internal AudioOutput(IntPtr pointer)
+        internal AudioOutput(libvlc_audio_output_t* pointer)
         {
-            _pointer = pointer;
-            if (pointer != IntPtr.Zero)
-            {
-                _struct =
-                    (Interop.MediaPlayer.AudioOutput)
-                        Marshal.PtrToStructure(pointer, typeof (Interop.MediaPlayer.AudioOutput));
-                Name = InteropHelper.PtrToString(_struct.Name);
-                Description = InteropHelper.PtrToString(_struct.Description);
-            }
+            if (pointer == null) return;
+
+            Name = InteropHelper.PtrToString(pointer->psz_name);
+            Description = InteropHelper.PtrToString(pointer->psz_description);
         }
 
-        public String Name { get; private set; }
+        public string Name { get; }
 
-        public String Description { get; private set; }
+        public string Description { get; }
     }
 
     /// <summary>
-    ///     A list warpper for <see cref="Interop.MediaPlayer.AudioOutput" /> linklist struct.
+    ///     A list wrapper for <see cref="AudioOutput" /> linked list struct.
     /// </summary>
-    public class AudioOutputList : IDisposable, IEnumerable<AudioOutput>, IEnumerable
+    public unsafe class AudioOutputList : VlcUnmanagedLinkedList<AudioOutput>
     {
-        private List<AudioOutput> _list;
-        private IntPtr _pointer;
-
-        /// <summary>
-        ///     Create a readonly list by a pointer of <see cref="Interop.MediaPlayer.AudioOutput" />.
-        /// </summary>
-        /// <param name="pointer"></param>
-        public AudioOutputList(IntPtr pointer)
+        public AudioOutputList(void* pointer) : base(pointer)
         {
-            _list = new List<AudioOutput>();
-            _pointer = pointer;
-
-            while (pointer != IntPtr.Zero)
-            {
-                var audioOutput = new AudioOutput(pointer);
-                _list.Add(audioOutput);
-
-                pointer = audioOutput._struct.Next;
-            }
         }
 
-        public int Count
+        protected override AudioOutput CreateItem(void* data)
         {
-            get { return _list.Count; }
+            return new AudioOutput((libvlc_audio_output_t*) data);
         }
 
-        public AudioOutput this[int index]
+        protected override void* NextItem(void* data)
         {
-            get { return _list[index]; }
+            return ((libvlc_audio_output_t*) data)->p_next;
         }
 
-        public void Dispose()
+        protected override void Release(void* data)
         {
-            if (_pointer == IntPtr.Zero) return;
-
-            LibVlcManager.ReleaseAudioOutputList(_pointer);
-            _pointer = IntPtr.Zero;
-            _list.Clear();
-        }
-
-        public IEnumerator<AudioOutput> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            LibVlcManager.GetFunctionDelegate<libvlc_audio_output_list_release>().Invoke((libvlc_audio_output_t*) data);
         }
     }
 }

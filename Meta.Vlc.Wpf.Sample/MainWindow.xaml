@@ -37,7 +37,7 @@ Version: 20160109
         <!--<wpf:VlcPlayer x:Name="Player" EndBehavior="Nothing" Stretch="Fill"/>-->
 
         <!--You can also ignore the VLcOption field and it will take the default values-->
-        <wpf:VlcPlayer x:Name="Player" VlcOption="{StaticResource VlcOptions}" LibVlcPath="..\..\libvlc" EndBehavior="Nothing" Stretch="Fill"/>
+        <wpf:VlcPlayer x:Name="Player" VlcOption="{StaticResource VlcOptions}" LibVlcPath="..\..\..\libvlc" EndBehavior="Nothing" Stretch="Fill"/>
 
         <!--You can use Image and ThreadSeparatedImage to render video-->
         <!--<Image x:Name="DisplayImage"></Image>-->

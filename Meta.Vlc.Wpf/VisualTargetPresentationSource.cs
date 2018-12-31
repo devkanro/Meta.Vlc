@@ -1,6 +1,6 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VisualTargetPresentationSource.cs
-// Version: 20160327
+// Version: 20181231
 
 using System;
 using System.Windows;
@@ -36,23 +36,20 @@ namespace Meta.Vlc.Wpf
 
             set
             {
-                Visual oldRoot = _visualTarget.RootVisual;
+                var oldRoot = _visualTarget.RootVisual;
                 _visualTarget.RootVisual = value;
                 RootChanged(oldRoot, value);
 
-                UIElement rootElement = value as UIElement;
+                var rootElement = value as UIElement;
                 if (rootElement != null)
                 {
-                    rootElement.Measure(new System.Windows.Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                    rootElement.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
                     rootElement.Arrange(new Rect(rootElement.DesiredSize));
                 }
             }
         }
 
-        public override bool IsDisposed
-        {
-            get { return _isDisposed; }
-        }
+        public override bool IsDisposed => _isDisposed;
 
         public void Dispose()
         {

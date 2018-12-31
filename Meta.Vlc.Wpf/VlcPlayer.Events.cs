@@ -1,20 +1,18 @@
 ﻿// Project: Meta.Vlc (https://github.com/higankanshi/Meta.Vlc)
 // Filename: VlcPlayer.Events.cs
-// Version: 20160708
+// Version: 20181231
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Meta.Vlc.Interop.Media;
+using Meta.Vlc.Event;
 
 namespace Meta.Vlc.Wpf
 {
-    public partial class VlcPlayer
+    public unsafe partial class VlcPlayer
     {
         /// <summary>
         ///     <see cref="VlcPlayer.Position" />
@@ -51,7 +49,7 @@ namespace Meta.Vlc.Wpf
         /// <summary>
         ///     <see cref="VlcPlayer.State" />
         /// </summary>
-        public event EventHandler<ObjectEventArgs<MediaState>> StateChanged;
+        public event EventHandler<MediaStateChangedEventArgs> StateChanged;
 
         public event EventHandler<VideoFormatChangingEventArgs> VideoFormatChanging;
 
@@ -59,8 +57,8 @@ namespace Meta.Vlc.Wpf
         {
             base.OnMouseMove(e);
 
-            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "Meta"))
+            if (_isDVD && VlcMediaPlayer != null && State == MediaState.Playing &&
+                LibVlcManager.LibVlcVersion.DevString == "Meta")
                 VlcMediaPlayer.SetMouseCursor(0, GetVideoPositionX(e.GetPosition(this).X),
                     GetVideoPositionY(e.GetPosition(this).Y));
         }
@@ -69,23 +67,20 @@ namespace Meta.Vlc.Wpf
         {
             base.OnMouseUp(e);
 
-            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "Meta"))
+            if (_isDVD && VlcMediaPlayer != null && State == MediaState.Playing &&
+                LibVlcManager.LibVlcVersion.DevString == "Meta")
                 switch (e.ChangedButton)
                 {
-                    case MouseButton.Left:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Left);
+                    case System.Windows.Input.MouseButton.Left:
+                        VlcMediaPlayer.SetMouseUp(0, MouseButton.Left);
                         break;
 
-                    case MouseButton.Right:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Right);
+                    case System.Windows.Input.MouseButton.Right:
+                        VlcMediaPlayer.SetMouseUp(0, MouseButton.Right);
                         break;
 
-                    case MouseButton.Middle:
-                    case MouseButton.XButton1:
-                    case MouseButton.XButton2:
                     default:
-                        VlcMediaPlayer.SetMouseUp(0, Interop.MediaPlayer.MouseButton.Other);
+                        VlcMediaPlayer.SetMouseUp(0, MouseButton.Other);
                         break;
                 }
         }
@@ -94,23 +89,23 @@ namespace Meta.Vlc.Wpf
         {
             base.OnMouseDown(e);
 
-            if (_isDVD && (VlcMediaPlayer != null) && State == MediaState.Playing &&
-                (LibVlcManager.LibVlcVersion.DevString == "Meta"))
+            if (_isDVD && VlcMediaPlayer != null && State == MediaState.Playing &&
+                LibVlcManager.LibVlcVersion.DevString == "Meta")
                 switch (e.ChangedButton)
                 {
-                    case MouseButton.Left:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Left);
+                    case System.Windows.Input.MouseButton.Left:
+                        VlcMediaPlayer.SetMouseDown(0, MouseButton.Left);
                         break;
 
-                    case MouseButton.Right:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Right);
+                    case System.Windows.Input.MouseButton.Right:
+                        VlcMediaPlayer.SetMouseDown(0, MouseButton.Right);
                         break;
 
-                    case MouseButton.Middle:
-                    case MouseButton.XButton1:
-                    case MouseButton.XButton2:
+                    case System.Windows.Input.MouseButton.Middle:
+                    case System.Windows.Input.MouseButton.XButton1:
+                    case System.Windows.Input.MouseButton.XButton2:
                     default:
-                        VlcMediaPlayer.SetMouseDown(0, Interop.MediaPlayer.MouseButton.Other);
+                        VlcMediaPlayer.SetMouseDown(0, MouseButton.Other);
                         break;
                 }
         }
@@ -124,10 +119,7 @@ namespace Meta.Vlc.Wpf
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Position);
-                if (PositionChanged != null)
-                {
-                    PositionChanged(this, new EventArgs());
-                }
+                PositionChanged?.Invoke(this, new EventArgs());
             }));
         }
 
@@ -138,10 +130,7 @@ namespace Meta.Vlc.Wpf
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Time);
-                if (TimeChanged != null)
-                {
-                    TimeChanged(this, new EventArgs());
-                }
+                TimeChanged?.Invoke(this, new EventArgs());
             }));
         }
 
@@ -152,34 +141,7 @@ namespace Meta.Vlc.Wpf
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => IsSeekable);
-                if (IsSeekableChanged != null)
-                {
-                    IsSeekableChanged(this, new EventArgs());
-                }
-            }));
-        }
-
-        private void VlcMediaPlayerEndReached(object sender, ObjectEventArgs<MediaState> e)
-        {
-            if (_disposing || _isStopping) return;
-
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                switch (EndBehavior)
-                {
-                    case EndBehavior.Nothing:
-
-                        break;
-
-                    case EndBehavior.Stop:
-                        Stop();
-                        break;
-
-                    case EndBehavior.Repeat:
-                        StopInternal();
-                        VlcMediaPlayer.Play();
-                        break;
-                }
+                IsSeekableChanged?.Invoke(this, new EventArgs());
             }));
         }
 
@@ -190,38 +152,48 @@ namespace Meta.Vlc.Wpf
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
                 OnPropertyChanged(() => Length);
-                if (LengthChanged != null)
-                {
-                    LengthChanged(this, new EventArgs());
-                }
+                LengthChanged?.Invoke(this, new EventArgs());
             }));
         }
 
-        private void VlcMediaPlayerMediaChanged(object sender, MediaPlayerMediaChangedEventArgs e)
-        {
-            if (_oldMedia != null)
-            {
-                _oldMedia.StateChanged -= MediaStateChanged;
-            }
-
-            if (e.NewMedia != null)
-            {
-                e.NewMedia.StateChanged += MediaStateChanged;
-                _oldMedia = e.NewMedia;
-            }
-        }
-
-        private void MediaStateChanged(object sender, ObjectEventArgs<Interop.Core.Events.MediaStateChangedArgs> e)
+        private void VlcMediaPlayerPausableChanged(object sender, MediaPlayerValueChangedEventArgs<bool> e)
         {
             if (_disposing || _isStopping) return;
 
-            Debug.WriteLine(String.Format("StateChanged : {0}", e.Value.NewState));
-
             Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
             {
-                if (StateChanged != null)
-                    StateChanged(this, new ObjectEventArgs<MediaState>(e.Value.NewState));
+                OnPropertyChanged(() => CanPause);
+                LengthChanged?.Invoke(this, new EventArgs());
             }));
+        }
+
+        private void VlcMediaPlayerMediaStateChanged(object sender, MediaStateChangedEventArgs e)
+        {
+            if (_disposing || _isStopping) return;
+
+            Debug.WriteLine($"StateChanged : {e.State}");
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { StateChanged?.Invoke(this, e); }));
+
+            if (e.State == MediaState.Ended)
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    switch (EndBehavior)
+                    {
+                        case EndBehavior.Nothing:
+
+                            break;
+
+                        case EndBehavior.Stop:
+                            Stop();
+                            break;
+
+                        case EndBehavior.Repeat:
+                            StopInternal();
+                            VlcMediaPlayer.Play();
+                            break;
+                    }
+                }));
         }
 
         #endregion VlcMediaPlayer event handlers
@@ -234,7 +206,7 @@ namespace Meta.Vlc.Wpf
         {
             if (!_context.IsAspectRatioChecked)
             {
-                var tracks = VlcMediaPlayer.Media.GetTracks();
+                var tracks = VlcMediaPlayer.Media.GetTrackInfo();
                 var videoMediaTracks = tracks.OfType<VideoTrack>().ToList();
                 var videoTrack = videoMediaTracks.FirstOrDefault();
 
@@ -246,24 +218,18 @@ namespace Meta.Vlc.Wpf
                     if (Math.Abs(scale.Width - 1.0) + Math.Abs(scale.Height - 1.0) > 0.0000001)
                     {
                         _context.IsAspectRatioChecked = true;
-                        Debug.WriteLine(String.Format("Scale:{0}x{1}", scale.Width, scale.Height));
-                        Debug.WriteLine(String.Format("Resize Image to {0}x{1}", _context.DisplayWidth,
-                            _context.DisplayHeight));
+                        Debug.WriteLine($"Scale:{scale.Width}x{scale.Height}");
+                        Debug.WriteLine($"Resize Image to {_context.DisplayWidth}x{_context.DisplayHeight}");
                     }
                     else
                     {
                         _checkCount++;
-                        if (_checkCount > 5)
-                        {
-                            _context.IsAspectRatioChecked = true;
-                        }
+                        if (_checkCount > 5) _context.IsAspectRatioChecked = true;
                     }
 
                     if (DisplayThreadDispatcher != null)
-                    {
                         DisplayThreadDispatcher.BeginInvoke(
                             new Action(() => { ScaleTransform = new ScaleTransform(scale.Width, scale.Height); }));
-                    }
                 }
             }
         }
@@ -274,28 +240,19 @@ namespace Meta.Vlc.Wpf
             {
                 if (_snapshotContext != null)
                 {
-                    _snapshotContext.Save(this, this.VideoSource);
+                    _snapshotContext.Save(this, VideoSource);
                     _snapshotContext = null;
                 }
             }));
         }
-        
-        private IntPtr VideoLockCallback(IntPtr opaque, ref IntPtr planes)
+
+        private void* VideoLockCallback(void* opaque, void** planes)
         {
-            if (_context == null)
-            {
-                throw new NullReferenceException("Video context is null");
-            }
+            if (_context == null) throw new NullReferenceException("Video context is null");
 
-            if (VlcMediaPlayer.Volume != Volume)
-            {
-                VlcMediaPlayer.Volume = Volume;
-            }
+            if (VlcMediaPlayer.Volume != Volume) VlcMediaPlayer.Volume = Volume;
 
-            if (VideoSource == null)
-            {
-                VideoSource = _context.Image;
-            }
+            if (VideoSource == null) VideoSource = _context.Image;
 
             try
             {
@@ -306,19 +263,16 @@ namespace Meta.Vlc.Wpf
                 // ignored
             }
 
-            return planes = _context.MapView;
+            return *planes = _context.MapView.ToPointer();
         }
 
-        private void VideoUnlockCallback(IntPtr opaque, IntPtr picture, ref IntPtr planes)
+        private void VideoUnlockCallback(void* opaque, void* picture, void** planes)
         {
         }
 
-        private void VideoDisplayCallback(IntPtr opaque, IntPtr picture)
+        private void VideoDisplayCallback(void* opaque, void* picture)
         {
-            if (_context == null || DisplayThreadDispatcher == null)
-            {
-                return;
-            }
+            if (_context == null || DisplayThreadDispatcher == null) return;
 
             _context.Display();
 
@@ -332,46 +286,41 @@ namespace Meta.Vlc.Wpf
             }
         }
 
-        private uint VideoFormatCallback(ref IntPtr opaque, ref uint chroma, ref uint width, ref uint height,
-            ref uint pitches, ref uint lines)
+        private uint VideoFormatCallback(void** opaque, byte* chroma, uint* width, uint* height, uint* pitches,
+            uint* lines)
         {
-            Debug.WriteLine(String.Format("Initialize Video Content : {0}x{1}", width, height));
+            Debug.WriteLine($"Initialize Video Content : {*width}x{*height}");
 
-            var videoFormatChangingArgs = new VideoFormatChangingEventArgs(width, height, ChromaType.RV32);
+            var videoFormatChangingArgs = new VideoFormatChangingEventArgs(*width, *height, ChromaType.RV32);
 
-            if (VideoFormatChanging != null)
-            {
-                VideoFormatChanging(this, videoFormatChangingArgs);
-            }
+            VideoFormatChanging?.Invoke(this, videoFormatChangingArgs);
 
-            if (_context == null || videoFormatChangingArgs.Width != _context.Width || videoFormatChangingArgs.Height != _context.Height)
+            if (_context == null || videoFormatChangingArgs.Width != _context.Width ||
+                videoFormatChangingArgs.Height != _context.Height)
             {
                 if (DisplayThreadDispatcher == null)
-                {
-                    throw new NullReferenceException(String.Format("Image = {0}, Image.SeparateThreadDispatcher = {1}, ThreadSeparatedImage.CommonDispatcher = {2}", Image, Image.SeparateThreadDispatcher, ThreadSeparatedImage.CommonDispatcher));
-                }
+                    throw new NullReferenceException(
+                        $"Image = {Image}, Image.SeparateThreadDispatcher = {Image.SeparateThreadDispatcher}, ThreadSeparatedImage.CommonDispatcher = {ThreadSeparatedImage.CommonDispatcher}");
                 DisplayThreadDispatcher.Invoke(DispatcherPriority.Normal,
                     new Action(() =>
                     {
-                        if (_context != null)
-                        {
-                            _context.Dispose();
-                        }
-                        _context = new VideoDisplayContext(videoFormatChangingArgs.Width, videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType);
-						VideoSource = null;
+                        if (_context != null) _context.Dispose();
+                        _context = new VideoDisplayContext(videoFormatChangingArgs.Width,
+                            videoFormatChangingArgs.Height, videoFormatChangingArgs.ChromaType);
+                        VideoSource = null;
                     }));
             }
-            
+
             _context.IsAspectRatioChecked = false;
-            chroma = (uint) _context.ChromaType;
-            width = (uint) _context.Width;
-            height = (uint) _context.Height;
-            pitches = (uint) _context.Stride;
-            lines = (uint) _context.Height;
+            *(uint*) chroma = (uint) _context.ChromaType;
+            *width = (uint) _context.Width;
+            *height = (uint) _context.Height;
+            *pitches = (uint) _context.Stride;
+            *lines = (uint) _context.Height;
             return (uint) _context.Size;
         }
 
-        private void VideoCleanupCallback(IntPtr opaque)
+        private void VideoCleanupCallback(void* opaque)
         {
         }
 
@@ -433,17 +382,17 @@ namespace Meta.Vlc.Wpf
         }
 
         /// <summary>
-        /// Width of video.
+        ///     Width of video.
         /// </summary>
         public uint Width { get; set; }
 
         /// <summary>
-        /// Height of video.
+        ///     Height of video.
         /// </summary>
         public uint Height { get; set; }
 
         /// <summary>
-        /// Video chroma type.
+        ///     Video chroma type.
         /// </summary>
         public ChromaType ChromaType { get; set; }
     }

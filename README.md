@@ -44,8 +44,8 @@ See the api documentation of [Meta.Vlc](http://higan.me/Meta.Vlc/api/index.html)
 ## .Net Support
 .NET Version | Meta.Vlc | Meta.Vlc.Wpf | Meta.Vlc.Wpf.Sample
 ------------ | ------------- | ------------- | -------------
-.NET 2.0 | :o: | :x: | :x:
-.NET 3.0 | :o: | :x: | :x:
+.NET 2.0 | :x: | :x: | :x:
+.NET 3.0 | :x: | :x: | :x:
 .NET 3.5 | :o: | :o: | :o:
 .NET 4.0 | :o: | :o: | :o:
 .NET 4.5 | :o: | :o: | :o:
@@ -63,6 +63,24 @@ the `$allowedReferences` **must** have the `Version` match what the current dll'
 `nuget pack Meta.Vlc.Wpf.nuspec` and `nuget pack Meta.Vlc.Lib.nuspec`
 
 ## Change Log
+
+### 2018/12/31
+SHA1:e782eb7890b1cad1eac504c80954703db323a185
+
+**01.添加了 libvlc 3.0 支持**  
+_**01.Add support for libvlc 3.0**_  
+在这次修改中，Meta.Vlc 支持了 libvlc 的 3.0 版本功能，由于一些 API 上的设计，这可能是一次破坏性的变更，2.x 版本的 libvlc 可能已经不再被支持了。也在这里再次感谢 [Unbroken Software](https://www.unbrokensoftware.com/)，没有他们帮助，3.0 版本的 Meta.Vlc 可能不会这么快的 Release。  
+In this modification, Meta.Vlc supports the 3.0 version of libvlc. Due to some API design, this may be a broken change. The 2.x version of libvlc may be supported no longer. Thanks again to [Unbroken Software](https://www.unbrokensoftware.com/), without their help, the 3.0 version of Meta.Vlc may not be released so quickly.
+
+**02.移除了 .NET2.0 与 .NET3.0 的支持**  
+_**02.No longger support for .NET2.0/.NET3.0**_  
+由于需要使用一些更高级的特性，所以我们在这次更新中移除了 Meta.Vlc 对于 .NET2.0 与 .NET3.0 的支持。  
+Due to the need to use some of the more advanced features, we removed Meta.Vlc support for .NET2.0/.NET3.0 in this update.
+
+**03.重构了整个与 libvlc 互操作的模块**  
+_**03.Refactor interop module for libvlc**_  
+现在我们更加广泛的使用了 `unsafe` 操作以提升与 libvlc 的互操作性能，所以 Meta.Vlc 模块可能有十分巨大的改变，但是 Meta.Vlc.Wpf 几乎没什么变化。并且在这次重构中，重新实现了互操作的机制，让调用过程更加精炼。  
+Now we've used the `unsafe` operation more extensively to improve interoperability with libvlc, so the Meta.Vlc module can have a huge change, but Meta.Vlc.Wpf is almost unchanged. Moreover, in this refactoring, the interoperability mechanism has been re-implemented to make the calling process more refined.
 
 ### 2016/07/08
 SHA1:5a882479bfe31345e95f5bb64a1debd858ad7758
@@ -314,6 +332,14 @@ Meta.Vlc 使用了某些 VLC 的拓展功能，我们目前提供 LibVlc(2.2.0-M
 查看 [Compile VLC for Meta.Vlc](https://github.com/higankanshi/Meta.Vlc/wiki/Compile-VLC-for-Meta.Vlc) 来获取编译 Meta 专用的 VLC 教程。   
 *See [Compile VLC for Meta.Vlc](https://github.com/higankanshi/Meta.Vlc/wiki/Compile-VLC-for-Meta.Vlc) to get some infomation about compile VLC for Meta.*   
 
+## Special Thanks
+**非常感谢**  
+_**Special thanks for support**_
+
+**[Unbroken Software](https://www.unbrokensoftware.com/)**  
+虽然这是一个开源项目，但我和 Unbroken Software 有过一些十分愉快的商业合作，这个项目也得到了他们的捐助，在此十分感谢他们的支持。  
+_Although this is an open source project, I have had some very pleasant business cooperation with Unbroken Software. This project has also received their donation, and I am very grateful for their support._
+
 ## Other Project  
 **已经在使用 Meta.Vlc 的项目：**  
 _**Already in use Meta.Vlc:**_  
@@ -347,3 +373,4 @@ Meta.Bass is a Bass library wrapper for .NET, used to play/decode mutil format a
 **[Meta.Visualizer](https://github.com/higankanshi/Meta.Visualizer)**  
 Zune 风格的音频可视化控件。  
 *Zune style audio visualizer.*    
+

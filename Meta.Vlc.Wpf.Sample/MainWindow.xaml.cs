@@ -84,7 +84,6 @@ namespace Meta.Vlc.Wpf.Sample
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            Thread.Sleep(10000);
             Player.Play();
         }
 

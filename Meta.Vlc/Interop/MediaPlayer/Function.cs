@@ -962,7 +962,7 @@ namespace Meta.Vlc.Interop.MediaPlayer
         ///     list with description of available video tracks, or NULL on error. It must be freed with
         ///     <see cref="libvlc_track_description_list_release" />
         /// </returns>
-        [LibVlcFunction(nameof(libvlc_video_get_track_count))]
+        [LibVlcFunction(nameof(libvlc_video_get_track_description))]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public unsafe delegate libvlc_track_description_t* libvlc_video_get_track_description(void* p_mi);
 
@@ -1397,7 +1397,7 @@ namespace Meta.Vlc.Interop.MediaPlayer
         ///     list with description of available audio tracks, or NULL. It must be freed with
         ///     <see cref="libvlc_track_description_list_release" />
         /// </returns>
-        [LibVlcFunction(nameof(libvlc_audio_get_track_count))]
+        [LibVlcFunction(nameof(libvlc_audio_get_track_description))]
         [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public unsafe delegate libvlc_track_description_t* libvlc_audio_get_track_description(void* p_mi);
 

@@ -96,7 +96,7 @@ namespace Meta.Vlc
         private void ReleaseUnmanagedResources()
         {
             foreach (var eventType in new List<EventType>(_attachedEvents)) Detach(eventType);
-            _onVlcEventFiredHandle.Free();
+            if (_onVlcEventFiredHandle.IsAllocated) _onVlcEventFiredHandle.Free();
         }
 
         ~VlcEventManager()
